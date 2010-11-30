@@ -782,6 +782,7 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
       if (!G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_TEXTURING) &&
           !unit->enabled)
         {
+          _cogl_set_active_texture_unit (unit_index);
           GE (glEnable (unit->current_gl_target));
           unit->enabled = TRUE;
         }
