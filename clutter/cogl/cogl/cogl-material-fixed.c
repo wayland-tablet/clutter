@@ -171,11 +171,11 @@ _cogl_material_backend_fixed_add_layer (CoglMaterial *material,
         }
     }
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_COMBINE)
+  if (layers_difference & COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT)
     {
       CoglMaterialLayer *authority =
-        _cogl_material_layer_get_authority (layer,
-                                            COGL_MATERIAL_LAYER_STATE_COMBINE);
+        _cogl_material_layer_get_authority
+        (layer, COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT);
       CoglMaterialLayerBigState *big_state = authority->big_state;
 
       GE (glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR,
