@@ -4893,6 +4893,7 @@ cogl_material_set_layer_combine_constant (CoglMaterial *material,
   CoglMaterialLayer     *layer;
   CoglMaterialLayer     *authority;
   CoglMaterialLayer     *new;
+  float                  color_as_floats[4];
 
   g_return_if_fail (cogl_is_material (material));
 
@@ -4908,8 +4909,13 @@ cogl_material_set_layer_combine_constant (CoglMaterial *material,
    * state we want to change */
   authority = _cogl_material_layer_get_authority (layer, state);
 
+  color_as_floats[0] = cogl_color_get_red_float (constant_color);
+  color_as_floats[1] = cogl_color_get_green_float (constant_color);
+  color_as_floats[2] = cogl_color_get_blue_float (constant_color);
+  color_as_floats[3] = cogl_color_get_alpha_float (constant_color);
+
   if (memcmp (authority->big_state->texture_combine_constant,
-              constant_color, sizeof (float) * 4) == 0)
+              color_as_floats, sizeof (float) * 4) == 0)
     return;
 
   new = _cogl_material_layer_pre_change_notify (material, layer, state);
@@ -4930,7 +4936,7 @@ cogl_material_set_layer_combine_constant (CoglMaterial *material,
           CoglMaterialLayerBigState *old_big_state = old_authority->big_state;
 
           if (memcmp (old_big_state->texture_combine_constant,
-                      constant_color, sizeof (float) * 4) == 0)
+                      color_as_floats, sizeof (float) * 4) == 0)
             {
               layer->differences &= ~state;
 
@@ -4943,14 +4949,9 @@ cogl_material_set_layer_combine_constant (CoglMaterial *material,
         }
     }
 
-  layer->big_state->texture_combine_constant[0] =
-    cogl_color_get_red_float (constant_color);
-  layer->big_state->texture_combine_constant[1] =
-    cogl_color_get_green_float (constant_color);
-  layer->big_state->texture_combine_constant[2] =
-    cogl_color_get_blue_float (constant_color);
-  layer->big_state->texture_combine_constant[3] =
-    cogl_color_get_alpha_float (constant_color);
+  memcpy (layer->big_state->texture_combine_constant,
+          color_as_floats,
+          sizeof (color_as_floats));
 
   /* If we weren't previously the authority on this state then we need
    * to extended our differences mask and so it's possible that some
