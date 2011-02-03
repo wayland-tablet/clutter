@@ -7,10 +7,11 @@ requires=@CLUTTER_REQUIRES@
 backend=@CLUTTER_WINSYS@ #only kept for backward compatability
 winsys=@CLUTTER_WINSYS@
 cogl_driver=@COGL_DRIVER@
+soname_infix=@CLUTTER_SONAME_INFIX@
 
 Name: Clutter
 Description: Clutter Core Library (${winsys}/${cogl_driver} backend)
 Version: @VERSION@
-Libs: -L${libdir} -lclutter-${winsys}-${apiversion}
+Libs: -L${libdir} -lclutter-${soname_infix}-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}
 Requires: ${requires}
