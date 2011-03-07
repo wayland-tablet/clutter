@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-02-21 14:15+0000\n"
+"POT-Creation-Date: 2011-03-07 14:47+0000\n"
 "PO-Revision-Date: 2010-08-20 16:59+0200\n"
 "Last-Translator: Luca Ferretti\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -753,28 +753,28 @@ msgstr ""
 msgid "The unique name of the binding pool"
 msgstr "Il nome unico dell'insieme di associazione"
 
-#: clutter/clutter-box.c:494
+#: clutter/clutter-box.c:506
 msgid "Layout Manager"
 msgstr "Gestore di layout"
 
-#: clutter/clutter-box.c:495
+#: clutter/clutter-box.c:507
 msgid "The layout manager used by the box"
 msgstr "Il gestore di layout usato dal box"
 
-#: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:258
+#: clutter/clutter-box.c:526 clutter/clutter-rectangle.c:258
 #: clutter/clutter-stage.c:1361
 msgid "Color"
 msgstr "Colore"
 
-#: clutter/clutter-box.c:515
+#: clutter/clutter-box.c:527
 msgid "The background color of the box"
 msgstr "Il colore di sfondo del box"
 
-#: clutter/clutter-box.c:529
+#: clutter/clutter-box.c:541
 msgid "Color Set"
 msgstr "Imposta colore"
 
-#: clutter/clutter-box.c:530
+#: clutter/clutter-box.c:542
 msgid "Whether the background color is set"
 msgstr "Se il colore di sfondo è impostato"
 
@@ -1798,23 +1798,23 @@ msgstr "Cattura con Alpha"
 msgid "Shape actor with alpha channel when picking"
 msgstr "Attore di forma con canale alpha nella cattura"
 
-#: clutter/glx/clutter-backend-glx.c:130
+#: clutter/glx/clutter-backend-glx.c:134
 msgid "VBlank method to be used (none, dri or glx)"
 msgstr "Metodo VBlank da usare (none, dri o glx)"
 
-#: clutter/x11/clutter-backend-x11.c:482
+#: clutter/x11/clutter-backend-x11.c:484
 msgid "X display to use"
 msgstr "Display X da usare"
 
-#: clutter/x11/clutter-backend-x11.c:488
+#: clutter/x11/clutter-backend-x11.c:490
 msgid "X screen to use"
 msgstr "Schermo X da usare"
 
-#: clutter/x11/clutter-backend-x11.c:493
+#: clutter/x11/clutter-backend-x11.c:495
 msgid "Make X calls synchronous"
 msgstr "Rende le chiamate a X sincrone"
 
-#: clutter/x11/clutter-backend-x11.c:500
+#: clutter/x11/clutter-backend-x11.c:502
 msgid "Enable XInput support"
 msgstr "Abilita il supporto a XInput"
 
