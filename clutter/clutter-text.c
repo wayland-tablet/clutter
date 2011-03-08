@@ -1372,9 +1372,6 @@ cursor_paint (ClutterText *self)
 
       position = priv->position;
 
-      if (position == 0)
-        priv->cursor_pos.x -= priv->cursor_size;
-
       if (position == priv->selection_bound)
         {
           if (priv->cursor_color_set)
