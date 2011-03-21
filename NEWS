@@ -1,3 +1,35 @@
+Clutter 1.6.10                                                       2011-03-21
+===============================================================================
+
+  • List of changes since Clutter 1.6.8
+
+    » Fix the event handling for the Windows backend, and prevent a
+      segmentation fault.
+
+    » Use the 'nearest' filter when painting the texture target for
+      ClutterOffscreenEffect.
+
+    » Correctly request the precision fo generated GLSL shaders on
+      GLES 2.0.
+
+    » Provide an implementation for ClutterStage:accept-focus, so that
+      setting and getting the property using the GObject API works.
+
+    » Fix accessing the ClutterCrossingEvent:device field through the
+      ClutterEvent device accessors.
+
+    » Fix the paint volume reported by ClutterBox.
+
+    » Documentation fixes.
+
+  • List of bugs fixed since Clutter 1.6.8
+
+    #2600 - ClutterBox implements the wrong paint volume
+
+Many thanks to:
+
+  Neil Roberts, Øyvind Kolås
+
 Clutter 1.6.8                                                        2011-03-07
 ===============================================================================
 
