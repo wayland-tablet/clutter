@@ -47,6 +47,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <stdlib.h>
 
 #ifdef HAVE_DRM
 #include <drm.h>
@@ -107,6 +108,11 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
 
   if (!_clutter_stage_x11_create_window (stage_x11))
     return FALSE;
+
+  if (getenv ("CLUTTER_SWAP_CHAIN_LENGTH"))
+    stage_glx->max_old_redraw_clips =
+      strtoul (getenv ("CLUTTER_SWAP_CHAIN_LENGTH"), NULL, 10) - 1;
+  stage_glx->n_old_redraw_clips = 0;
 
   backend_x11 = stage_x11->backend;
   backend_glx = CLUTTER_BACKEND_GLX (backend_x11);
@@ -371,7 +377,10 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
   GLXDrawable drawable;
   unsigned int video_sync_count;
   gboolean may_use_clipped_redraw;
+  gboolean have_final_clip;
   gboolean use_clipped_redraw;
+  ClutterGeometry final_clip;
+  int i;
 
   CLUTTER_STATIC_TIMER (painting_timer,
                         "Redrawing", /* parent */
@@ -400,7 +409,8 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
 
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
-  if (G_LIKELY (backend_glx->can_blit_sub_buffer) &&
+  if ((G_LIKELY (backend_glx->can_blit_sub_buffer) ||
+       stage_glx->max_old_redraw_clips) &&
       /* NB: a zero width redraw clip == full stage redraw */
       stage_glx->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
@@ -414,9 +424,49 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
       may_use_clipped_redraw = TRUE;
     }
   else
-    may_use_clipped_redraw = FALSE;
+    {
+      stage_glx->n_old_redraw_clips = 0;
+      may_use_clipped_redraw = FALSE;
+    }
 
-  if (may_use_clipped_redraw &&
+  if (may_use_clipped_redraw)
+    {
+      if (stage_glx->max_old_redraw_clips)
+        {
+          /* shift old redraw clips along and record the latest... */
+          for (i = 0; i < stage_glx->max_old_redraw_clips - 1; i++)
+            stage_glx->old_redraw_clips[i] = stage_glx->old_redraw_clips[i + 1];
+          stage_glx->old_redraw_clips[stage_glx->max_old_redraw_clips - 1] =
+            stage_glx->bounding_redraw_clip;
+
+          /* Only if the history of old redraw clips is full then we
+           * can perform a clipped redraw... */
+          if (stage_glx->n_old_redraw_clips == stage_glx->max_old_redraw_clips)
+            {
+              final_clip = stage_glx->old_redraw_clips[0];
+              for (i = 1; i < stage_glx->max_old_redraw_clips; i++)
+                clutter_geometry_union (&stage_glx->old_redraw_clips[i],
+                                        &final_clip,
+                                        &final_clip);
+
+              have_final_clip = TRUE;
+            }
+          else
+            {
+              stage_glx->n_old_redraw_clips++;
+              have_final_clip = FALSE;
+            }
+        }
+      else
+        {
+          final_clip = stage_glx->bounding_redraw_clip;
+          have_final_clip = TRUE;
+        }
+    }
+  else
+    have_final_clip = FALSE;
+
+  if (have_final_clip &&
       G_LIKELY (!(clutter_paint_debug_flags &
                   CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
     use_clipped_redraw = TRUE;
@@ -425,31 +475,31 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
 
   if (use_clipped_redraw)
     {
-      CLUTTER_NOTE (CLIPPING,
+      CLUTTER_NOTE (BACKEND,
                     "Stage clip pushed: x=%d, y=%d, width=%d, height=%d\n",
-                    stage_glx->bounding_redraw_clip.x,
-                    stage_glx->bounding_redraw_clip.y,
-                    stage_glx->bounding_redraw_clip.width,
-                    stage_glx->bounding_redraw_clip.height);
-      cogl_clip_push_window_rectangle (stage_glx->bounding_redraw_clip.x,
-                                       stage_glx->bounding_redraw_clip.y,
-                                       stage_glx->bounding_redraw_clip.width,
-                                       stage_glx->bounding_redraw_clip.height);
-      _clutter_stage_do_paint (stage_x11->wrapper,
-                               &stage_glx->bounding_redraw_clip);
+                    final_clip.x,
+                    final_clip.y,
+                    final_clip.width,
+                    final_clip.height);
+
+      cogl_clip_push_window_rectangle (final_clip.x,
+                                       final_clip.y,
+                                       final_clip.width,
+                                       final_clip.height);
+      _clutter_stage_do_paint (stage_x11->wrapper, &final_clip);
       cogl_clip_pop ();
     }
   else
     {
-      CLUTTER_NOTE (CLIPPING, "Unclipped stage paint\n");
+      CLUTTER_NOTE (BACKEND, "Unclipped stage paint\n");
       _clutter_stage_do_paint (stage_x11->wrapper, NULL);
     }
 
-  if (may_use_clipped_redraw &&
+  if (have_final_clip &&
       G_UNLIKELY ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)))
     {
       static CoglMaterial *outline = NULL;
-      ClutterGeometry *clip = &stage_glx->bounding_redraw_clip;
+      ClutterGeometry *clip = &final_clip;
       ClutterActor *actor = CLUTTER_ACTOR (stage_x11->wrapper);
       CoglHandle vbo;
       float x_1 = clip->x;
@@ -510,7 +560,8 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
     backend_glx->get_video_sync (&video_sync_count);
 
   /* push on the screen */
-  if (use_clipped_redraw)
+  if (use_clipped_redraw &&
+      stage_glx->max_old_redraw_clips == 0)
     {
       ClutterGeometry *clip = &stage_glx->bounding_redraw_clip;
       ClutterGeometry copy_area;

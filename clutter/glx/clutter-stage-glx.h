@@ -44,6 +44,8 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageGLX         ClutterStageGLX;
 typedef struct _ClutterStageGLXClass    ClutterStageGLXClass;
 
+#define CLUTTER_STAGE_GLX_MAX_SWAP_CHAIN_LENGTH 3
+
 struct _ClutterStageGLX
 {
   ClutterStageX11 parent_instance;
@@ -60,6 +62,10 @@ struct _ClutterStageGLX
   guint frame_count;
 
   ClutterGeometry bounding_redraw_clip;
+
+  ClutterGeometry old_redraw_clips[CLUTTER_STAGE_GLX_MAX_SWAP_CHAIN_LENGTH - 1];
+  int n_old_redraw_clips;
+  int max_old_redraw_clips;
 
   guint initialized_redraw_clip : 1;
 };
