@@ -23,6 +23,8 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageCogl         ClutterStageCogl;
 typedef struct _ClutterStageCoglClass    ClutterStageCoglClass;
 
+#define CLUTTER_STAGE_COGL_CLIP_HISTORY_LENGTH 3
+
 struct _ClutterStageCogl
 {
   GObject parent_instance;
@@ -44,6 +46,9 @@ struct _ClutterStageCogl
   unsigned long frame_count;
 
   cairo_rectangle_int_t bounding_redraw_clip;
+
+  cairo_rectangle_int_t old_redraw_clips[CLUTTER_STAGE_COGL_CLIP_HISTORY_LENGTH];
+  int n_old_redraw_clips;
 
   guint initialized_redraw_clip : 1;
 

@@ -110,6 +110,8 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
                 G_OBJECT_TYPE_NAME (stage_cogl),
                 stage_cogl);
 
+  stage_cogl->n_old_redraw_clips = 0;
+
   backend = clutter_get_default_backend ();
 
   if (stage_cogl->onscreen == NULL)
@@ -312,15 +314,44 @@ clutter_stage_cogl_get_redraw_clip_bounds (ClutterStageWindow    *stage_window,
   return FALSE;
 }
 
-/* XXX: This is basically identical to clutter_stage_glx_redraw */
+static gboolean
+clutter_stage_cogl_can_clip_redraws (ClutterStageWindow *stage_window)
+{
+  return TRUE;
+}
+
+static void
+_cairo_rectangle_int_union (const cairo_rectangle_int_t *rect_a,
+                            const cairo_rectangle_int_t *rect_b,
+                            cairo_rectangle_int_t *result)
+{
+  /* We don't try to handle rectangles that can't be represented
+   * as a signed integer box */
+  gint x_1 = MIN (rect_a->x, rect_b->x);
+  gint y_1 = MIN (rect_a->y, rect_b->y);
+  gint x_2 = MAX (rect_a->x + (gint)rect_a->width,
+                  rect_b->x + (gint)rect_b->width);
+  gint y_2 = MAX (rect_a->y + (gint)rect_a->height,
+                  rect_b->y + (gint)rect_b->height);
+  result->x = x_1;
+  result->y = y_1;
+  result->width = x_2 - x_1;
+  result->height = y_2 - y_1;
+}
+
 static void
 clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
   gboolean may_use_clipped_redraw;
+  cairo_rectangle_int_t final_clip;
+  gboolean have_final_clip = FALSE;
+  gboolean must_blit;
   gboolean use_clipped_redraw;
-  gboolean can_blit_sub_buffer;
   ClutterActor *wrapper;
+  /* NB: we may push/pop a 1x1 framebuffer for picking so we
+   * we can't assume we are dealing with stage_cogl->onscreen */
+  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
 
   CLUTTER_STATIC_TIMER (painting_timer,
                         "Redrawing", /* parent */
@@ -345,12 +376,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
-  can_blit_sub_buffer =
-    cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION);
-
-  may_use_clipped_redraw = FALSE;
   if (_clutter_stage_window_can_clip_redraws (stage_window) &&
-      can_blit_sub_buffer &&
       /* NB: a zero width redraw clip == full stage redraw */
       stage_cogl->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
@@ -359,8 +385,70 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
     {
       may_use_clipped_redraw = TRUE;
     }
+  else
+    {
+      stage_cogl->n_old_redraw_clips = 0;
+      may_use_clipped_redraw = FALSE;
+    }
 
-  if (may_use_clipped_redraw &&
+  if (may_use_clipped_redraw)
+    {
+      int age;
+      int i;
+
+      /* shift old redraw clips along and record the latest... */
+      for (i = CLUTTER_STAGE_COGL_CLIP_HISTORY_LENGTH - 1; i > 0 ; i--)
+        stage_cogl->old_redraw_clips[i] = stage_cogl->old_redraw_clips[i - 1];
+      stage_cogl->old_redraw_clips[0] = stage_cogl->bounding_redraw_clip;
+
+      if (stage_cogl->n_old_redraw_clips <
+          CLUTTER_STAGE_COGL_CLIP_HISTORY_LENGTH)
+        stage_cogl->n_old_redraw_clips++;
+
+      /* XXX: we're missing a cogl_is_onscreen() api in Cogl */
+      if (!cogl_is_offscreen (framebuffer))
+        {
+          CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+          cogl_onscreen_start_frame (onscreen);
+          age = cogl_onscreen_get_back_buffer_age (onscreen);
+        }
+      else
+        age = 0;
+
+      /* Only if the history of old redraw clips is as old as our back
+       * buffer contents can we perform a clipped redraw... */
+      if (age >= 1 && age <= stage_cogl->n_old_redraw_clips)
+        {
+          final_clip = stage_cogl->old_redraw_clips[0];
+          for (i = 1; i < age; i++)
+            _cairo_rectangle_int_union (&stage_cogl->old_redraw_clips[i],
+                                        &final_clip,
+                                        &final_clip);
+
+          have_final_clip = TRUE;
+          must_blit = FALSE;
+        }
+      else
+        {
+          if (age)
+            CLUTTER_NOTE (CLIPPING, "Not enough damage history to repair buffer:"
+                          " age=%d, history_len=%d\n",
+                          age, stage_cogl->n_old_redraw_clips);
+          else
+            CLUTTER_NOTE (CLIPPING, "Unknown back buffer contents so we can't clip, "
+                          "repair + flip");
+        }
+
+      if (!have_final_clip &&
+          cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION))
+        {
+          final_clip = stage_cogl->bounding_redraw_clip;
+          have_final_clip = TRUE;
+          must_blit = TRUE;
+        }
+    }
+
+  if (have_final_clip &&
       G_LIKELY (!(clutter_paint_debug_flags &
                   CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
     use_clipped_redraw = TRUE;
@@ -371,19 +459,18 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
     {
       CLUTTER_NOTE (CLIPPING,
                     "Stage clip pushed: x=%d, y=%d, width=%d, height=%d\n",
-                    stage_cogl->bounding_redraw_clip.x,
-                    stage_cogl->bounding_redraw_clip.y,
-                    stage_cogl->bounding_redraw_clip.width,
-                    stage_cogl->bounding_redraw_clip.height);
+                    final_clip.x,
+                    final_clip.y,
+                    final_clip.width,
+                    final_clip.height);
 
       stage_cogl->using_clipped_redraw = TRUE;
 
-      cogl_clip_push_window_rectangle (stage_cogl->bounding_redraw_clip.x,
-                                       stage_cogl->bounding_redraw_clip.y,
-                                       stage_cogl->bounding_redraw_clip.width,
-                                       stage_cogl->bounding_redraw_clip.height);
-      _clutter_stage_do_paint (CLUTTER_STAGE (wrapper),
-                               &stage_cogl->bounding_redraw_clip);
+      cogl_clip_push_window_rectangle (final_clip.x,
+                                       final_clip.y,
+                                       final_clip.width,
+                                       final_clip.height);
+      _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), &final_clip);
       cogl_clip_pop ();
 
       stage_cogl->using_clipped_redraw = FALSE;
@@ -396,22 +483,20 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
        * the bounding_redraw_clip so it can be visualized */
       if (G_UNLIKELY (clutter_paint_debug_flags &
                       CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS) &&
-          may_use_clipped_redraw)
+          have_final_clip)
         {
           _clutter_stage_do_paint (CLUTTER_STAGE (wrapper),
-                                   &stage_cogl->bounding_redraw_clip);
+                                   &final_clip);
         }
       else
         _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), NULL);
     }
 
-  if (may_use_clipped_redraw &&
+  if (have_final_clip &&
       G_UNLIKELY ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)))
     {
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
       static CoglPipeline *outline = NULL;
-      cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
+      cairo_rectangle_int_t *clip = &final_clip;
       ClutterActor *actor = CLUTTER_ACTOR (wrapper);
       CoglHandle vbo;
       float x_1 = clip->x;
@@ -428,6 +513,8 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
       if (outline == NULL)
         {
+          CoglContext *ctx =
+            clutter_backend_get_cogl_context (clutter_get_default_backend ());
           outline = cogl_pipeline_new (ctx);
           cogl_pipeline_set_color4ub (outline, 0xff, 0x00, 0x00, 0xff);
         }
@@ -456,9 +543,9 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
 
   /* push on the screen */
-  if (use_clipped_redraw)
+  if (use_clipped_redraw && must_blit)
     {
-      cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
+      cairo_rectangle_int_t *clip = &final_clip;
       int copy_area[4];
 
       /* XXX: It seems there will be a race here in that the stage
@@ -491,18 +578,40 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
     }
   else
     {
-      CLUTTER_NOTE (BACKEND, "cogl_onscreen_swap_buffers (onscreen: %p)",
-                    stage_cogl->onscreen);
-
-      /* If we have swap buffer events then cogl_onscreen_swap_buffers
-       * will return immediately and we need to track that there is a
-       * swap in progress... */
+      /* If we have swap buffer events then
+       * cogl_framebuffer_swap_buffers will return immediately and we
+       * need to track that there is a swap in progress... */
       if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
         stage_cogl->pending_swaps++;
 
-      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
-      cogl_onscreen_swap_buffers (stage_cogl->onscreen);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
+      if (have_final_clip)
+        {
+          int damage[] = {
+              final_clip.x,
+              final_clip.y,
+              final_clip.width,
+              final_clip.height
+          };
+
+          CLUTTER_NOTE (BACKEND,
+                        "cogl_onscreen_swap_buffers_with_damage (onscreen: %p, "
+                                                  "damage: { %d, %d, %d, %d})",
+                        stage_cogl->onscreen,
+                        damage[0], damage[1], damage[2], damage[3]);
+
+          CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
+          cogl_onscreen_swap_buffers_with_damage (stage_cogl->onscreen,
+                                                  damage, 1);
+          CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
+        }
+      else
+        {
+          CLUTTER_NOTE (BACKEND, "cogl_framebuffer_swap_buffers (onscreen: %p)",
+                        stage_cogl->onscreen);
+          CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
+          cogl_onscreen_swap_buffers (stage_cogl->onscreen);
+          CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
+        }
     }
 
   /* reset the redraw clipping for the next paint... */
@@ -540,6 +649,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->add_redraw_clip = clutter_stage_cogl_add_redraw_clip;
   iface->has_redraw_clips = clutter_stage_cogl_has_redraw_clips;
   iface->ignoring_redraw_clips = clutter_stage_cogl_ignoring_redraw_clips;
+  iface->can_clip_redraws = clutter_stage_cogl_can_clip_redraws;
   iface->get_redraw_clip_bounds = clutter_stage_cogl_get_redraw_clip_bounds;
   iface->redraw = clutter_stage_cogl_redraw;
   iface->get_active_framebuffer = clutter_stage_cogl_get_active_framebuffer;
