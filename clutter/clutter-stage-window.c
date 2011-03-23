@@ -267,3 +267,15 @@ _clutter_stage_window_can_clip_redraws (ClutterStageWindow *window)
 
   return FALSE;
 }
+
+void
+_clutter_stage_window_dirty_back_buffer (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (window));
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->dirty_back_buffer)
+    iface->dirty_back_buffer (window);
+}

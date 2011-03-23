@@ -520,6 +520,13 @@ clutter_stage_cogl_get_active_framebuffer (ClutterStageWindow *stage_window)
 }
 
 static void
+clutter_stage_cogl_dirty_back_buffer (ClutterStageWindow *stage_window)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  stage_cogl->n_old_redraw_clips = 0;
+}
+
+static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
   iface->realize = clutter_stage_cogl_realize;
@@ -536,6 +543,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->get_redraw_clip_bounds = clutter_stage_cogl_get_redraw_clip_bounds;
   iface->redraw = clutter_stage_cogl_redraw;
   iface->get_active_framebuffer = clutter_stage_cogl_get_active_framebuffer;
+  iface->dirty_back_buffer = clutter_stage_cogl_dirty_back_buffer;
 }
 
 static void
