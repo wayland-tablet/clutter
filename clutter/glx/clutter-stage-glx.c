@@ -639,6 +639,13 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
 }
 
 static void
+clutter_stage_glx_dirty_back_buffer (ClutterStageWindow *stage_window)
+{
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
+  stage_glx->n_old_redraw_clips = 0;
+}
+
+static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
   clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
@@ -651,6 +658,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->has_redraw_clips = clutter_stage_glx_has_redraw_clips;
   iface->ignoring_redraw_clips = clutter_stage_glx_ignoring_redraw_clips;
   iface->redraw = clutter_stage_glx_redraw;
+  iface->dirty_back_buffer = clutter_stage_glx_dirty_back_buffer;
 
   /* the rest is inherited from ClutterStageX11 */
 }
