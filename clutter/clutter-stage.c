@@ -52,6 +52,7 @@
 #include <cairo.h>
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
 
 #include "clutter-stage.h"
 #include "deprecated/clutter-stage.h"
@@ -145,6 +146,7 @@ struct _ClutterStagePrivate
   GList *pending_queue_redraws;
 
   ClutterPickMode pick_buffer_mode;
+  CoglOffscreen *pixel_pick_buffer;
 
   CoglFramebuffer *active_framebuffer;
 
@@ -1388,6 +1390,8 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   CoglFramebuffer *fb;
   ClutterActor *actor;
   gboolean is_clipped;
+  gint read_x;
+  gint read_y;
   CLUTTER_STATIC_COUNTER (do_pick_counter,
                           "_clutter_stage_do_pick counter",
                           "Increments for each full pick run",
@@ -1461,13 +1465,21 @@ _clutter_stage_do_pick (ClutterStage   *stage,
    * picks for the same static scene won't require additional renders */
   if (priv->picks_per_frame < 2)
     {
-      if (G_LIKELY (!(clutter_pick_debug_flags &
-                      CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-        cogl_clip_push_window_rectangle (x, y, 1, 1);
+      cogl_push_framebuffer (COGL_FRAMEBUFFER (priv->pixel_pick_buffer));
+      cogl_set_viewport (priv->viewport[0] - x,
+                         priv->viewport[1] - y,
+                         priv->viewport[2],
+                         priv->viewport[3]);
+      read_x = 0;
+      read_y = 0;
       is_clipped = TRUE;
     }
   else
-    is_clipped = FALSE;
+    {
+      read_x = x;
+      read_y = y;
+      is_clipped = FALSE;
+    }
 
   CLUTTER_NOTE (PICK, "Performing %s pick at %i,%i",
                 is_clipped ? "clippped" : "full", x, y);
@@ -1494,21 +1506,6 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   context->pick_mode = CLUTTER_PICK_NONE;
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
 
-  /* Notify the backend that we have trashed the contents of
-   * the back buffer... */
-  _clutter_stage_window_dirty_back_buffer (priv->impl);
-
-  if (is_clipped)
-    {
-      if (G_LIKELY (!(clutter_pick_debug_flags &
-                      CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-        cogl_clip_pop ();
-
-      _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
-    }
-  else
-    _clutter_stage_set_pick_buffer_valid (stage, TRUE, mode);
-
   /* Read the color of the screen co-ords pixel. RGBA_8888_PRE is used
      even though we don't care about the alpha component because under
      GLES this is the only format that is guaranteed to work so Cogl
@@ -1517,7 +1514,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
      assumes that all pixels in the framebuffer are premultiplied so
      it avoids a conversion. */
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
-  cogl_read_pixels (x, y, 1, 1,
+  cogl_read_pixels (read_x, read_y, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
@@ -1539,6 +1536,21 @@ _clutter_stage_do_pick (ClutterStage   *stage,
 
   /* Restore whether GL_DITHER was enabled */
   cogl_framebuffer_set_dither_enabled (fb, dither_enabled_save);
+
+  if (is_clipped)
+    {
+      cogl_pop_framebuffer ();
+
+      _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
+    }
+  else
+    {
+      /* Notify the backend that we have trashed the contents of
+       * the back buffer... */
+      _clutter_stage_window_dirty_back_buffer (priv->impl);
+
+      _clutter_stage_set_pick_buffer_valid (stage, TRUE, mode);
+    }
 
 check_pixel:
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
@@ -2185,6 +2197,9 @@ clutter_stage_init (ClutterStage *self)
   ClutterStageWindow *impl;
   ClutterBackend *backend;
   GError *error;
+  CoglTexture2D *color_buffer;
+  CoglContext *ctx =
+    clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
   /* a stage is a top-level object */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IS_TOPLEVEL);
@@ -2283,6 +2298,18 @@ clutter_stage_init (ClutterStage *self)
   priv->devices = g_hash_table_new (NULL, NULL);
 
   priv->pick_id_pool = _clutter_id_pool_new (256);
+
+  color_buffer = cogl_texture_2d_new_with_size (ctx,
+                                                1, 1,
+                                                COGL_PIXEL_FORMAT_RGB_888,
+                                                NULL);
+
+  /* XXX: We are only using cogl_offscreen_new_to_texture for convenience
+   * and wont need to reference the underlying texture handle once we
+   * have the buffer. */
+  priv->pixel_pick_buffer =
+    cogl_offscreen_new_to_texture (COGL_TEXTURE (color_buffer));
+  cogl_object_unref (color_buffer);
 }
 
 /**
@@ -3505,6 +3532,10 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
   if (priv->dirty_projection)
     {
       cogl_set_projection_matrix (&priv->projection);
+
+      cogl_push_framebuffer (COGL_FRAMEBUFFER (priv->pixel_pick_buffer));
+      cogl_set_projection_matrix (&priv->projection);
+      cogl_pop_framebuffer ();
 
       priv->dirty_projection = FALSE;
     }
