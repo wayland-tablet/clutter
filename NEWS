@@ -1,3 +1,38 @@
+Clutter 1.6.12                                                       2011-04-04
+===============================================================================
+
+  • List of changes since Clutter 1.6.10
+
+    » Use AC_CANONICAL_HOST in Clutter's configure, and fix cross-compilation
+      for Windows.
+
+    » Improve portability of Clutter by removing bashisms from its configure
+      script.
+
+    » Add safeties to avoid warning when generating paint volumes for actors
+      with a zero-sized allocations.
+
+    » Fix vertical aligned actors using ClutterAlignConstraint.
+
+    » Do not unrealize the Stage when hiding it on OSX.
+
+    » Throttle clipped redraws on GLX.
+
+  • List of bugs fixed since Clutter 1.6.10
+
+    #2257 - clutter fails to link on OS X (10.6)
+    #2562 - Crush upon running Clutter-based programs
+    #2602 - Expose events ignore when doing clipped redraws
+    #2610 - Add recipe about implementing a ClutterEffect
+    #2619 - Removes the addition of the .exe extrension to unit-test
+            scripts, on win32
+    #2620 - _cogl_offscreen_new_to_texture_full() leaks reference when
+            failing
+
+Many thanks to:
+
+  Piotr Drąg, Robert Bragg
+
 Clutter 1.6.10                                                       2011-03-21
 ===============================================================================
 
