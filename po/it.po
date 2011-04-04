@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-03-21 13:59+0000\n"
+"POT-Creation-Date: 2011-04-04 15:01+0100\n"
 "PO-Revision-Date: 2010-08-20 16:59+0200\n"
 "Last-Translator: Luca Ferretti\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -418,6 +418,7 @@ msgstr "Se il meta è attivato"
 
 #: clutter/clutter-align-constraint.c:252
 #: clutter/clutter-bind-constraint.c:316 clutter/clutter-clone.c:326
+#: clutter/clutter-snap-constraint.c:321
 msgid "Source"
 msgstr "Origine"
 
@@ -481,6 +482,7 @@ msgstr "La modalità di animazione"
 
 #: clutter/clutter-animation.c:494 clutter/clutter-animator.c:1786
 #: clutter/clutter-media.c:194 clutter/clutter-state.c:1422
+#: clutter/clutter-timeline.c:294
 msgid "Duration"
 msgstr "Durata"
 
@@ -488,7 +490,7 @@ msgstr "Durata"
 msgid "Duration of the animation, in milliseconds"
 msgstr "Durata dell'animazione, in millisecondi"
 
-#: clutter/clutter-animation.c:509
+#: clutter/clutter-animation.c:509 clutter/clutter-timeline.c:263
 msgid "Loop"
 msgstr "Ciclo"
 
@@ -596,7 +598,7 @@ msgid "Center of ellipse"
 msgstr "Centro dell'ellisse"
 
 #: clutter/clutter-behaviour-ellipse.c:521
-#: clutter/clutter-behaviour-rotate.c:329
+#: clutter/clutter-behaviour-rotate.c:329 clutter/clutter-timeline.c:310
 msgid "Direction"
 msgstr "Direzione"
 
@@ -621,7 +623,7 @@ msgstr "Opacità finale"
 msgid "Final opacity level"
 msgstr "Livello di opacità finale"
 
-#: clutter/clutter-behaviour-path.c:219
+#: clutter/clutter-behaviour-path.c:219 clutter/clutter-path-constraint.c:212
 msgid "Path"
 msgstr "Percorso"
 
@@ -713,7 +715,8 @@ msgstr "Coordinata"
 msgid "The coordinate to bind"
 msgstr "La coordinata da associare"
 
-#: clutter/clutter-bind-constraint.c:345
+#: clutter/clutter-bind-constraint.c:345 clutter/clutter-path-constraint.c:226
+#: clutter/clutter-snap-constraint.c:366
 msgid "Offset"
 msgstr "Spostamento"
 
@@ -721,8 +724,12 @@ msgstr "Spostamento"
 msgid "The offset in pixels to apply to the binding"
 msgstr "Lo spostamento in pixel da applicare all'associazione"
 
+#: clutter/clutter-binding-pool.c:320
+msgid "The unique name of the binding pool"
+msgstr "Il nome unico dell'insieme di associazione"
+
 #: clutter/clutter-bin-layout.c:261 clutter/clutter-bin-layout.c:580
-#: clutter/clutter-box-layout.c:395
+#: clutter/clutter-box-layout.c:395 clutter/clutter-table-layout.c:652
 msgid "Horizontal Alignment"
 msgstr "Allineamento orizzontale"
 
@@ -731,7 +738,7 @@ msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr "Allineamento orizzontale per l'attore dentro il gestore di layout"
 
 #: clutter/clutter-bin-layout.c:270 clutter/clutter-bin-layout.c:597
-#: clutter/clutter-box-layout.c:404
+#: clutter/clutter-box-layout.c:404 clutter/clutter-table-layout.c:667
 msgid "Vertical Alignment"
 msgstr "Allineamento verticale"
 
@@ -748,10 +755,6 @@ msgstr ""
 msgid "Default vertical alignment for the actors inside the layout manager"
 msgstr ""
 "Allineamento verticale predefinito per l'attore dentro il gestore di layout"
-
-#: clutter/clutter-binding-pool.c:320
-msgid "The unique name of the binding pool"
-msgstr "Il nome unico dell'insieme di associazione"
 
 #: clutter/clutter-box.c:537
 msgid "Layout Manager"
@@ -786,11 +789,11 @@ msgstr "Espandere"
 msgid "Allocate extra space for the child"
 msgstr "Alloca spazio extra per il figlio"
 
-#: clutter/clutter-box-layout.c:377
+#: clutter/clutter-box-layout.c:377 clutter/clutter-table-layout.c:631
 msgid "Horizontal Fill"
 msgstr "Riempimento orizzontale"
 
-#: clutter/clutter-box-layout.c:378
+#: clutter/clutter-box-layout.c:378 clutter/clutter-table-layout.c:632
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
@@ -798,11 +801,11 @@ msgstr ""
 "Se il figlio dovrebbe ricevere priorità quando il contenitore sta allocando "
 "spazio aggiuntivo sull'asse orizzontale"
 
-#: clutter/clutter-box-layout.c:386
+#: clutter/clutter-box-layout.c:386 clutter/clutter-table-layout.c:638
 msgid "Vertical Fill"
 msgstr "Riempimento verticale"
 
-#: clutter/clutter-box-layout.c:387
+#: clutter/clutter-box-layout.c:387 clutter/clutter-table-layout.c:639
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
@@ -810,11 +813,11 @@ msgstr ""
 "Se il figlio dovrebbe ricevere priorità quando il contenitore sta allocando "
 "spazio aggiuntivo sull'asse verticale"
 
-#: clutter/clutter-box-layout.c:396
+#: clutter/clutter-box-layout.c:396 clutter/clutter-table-layout.c:653
 msgid "Horizontal alignment of the actor within the cell"
 msgstr "Allineamento orizzontale dell'attore all'interno della cella"
 
-#: clutter/clutter-box-layout.c:405
+#: clutter/clutter-box-layout.c:405 clutter/clutter-table-layout.c:668
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Allineamento verticale dell'attore all'interno della cella"
 
@@ -853,27 +856,27 @@ msgstr "Spaziatura"
 msgid "Spacing between children"
 msgstr "Spaziatura tra i figli"
 
-#: clutter/clutter-box-layout.c:1138
+#: clutter/clutter-box-layout.c:1138 clutter/clutter-table-layout.c:1740
 msgid "Use Animations"
 msgstr "Usa animazioni"
 
-#: clutter/clutter-box-layout.c:1139
+#: clutter/clutter-box-layout.c:1139 clutter/clutter-table-layout.c:1741
 msgid "Whether layout changes should be animated"
 msgstr "Se i cambiamenti al layout dovrebbero essere animati"
 
-#: clutter/clutter-box-layout.c:1160
+#: clutter/clutter-box-layout.c:1160 clutter/clutter-table-layout.c:1762
 msgid "Easing Mode"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1161
+#: clutter/clutter-box-layout.c:1161 clutter/clutter-table-layout.c:1763
 msgid "The easing mode of the animations"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1178
+#: clutter/clutter-box-layout.c:1178 clutter/clutter-table-layout.c:1780
 msgid "Easing Duration"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1179
+#: clutter/clutter-box-layout.c:1179 clutter/clutter-table-layout.c:1781
 msgid "The duration of the animations"
 msgstr "La durata delle animazioni"
 
@@ -962,6 +965,7 @@ msgid "The desaturation factor"
 msgstr "Il fattore desaturazione"
 
 #: clutter/clutter-device-manager.c:131 clutter/clutter-input-device.c:344
+#: clutter/x11/clutter-keymap-x11.c:316
 msgid "Backend"
 msgstr ""
 
@@ -1013,7 +1017,7 @@ msgstr "L'orientamento del layout"
 msgid "Whether each item should receive the same allocation"
 msgstr "Se ogni elemento dovrebbe ricevere la stessa allocazione"
 
-#: clutter/clutter-flow-layout.c:914
+#: clutter/clutter-flow-layout.c:914 clutter/clutter-table-layout.c:1711
 msgid "Column Spacing"
 msgstr "Spaziatura di colonna"
 
@@ -1021,7 +1025,7 @@ msgstr "Spaziatura di colonna"
 msgid "The spacing between columns"
 msgstr "Lo spazio tra le colonne"
 
-#: clutter/clutter-flow-layout.c:931
+#: clutter/clutter-flow-layout.c:931 clutter/clutter-table-layout.c:1725
 msgid "Row Spacing"
 msgstr "Spaziatura di riga"
 
@@ -1270,6 +1274,16 @@ msgstr "Il livello di riempimento del buffer"
 msgid "The duration of the stream, in seconds"
 msgstr "La durata del flusso, in secondi"
 
+#: clutter/clutter-path-constraint.c:213
+#, fuzzy
+msgid "The path used to constrain an actor"
+msgstr "L'alpha usato dall'animazione"
+
+#: clutter/clutter-path-constraint.c:227
+#, fuzzy
+msgid "The offset along the path, between -1.0 and 2.0"
+msgstr "Il fattore di allineamento, tra 0.0 e 1.0"
+
 #: clutter/clutter-rectangle.c:259
 msgid "The color of the rectangle"
 msgstr "Il colore del rettangolo"
@@ -1306,7 +1320,7 @@ msgstr "Imposta il nome del file"
 msgid "Whether the :filename property is set"
 msgstr "Se la proprietà nome del file è impostata"
 
-#: clutter/clutter-script.c:404 clutter/clutter-texture.c:1070
+#: clutter/clutter-script.c:404 clutter/clutter-texture.c:1080
 msgid "Filename"
 msgstr "Nome del file"
 
@@ -1368,6 +1382,34 @@ msgstr "Tipo di ombreggiatore"
 #, fuzzy
 msgid "The type of shader used"
 msgstr "Il tipo di ombreggiatore usato"
+
+#: clutter/clutter-snap-constraint.c:322
+#, fuzzy
+msgid "The source of the constraint"
+msgstr "L'origine dell'allineamento"
+
+#: clutter/clutter-snap-constraint.c:335
+msgid "From Edge"
+msgstr ""
+
+#: clutter/clutter-snap-constraint.c:336
+#, fuzzy
+msgid "The edge of the actor that should be snapped"
+msgstr "L'attore che si sta trascinando"
+
+#: clutter/clutter-snap-constraint.c:350
+msgid "To Edge"
+msgstr ""
+
+#: clutter/clutter-snap-constraint.c:351
+#, fuzzy
+msgid "The edge of the source that should be snapped"
+msgstr "Se i cambiamenti al layout dovrebbero essere animati"
+
+#: clutter/clutter-snap-constraint.c:367
+#, fuzzy
+msgid "The offset in pixels to apply to the constraint"
+msgstr "Lo spostamento in pixel da applicare all'associazione"
 
 #: clutter/clutter-stage.c:1311
 msgid "Fullscreen Set"
@@ -1483,6 +1525,72 @@ msgstr ""
 #: clutter/clutter-state.c:1423
 msgid "Default transition duration"
 msgstr ""
+
+#: clutter/clutter-table-layout.c:585
+msgid "Column Number"
+msgstr ""
+
+#: clutter/clutter-table-layout.c:586
+msgid "The column the widget resides in"
+msgstr ""
+
+#: clutter/clutter-table-layout.c:593
+msgid "Row Number"
+msgstr ""
+
+#: clutter/clutter-table-layout.c:594
+msgid "The row the widget resides in"
+msgstr ""
+
+#: clutter/clutter-table-layout.c:601
+#, fuzzy
+msgid "Column Span"
+msgstr "Spaziatura di colonna"
+
+#: clutter/clutter-table-layout.c:602
+#, fuzzy
+msgid "The number of columns the widget should span"
+msgstr "Il nome del dispositivo"
+
+#: clutter/clutter-table-layout.c:609
+#, fuzzy
+msgid "Row Span"
+msgstr "Spaziatura di riga"
+
+#: clutter/clutter-table-layout.c:610
+#, fuzzy
+msgid "The number of rows the widget should span"
+msgstr "Il nome del dispositivo"
+
+#: clutter/clutter-table-layout.c:617
+#, fuzzy
+msgid "Horizontal Expand"
+msgstr "Ripetizione orizzontale"
+
+#: clutter/clutter-table-layout.c:618
+#, fuzzy
+msgid "Allocate extra space for the child in horizontal axis"
+msgstr "Alloca spazio extra per il figlio"
+
+#: clutter/clutter-table-layout.c:624
+#, fuzzy
+msgid "Vertical Expand"
+msgstr "Ripetizione verticale"
+
+#: clutter/clutter-table-layout.c:625
+#, fuzzy
+msgid "Allocate extra space for the child in vertical axis"
+msgstr "Alloca spazio extra per il figlio"
+
+#: clutter/clutter-table-layout.c:1712
+#, fuzzy
+msgid "Spacing between columns"
+msgstr "Lo spazio tra le colonne"
+
+#: clutter/clutter-table-layout.c:1726
+#, fuzzy
+msgid "Spacing between rows"
+msgstr "Lo spazio tra le righe"
 
 #: clutter/clutter-text.c:2554
 msgid "Font Name"
@@ -1673,21 +1781,21 @@ msgstr "Modalità linea singola"
 msgid "Whether the text should be a single line"
 msgstr "Se il testo dovrebbe essere in una linea singola"
 
-#: clutter/clutter-texture.c:984
+#: clutter/clutter-texture.c:994
 msgid "Sync size of actor"
 msgstr "Sincronizza dimensione dell'attore"
 
-#: clutter/clutter-texture.c:985
+#: clutter/clutter-texture.c:995
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
 msgstr ""
 "Sincronizza automaticamente la dimensione dell'attore alle dimensioni "
 "sottostanti del pixbuf"
 
-#: clutter/clutter-texture.c:992
+#: clutter/clutter-texture.c:1002
 msgid "Disable Slicing"
 msgstr "Disabilita segmentazione"
 
-#: clutter/clutter-texture.c:993
+#: clutter/clutter-texture.c:1003
 msgid ""
 "Forces the underlying texture to be singular and not made of smaller space "
 "saving individual textures"
@@ -1695,71 +1803,71 @@ msgstr ""
 "Forza la texture sottostante ad essere singola e non composta di segmenti di "
 "texture più piccoli"
 
-#: clutter/clutter-texture.c:1002
+#: clutter/clutter-texture.c:1012
 msgid "Tile Waste"
 msgstr ""
 
-#: clutter/clutter-texture.c:1003
+#: clutter/clutter-texture.c:1013
 msgid "Maximum waste area of a sliced texture"
 msgstr ""
 
-#: clutter/clutter-texture.c:1011
+#: clutter/clutter-texture.c:1021
 msgid "Horizontal repeat"
 msgstr "Ripetizione orizzontale"
 
-#: clutter/clutter-texture.c:1012
+#: clutter/clutter-texture.c:1022
 msgid "Repeat the contents rather than scaling them horizontally"
 msgstr "Ripetere il contenuto invece di adattarlo orizzontalmente"
 
-#: clutter/clutter-texture.c:1019
+#: clutter/clutter-texture.c:1029
 msgid "Vertical repeat"
 msgstr "Ripetizione verticale"
 
-#: clutter/clutter-texture.c:1020
+#: clutter/clutter-texture.c:1030
 msgid "Repeat the contents rather than scaling them vertically"
 msgstr "Ripetere il contenuto invece di adattarlo verticalmente"
 
-#: clutter/clutter-texture.c:1027
+#: clutter/clutter-texture.c:1037
 msgid "Filter Quality"
 msgstr "Qualità filtro"
 
-#: clutter/clutter-texture.c:1028
+#: clutter/clutter-texture.c:1038
 msgid "Rendering quality used when drawing the texture"
 msgstr "Qualità di render utilizzato nel disegnare le texture"
 
-#: clutter/clutter-texture.c:1036
+#: clutter/clutter-texture.c:1046
 msgid "Pixel Format"
 msgstr "Formato pixel"
 
-#: clutter/clutter-texture.c:1037
+#: clutter/clutter-texture.c:1047
 msgid "The Cogl pixel format to use"
 msgstr "Il formato di pixel Cogl da usare"
 
-#: clutter/clutter-texture.c:1045
+#: clutter/clutter-texture.c:1055
 msgid "Cogl Texture"
 msgstr "Cogl Texture"
 
-#: clutter/clutter-texture.c:1046
+#: clutter/clutter-texture.c:1056
 msgid "The underlying Cogl texture handle used to draw this actor"
 msgstr "La gestione della texture Cogl sottostante per disegnare questo attore"
 
-#: clutter/clutter-texture.c:1053
+#: clutter/clutter-texture.c:1063
 msgid "Cogl Material"
 msgstr "Materiale Cogl"
 
-#: clutter/clutter-texture.c:1054
+#: clutter/clutter-texture.c:1064
 msgid "The underlying Cogl material handle used to draw this actor"
 msgstr "La gestione del materiale Cogl sottostante per disegnare questo attore"
 
-#: clutter/clutter-texture.c:1071
+#: clutter/clutter-texture.c:1081
 msgid "The path of the file containing the image data"
 msgstr "Il percorso del file contenente i dati dell'immagine"
 
-#: clutter/clutter-texture.c:1078
+#: clutter/clutter-texture.c:1088
 msgid "Keep Aspect Ratio"
 msgstr "Mantieni rapporto dimensioni"
 
-#: clutter/clutter-texture.c:1079
+#: clutter/clutter-texture.c:1089
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
@@ -1767,22 +1875,22 @@ msgstr ""
 "Mantieni il rapporto delle dimensioni della texture quando è richiesta una "
 "larghezza o altezza preferita"
 
-#: clutter/clutter-texture.c:1105
+#: clutter/clutter-texture.c:1115
 msgid "Load asynchronously"
 msgstr "Carica in maniera asincrona"
 
-#: clutter/clutter-texture.c:1106
+#: clutter/clutter-texture.c:1116
 msgid ""
 "Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
 "Carica i files dentro un thread per evitare il blocco durante il caricamento "
 "delle immagini da disco"
 
-#: clutter/clutter-texture.c:1122
+#: clutter/clutter-texture.c:1132
 msgid "Load data asynchronously"
 msgstr "Carica i dati in maniera asincrona"
 
-#: clutter/clutter-texture.c:1123
+#: clutter/clutter-texture.c:1133
 msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
 "images from disk"
@@ -1790,13 +1898,83 @@ msgstr ""
 "Decodifica i dati dei files immagine dentro un thread per ridurre il blocco "
 "nel caricamento delle immagini da disco"
 
-#: clutter/clutter-texture.c:1147
+#: clutter/clutter-texture.c:1157
 msgid "Pick With Alpha"
 msgstr "Cattura con Alpha"
 
-#: clutter/clutter-texture.c:1148
+#: clutter/clutter-texture.c:1158
 msgid "Shape actor with alpha channel when picking"
 msgstr "Attore di forma con canale alpha nella cattura"
+
+#: clutter/clutter-timeline.c:264
+msgid "Should the timeline automatically restart"
+msgstr ""
+
+#: clutter/clutter-timeline.c:278
+msgid "Delay"
+msgstr ""
+
+#: clutter/clutter-timeline.c:279
+msgid "Delay before start"
+msgstr ""
+
+#: clutter/clutter-timeline.c:295
+#, fuzzy
+msgid "Duration of the timeline in milliseconds"
+msgstr "Durata dell'animazione, in millisecondi"
+
+#: clutter/clutter-timeline.c:311
+#, fuzzy
+msgid "Direction of the timeline"
+msgstr "Direzione del testo"
+
+#: clutter/clutter-timeline.c:326
+msgid "Auto Reverse"
+msgstr ""
+
+#: clutter/clutter-timeline.c:327
+#, fuzzy
+msgid "Whether the direction should be reversed when reaching the end"
+msgstr "Se il livello principale dovrebbe essere renderizzato fuori schermo"
+
+#: clutter/cogl/cogl/cogl-debug.c:203
+#, fuzzy
+msgid "Cogl debugging flags to set"
+msgstr "Flag per il debug di Clutter da attivare"
+
+#: clutter/cogl/cogl/cogl-debug.c:205
+#, fuzzy
+msgid "Cogl debugging flags to unset"
+msgstr "Flag per il debug di Clutter da disattivare"
+
+#: clutter/cogl/cogl/cogl-debug.c:238
+#, fuzzy
+msgid "Cogl Options"
+msgstr "Opzioni di Clutter"
+
+#: clutter/cogl/cogl/cogl-debug.c:239
+#, fuzzy
+msgid "Show Cogl options"
+msgstr "Mostra le opzioni di Clutter"
+
+#: clutter/evdev/clutter-input-device-evdev.c:147
+msgid "sysfs Path"
+msgstr ""
+
+#: clutter/evdev/clutter-input-device-evdev.c:148
+#, fuzzy
+msgid "Path of the device in sysfs"
+msgstr "Il nome del dispositivo"
+
+#: clutter/evdev/clutter-input-device-evdev.c:163
+#, fuzzy
+msgid "Device Path"
+msgstr "Gestore"
+
+#: clutter/evdev/clutter-input-device-evdev.c:164
+#, fuzzy
+msgid "Path of the device node"
+msgstr "Il nome del dispositivo"
 
 #: clutter/glx/clutter-backend-glx.c:134
 msgid "VBlank method to be used (none, dri or glx)"
@@ -1817,6 +1995,10 @@ msgstr "Rende le chiamate a X sincrone"
 #: clutter/x11/clutter-backend-x11.c:502
 msgid "Enable XInput support"
 msgstr "Abilita il supporto a XInput"
+
+#: clutter/x11/clutter-keymap-x11.c:317
+msgid "The Clutter backend"
+msgstr ""
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:544
 msgid "Pixmap"
