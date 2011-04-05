@@ -1,3 +1,21 @@
+Clutter 1.6.14                                                       2011-04-05
+===============================================================================
+
+  • List of changes since Clutter 1.6.12
+
+    » Do not use the .exe extension when compiling under mingw.
+
+    » Fix an ownership issue with layers in a pipeline that could end up
+      triggering an assertion failure.
+
+  • List of bugs fixes since Clutter 1.6.12
+
+    #2588 - Assertion failure in _cogl_pipeline_set_layer_texture_target
+
+Many thanks to:
+
+  Samuel Degrande, Robert Bragg
+
 Clutter 1.6.12                                                       2011-04-04
 ===============================================================================
 
