@@ -21,8 +21,8 @@
  *
  */
 
-#ifndef __COGL_WINSYS_H
-#define __COGL_WINSYS_H
+#ifndef __COGL_WINSYS_PRIVATE_H
+#define __COGL_WINSYS_PRIVATE_H
 
 #include "cogl-framebuffer-private.h"
 
@@ -115,4 +115,4 @@ void
 _cogl_winsys_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
                                                     unsigned int id);
 
-#endif /* __COGL_WINSYS_H */
+#endif /* __COGL_WINSYS_PRIVATE_H */
