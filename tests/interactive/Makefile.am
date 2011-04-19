@@ -57,6 +57,8 @@ UNIT_TESTS = \
 	test-path-constraint.c \
 	test-snap-constraint.c
 
+NON_X11_TESTS = $(UNIT_TESTS)
+
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c test-devices.c
 endif
@@ -68,7 +70,7 @@ SHEXT = $(EXEEXT)
 endif
 
 # For convenience, this provides a way to easily run individual unit tests:
-wrappers: stamp-test-interactive
+wrappers: stamp-test-interactive ../../build/win32/test-interactive.bat
 	@true
 stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 	@wrapper=$(abs_builddir)/wrapper.sh ; \
@@ -89,6 +91,15 @@ stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 	done \
 	&& echo timestamp > $(@F)
 
+../../build/win32/test-interactive.bat: Makefile test-interactive$(EXEEXT)
+	echo "  GEN    test-interactive.bat" ; \
+	for i in $(NON_X11_TESTS); \
+	do \
+		test_bin=$${i%*.c} ; \
+		( echo "test-interactive $$test_bin" ) >> $(top_srcdir)/build/win32/test-interactive.bat ; \
+	done \
+	&& echo timestamp > $(@F)
+
 clean-wrappers:
 	@for i in $(UNIT_TESTS); \
 	do \
@@ -96,6 +107,7 @@ clean-wrappers:
 		echo "  RM    $$test_bin"; \
 		rm -f $$test_bin$(SHEXT); \
 	done \
+	&& rm -f $(top_srcdir)/build/win32/test-interactive.bat \
 	&& rm -f stamp-test-interactive
 
 .PHONY: wrappers clean-wrappers
@@ -125,5 +137,45 @@ EXTRA_DIST = wrapper.sh.in
 DISTCLEANFILES = wrapper.sh .gitignore
 
 BUILT_SOURCES = wrappers
+
+dist-hook: ../../build/win32/vs9/test-interactive.vcproj ../../build/win32/vs10/test-interactive.vcxproj ../../build/win32/vs10/test-interactive.vcxproj.filters
+
+../../build/win32/vs9/test-interactive.vcproj: $(top_srcdir)/build/win32/vs9/test-interactive.vcprojin
+	for F in $(test_interactive_SOURCES); do \
+		case $$F in \
+		test-pixmap.c|test-devices.c) ;; \
+		*.c)	echo '   <File RelativePath="..\..\..\tests\interactive\'$$F'" />' \
+			;; \
+		esac; \
+	done >testinteractive.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-interactive.vcprojin >$@
+	rm testinteractive.sourcefiles
+	
+../../build/win32/vs10/test-interactive.vcxproj: $(top_srcdir)/build/win32/vs10/test-interactive.vcxprojin
+	for F in $(test_interactive_SOURCES); do \
+		case $$F in \
+		test-pixmap.c|test-devices.c) ;; \
+		*.c)	echo '    <ClCompile Include="..\..\..\tests\interactive\'$$F'" />' \
+			;; \
+		esac; \
+	done >testinteractive.vs10.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive.vcxprojin >$@
+	rm testinteractive.vs10.sourcefiles
+	
+../../build/win32/vs10/test-interactive.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-interactive.vcxproj.filtersin
+	for F in $(test_interactive_SOURCES); do \
+		case $$F in \
+		test-pixmap.c|test-devices.c) ;; \
+		*.c)	echo '    <ClCompile Include="..\..\..\tests\interactive\'$$F'"><Filter>Sources</Filter></ClCompile>' \
+			;; \
+		esac; \
+	done >testinteractive.vs10.sourcefiles.filters
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive.vcxproj.filtersin >$@
+	rm testinteractive.vs10.sourcefiles.filters
+
+# Let the VS9/VS10 Project files be cleared out before they are re-expanded...
+DISTCLEANFILES += ../../build/win32/vs9/test-interactive.vcproj	\
+		  ../../build/win32/vs10/test-interactive.vcxproj	\
+		  ../../build/win32/vs10/test-interactive.vcxproj.filters
 
 clean-local: clean-wrappers
