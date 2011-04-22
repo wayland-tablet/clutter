@@ -1232,7 +1232,7 @@ dnl ===========================================================================
 
 AC_CONFIG_FILES([
 	Makefile
-
+	config.h.win32
         README
 
 	build/Makefile
@@ -1245,6 +1245,7 @@ AC_CONFIG_FILES([
 	clutter/Makefile
         clutter/clutter-config.h
 	clutter/clutter-version.h
+	clutter/clutter-version.h.win32
 	clutter/clutter-$CLUTTER_API_VERSION.pc:clutter/clutter.pc.in
 
 	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
