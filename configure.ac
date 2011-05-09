@@ -253,14 +253,15 @@ AS_CASE([$CLUTTER_FLAVOUR],
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_WAYLAND"
 
           SUPPORT_WAYLAND=1
+          SUPPORT_EGL=1
 
-          CLUTTER_WINSYS=wayland
+          CLUTTER_WINSYS=cogl
           CLUTTER_SONAME_INFIX=wayland
 
           PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
           PKG_CHECK_EXISTS([egl], [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"], [])
-          PKG_CHECK_EXISTS([wayland-client xkbcommon],
-			   [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-client xkbcommon"], [])
+          PKG_CHECK_EXISTS([wayland-client wayland-egl xkbcommon],
+			   [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-client wayland-egl xkbcommon"], [])
         ],
 
         [eglx],
@@ -423,10 +424,9 @@ AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "x1"])
 AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 AM_CONDITIONAL(SUPPORT_CEX100, [test "x$SUPPORT_EGL_PLATFORM_GDL" = "x1"])
-AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$CLUTTER_WINSYS" = "xwayland"])
+AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
 AM_CONDITIONAL(SUPPORT_STUB, [test "x$CLUTTER_WINSYS" = "xwin32" -o \
-                                   "x$CLUTTER_WINSYS" = "xosx" -o \
-                                   "x$CLUTTER_WINSYS" = "xwayland"])
+				   "x$CLUTTER_WINSYS" = "xosx"])
 
 AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
 AM_CONDITIONAL(SUPPORT_EVDEV, [test "x$have_evdev" = "xyes"])

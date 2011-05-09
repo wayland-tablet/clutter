@@ -104,6 +104,9 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 #ifdef COGL_HAS_XLIB_SUPPORT
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 #endif
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+    struct wl_surface *wl_surface;
+#endif
   ClutterBackend *backend;
   CoglFramebuffer *framebuffer;
   GError *error = NULL;
@@ -152,6 +155,11 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
   /* FIXME: for fullscreen Cogl platforms then the size we gave above
    * will be ignored, so we need to make sure the stage size is
    * updated to this size. */
+
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+    wl_surface = cogl_wayland_onscreen_get_surface (stage_cogl->onscreen);
+    wl_input_device_set_user_data (wl_surface, stage_cogl);
+#endif
 
   if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))
     {

@@ -1347,12 +1347,6 @@ clutter_win32_handle_event
 </SECTION>
 
 <SECTION>
-<FILE>clutter-wayland</FILE>
-<TITLE>Wayland Specific Support</TITLE>
-clutter_wayland_get_egl_display
-</SECTION>
-
-<SECTION>
 <FILE>clutter-version</FILE>
 <TITLE>Versioning Macros</TITLE>
 CLUTTER_MAJOR_VERSION

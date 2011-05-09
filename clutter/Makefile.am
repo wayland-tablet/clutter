@@ -495,6 +495,20 @@ if SUPPORT_CEX100
 backend_source_h += $(cex_h)
 endif # SUPPORT_CEX100
 
+# Wayland backend rules
+if SUPPORT_WAYLAND
+backend_source_h_priv += \
+	$(srcdir)/evdev/clutter-xkb-utils.h 			\
+	$(srcdir)/wayland/clutter-event-wayland.h 		\
+	$(srcdir)/wayland/clutter-device-manager-wayland.h
+
+backend_source_c += \
+	$(srcdir)/evdev/clutter-xkb-utils.c 			\
+	$(srcdir)/wayland/clutter-event-wayland.c 		\
+	$(srcdir)/wayland/clutter-input-device-wayland.c	\
+	$(srcdir)/wayland/clutter-device-manager-wayland.c
+endif # SUPPORT_WAYLAND
+
 if SUPPORT_EGL
 backend_source_h += $(cogl_source_h) $(egl_source_h)
 backend_source_c += $(cogl_source_c)
@@ -539,27 +553,6 @@ backend_source_c_priv += $(osx_source_c_priv)
 clutterosx_includedir = $(clutter_includedir)/osx
 clutterosx_include_HEADERS = $(osx_source_h)
 endif # SUPPORT_OSX
-
-# Wayland backend rules
-if SUPPORT_WAYLAND
-backend_source_h += \
-	$(srcdir)/wayland/clutter-wayland.h
-
-backend_source_h_priv += \
-	$(srcdir)/evdev/clutter-xkb-utils.h 		\
-	$(srcdir)/wayland/clutter-backend-wayland.h 	\
-	$(srcdir)/wayland/clutter-stage-wayland.h
-
-backend_source_c += \
-	$(srcdir)/evdev/clutter-xkb-utils.c 		\
-	$(srcdir)/wayland/clutter-backend-wayland.c 	\
-	$(srcdir)/wayland/clutter-stage-wayland.c 	\
-	$(srcdir)/wayland/clutter-event-wayland.c 	\
-	$(srcdir)/wayland/clutter-input-device-wayland.c
-
-clutterwayland_includedir = $(clutter_includedir)/wayland
-clutterwayland_include_HEADERS = $(wayland_source_h)
-endif # SUPPORT_WAYLAND
 
 # cally
 cally_sources_h = \

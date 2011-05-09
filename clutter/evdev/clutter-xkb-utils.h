@@ -22,11 +22,15 @@
  *  Damien Lespiau <damien.lespiau@intel.com>
  */
 
-#include <X11/extensions/XKBcommon.h>
-
 #include "clutter-stage.h"
 #include "clutter-event.h"
 #include "clutter-input-device.h"
+
+/* Make sure to include this last because it will typedef KeyCode if
+ * X.h hasn't already been included, but if X.h gets included
+ * afterwards it doesn't have a guard to stop it redeclaring the
+ * typedef. */
+#include <X11/extensions/XKBcommon.h>
 
 ClutterEvent *    _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
                                                      ClutterStage       *stage,

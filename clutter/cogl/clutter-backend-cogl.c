@@ -54,6 +54,10 @@
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
 #include "clutter-cex100.h"
 #endif
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#include "wayland/clutter-device-manager-wayland.h"
+#include "wayland/clutter-event-wayland.h"
+#endif
 
 static ClutterBackendCogl *backend_singleton = NULL;
 
@@ -110,10 +114,76 @@ clutter_backend_cogl_pre_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+static void
+handle_configure (void *data,
+                  struct wl_shell *shell,
+                  uint32_t timestamp,
+                  uint32_t edges,
+                  struct wl_surface *surface,
+                  int32_t width,
+                  int32_t height)
+{
+  ClutterStageCogl *stage_cogl = wl_surface_get_user_data (surface);
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (stage_cogl->onscreen);
+
+  if (cogl_framebuffer_get_width (fb) != width ||
+      cogl_framebuffer_get_height (fb) != height)
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_cogl->wrapper));
+
+  clutter_actor_set_size (CLUTTER_ACTOR (stage_cogl->wrapper),
+			  width, height);
+
+  /* the resize process is complete, so we can ask the stage
+   * to set up the GL viewport with the new size
+   */
+  clutter_stage_ensure_viewport (stage_cogl->wrapper);
+}
+
+static const struct wl_shell_listener shell_listener = {
+	handle_configure,
+};
+
+static void
+display_handle_global (struct wl_display *display,
+                       uint32_t id,
+                       const char *interface,
+                       uint32_t version,
+                       void *data)
+{
+  ClutterBackendCogl *backend_cogl = data;
+
+  if (strcmp (interface, "wl_compositor") == 0)
+    backend_cogl->wayland_compositor = wl_compositor_create (display, id, 1);
+  else if (strcmp (interface, "wl_input_device") == 0)
+    _clutter_wayland_add_input_group (backend_cogl, id);
+  else if (strcmp (interface, "wl_shell") == 0)
+    {
+      backend_cogl->wayland_shell = wl_shell_create (display, id, 1);
+      wl_shell_add_listener (backend_cogl->wayland_shell,
+                             &shell_listener, backend_cogl);
+    }
+  else if (strcmp (interface, "wl_shm") == 0)
+    backend_cogl->wayland_shm = wl_shm_create (display, id, 1);
+}
+
+static int
+event_mask_update_cb (uint32_t mask, void *user_data)
+{
+  ClutterBackendCogl *backend_cogl = user_data;
+  backend_cogl->wayland_event_mask = mask;
+  return 0;
+}
+#endif
+
 static gboolean
 clutter_backend_cogl_post_parse (ClutterBackend  *backend,
                                  GError         **error)
 {
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  ClutterBackendCogl *backend_cogl = CLUTTER_BACKEND_COGL (backend);
+#endif
+
 #ifdef COGL_HAS_X11_SUPPORT
   ClutterBackendClass *parent_class =
     CLUTTER_BACKEND_CLASS (_clutter_backend_cogl_parent_class);
@@ -122,6 +192,37 @@ clutter_backend_cogl_post_parse (ClutterBackend  *backend,
     return FALSE;
 
   return TRUE;
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+
+  /* TODO: expose environment variable/commandline option for this... */
+  backend_cogl->wayland_display = wl_display_connect (NULL);
+  if (!backend_cogl->wayland_display)
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Failed to open Wayland display socket");
+      return FALSE;
+    }
+
+  backend_cogl->wayland_source =
+    _clutter_event_source_wayland_new (backend_cogl->wayland_display);
+  g_source_attach (backend_cogl->wayland_source, NULL);
+
+  /* Set up listener so we'll catch all events. */
+  wl_display_add_global_listener (backend_cogl->wayland_display,
+                                  display_handle_global,
+                                  backend_cogl);
+
+  wl_display_get_fd (backend_cogl->wayland_display,
+                     event_mask_update_cb, backend_cogl);
+
+  /* Wait until we have been notified about the compositor object */
+  while (!backend_cogl->wayland_compositor)
+    wl_display_iterate (backend_cogl->wayland_display,
+                        backend_cogl->wayland_event_mask);
+
 #endif
 
   g_atexit (clutter_backend_at_exit);
@@ -137,7 +238,12 @@ clutter_backend_cogl_get_device_manager (ClutterBackend *backend)
 
   if (G_UNLIKELY (backend_cogl->device_manager == NULL))
     {
-#ifdef HAVE_EVDEV
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+      backend_cogl->device_manager =
+        g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_WAYLAND,
+		      "backend", backend_cogl,
+		      NULL);
+#elif defined (HAVE_EVDEV)
       backend_cogl->device_manager =
 	g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_EVDEV,
 		      "backend", backend_cogl,
@@ -159,6 +265,9 @@ clutter_backend_cogl_init_events (ClutterBackend *backend)
 #ifdef HAVE_EVDEV
   _clutter_events_evdev_init (CLUTTER_BACKEND (backend));
 #endif
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  _clutter_events_wayland_init (backend);
+#endif
 #ifdef COGL_HAS_X11_SUPPORT
   /* Chain up to the X11 backend */
   CLUTTER_BACKEND_CLASS (_clutter_backend_cogl_parent_class)->
@@ -179,7 +288,7 @@ static void
 clutter_backend_cogl_dispose (GObject *gobject)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (gobject);
-#ifdef HAVE_TSLIB
+#if defined (HAVE_TSLIB) || defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
   ClutterBackendCogl *backend_cogl = CLUTTER_BACKEND_COGL (gobject);
 #endif
 
@@ -203,6 +312,9 @@ clutter_backend_cogl_dispose (GObject *gobject)
       g_timer_destroy (backend_cogl->event_timer);
       backend_cogl->event_timer = NULL;
     }
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  _clutter_events_wayland_uninit (backend_cogl);
 #endif
 }
 
@@ -291,8 +403,10 @@ static gboolean
 clutter_backend_cogl_create_context (ClutterBackend  *backend,
                                      GError         **error)
 {
-#ifdef COGL_HAS_XLIB_SUPPORT
+#if defined (COGL_HAS_XLIB_SUPPORT)
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+#elif defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+  ClutterBackendCogl *backend_cogl = CLUTTER_BACKEND_COGL (backend);
 #endif
   CoglSwapChain *swap_chain = NULL;
   CoglOnscreenTemplate *onscreen_template = NULL;
@@ -301,9 +415,14 @@ clutter_backend_cogl_create_context (ClutterBackend  *backend,
     return TRUE;
 
   backend->cogl_renderer = cogl_renderer_new ();
-#ifdef COGL_HAS_XLIB_SUPPORT
+#if defined (COGL_HAS_XLIB_SUPPORT)
   cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
                                           backend_x11->xdpy);
+#elif defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+  cogl_renderer_wayland_set_foreign_display (backend->cogl_renderer,
+                                             backend_cogl->wayland_display);
+  cogl_renderer_wayland_set_foreign_compositor (backend->cogl_renderer,
+                                                backend_cogl->wayland_compositor);
 #endif
   if (!cogl_renderer_connect (backend->cogl_renderer, error))
     goto error;

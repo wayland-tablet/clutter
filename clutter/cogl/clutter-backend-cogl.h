@@ -75,6 +75,15 @@ struct _ClutterBackendCogl
 
 #endif /* COGL_HAS_X11_SUPPORT */
 
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  struct wl_display *wayland_display;
+  struct wl_compositor *wayland_compositor;
+  struct wl_shell *wayland_shell;
+  struct wl_shm *wayland_shm;
+  uint32_t wayland_event_mask;
+  GSource *wayland_source;
+#endif
+
   CoglContext *cogl_context;
 
   gboolean can_blit_sub_buffer;
