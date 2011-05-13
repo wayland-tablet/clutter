@@ -57,8 +57,6 @@ UNIT_TESTS = \
 	test-path-constraint.c \
 	test-snap-constraint.c
 
-NON_X11_TESTS = $(UNIT_TESTS)
-
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c test-devices.c
 endif
@@ -93,9 +91,13 @@ stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 
 ../../build/win32/test-interactive.bat: Makefile test-interactive$(EXEEXT)
 	echo "  GEN    test-interactive.bat" ; \
-	for i in $(NON_X11_TESTS); \
+	for i in $(UNIT_TESTS); \
 	do \
-		test_bin=$${i%*.c} ; \
+		case $$i in \
+		test-pixmap.c|test-devices.c) ;; \
+		*.c)	test_bin=$${i%*.c} \
+			;; \
+		esac; \
 		( echo "test-interactive $$test_bin" ) >> $(top_srcdir)/build/win32/test-interactive.bat ; \
 	done \
 	&& echo timestamp > $(@F)
