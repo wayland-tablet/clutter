@@ -5252,10 +5252,11 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
   stage = _clutter_actor_get_stage_internal (self);
 
   if (stage != NULL)
-    _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
-                                       self->priv->queue_redraw_entry,
-                                       self,
-                                       pv);
+    self->priv->queue_redraw_entry =
+      _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
+                                         self->priv->queue_redraw_entry,
+                                         self,
+                                         pv);
 
   if (should_free_pv)
     clutter_paint_volume_free (pv);
