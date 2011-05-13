@@ -58,6 +58,9 @@
 #include "wayland/clutter-device-manager-wayland.h"
 #include "wayland/clutter-event-wayland.h"
 #endif
+#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#include <wayland-server.h>
+#endif
 
 static ClutterBackendCogl *backend_singleton = NULL;
 
@@ -67,6 +70,10 @@ static gchar *clutter_vblank = NULL;
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
 static gdl_plane_id_t gdl_plane = GDL_PLANE_ID_UPP_C;
 static guint gdl_n_buffers = CLUTTER_CEX100_TRIPLE_BUFFERING;
+#endif
+
+#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+static struct wl_display *wayland_compositor_display;
 #endif
 
 #ifdef COGL_HAS_X11_SUPPORT
@@ -452,6 +459,11 @@ clutter_backend_cogl_create_context (ClutterBackend  *backend,
   backend->cogl_display = cogl_display_new (backend->cogl_renderer,
                                             onscreen_template);
 
+#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+  cogl_wayland_display_set_compositor_display (backend->cogl_display,
+                                               wayland_compositor_display);
+#endif
+
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
   cogl_gdl_display_set_plane (backend->cogl_display, gdl_plane);
 #endif
@@ -644,5 +656,30 @@ clutter_cex100_set_buffering_mode (ClutterCex100BufferingMode mode)
                     mode == CLUTTER_CEX100_TRIPLE_BUFFERING);
 
   gdl_n_buffers = mode;
+}
+#endif
+
+#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+/**
+ * clutter_wayland_set_compositor_display:
+ * @display: A compositor side struct wl_display pointer
+ *
+ * This informs Clutter of your compositor side Wayland display
+ * object. This must be called before calling clutter_init().
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+clutter_wayland_set_compositor_display (struct wl_display *display)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  wayland_compositor_display = display;
 }
 #endif

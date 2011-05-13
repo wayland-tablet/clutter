@@ -158,7 +158,7 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
     wl_surface = cogl_wayland_onscreen_get_surface (stage_cogl->onscreen);
-    wl_input_device_set_user_data (wl_surface, stage_cogl);
+    wl_surface_set_user_data (wl_surface, stage_cogl);
 #endif
 
   if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))

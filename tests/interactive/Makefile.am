@@ -65,6 +65,10 @@ if X11_TESTS
 UNIT_TESTS += test-pixmap.c test-devices.c
 endif
 
+if SUPPORT_WAYLAND_COMPOSITOR
+UNIT_TESTS += test-wayland-surface.c
+endif
+
 if OS_WIN32
 SHEXT =
 else

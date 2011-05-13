@@ -395,6 +395,29 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
                          [])
       ])
 
+dnl Note this is separate from the flavour since it doesn't correspond to a backend
+dnl and conceptually you could support the wayland compositor features with multiple
+dnl backends.
+AC_ARG_ENABLE([wayland-compositor],
+              [AS_HELP_STRING([--enable-wayland-compositor], [Enable Wayland compositor features])],
+              [],
+              [AS_IF([test "x$SUPPORT_EGL" = "x1"],
+                     [enable_wayland_compositor=yes],
+                     [enable_wayland_compositor=no])
+              ])
+
+AS_IF([test "x$enable_wayland_compositor" = "xyes"],
+      [
+        AS_IF([test "x$SUPPORT_EGL" != "x1"],
+              [AC_MSG_ERROR([Wayland compositor features currently only available for EGL flavours])])
+
+        PKG_CHECK_EXISTS([wayland-server],
+			 [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-server"], [])
+        SUPPORT_WAYLAND_COMPOSITOR=1
+        AC_DEFINE([HAVE_CLUTTER_WAYLAND_COMPOSITOR], [1], [Have wayland compositor support])
+      ])
+AM_CONDITIONAL(SUPPORT_WAYLAND_COMPOSITOR, [test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"])
+
 AS_IF([test "x$SUPPORT_GLX" = "x1"],
       [
         AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
@@ -1038,6 +1061,8 @@ echo "        Enable XI2: ${have_xinput2}"
 echo "        Enable XKB: ${have_xkb}"
 echo "        Enable X11 tests: ${x11_tests}"
 fi
+
+echo "        Wayland compositor features: ${SUPPORT_WAYLAND_COMPOSITOR}"
 
 echo ""
 
