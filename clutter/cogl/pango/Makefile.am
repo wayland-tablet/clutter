@@ -51,3 +51,4 @@ else
 coglpangoheadersdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
 coglpangoheaders_HEADERS = $(source_h)
 endif
+
