@@ -8,12 +8,7 @@ EXTRA_DIST = \
 	clutter.vcproj		\
 	clutter.vcprojin	\
 	clutter.vsprops		\
-	cogl-pango.vcproj	\
-	cogl-pango.vcprojin	\
-	cogl.vcproj		\
-	cogl.vcprojin	\
 	install.vcproj	\
-	Makefile.am		\
 	test-cogl-perf.vcproj		\
 	test-conformance.vcproj		\
 	test-conformance.vcprojin	\

@@ -115,14 +115,6 @@
       <Project>{ea036190-0950-4640-84f9-d459a33b33a8}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="cogl-pango.vcxproj">
-      <Project>{fe5abd0f-91e8-4aa5-9c1c-408427d5f768}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="cogl.vcxproj">
-      <Project>{f3a80987-5411-43db-a23b-06f2076e1206}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="test-cogl-perf.vcxproj">
       <Project>{0da94d83-b64e-40ac-8074-96c2416bbbe8}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

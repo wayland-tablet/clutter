@@ -6,7 +6,7 @@ first need to use some Unix-like environment or manual work to expand
 the files needed, like config.h.win32.in into config.h.win32 and the
 .vcprojin files here into corresponding actual .vcproj files.
 
-You will need the parts from GNOME: JSON-GLib, GDK-Pixbuf,
+You will need the parts from GNOME: Cogl, JSON-GLib, GDK-Pixbuf,
 Pango**, atk (2.x)* and GLib. External dependencies are at least zlib, libpng,
 gettext-runtime** and Cairo**, and glext.h from
 http://www.opengl.org/registry/api/glext.h (which need to be in the GL folder
@@ -24,8 +24,8 @@ packages that are not downloaded as binaries from ftp://ftp.gnome.org have
 makefiles and/or VS project files that can be used to compile with VS directly,
 except the optional PCRE, which is built on VS using CMake; GLib & ATK-2.x have
 VS9 project files in the latest stable versions, GDK-Pixbuf have VS9 project files
-in the latest unstable version, and JSON-GLib and Pango should have VS9 project files
-in the next unstable release):
+in the latest unstable version, and JSON-GLib, Pango and Cogl should have VS9
+project files in the next unstable release):
 -Unzip the binary packages for gettext-runtime, freetype, expat and fontconfig
  downloaded from ftp://ftp.gnome.org**
 -zlib
@@ -41,6 +41,7 @@ in the next unstable release):
 -ATK-2.x*
 -GDK-Pixbuf
 -JSON-GLib
+-Cogl
  (Note that Pango, ATK-2.x, GDK-Pixbuf and JSON-GLib are not dependent on each
  other, so building them in any order will do)
 

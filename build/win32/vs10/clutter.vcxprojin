@@ -74,7 +74,7 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\cogl\pango;..\..\..\clutter\win32;..\..\..\clutter\cally;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\cally;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;CLUTTER_ENABLE_DEBUG;$(LibBuildDefines);$(ClutterBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -88,7 +88,7 @@
       <Command>$(GenerateClutterDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;gdk_pixbuf-2.0.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
@@ -103,7 +103,7 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\cogl\pango;..\..\..\clutter\win32;..\..\..\clutter\cally;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\cally;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;CLUTTER_ENABLE_DEBUG;$(LibBuildDefines);$(ClutterBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -117,7 +117,7 @@
       <Command>$(GenerateClutterDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;gdk_pixbuf-2.0.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
@@ -133,7 +133,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\cogl\pango;..\..\..\clutter\win32;..\..\..\clutter\cally;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\cally;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(LibBuildDefines);$(ClutterBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -146,7 +146,7 @@
       <Command>$(GenerateClutterDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;gdk_pixbuf-2.0.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
@@ -159,7 +159,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\cogl\pango;..\..\..\clutter\win32;..\..\..\clutter\cally;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\cally;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(LibBuildDefines);$(ClutterBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -171,7 +171,7 @@
       <Command>$(GenerateClutterDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;gdk_pixbuf-2.0.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
@@ -187,16 +187,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\..\clutter\win32\resources.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="cogl-pango.vcxproj">
-      <Project>{fe5abd0f-91e8-4aa5-9c1c-408427d5f768}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="cogl.vcxproj">
-      <Project>{f3a80987-5411-43db-a23b-06f2076e1206}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

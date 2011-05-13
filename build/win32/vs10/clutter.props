@@ -6,8 +6,6 @@
 	<CopyDir>$(GlibEtcInstallRoot)</CopyDir>
     <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
     <ClutterBuildDefines>CLUTTER_DISABLE_DEPRECATED;COGL_DISABLE_DEPRECATED;G_LOG_DOMAIN="Clutter";CLUTTER_PREFIX="../";CLUTTER_LIBDIR="../lib";CLUTTER_DATADIR="../share";CLUTTER_LOCALEDIR="../share/locale"</ClutterBuildDefines>
-    <CoglBuildDefines>G_LOG_DOMAIN="Cogl-win32";_WIN32_WINNT=0x0500</CoglBuildDefines>
-    <CoglPangoBuildDefines>G_LOG_DOMAIN="CoglPango";_WIN32_WINNT=0x0500</CoglPangoBuildDefines>
     <GTKModPfx>PREFIXDIR="/some/dummy/dir"</GTKModPfx>
     <TestDataDef>TESTS_DATADIR="../tests/data"</TestDataDef>
     <PreBuildCmd>
@@ -32,13 +30,6 @@ copy ..\..\..\clutter\clutter-version.h.win32 ..\..\..\clutter\clutter-version.h
 :DONE_CLUTTER_VERSION_H
 
 
-if exist ..\..\..\clutter\cogl\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H
-
-copy ..\..\..\clutter\cogl\cogl\cogl-defines.h.win32 ..\..\..\clutter\cogl\cogl\cogl-defines.h
-
-:DONE_COGL_DEFINES_H
-
-
 if exist ..\..\..\clutter\clutter-enum-types.h goto DONE_CLUTTER_ENUM_H
 
 cd ..\..\..\clutter
@@ -59,28 +50,6 @@ perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.c.in .
 cd ..\build\win32\vs10
 
 :DONE_CLUTTER_ENUM_C
-
-
-if exist ..\..\..\clutter\cogl\cogl\cogl-enum-types.h goto DONE_COGL_ENUMS_H
-
-cd ..\..\..\clutter\cogl\cogl
-
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.h.in ./cogl-object.h ./cogl-bitmap.h ./cogl-buffer.h ./cogl-color.h ./cogl-fixed.h ./cogl-material-compat.h ./cogl-pipeline.h ./cogl-vector.h ./cogl-matrix.h ./cogl-offscreen.h ./cogl-primitives.h ./cogl-path.h ./cogl-pixel-array.h ./cogl-shader.h ./cogl-texture.h ./cogl-texture-3d.h ./cogl-types.h ./cogl-vertex-buffer.h ./cogl-index-array.h ./cogl-vertex-array.h ./cogl-indices.h ./cogl-attribute.h ./cogl-primitive.h ./cogl-clip-state.h ./cogl-framebuffer.h ./cogl-clutter.h ./cogl.h &gt; cogl-enum-types.h
-
-cd ..\..\..\build\win32\vs10
-
-:DONE_COGL_ENUMS_H
-
-
-if exist ..\..\..\clutter\cogl\cogl\cogl-enum-types.c goto DONE_COGL_ENUMS_C
-
-cd ..\..\..\clutter\cogl\cogl
-
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.c.in ./cogl-object.h ./cogl-bitmap.h ./cogl-buffer.h ./cogl-color.h ./cogl-fixed.h ./cogl-material-compat.h ./cogl-pipeline.h ./cogl-vector.h ./cogl-matrix.h ./cogl-offscreen.h ./cogl-primitives.h ./cogl-path.h ./cogl-pixel-array.h ./cogl-shader.h ./cogl-texture.h ./cogl-texture-3d.h ./cogl-types.h ./cogl-vertex-buffer.h ./cogl-index-array.h ./cogl-vertex-array.h ./cogl-indices.h ./cogl-attribute.h ./cogl-primitive.h ./cogl-clip-state.h ./cogl-framebuffer.h ./cogl-clutter.h ./cogl.h &gt; cogl-enum-types.c
-
-cd ..\..\..\build\win32\vs10
-
-:DONE_COGL_ENUMS_C
 
 
 if exist ..\..\..\clutter\clutter-marshal.h goto DONE_CLUTTER_MARSHAL_H
@@ -334,91 +303,9 @@ copy ..\..\..\clutter\cally\cally-texture.h $(CopyDir)\include\clutter-$(Clutter
 copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
 
 
-mkdir $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\pango\cogl-pango.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl2-path.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl2-clip-state.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-attribute.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-bitmap.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-buffer.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-clip-state.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-clutter.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-color.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-context.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-defines.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-deprecated.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-display.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-enum-types.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-fixed.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-framebuffer.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-index-array.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-indices.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-material-compat.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-matrix.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-object.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-offscreen.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-onscreen-template.h $(OutDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-path.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-pipeline.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-pixel-array.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-primitive.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-primitives.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-renderer.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-shader.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-swap-chain.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-texture.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-texture-3d.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-types.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-vector.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-vertex-array.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
-copy ..\..\..\clutter\cogl\cogl\cogl-vertex-buffer.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cogl
-
 </ClutterDoInstall>
     <GenerateClutterDef>
          echo EXPORTS &gt; ..\..\..\clutter\clutter.def
-
-         cl -EP ..\..\..\clutter\cogl\pango\cogl-pango.symbols &gt;&gt; ..\..\..\clutter\clutter.def
-
-         cl -EP -DCOGL_ENABLE_EXPERIMENTAL_API -D_COGL_SUPPORTS_GTYPE_INTEGRATION ..\..\..\clutter\cogl\cogl\cogl.symbols &gt;&gt; ..\..\..\clutter\clutter.def
 
          cl -EP -DHAVE_CAIRO -DHAVE_CLUTTER_WIN32 ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def
 
@@ -438,13 +325,13 @@ copy ..\..\..\clutter\cogl\cogl\cogl-vertex-buffer.h $(CopyDir)\include\clutter-
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..;..\..\..\clutter\cogl;..\..\..\clutter\cogl\cogl;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-2.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-2.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\cogl-2.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>G_DISABLE_SINGLE_INCLUDES;G_DISABLE_DEPRECATED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>msvc_recommended_pragmas.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <DisableSpecificWarnings>4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glib-2.0.lib;gobject-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cogl-pango-2.0.lib;cogl-2.0.lib;glib-2.0.lib;gobject-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(GlibEtcInstallRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -460,12 +347,6 @@ copy ..\..\..\clutter\cogl\cogl\cogl-vertex-buffer.h $(CopyDir)\include\clutter-
     </BuildMacro>
     <BuildMacro Include="ClutterBuildDefines">
       <Value>$(ClutterBuildDefines)</Value>
-    </BuildMacro>
-    <BuildMacro Include="CoglBuildDefines">
-      <Value>$(CoglBuildDefines)</Value>
-    </BuildMacro>
-    <BuildMacro Include="CoglPangoBuildDefines">
-      <Value>$(CoglPangoBuildDefines)</Value>
     </BuildMacro>
     <BuildMacro Include="GTKModPfx">
       <Value>$(GTKModPfx)</Value>

@@ -15,16 +15,7 @@ EXTRA_DIST = \
 	clutter.vcxproj.filters		\
 	clutter.vcxproj.filtersin	\
 	clutter.props		\
-	cogl-pango.vcxproj	\
-	cogl-pango.vcxprojin	\
-	cogl-pango.vcxproj.filters	\
-	cogl-pango.vcxproj.filtersin	\
-	cogl.vcxproj		\
-	cogl.vcxprojin	\
-	cogl.vcxproj.filters		\
-	cogl.vcxproj.filtersin	\
 	install.vcxproj	\
-	Makefile.am		\
 	test-cogl-perf.vcxproj		\
 	test-cogl-perf.vcxproj.filters		\
 	test-conformance.vcxproj		\
