@@ -4,7 +4,7 @@
     <GlibEtcInstallRoot>..\..\..\..\..\vs10\$(Platform)</GlibEtcInstallRoot>
     <ClutterApiVersion>1.0</ClutterApiVersion>
 	<CopyDir>$(GlibEtcInstallRoot)</CopyDir>
-    <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
+    <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT</LibBuildDefines>
     <ClutterBuildDefines>CLUTTER_DISABLE_DEPRECATED;COGL_DISABLE_DEPRECATED;G_LOG_DOMAIN="Clutter";CLUTTER_PREFIX="../";CLUTTER_LIBDIR="../lib";CLUTTER_DATADIR="../share";CLUTTER_LOCALEDIR="../share/locale"</ClutterBuildDefines>
     <GTKModPfx>PREFIXDIR="/some/dummy/dir"</GTKModPfx>
     <TestDataDef>TESTS_DATADIR="../tests/data"</TestDataDef>
