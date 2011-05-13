@@ -78,12 +78,26 @@ struct _ClutterStageX11Class
   GObjectClass parent_class;
 };
 
+#define CLUTTER_STAGE_X11_EVENT_MASK \
+  StructureNotifyMask | \
+  FocusChangeMask | \
+  ExposureMask | \
+  PropertyChangeMask | \
+  EnterWindowMask | \
+  LeaveWindowMask | \
+  KeyPressMask | \
+  KeyReleaseMask | \
+  ButtonPressMask | \
+  ButtonReleaseMask | \
+  PointerMotionMask;
+
 GType _clutter_stage_x11_get_type (void) G_GNUC_CONST;
 
+void  _clutter_stage_x11_update_foreign_event_mask (CoglOnscreen *onscreen,
+                                                    guint32 event_mask,
+                                                    void *user_data);
+
 /* Private to subclasses */
-gboolean        _clutter_stage_x11_create_window                (ClutterStageX11 *stage_x11);
-void            _clutter_stage_x11_destroy_window_untrapped     (ClutterStageX11 *stage_x11);
-void            _clutter_stage_x11_destroy_window               (ClutterStageX11 *stage_x11);
 void            _clutter_stage_x11_set_user_time                (ClutterStageX11 *stage_x11,
                                                                  guint32          user_time);
 gboolean        _clutter_stage_x11_get_root_coords              (ClutterStageX11 *stage_x11,

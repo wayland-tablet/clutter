@@ -110,12 +110,7 @@
 #include "clutter-version.h" 	/* For flavour define */
 
 #include <cogl/cogl.h>
-
-#ifdef CLUTTER_USING_SYSTEM_COGL
 #include <cogl/cogl-pango.h>
-#else
-#include "pango/cogl-pango.h"
-#endif
 
 #include "cally.h" /* For accessibility support */
 
@@ -309,13 +304,17 @@ clutter_get_motion_events_enabled (void)
 }
 
 ClutterActor *
-_clutter_get_actor_by_id (guint32 actor_id)
+_clutter_get_actor_by_id (ClutterStage *stage,
+                          guint32       actor_id)
 {
-  ClutterMainContext *context = _clutter_context_get_default ();
+  if (stage == NULL)
+    {
+      ClutterMainContext *context = _clutter_context_get_default ();
 
-  g_assert (context->id_pool != NULL);
+      return _clutter_id_pool_lookup (context->id_pool, actor_id);
+    }
 
-  return _clutter_id_pool_lookup (context->id_pool, actor_id);
+  return _clutter_stage_get_actor_by_pick_id (stage, actor_id);
 }
 
 void
@@ -2301,11 +2300,13 @@ _clutter_process_event (ClutterEvent *event)
  *   The returned actor does not have its reference count increased.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8: The id is not used any longer.
  */
 ClutterActor *
 clutter_get_actor_by_gid (guint32 id_)
 {
-  return _clutter_get_actor_by_id (id_);
+  return _clutter_get_actor_by_id (NULL, id_);
 }
 
 void

@@ -387,6 +387,23 @@ clutter_stage_x11_unrealize (ClutterStageWindow *stage_window)
     }
 }
 
+void
+_clutter_stage_x11_update_foreign_event_mask (CoglOnscreen *onscreen,
+                                              guint32 event_mask,
+                                              void *user_data)
+{
+  ClutterStageX11 *stage_x11 = user_data;
+  ClutterBackendX11 *backend_x11 = stage_x11->backend;
+  XSetWindowAttributes attrs;
+
+  attrs.event_mask = event_mask | CLUTTER_STAGE_X11_EVENT_MASK;
+
+  XChangeWindowAttributes (backend_x11->xdpy,
+                           stage_x11->xwin,
+                           CWEventMask,
+                           &attrs);
+}
+
 static gboolean
 clutter_stage_x11_realize (ClutterStageWindow *stage_window)
 {
@@ -412,17 +429,7 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
    * because key events are broken with that extension, and will
    * be fixed by XI2
    */
-  event_flags = StructureNotifyMask
-              | FocusChangeMask
-              | ExposureMask
-              | PropertyChangeMask
-              | EnterWindowMask
-              | LeaveWindowMask
-              | KeyPressMask
-              | KeyReleaseMask
-              | ButtonPressMask
-              | ButtonReleaseMask
-              | PointerMotionMask;
+  event_flags = CLUTTER_STAGE_X11_EVENT_MASK;
 
   /* we unconditionally select input events even with event retrieval
    * disabled because we need to guarantee that the Clutter internal
@@ -1354,111 +1361,6 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
    * calls _clutter_stage_maybe_setup_viewport().
    */
   clutter_actor_queue_relayout (actor);
-
-  return TRUE;
-}
-
-void
-_clutter_stage_x11_destroy_window_untrapped (ClutterStageX11 *stage_x11)
-{
-  Window xwin = stage_x11->xwin;
-
-  if (clutter_stages_by_xid != NULL)
-    {
-      CLUTTER_NOTE (BACKEND, "Removing X11 stage 0x%x [%p]",
-                    (unsigned int) xwin,
-                    stage_x11);
-
-      g_hash_table_remove (clutter_stages_by_xid, GINT_TO_POINTER (xwin));
-    }
-
-  if (!stage_x11->is_foreign_xwin && xwin != None)
-    {
-      ClutterBackendX11 *backend_x11 = stage_x11->backend;
-
-      g_assert (clutter_stages_by_xid != NULL);
-
-      XDestroyWindow (backend_x11->xdpy, xwin);
-      stage_x11->xwin = None;
-    }
-  else
-    stage_x11->xwin = None;
-}
-
-void
-_clutter_stage_x11_destroy_window (ClutterStageX11 *stage_x11)
-{
-  if (stage_x11->xwin == None)
-    return;
-
-  clutter_x11_trap_x_errors ();
-
-  _clutter_stage_x11_destroy_window_untrapped (stage_x11);
-
-  clutter_x11_untrap_x_errors ();
-}
-
-gboolean
-_clutter_stage_x11_create_window (ClutterStageX11 *stage_x11)
-{
-  ClutterBackendX11 *backend_x11 = stage_x11->backend;
-  XSetWindowAttributes xattr;
-  XVisualInfo *xvisinfo;
-  unsigned long mask;
-  gfloat width, height;
-
-  if (stage_x11->xwin != None)
-    return TRUE;
-
-  CLUTTER_NOTE (MISC, "Creating stage X window");
-
-  xvisinfo = _clutter_backend_x11_get_visual_info (backend_x11);
-  if (xvisinfo == NULL)
-    {
-      g_critical ("Unable to find suitable GL visual.");
-      return FALSE;
-    }
-
-  /* window attributes */
-  xattr.background_pixel = WhitePixel (backend_x11->xdpy,
-                                       backend_x11->xscreen_num);
-  xattr.border_pixel = 0;
-  xattr.colormap = XCreateColormap (backend_x11->xdpy,
-                                    backend_x11->xwin_root,
-                                    xvisinfo->visual,
-                                    AllocNone);
-  mask = CWBorderPixel | CWColormap;
-
-  /* Call get_size - this will either get the geometry size (which
-   * before we create the window is set to 640x480), or if a size
-   * is set, it will get that. This lets you set a size on the
-   * stage before it's realized.
-   *
-   * we also round to the nearest integer because stage sizes
-   * should always be in pixels
-   */
-  clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper), &width, &height);
-  stage_x11->xwin_width = floorf (width + 0.5);
-  stage_x11->xwin_height = floorf (height + 0.5);
-
-  stage_x11->xwin = XCreateWindow (backend_x11->xdpy,
-                                   backend_x11->xwin_root,
-                                   0, 0,
-                                   stage_x11->xwin_width,
-                                   stage_x11->xwin_height,
-                                   0,
-                                   xvisinfo->depth,
-                                   InputOutput,
-                                   xvisinfo->visual,
-                                   mask, &xattr);
-
-  CLUTTER_NOTE (BACKEND, "Stage [%p], window: 0x%x, size: %dx%d",
-                stage_x11,
-                (unsigned int) stage_x11->xwin,
-                stage_x11->xwin_width,
-                stage_x11->xwin_height);
-
-  XFree (xvisinfo);
 
   return TRUE;
 }

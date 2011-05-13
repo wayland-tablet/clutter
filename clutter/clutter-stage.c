@@ -53,16 +53,20 @@
 #include "config.h"
 #endif
 
+#include <cairo/cairo.h>
+
 #include "clutter-stage.h"
 
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
+#include "clutter-cairo-texture.h"
 #include "clutter-color.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"
 #include "clutter-event-private.h"
+#include "clutter-id-pool.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-master-clock.h"
@@ -151,6 +155,8 @@ struct _ClutterStagePrivate
 
   GTimer *fps_timer;
   gint32 timer_n_frames;
+
+  ClutterIDPool *pick_id_pool;
 
 #ifdef CLUTTER_ENABLE_DEBUG
   gulong redraw_count;
@@ -1166,15 +1172,6 @@ _clutter_stage_has_full_redraw_queued (ClutterStage *stage)
     return FALSE;
 }
 
-#ifdef USE_GDKPIXBUF
-static void
-pixbuf_free (guchar   *pixels,
-             gpointer  data)
-{
-  g_free (pixels);
-}
-#endif
-
 static void
 read_pixels_to_file (char *filename_stem,
                      int   x,
@@ -1182,55 +1179,30 @@ read_pixels_to_file (char *filename_stem,
                      int   width,
                      int   height)
 {
-#ifdef USE_GDKPIXBUF
   GLubyte *data;
-  GdkPixbuf *pixbuf;
+  cairo_surface_t *surface;
   static int read_count = 0;
+  char *filename = g_strdup_printf ("%s-%05d.png",
+                                    filename_stem,
+                                    read_count);
 
   data = g_malloc (4 * width * height);
   cogl_read_pixels (x, y, width, height,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGB_888,
+                    CLUTTER_CAIRO_FORMAT_ARGB32,
                     data);
-  pixbuf = gdk_pixbuf_new_from_data (data,
-                                     GDK_COLORSPACE_RGB,
-                                     FALSE, /* has alpha */
-                                     8, /* bits per sample */
-                                     width, /* width */
-                                     height, /* height */
-                                     width * 3, /* rowstride */
-                                     pixbuf_free, /* callback to free data */
-                                     NULL); /* callback data */
-  if (pixbuf)
-    {
-      char *filename = g_strdup_printf ("%s-%05d.png",
-                                        filename_stem,
-                                        read_count);
-      GError *error = NULL;
 
-      if (!gdk_pixbuf_save (pixbuf, filename, "png", &error, NULL))
-        {
-          g_warning ("Failed to save pick buffer to file %s: %s",
-                     filename, error->message);
-          g_error_free (error);
-        }
+  surface = cairo_image_surface_create_for_data (data, CAIRO_FORMAT_RGB24,
+                                                 width, height,
+                                                 width * 4);
 
-      g_free (filename);
-      g_object_unref (pixbuf);
-      read_count++;
-    }
-#else /* !USE_GDKPIXBUF */
-  {
-    static gboolean seen = FALSE;
+  cairo_surface_write_to_png (surface, filename);
+  cairo_surface_destroy (surface);
 
-    if (!seen)
-      {
-        g_warning ("dumping buffers to an image isn't supported on platforms "
-                   "without gdk pixbuf support\n");
-        seen = TRUE;
-      }
-  }
-#endif /* USE_GDKPIXBUF */
+  g_free (data);
+  g_free (filename);
+
+  read_count++;
 }
 
 ClutterActor *
@@ -1315,7 +1287,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
         }
 
       id_ = _clutter_pixel_to_id (pixel);
-      actor = _clutter_get_actor_by_id (id_);
+      actor = _clutter_get_actor_by_id (stage, id_);
       goto result;
     }
 
@@ -1407,7 +1379,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
     }
 
   id_ = _clutter_pixel_to_id (pixel);
-  actor = _clutter_get_actor_by_id (id_);
+  actor = _clutter_get_actor_by_id (stage, id_);
 
 result:
 
@@ -1628,6 +1600,8 @@ clutter_stage_finalize (GObject *object)
   g_array_free (priv->paint_volume_stack, TRUE);
 
   g_hash_table_destroy (priv->devices);
+
+  _clutter_id_pool_free (priv->pick_id_pool);
 
   if (priv->fps_timer != NULL)
     g_timer_destroy (priv->fps_timer);
@@ -2065,6 +2039,8 @@ clutter_stage_init (ClutterStage *self)
     g_array_new (FALSE, FALSE, sizeof (ClutterPaintVolume));
 
   priv->devices = g_hash_table_new (NULL, NULL);
+
+  priv->pick_id_pool = _clutter_id_pool_new (256);
 }
 
 /**
@@ -3857,4 +3833,37 @@ CoglFramebuffer *
 _clutter_stage_get_active_framebuffer (ClutterStage *stage)
 {
   return stage->priv->active_framebuffer;
+}
+
+gint32
+_clutter_stage_acquire_pick_id (ClutterStage *stage,
+                                ClutterActor *actor)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  g_assert (priv->pick_id_pool != NULL);
+
+  return _clutter_id_pool_add (priv->pick_id_pool, actor);
+}
+
+void
+_clutter_stage_release_pick_id (ClutterStage *stage,
+                                gint32        pick_id)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  g_assert (priv->pick_id_pool != NULL);
+
+  _clutter_id_pool_remove (priv->pick_id_pool, pick_id);
+}
+
+ClutterActor *
+_clutter_stage_get_actor_by_pick_id (ClutterStage *stage,
+                                     gint32        pick_id)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  g_assert (priv->pick_id_pool != NULL);
+
+  return _clutter_id_pool_lookup (priv->pick_id_pool, pick_id);
 }
