@@ -114,7 +114,6 @@ cogl_driver_sources =
 
 if COGL_DRIVER_GL
 cogl_driver_sources += \
-	$(srcdir)/driver/gl/cogl-context-driver-gl.h	\
 	$(srcdir)/driver/gl/cogl-feature-functions-gl.h	\
 	$(srcdir)/driver/gl/cogl-gl.c			\
 	$(srcdir)/driver/gl/cogl-texture-driver-gl.c	\
@@ -392,50 +391,6 @@ endif
 
 libcogl_la_SOURCES = $(cogl_sources_c)
 nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)
-
-dist-hook: ../../../build/win32/vs9/cogl.vcproj ../../../build/win32/vs10/cogl.vcxproj ../../../build/win32/vs10/cogl.vcxproj.filters
-
-# I know those filters below don't look nice, but this is to ensure the right files are in the Project files only *once*
-../../../build/win32/vs9/cogl.vcproj: $(top_srcdir)/build/win32/vs9/cogl.vcprojin
-	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
-		case $$F in \
-		*-osx.c|*-egl.c|*-fruity.c|*-glx.c|*-xlib.c|*-x11.c|*-win32.c|*-gl.c|*-gles.c|*-stub.c|*.h) ;; \
-		*.c)	echo '   <File RelativePath="..\..\..\clutter\cogl\cogl\'$$F'" />' \
-			;; \
-		esac; \
-	done >cogl.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/cogl.vcprojin >$@
-	rm cogl.sourcefiles
-	
-../../../build/win32/vs10/cogl.vcxproj: $(top_srcdir)/build/win32/vs10/cogl.vcxprojin
-	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
-		case $$F in \
-		*-osx.c|*-egl.c|*-fruity.c|*-glx.c|*-xlib.c|*-x11.c|*-win32.c|*-gl.c|*-gles.c|*-stub.c|*.h) ;; \
-		*.c)	echo '    <ClCompile Include="..\..\..\clutter\cogl\cogl\'$$F'" />' \
-			;; \
-		esac; \
-	done >cogl.vs10.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl.vcxprojin >$@
-	rm cogl.vs10.sourcefiles
-	
-../../../build/win32/vs10/cogl.vcxproj.filters: $(top_srcdir)/build/win32/vs10/cogl.vcxproj.filtersin
-	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
-		case $$F in \
-		*-osx.c|*-egl.c|*-fruity.c|*-glx.c|*-xlib.c|*-x11.c|*-win32.c|*-gl.c|*-gles.c|*-stub.c|*.h) ;; \
-		*.c)	echo '    <ClCompile Include="..\..\..\clutter\cogl\cogl\'$$F'"><Filter>Sources</Filter></ClCompile>' \
-			;; \
-		esac; \
-	done >cogl.vs10.sourcefiles.filters
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl.vcxproj.filtersin >$@
-	rm cogl.vs10.sourcefiles.filters
-
-EXTRA_DIST +=	\
-	$(srcdir)/cogl-defines.h.win32		\
-	cogl.symbols	\
-	$(NULL)
-
-# Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += ../../../build/win32/vs9/cogl.vcproj ../../../build/win32/vs10/cogl.vcxproj ../../../build/win32/vs10/cogl.vcxproj.filters
 
 # Cogl installed headers
 cogl_headers = \
