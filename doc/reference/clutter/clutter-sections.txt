@@ -291,6 +291,7 @@ clutter_actor_hide_all
 clutter_actor_realize
 clutter_actor_unrealize
 clutter_actor_paint
+clutter_actor_continue_paint
 clutter_actor_queue_redraw
 clutter_actor_queue_relayout
 clutter_actor_destroy
@@ -298,6 +299,7 @@ clutter_actor_event
 clutter_actor_should_pick_paint
 clutter_actor_map
 clutter_actor_unmap
+clutter_actor_has_overlaps
 
 <SUBSECTION>
 ClutterAllocationFlags
@@ -340,6 +342,9 @@ clutter_actor_get_z_rotation_gravity
 clutter_actor_is_rotated
 clutter_actor_set_opacity
 clutter_actor_get_opacity
+ClutterOffscreenRedirect
+clutter_actor_set_offscreen_redirect
+clutter_actor_get_offscreen_redirect
 clutter_actor_set_name
 clutter_actor_get_name
 clutter_actor_get_gid
@@ -2467,6 +2472,8 @@ ClutterClickActionPrivate
 <FILE>clutter-effect</FILE>
 ClutterEffect
 ClutterEffectClass
+ClutterEffectRunFlags
+clutter_effect_queue_rerun
 <SUBSECTION Standard>
 CLUTTER_TYPE_EFFECT
 CLUTTER_EFFECT

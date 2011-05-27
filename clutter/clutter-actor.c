@@ -299,6 +299,7 @@
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
+#include "clutter-flatten-effect.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
@@ -442,6 +443,12 @@ struct _ClutterActorPrivate
   guint8 opacity;
   gint   opacity_override;
 
+  ClutterOffscreenRedirect offscreen_redirect;
+
+  /* This is an internal effect used to implement the
+     offscreen-redirect property */
+  ClutterEffect  *flatten_effect;
+
   ClutterActor   *parent_actor;
   GList          *children;
   gint            n_children;
@@ -472,9 +479,21 @@ struct _ClutterActorPrivate
   ClutterMetaGroup *effects;
 
   /* used when painting, to update the paint volume */
-  ClutterActorMeta *current_effect;
+  ClutterEffect *current_effect;
+
+  /* This is used to store an effect which needs to be redrawn. A
+     redraw can be queued to start from a particular effect. This is
+     used by parametrised effects that can cache an image of the
+     actor. If a parameter of the effect changes then it only needs to
+     redraw the cached image, not the actual actor */
+  ClutterEffect *effect_to_redraw;
 
   ClutterPaintVolume paint_volume;
+
+  /* This is used when painting effects to implement the
+     clutter_actor_continue_paint() function. It points to the node in
+     the list of effects that is next in the chain */
+  const GList *next_effect_to_paint;
 
   /* NB: This volume isn't relative to this actor, it is in eye
    * coordinates so that it can remain valid after the actor changes.
@@ -532,6 +551,8 @@ enum
   PROP_CLIP_TO_ALLOCATION,
 
   PROP_OPACITY,
+
+  PROP_OFFSCREEN_REDIRECT,
 
   PROP_VISIBLE,
   PROP_MAPPED,
@@ -1905,6 +1926,14 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
 
   self->priv->propagated_one_redraw = TRUE;
 
+  /* If the queue redraw is coming from a child actor then we'll
+     assume the queued effect is no longer valid. If this actor has
+     had a redraw queued then that will mean it will instead redraw
+     the whole actor. If it hasn't had a redraw queued then it will
+     stay that way */
+  if (self != origin)
+    self->priv->effect_to_redraw = NULL;
+
   /* notify parents, if they are all visible eventually we'll
    * queue redraw on the stage, which queues the redraw idle.
    */
@@ -2342,60 +2371,6 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self,
   CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
 }
 
-static gboolean
-_clutter_actor_effects_pre_paint (ClutterActor *self)
-{
-  ClutterActorPrivate *priv = self->priv;
-  const GList *effects, *l;
-  gboolean was_pre_painted = FALSE;
-
-  priv->current_effect = NULL;
-
-  effects = _clutter_meta_group_peek_metas (priv->effects);
-  for (l = effects; l != NULL; l = l->next)
-    {
-      ClutterEffect *effect = l->data;
-      ClutterActorMeta *meta = l->data;
-
-      if (!clutter_actor_meta_get_enabled (meta))
-        continue;
-
-      priv->current_effect = l->data;
-
-      was_pre_painted |= _clutter_effect_pre_paint (effect);
-    }
-
-  priv->current_effect = NULL;
-
-  return was_pre_painted;
-}
-
-static void
-_clutter_actor_effects_post_paint (ClutterActor *self)
-{
-  ClutterActorPrivate *priv = self->priv;
-  const GList *effects, *l;
-
-  priv->current_effect = NULL;
-
-  /* we walk the list backwards, to unwind the post-paint order */
-  effects = _clutter_meta_group_peek_metas (priv->effects);
-  for (l = g_list_last ((GList *) effects); l != NULL; l = l->prev)
-    {
-      ClutterEffect *effect = l->data;
-      ClutterActorMeta *meta = l->data;
-
-      if (!clutter_actor_meta_get_enabled (meta))
-        continue;
-
-      priv->current_effect = l->data;
-
-      _clutter_effect_post_paint (effect);
-    }
-
-  priv->current_effect = NULL;
-}
-
 /* Recursively applies the transforms associated with this actor and
  * its ancestors to the given matrix. Use NULL if you want this
  * to go all the way down to the stage.
@@ -2681,6 +2656,101 @@ _clutter_actor_get_pick_id (ClutterActor *self)
   return self->priv->pick_id;
 }
 
+/* This is the same as clutter_actor_add_effect except that it doesn't
+   queue a redraw and it doesn't notify on the effect property */
+static void
+_clutter_actor_add_effect_internal (ClutterActor  *self,
+                                    ClutterEffect *effect)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  if (priv->effects == NULL)
+    {
+      priv->effects = g_object_new (CLUTTER_TYPE_META_GROUP, NULL);
+      priv->effects->actor = self;
+    }
+
+  _clutter_meta_group_add_meta (priv->effects, CLUTTER_ACTOR_META (effect));
+}
+
+/* This is the same as clutter_actor_remove_effect except that it doesn't
+   queue a redraw and it doesn't notify on the effect property */
+static void
+_clutter_actor_remove_effect_internal (ClutterActor  *self,
+                                       ClutterEffect *effect)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  if (priv->effects == NULL)
+    return;
+
+  _clutter_meta_group_remove_meta (priv->effects, CLUTTER_ACTOR_META (effect));
+}
+
+static gboolean
+needs_flatten_effect (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  switch (priv->offscreen_redirect)
+    {
+    case CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY:
+      if (!clutter_actor_has_overlaps (self))
+        return FALSE;
+      /* flow through */
+    case CLUTTER_OFFSCREEN_REDIRECT_ALWAYS_FOR_OPACITY:
+      return clutter_actor_get_paint_opacity (self) < 255;
+
+    case CLUTTER_OFFSCREEN_REDIRECT_ALWAYS:
+      return TRUE;
+    }
+
+  g_assert_not_reached ();
+}
+
+static void
+add_or_remove_flatten_effect (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  /* Add or remove the flatten effect depending on the
+     offscreen-redirect property. */
+  if (needs_flatten_effect (self))
+    {
+      if (priv->flatten_effect == NULL)
+        {
+          ClutterActorMeta *actor_meta;
+          gint priority;
+
+          priv->flatten_effect = _clutter_flatten_effect_new ();
+          /* Keep a reference to the effect so that we can queue
+             redraws from it */
+          g_object_ref_sink (priv->flatten_effect);
+
+          /* Set the priority of the effect to high so that it will
+             always be applied to the actor first. It uses an internal
+             priority so that it won't be visible to applications */
+          actor_meta = CLUTTER_ACTOR_META (priv->flatten_effect);
+          priority = CLUTTER_ACTOR_META_PRIORITY_INTERNAL_HIGH;
+          _clutter_actor_meta_set_priority (actor_meta, priority);
+
+          /* This will add the effect without queueing a redraw */
+          _clutter_actor_add_effect_internal (self, priv->flatten_effect);
+        }
+    }
+  else
+    {
+      if (priv->flatten_effect != NULL)
+        {
+          /* Destroy the effect so that it will lose its fbo cache of
+             the actor */
+          _clutter_actor_remove_effect_internal (self, priv->flatten_effect);
+          g_object_unref (priv->flatten_effect);
+          priv->flatten_effect = NULL;
+        }
+    }
+}
+
 /**
  * clutter_actor_paint:
  * @self: A #ClutterActor
@@ -2780,9 +2850,13 @@ clutter_actor_paint (ClutterActor *self)
 
   if (pick_mode == CLUTTER_PICK_NONE)
     {
-      gboolean effect_painted = FALSE;
-
       CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
+
+      /* We check whether we need to add the flatten effect before
+         each paint so that we can avoid having a mechanism for
+         applications to notify when the value of the
+         has_overlaps virtual changes. */
+      add_or_remove_flatten_effect (self);
 
       /* We save the current paint volume so that the next time the
        * actor queues a redraw we can constrain the redraw to just
@@ -2822,17 +2896,20 @@ clutter_actor_paint (ClutterActor *self)
             goto done;
         }
 
-      if (priv->effects != NULL)
-        effect_painted = _clutter_actor_effects_pre_paint (self);
-      else if (actor_has_shader_data (self))
-        clutter_actor_shader_pre_paint (self, FALSE);
+      if (priv->effects == NULL)
+        {
+          if (actor_has_shader_data (self))
+            clutter_actor_shader_pre_paint (self, FALSE);
+          priv->next_effect_to_paint = NULL;
+        }
+      else
+        priv->next_effect_to_paint =
+          _clutter_meta_group_peek_metas (priv->effects);
 
-      priv->propagated_one_redraw = FALSE;
-      g_signal_emit (self, actor_signals[PAINT], 0);
+      clutter_actor_continue_paint (self);
 
-      if (effect_painted)
-        _clutter_actor_effects_post_paint (self);
-      else if (actor_has_shader_data (self))
+      if (priv->effects == NULL &&
+          actor_has_shader_data (self))
         clutter_actor_shader_post_paint (self);
 
       if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES))
@@ -2861,6 +2938,73 @@ done:
 
   /* paint sequence complete */
   CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_PAINT);
+}
+
+/**
+ * clutter_actor_continue_paint:
+ * @self: A #ClutterActor
+ *
+ * Run the next stage of the paint sequence. This function should only
+ * be called within the implementation of the ‘run’ virtual of a
+ * #ClutterEffect. It will cause the run method of the next effect to
+ * be applied, or it will paint the actual actor if the current effect
+ * is the last effect in the chain.
+ *
+ * Since: 1.8
+ */
+void
+clutter_actor_continue_paint (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  /* This should only be called from with in the ‘run’ implementation
+     of a ClutterEffect */
+  g_return_if_fail (CLUTTER_ACTOR_IN_PAINT (self));
+
+  priv = self->priv;
+
+  /* Skip any effects that are disabled */
+  while (priv->next_effect_to_paint &&
+         !clutter_actor_meta_get_enabled (priv->next_effect_to_paint->data))
+    priv->next_effect_to_paint = priv->next_effect_to_paint->next;
+
+  /* If this has come from the last effect then we'll just paint the
+     actual actor */
+  if (priv->next_effect_to_paint == NULL)
+    {
+      priv->propagated_one_redraw = FALSE;
+
+      g_signal_emit (self, actor_signals[PAINT], 0);
+    }
+  else
+    {
+      ClutterEffect *old_current_effect;
+      ClutterEffectRunFlags run_flags = 0;
+
+      /* Cache the current effect so that we can put it back before
+         returning */
+      old_current_effect = priv->current_effect;
+
+      priv->current_effect = priv->next_effect_to_paint->data;
+      priv->next_effect_to_paint = priv->next_effect_to_paint->next;
+
+      if (priv->propagated_one_redraw)
+        {
+          /* If there's an effect queued with this redraw then all
+             effects up to that one will be considered dirty. It is
+             expected the queued effect will paint the cached image
+             and not call clutter_actor_continue_paint again (although
+             it should work ok if it does) */
+          if (priv->effect_to_redraw == NULL ||
+              priv->current_effect != priv->effect_to_redraw)
+            run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
+        }
+
+      _clutter_effect_run (priv->current_effect, run_flags);
+
+      priv->current_effect = old_current_effect;
+    }
 }
 
 /* internal helper function set the rotation angle without affecting
@@ -2981,6 +3125,10 @@ clutter_actor_set_property (GObject      *object,
 
     case PROP_OPACITY:
       clutter_actor_set_opacity (actor, g_value_get_uint (value));
+      break;
+
+    case PROP_OFFSCREEN_REDIRECT:
+      clutter_actor_set_offscreen_redirect (actor, g_value_get_enum (value));
       break;
 
     case PROP_NAME:
@@ -3274,6 +3422,10 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_uint (value, priv->opacity);
       break;
 
+    case PROP_OFFSCREEN_REDIRECT:
+      g_value_set_enum (value, priv->offscreen_redirect);
+      break;
+
     case PROP_NAME:
       g_value_set_string (value, priv->name);
       break;
@@ -3510,6 +3662,12 @@ clutter_actor_dispose (GObject *object)
       priv->effects = NULL;
     }
 
+  if (priv->flatten_effect != NULL)
+    {
+      g_object_unref (priv->flatten_effect);
+      priv->flatten_effect = NULL;
+    }
+
   g_signal_emit (self, actor_signals[DESTROY], 0);
 
   G_OBJECT_CLASS (clutter_actor_parent_class)->dispose (object);
@@ -3589,6 +3747,17 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
                                      ClutterPaintVolume *volume)
 {
   return FALSE;
+}
+
+static gboolean
+clutter_actor_real_has_overlaps (ClutterActor *self)
+{
+  /* By default we'll assume that all actors need an offscreen
+     redirect to get the correct opacity. This effectively favours
+     accuracy over efficiency. Actors such as ClutterTexture that
+     would never need an offscreen redirect can override this to
+     return FALSE. */
+  return TRUE;
 }
 
 static void
@@ -3981,6 +4150,26 @@ clutter_actor_class_init (ClutterActorClass *klass)
                              CLUTTER_PARAM_READWRITE);
   obj_props[PROP_OPACITY] = pspec;
   g_object_class_install_property (object_class, PROP_OPACITY, pspec);
+
+  /**
+   * ClutterActor:offscreen-redirect:
+   *
+   * Whether to flatten the actor into a single image. See
+   * clutter_actor_set_offscreen_redirect() for details.
+   *
+   * Since: 1.8
+   */
+  pspec = g_param_spec_enum ("offscreen-redirect",
+                             P_("Offscreen redirect"),
+                             P_("Whether to flatten the actor into a "
+                                "single image"),
+                             CLUTTER_TYPE_OFFSCREEN_REDIRECT,
+                             CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY,
+                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_OFFSCREEN_REDIRECT] = pspec;
+  g_object_class_install_property (object_class,
+                                   PROP_OFFSCREEN_REDIRECT,
+                                   pspec);
 
   /**
    * ClutterActor:visible:
@@ -5015,6 +5204,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->apply_transform = clutter_actor_real_apply_transform;
   klass->get_accessible = clutter_actor_real_get_accessible;
   klass->get_paint_volume = clutter_actor_real_get_paint_volume;
+  klass->has_overlaps = clutter_actor_real_has_overlaps;
 }
 
 static void
@@ -5027,6 +5217,7 @@ clutter_actor_init (ClutterActor *self)
   priv->parent_actor = NULL;
   priv->has_clip = FALSE;
   priv->opacity = 0xff;
+  priv->offscreen_redirect = CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY;
   priv->id = _clutter_context_acquire_id (self);
   priv->pick_id = -1;
   priv->scale_x = 1.0;
@@ -5162,38 +5353,60 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
   priv->queue_redraw_entry = NULL;
 }
 
-/**
- * clutter_actor_queue_redraw:
- * @self: A #ClutterActor
- *
- * Queues up a redraw of an actor and any children. The redraw occurs
- * once the main loop becomes idle (after the current batch of events
- * has been processed, roughly).
- *
- * Applications rarely need to call this, as redraws are handled
- * automatically by modification functions.
- *
- * This function will not do anything if @self is not visible, or
- * if the actor is inside an invisible part of the scenegraph.
- *
- * Also be aware that painting is a NOP for actors with an opacity of
- * 0
- *
- * When you are implementing a custom actor you must queue a redraw
- * whenever some private state changes that will affect painting or
- * picking of your actor.
- */
-void
-clutter_actor_queue_redraw (ClutterActor *self)
+static void
+_clutter_actor_get_allocation_clip (ClutterActor *self,
+                                    ClutterActorBox *clip)
 {
+  ClutterActorBox allocation;
+
+  /* XXX: we don't care if we get an out of date allocation here
+   * because clutter_actor_queue_redraw_with_clip knows to ignore
+   * the clip if the actor's allocation is invalid.
+   *
+   * This is noted because clutter_actor_get_allocation_box does some
+   * unnecessary work to support buggy code with a comment suggesting
+   * that it could be changed later which would be good for this use
+   * case!
+   */
+  clutter_actor_get_allocation_box (self, &allocation);
+
+  /* NB: clutter_actor_queue_redraw_with_clip expects a box in the
+   * actor's own coordinate space but the allocation is in parent
+   * coordinates */
+  clip->x1 = 0;
+  clip->y1 = 0;
+  clip->x2 = allocation.x2 - allocation.x1;
+  clip->y2 = allocation.y2 - allocation.y1;
+}
+
+void
+_clutter_actor_queue_redraw_full (ClutterActor       *self,
+                                  ClutterRedrawFlags  flags,
+                                  ClutterPaintVolume *volume,
+                                  ClutterEffect      *effect)
+{
+  ClutterPaintVolume allocation_pv;
+  ClutterActorPrivate *priv;
+  ClutterPaintVolume *pv;
+  gboolean should_free_pv;
   ClutterActor *stage;
+  gboolean was_dirty;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
 
   /* Here's an outline of the actor queue redraw mechanism:
    *
-   * The process starts either here or in
-   * _clutter_actor_queue_redraw_with_clip.
+   * The process starts in one of the following two functions which
+   * are wrappers for this function:
+   * clutter_actor_queue_redraw
+   * _clutter_actor_queue_redraw_with_clip
    *
-   * These functions queue an entry in a list associated with the
+   * additionally, an effect can queue a redraw by wrapping this
+   * function in clutter_effect_queue_rerun
+   *
+   * This functions queues an entry in a list associated with the
    * stage which is a list of actors that queued a redraw while
    * updating the timelines, performing layouting and processing other
    * mainloop sources before the next paint starts.
@@ -5222,8 +5435,9 @@ clutter_actor_queue_redraw (ClutterActor *self)
    * difference to performance.
    *
    * So the control flow goes like this:
-   * clutter_actor_queue_redraw and
-   * _clutter_actor_queue_redraw_with_clip
+   * One of clutter_actor_queue_redraw,
+   *        _clutter_actor_queue_redraw_with_clip
+   *     or clutter_effect_queue_rerun
    *
    * then control moves to:
    *   _clutter_stage_queue_actor_redraw
@@ -5251,44 +5465,126 @@ clutter_actor_queue_redraw (ClutterActor *self)
    * paint.
    */
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  stage = _clutter_actor_get_stage_internal (self);
 
   /* Ignore queuing a redraw for actors not descended from a stage */
-  stage = _clutter_actor_get_stage_internal (self);
   if (stage == NULL)
     return;
 
+  if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
+    {
+      ClutterActorBox allocation_clip;
+      ClutterVertex origin;
+
+      /* If the actor doesn't have a valid allocation then we will
+       * queue a full stage redraw. */
+      if (priv->needs_allocation)
+        {
+          /* NB: NULL denotes an undefined clip which will result in a
+           * full redraw... */
+          _clutter_actor_set_queue_redraw_clip (self, NULL);
+          _clutter_actor_signal_queue_redraw (self, self);
+          return;
+        }
+
+      _clutter_paint_volume_init_static (&allocation_pv, self);
+      pv = &allocation_pv;
+
+      _clutter_actor_get_allocation_clip (self, &allocation_clip);
+
+      origin.x = allocation_clip.x1;
+      origin.y = allocation_clip.y1;
+      origin.z = 0;
+      clutter_paint_volume_set_origin (pv, &origin);
+      clutter_paint_volume_set_width (pv,
+                                      allocation_clip.x2 - allocation_clip.x1);
+      clutter_paint_volume_set_height (pv,
+                                       allocation_clip.y2 -
+                                       allocation_clip.y1);
+      should_free_pv = TRUE;
+    }
+  else
+    {
+      pv = volume;
+      should_free_pv = FALSE;
+    }
+
+  was_dirty = priv->queue_redraw_entry != NULL;
+
   self->priv->queue_redraw_entry =
     _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
-                                       self->priv->queue_redraw_entry,
+                                       priv->queue_redraw_entry,
                                        self,
-                                       NULL);
+                                       pv);
+
+  if (should_free_pv)
+    clutter_paint_volume_free (pv);
+
+  /* If this is the first redraw queued then we can directly use the
+     effect parameter */
+  if (!was_dirty)
+    priv->effect_to_redraw = effect;
+  /* Otherwise we need to merge it with the existing effect parameter */
+  else if (effect)
+    {
+      /* If there's already an effect then we need to use whichever is
+         later in the chain of actors. Otherwise a full redraw has
+         already been queued on the actor so we need to ignore the
+         effect parameter */
+      if (priv->effect_to_redraw)
+        {
+          if (priv->effects == NULL)
+            g_warning ("Redraw queued with an effect that is "
+                       "not applied to the actor");
+          else
+            {
+              const GList *l;
+
+              for (l = _clutter_meta_group_peek_metas (priv->effects);
+                   l != NULL;
+                   l = l->next)
+                {
+                  if (l->data == priv->effect_to_redraw ||
+                      l->data == effect)
+                    priv->effect_to_redraw = l->data;
+                }
+            }
+        }
+    }
+  else
+    /* If no effect is specified then we need to redraw the whole
+       actor */
+    priv->effect_to_redraw = NULL;
 }
 
-static void
-_clutter_actor_get_allocation_clip (ClutterActor *self,
-                                    ClutterActorBox *clip)
+/**
+ * clutter_actor_queue_redraw:
+ * @self: A #ClutterActor
+ *
+ * Queues up a redraw of an actor and any children. The redraw occurs
+ * once the main loop becomes idle (after the current batch of events
+ * has been processed, roughly).
+ *
+ * Applications rarely need to call this, as redraws are handled
+ * automatically by modification functions.
+ *
+ * This function will not do anything if @self is not visible, or
+ * if the actor is inside an invisible part of the scenegraph.
+ *
+ * Also be aware that painting is a NOP for actors with an opacity of
+ * 0
+ *
+ * When you are implementing a custom actor you must queue a redraw
+ * whenever some private state changes that will affect painting or
+ * picking of your actor.
+ */
+void
+clutter_actor_queue_redraw (ClutterActor *self)
 {
-  ClutterActorBox allocation;
-
-  /* XXX: we don't care if we get an out of date allocation here
-   * because clutter_actor_queue_redraw_with_clip knows to ignore
-   * the clip if the actor's allocation is invalid.
-   *
-   * This is noted because clutter_actor_get_allocation_box does some
-   * unnecessary work to support buggy code with a comment suggesting
-   * that it could be changed later which would be good for this use
-   * case!
-   */
-  clutter_actor_get_allocation_box (self, &allocation);
-
-  /* NB: clutter_actor_queue_redraw_with_clip expects a box in the
-   * actor's own coordinate space but the allocation is in parent
-   * coordinates */
-  clip->x1 = 0;
-  clip->y1 = 0;
-  clip->x2 = allocation.x2 - allocation.x1;
-  clip->y2 = allocation.y2 - allocation.y1;
+  _clutter_actor_queue_redraw_full (self,
+                                    0, /* flags */
+                                    NULL, /* clip volume */
+                                    NULL /* effect */);
 }
 
 /*
@@ -5333,62 +5629,10 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
                                        ClutterRedrawFlags  flags,
                                        ClutterPaintVolume *volume)
 {
-  ClutterPaintVolume allocation_pv;
-  ClutterPaintVolume *pv;
-  gboolean should_free_pv;
-  ClutterActor *stage;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
-    {
-      ClutterActorBox allocation_clip;
-      ClutterVertex origin;
-
-      /* If the actor doesn't have a valid allocation then we will
-       * queue a full stage redraw. */
-      if (self->priv->needs_allocation)
-        {
-          /* NB: NULL denotes an undefined clip which will result in a
-           * full redraw... */
-          _clutter_actor_set_queue_redraw_clip (self, NULL);
-          _clutter_actor_signal_queue_redraw (self, self);
-          return;
-        }
-
-      _clutter_paint_volume_init_static (&allocation_pv, self);
-      pv = &allocation_pv;
-
-      _clutter_actor_get_allocation_clip (self, &allocation_clip);
-
-      origin.x = allocation_clip.x1;
-      origin.y = allocation_clip.y1;
-      origin.z = 0;
-      clutter_paint_volume_set_origin (pv, &origin);
-      clutter_paint_volume_set_width (pv,
-                                      allocation_clip.x2 - allocation_clip.x1);
-      clutter_paint_volume_set_height (pv,
-                                       allocation_clip.y2 -
-                                       allocation_clip.y1);
-      should_free_pv = TRUE;
-    }
-  else
-    {
-      pv = volume;
-      should_free_pv = FALSE;
-    }
-
-  /* Ignore queuing a redraw for actors not descended from a stage */
-  stage = _clutter_actor_get_stage_internal (self);
-
-  if (stage != NULL)
-    _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
-                                       self->priv->queue_redraw_entry,
-                                       self,
-                                       pv);
-
-  if (should_free_pv)
-    clutter_paint_volume_free (pv);
+  _clutter_actor_queue_redraw_full (self,
+                                    flags, /* flags */
+                                    volume, /* clip volume */
+                                    NULL /* effect */);
 }
 
 static void
@@ -7173,7 +7417,16 @@ clutter_actor_set_opacity (ClutterActor *self,
     {
       priv->opacity = opacity;
 
-      clutter_actor_queue_redraw (self);
+      /* Queue a redraw from the flatten effect so that it can use
+         its cached image if available instead of having to redraw the
+         actual actor. If it doesn't end up using the FBO then the
+         effect is still able to continue the paint anyway. If there
+         is no flatten effect yet then this is equivalent to queueing
+         a full redraw */
+      _clutter_actor_queue_redraw_full (self,
+                                        0, /* flags */
+                                        NULL, /* clip */
+                                        priv->flatten_effect);
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_OPACITY]);
     }
@@ -7262,6 +7515,116 @@ clutter_actor_get_opacity (ClutterActor *self)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
   return self->priv->opacity;
+}
+
+/**
+ * clutter_actor_set_offscreen_redirect:
+ * @self: A #ClutterActor
+ * @redirect: New offscreen redirect value for the actor.
+ *
+ * Sets whether to redirect the actor into an offscreen image. The
+ * offscreen image is used to flatten the actor into a single image
+ * while painting for two main reasons. Firstly, when the actor is
+ * painted a second time without any of its contents changing it can
+ * simply repaint the cached image without descending further down the
+ * actor hierarchy. Secondly, it will make the opacity look correct
+ * even if there are overlapping primitives in the actor.
+ *
+ * Caching the actor could in some cases be a performance win and in
+ * some cases be a performance lose so it is important to determine
+ * which value is right for an actor before modifying this value. For
+ * example, there is never any reason to flatten an actor that is just
+ * a single texture (such as a #ClutterTexture) because it is
+ * effectively already cached in an image so the offscreen would be
+ * redundant. Also if the actor contains primitives that are far apart
+ * with a large transparent area in the middle (such as a large
+ * CluterGroup with a small actor in the top left and a small actor in
+ * the bottom right) then the cached image will contain the entire
+ * image of the large area and the paint will waste time blending all
+ * of the transparent pixels in the middle.
+ *
+ * The default method of implementing opacity on a container simply
+ * forwards on the opacity to all of the children. If the children are
+ * overlapping then it will appear as if they are two separate glassy
+ * objects and there will be a break in the color where they
+ * overlap. By redirecting to an offscreen buffer it will be as if the
+ * two opaque objects are combined into one and then made transparent
+ * which is usually what is expected.
+ *
+ * The image below demonstrates the difference between redirecting and
+ * not. The image shows two Clutter groups, each containing a red and
+ * a green rectangle which overlap. The opacity on the group is set to
+ * 128 (which is 50%). When the offscreen redirect is not used, the
+ * red rectangle can be seen through the blue rectangle as if the two
+ * rectangles were separately transparent. When the redirect is used
+ * the group as a whole is transparent instead so the red rectangle is
+ * not visible where they overlap.
+ *
+ * <figure id="offscreen-redirect">
+ *   <title>Sample of using an offscreen redirect for transparency</title>
+ *   <graphic fileref="offscreen-redirect.png" format="PNG"/>
+ * </figure>
+ *
+ * The default behaviour is
+ * %CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY. This will end up
+ * redirecting actors whenever they are semi-transparent unless their
+ * has_overlaps() virtual returns %FALSE. This should mean that
+ * generally all actors will be rendered with the correct opacity and
+ * certain actors that don't need the offscreen redirect (such as
+ * #ClutterTexture) will paint directly for efficiency.
+ *
+ * Custom actors that don't contain any overlapping primitives are
+ * recommended to override the has_overlaps() virtual to return %FALSE
+ * for maximum efficiency.
+ *
+ * Since: 1.8
+ */
+void
+clutter_actor_set_offscreen_redirect (ClutterActor *self,
+                                      ClutterOffscreenRedirect redirect)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (priv->offscreen_redirect != redirect)
+    {
+      priv->offscreen_redirect = redirect;
+
+      /* Queue a redraw from the effect so that it can use its cached
+         image if available instead of having to redraw the actual
+         actor. If it doesn't end up using the FBO then the effect is
+         still able to continue the paint anyway. If there is no
+         effect then this is equivalent to queuing a full redraw */
+      _clutter_actor_queue_redraw_full (self,
+                                        0, /* flags */
+                                        NULL, /* clip */
+                                        priv->flatten_effect);
+
+      g_object_notify_by_pspec (G_OBJECT (self),
+                                obj_props[PROP_OFFSCREEN_REDIRECT]);
+    }
+}
+
+/**
+ * clutter_actor_get_offscreen_redirect:
+ * @self: a #ClutterActor
+ *
+ * Retrieves whether to redirect the actor to an offscreen buffer, as
+ * set by clutter_actor_set_offscreen_redirect().
+ *
+ * Return value: the value of the offscreen-redirect property of the actor
+ *
+ * Since: 1.8
+ */
+ClutterOffscreenRedirect
+clutter_actor_get_offscreen_redirect (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  return self->priv->offscreen_redirect;
 }
 
 /**
@@ -7876,15 +8239,6 @@ clutter_actor_unparent (ClutterActor *self)
   if (priv->parent_actor == NULL)
     return;
 
-   /* We take this opportunity to invalidate any queue redraw entry
-    * associated with the actor and descendants since we won't be able to
-    * determine the appropriate stage after this. */
-  _clutter_actor_traverse (self,
-                           0,
-                           invalidate_queue_redraw_entry,
-                           NULL,
-                           NULL);
-
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
 
   /* we need to unrealize *before* we set parent_actor to NULL,
@@ -7894,6 +8248,15 @@ clutter_actor_unparent (ClutterActor *self)
    * unless we're reparenting.
    */
   clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNREALIZED);
+
+   /* We take this opportunity to invalidate any queue redraw entry
+    * associated with the actor and descendants since we won't be able to
+    * determine the appropriate stage after this. */
+  _clutter_actor_traverse (self,
+                           0,
+                           invalidate_queue_redraw_entry,
+                           NULL,
+                           NULL);
 
   old_parent = priv->parent_actor;
   priv->parent_actor = NULL;
@@ -11153,16 +11516,12 @@ clutter_actor_remove_action_by_name (ClutterActor *self,
 GList *
 clutter_actor_get_actions (ClutterActor *self)
 {
-  const GList *actions;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   if (self->priv->actions == NULL)
     return NULL;
 
-  actions = _clutter_meta_group_peek_metas (self->priv->actions);
-
-  return g_list_copy ((GList *) actions);
+  return _clutter_meta_group_get_metas_no_internal (self->priv->actions);
 }
 
 /**
@@ -11208,7 +11567,7 @@ clutter_actor_clear_actions (ClutterActor *self)
   if (self->priv->actions == NULL)
     return;
 
-  _clutter_meta_group_clear_metas (self->priv->actions);
+  _clutter_meta_group_clear_metas_no_internal (self->priv->actions);
 }
 
 /**
@@ -11361,16 +11720,12 @@ clutter_actor_remove_constraint_by_name (ClutterActor *self,
 GList *
 clutter_actor_get_constraints (ClutterActor *self)
 {
-  const GList *constraints;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   if (self->priv->constraints == NULL)
     return NULL;
 
-  constraints = _clutter_meta_group_peek_metas (self->priv->constraints);
-
-  return g_list_copy ((GList *) constraints);
+  return _clutter_meta_group_get_metas_no_internal (self->priv->constraints);
 }
 
 /**
@@ -11416,7 +11771,9 @@ clutter_actor_clear_constraints (ClutterActor *self)
   if (self->priv->constraints == NULL)
     return;
 
-  _clutter_meta_group_clear_metas (self->priv->constraints);
+  _clutter_meta_group_clear_metas_no_internal (self->priv->constraints);
+
+  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -11486,20 +11843,10 @@ void
 clutter_actor_add_effect (ClutterActor  *self,
                           ClutterEffect *effect)
 {
-  ClutterActorPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_EFFECT (effect));
 
-  priv = self->priv;
-
-  if (priv->effects == NULL)
-    {
-      priv->effects = g_object_new (CLUTTER_TYPE_META_GROUP, NULL);
-      priv->effects->actor = self;
-    }
-
-  _clutter_meta_group_add_meta (priv->effects, CLUTTER_ACTOR_META (effect));
+  _clutter_actor_add_effect_internal (self, effect);
 
   clutter_actor_queue_redraw (self);
 
@@ -11552,17 +11899,10 @@ void
 clutter_actor_remove_effect (ClutterActor  *self,
                              ClutterEffect *effect)
 {
-  ClutterActorPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_EFFECT (effect));
 
-  priv = self->priv;
-
-  if (priv->effects == NULL)
-    return;
-
-  _clutter_meta_group_remove_meta (priv->effects, CLUTTER_ACTOR_META (effect));
+  _clutter_actor_remove_effect_internal (self, effect);
 
   clutter_actor_queue_redraw (self);
 
@@ -11618,7 +11958,6 @@ GList *
 clutter_actor_get_effects (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
-  const GList *effects;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
@@ -11627,9 +11966,7 @@ clutter_actor_get_effects (ClutterActor *self)
   if (priv->effects == NULL)
     return NULL;
 
-  effects = _clutter_meta_group_peek_metas (priv->effects);
-
-  return g_list_copy ((GList *) effects);
+  return _clutter_meta_group_get_metas_no_internal (priv->effects);
 }
 
 /**
@@ -11675,7 +12012,9 @@ clutter_actor_clear_effects (ClutterActor *self)
   if (self->priv->effects == NULL)
     return;
 
-  _clutter_meta_group_clear_metas (self->priv->effects);
+  _clutter_meta_group_clear_metas_no_internal (self->priv->effects);
+
+  clutter_actor_queue_redraw (self);
 }
 
 /**
@@ -11977,6 +12316,27 @@ clutter_actor_get_paint_box (ClutterActor    *self,
   _clutter_paint_volume_get_stage_paint_box (pv, CLUTTER_STAGE (stage), box);
 
   return TRUE;
+}
+
+/**
+ * clutter_actor_has_overlaps:
+ * @self: A #ClutterActor
+ *
+ * Return value: whether the actor may contain overlapping
+ * primitives. Clutter uses this to determine whether the painting
+ * should be redirected to an offscreen buffer to correctly implement
+ * the opacity property. Custom actors can override this by
+ * implementing the has_overlaps virtual. See
+ * clutter_actor_set_offscreen_redirect() for more information.
+ *
+ * Since: 1.8
+ */
+gboolean
+clutter_actor_has_overlaps (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), TRUE);
+
+  return CLUTTER_ACTOR_GET_CLASS (self)->has_overlaps (self);
 }
 
 gint

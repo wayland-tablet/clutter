@@ -117,6 +117,28 @@ typedef enum
 } ClutterActorFlags;
 
 /**
+ * ClutterOffscreenRedirect:
+ * @CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY: Only redirect
+ *   the actor if it is semi-transparent and its has_overlaps()
+ *   virtual returns %TRUE. This is the default.
+ * @CLUTTER_OFFSCREEN_REDIRECT_ALWAYS_FOR_OPACITY: Always redirect the
+ *   actor if it is semi-transparent regardless of the return value of
+ *   its has_overlaps() virtual.
+ * @CLUTTER_OFFSCREEN_REDIRECT_ALWAYS: Always redirect the actor to an
+ *   offscreen buffer even if it is fully opaque.
+ *
+ * Possible values to pass to clutter_actor_set_offscreen_redirect().
+ *
+ * Since: 1.8
+ */
+typedef enum
+{
+  CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY,
+  CLUTTER_OFFSCREEN_REDIRECT_ALWAYS_FOR_OPACITY,
+  CLUTTER_OFFSCREEN_REDIRECT_ALWAYS
+} ClutterOffscreenRedirect;
+
+/**
  * ClutterAllocationFlags:
  * @CLUTTER_ALLOCATION_NONE: No flag set
  * @CLUTTER_ABSOLUTE_ORIGIN_CHANGED: Whether the absolute origin of the
@@ -215,6 +237,10 @@ struct _ClutterActor
  *   describes the actor to an assistive technology.
  * @get_paint_volume: virtual function, for sub-classes to define their
  *   #ClutterPaintVolume
+ * @has_overlaps: virtual function for
+ *   sub-classes to advertise whether they need an offscreen redirect
+ *   to get the correct opacity. See
+ *   clutter_actor_set_offscreen_redirect() for details.
  *
  * Base class for actors.
  */
@@ -292,9 +318,11 @@ struct _ClutterActorClass
   gboolean    (* get_paint_volume)  (ClutterActor         *actor,
                                      ClutterPaintVolume   *volume);
 
+  gboolean (* has_overlaps)         (ClutterActor         *self);
+
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[29];
+  gpointer _padding_dummy[28];
 };
 
 GType                 clutter_actor_get_type                  (void) G_GNUC_CONST;
@@ -314,6 +342,7 @@ void                  clutter_actor_unrealize                 (ClutterActor     
 void                  clutter_actor_map                       (ClutterActor          *self);
 void                  clutter_actor_unmap                     (ClutterActor          *self);
 void                  clutter_actor_paint                     (ClutterActor          *self);
+void                  clutter_actor_continue_paint            (ClutterActor          *self);
 void                  clutter_actor_queue_redraw              (ClutterActor          *self);
 
 void                  clutter_actor_queue_relayout            (ClutterActor          *self);
@@ -423,6 +452,10 @@ guint8                clutter_actor_get_opacity               (ClutterActor     
 guint8                clutter_actor_get_paint_opacity         (ClutterActor          *self);
 gboolean              clutter_actor_get_paint_visibility      (ClutterActor          *self);
 
+void                  clutter_actor_set_offscreen_redirect    (ClutterActor          *self,
+                                                               ClutterOffscreenRedirect redirect);
+ClutterOffscreenRedirect
+                      clutter_actor_get_offscreen_redirect    (ClutterActor          *self);
 
 void                  clutter_actor_set_name                  (ClutterActor          *self,
                                                                const gchar           *name);
@@ -584,6 +617,8 @@ const ClutterPaintVolume  *clutter_actor_get_transformed_paint_volume (ClutterAc
 
 gboolean             clutter_actor_get_paint_box      (ClutterActor         *self,
                                                        ClutterActorBox      *box);
+
+gboolean             clutter_actor_has_overlaps       (ClutterActor         *self);
 
 G_END_DECLS
 
