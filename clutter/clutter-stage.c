@@ -1260,6 +1260,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_timer);
 
   context = _clutter_context_get_default ();
+  clutter_stage_ensure_current (stage);
 
   /* It's possible that we currently have a static scene and have renderered a
    * full, unclipped pick buffer. If so we can simply continue to read from
@@ -1363,9 +1364,16 @@ _clutter_stage_do_pick (ClutterStage   *stage,
 
   if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
-      read_pixels_to_file ("pick-buffer", 0, 0,
+      char *file_name =
+        g_strconcat ("pick-buffer-",
+                     _clutter_actor_get_debug_name (CLUTTER_ACTOR (stage)),
+                     NULL);
+
+      read_pixels_to_file (file_name, 0, 0,
                            clutter_actor_get_width (CLUTTER_ACTOR (stage)),
                            clutter_actor_get_height (CLUTTER_ACTOR (stage)));
+
+      g_free (file_name);
     }
 
   /* Restore whether GL_DITHER was enabled */
