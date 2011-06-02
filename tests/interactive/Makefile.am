@@ -98,9 +98,10 @@ stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 		*.c)	test_bin=$${i%*.c} \
 			;; \
 		esac; \
-		( echo "test-interactive $$test_bin" ) >> $(top_srcdir)/build/win32/test-interactive.bat ; \
+		( echo "test-interactive $$test_bin" ) > $$test_bin.bat ; \
 	done \
-	&& echo timestamp > $(@F)
+	&& ls *.bat > test-interactive.bat	\
+	&& cp *.bat $(top_srcdir)/build/win32/
 
 clean-wrappers:
 	@for i in $(UNIT_TESTS); \
@@ -109,7 +110,8 @@ clean-wrappers:
 		echo "  RM    $$test_bin"; \
 		rm -f $$test_bin$(SHEXT); \
 	done \
-	&& rm -f $(top_srcdir)/build/win32/test-interactive.bat \
+	&& rm -f $(top_srcdir)/build/win32/*.bat \
+	&& rm -f *.bat \
 	&& rm -f stamp-test-interactive
 
 .PHONY: wrappers clean-wrappers

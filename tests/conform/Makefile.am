@@ -122,11 +122,13 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 		echo "  GEN    $$unit"; \
 		( echo "#!/bin/sh" ; echo "$(abs_builddir)/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(SHEXT) ; \
 		( echo "#!/bin/sh" ; echo "exec $(abs_builddir)/test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(SHEXT) ; \
-		( echo "test-conformance$(EXEEXT) -p $$i" ) >> $(top_srcdir)/build/win32/test-conformance.bat ; \
+		( echo "test-conformance$(EXEEXT) -p $$i" ) > $$unit.bat ; \
 		chmod +x $$unit$(SHEXT); \
 		chmod +x wrappers/$$unit$(SHEXT); \
 		echo "/$$unit$(SHEXT)" >> .gitignore; \
 	done \
+	&& ls *.bat > test-conformance.bat	\
+	&& cp *.bat $(top_srcdir)/build/win32/	\
 	&& echo timestamp > $(@F)
 
 clean-wrappers:
@@ -138,7 +140,8 @@ clean-wrappers:
 		rm -f wrappers/$$unit$(SHEXT) ; \
 	done \
 	&& rm -f unit-tests \
-	&& rm -f $(top_srcdir)/build/win32/test-conformance.bat \
+	&& rm -f $(top_srcdir)/build/win32/*.bat \
+	&& rm -f *.bat \
 	&& rm -f stamp-test-conformance
 
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
