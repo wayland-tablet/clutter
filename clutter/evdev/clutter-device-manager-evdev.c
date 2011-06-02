@@ -575,6 +575,7 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
                          "device-type", type,
                          "sysfs-path", sysfs_path,
                          "device-path", device_file,
+                         "enabled", TRUE,
                          NULL);
 
   /* Always associate the device to the default stage */
