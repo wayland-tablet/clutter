@@ -47,7 +47,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-0.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib atk-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib atk-2.0.lib gmodule-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="..\..\..\clutter\clutter.def"
@@ -85,7 +85,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-0.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib atk-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib atk-2.0.lib gmodule-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="..\..\..\clutter\clutter.def"
@@ -124,7 +124,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-0.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib atk-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib atk-2.0.lib gmodule-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="..\..\..\clutter\clutter.def"
@@ -160,7 +160,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-0.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib atk-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib atk-2.0.lib gmodule-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="..\..\..\clutter\clutter.def"

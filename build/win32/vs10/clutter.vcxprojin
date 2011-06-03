@@ -88,7 +88,7 @@
       <Command>$(GenerateClutterDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
@@ -117,7 +117,7 @@
       <Command>$(GenerateClutterDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
@@ -146,7 +146,7 @@
       <Command>$(GenerateClutterDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
@@ -174,7 +174,7 @@
       <Command>$(GenerateClutterDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-0.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;atk-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
