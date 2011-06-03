@@ -12,47 +12,6 @@
 /* Can use Cogl 2.0 API internally */
 #define COGL_ENABLE_EXPERIMENTAL_2_0_API 1
 
-/* Cogl supports OpenGL[ES] using the EGL API with EGL_MESA_drm_display */
-/*#undef COGL_HAS_EGL_PLATFORM_DRM_SURFACELESS_SUPPORT*/
-
-/* Cogl supports OpenGLES using the EGL API with Fruity platform typedefs */
-/*#undef COGL_HAS_EGL_PLATFORM_FRUITY_SUPPORT*/
-
-/* Cogl supports OpenGL[ES] using the EGL API with the GDL API */
-/*#undef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT*/
-
-/* Cogl supports OpenGL[ES] using the EGL API with PowerVR NULL platform
-   typedefs */
-/*#undef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT*/
-
-/* Cogl supports OpenGL[ES] using the EGL API with PowerVR X11 platform
-   typedefs */
-/*#undef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT*/
-
-/* Cogl supports GLES using the EGL API */
-/*#undef COGL_HAS_EGL_SUPPORT*/
-
-/* Cogl can create its own OpenGL context */
-/*#undef COGL_HAS_FULL_WINSYS*/
-
-/* Cogl supports OpenGL using the GLX API */
-/*#undef COGL_HAS_GLX_SUPPORT*/
-
-/* Cogl supports the OSX window system */
-/*#undef COGL_HAS_OSX_SUPPORT*/
-
-/* Cogl supports OpenGL using the WGL API */
-#define COGL_HAS_WGL_SUPPORT 1
-
-/* Cogl supports the win32 window system */
-#define COGL_HAS_WIN32_SUPPORT 1
-
-/* Cogl supports the X11 window system */
-/*#undef COGL_HAS_X11_SUPPORT*/
-
-/* Cogl supports X11 using the Xlib API */
-/*#undef COGL_HAS_XLIB_SUPPORT*/
-
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
 #define ENABLE_NLS 1
@@ -74,9 +33,6 @@
 /* Have the EGL backend */
 /*#undef HAVE_CLUTTER_EGL*/
 
-/* Have the Fruity backend */
-/*#undef HAVE_CLUTTER_FRUITY*/
-
 /* Have the GLX backend */
 /*#undef HAVE_CLUTTER_GLX*/
 
@@ -89,15 +45,6 @@
 /* Have the Win32 backend */
 #define HAVE_CLUTTER_WIN32 1
 
-/* Have GL for rendering */
-#define HAVE_COGL_GL 1
-
-/* Have GL/ES for rendering */
-/*#undef HAVE_COGL_GLES*/
-
-/* Have GL/ES for rendering */
-/*#undef HAVE_COGL_GLES2*/
-
 /* Define if the GNU dcgettext() function is already present or preinstalled.
    */
 #define HAVE_DCGETTEXT 1
@@ -108,20 +55,11 @@
 /* Have libdrm support */
 /*#undef HAVE_DRM*/
 
-/* Define to 1 if you have the <EGL/egl.h> header file. */
-/*#undef HAVE_EGL_EGL_H*/
-
 /* Have evdev support for input handling */
 /*#undef HAVE_EVDEV*/
 
-/* Define to 1 if you have the `ffs' function. */
-/*#undef HAVE_FFS*/
-
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
-
-/* Define to 1 if you have the <GLES/egl.h> header file. */
-/*#undef HAVE_GLES_EGL_H*/
 
 /* Define to 1 if you have the <GL/glx.h> header file. */
 /*#undef HAVE_GL_GLX_H*/
@@ -137,9 +75,6 @@
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
-
-/* Have standalone EGL library */
-/*#undef HAVE_STANDALONE_EGL*/
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #if (_MSC_VER >= 1600)
@@ -218,12 +153,3 @@
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
-
-/* Use GdkPixbuf for loading image data */
-#define USE_GDKPIXBUF 1
-
-/* Use internal image decoding for loading image data */
-/*#undef USE_INTERNAL*/
-
-/* Use Core Graphics (Quartz) for loading image data */
-/*#undef USE_QUARTZ*/
