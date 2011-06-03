@@ -60,10 +60,11 @@ clutter_actor_box_new
 clutter_actor_box_set_origin
 clutter_actor_box_set_size
 clutter_actor_box_union
-clutter_actor_contains
 clutter_actor_clear_actions
 clutter_actor_clear_constraints
 clutter_actor_clear_effects
+clutter_actor_contains
+clutter_actor_continue_paint
 clutter_actor_create_pango_context
 clutter_actor_create_pango_layout
 clutter_actor_destroy
@@ -89,9 +90,14 @@ clutter_actor_get_effects
 clutter_actor_get_fixed_position_set
 clutter_actor_get_flags
 clutter_actor_get_geometry
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_actor_get_gid
+#endif
+
 clutter_actor_get_height
 clutter_actor_get_name
+clutter_actor_get_offscreen_redirect
 clutter_actor_get_opacity
 clutter_actor_get_paint_box
 clutter_actor_get_paint_opacity
@@ -126,6 +132,7 @@ clutter_actor_grab_key_focus
 clutter_actor_has_allocation
 clutter_actor_has_clip
 clutter_actor_has_key_focus
+clutter_actor_has_overlaps
 clutter_actor_has_pointer
 clutter_actor_hide
 clutter_actor_hide_all
@@ -170,6 +177,7 @@ clutter_actor_set_flags
 clutter_actor_set_height
 clutter_actor_set_geometry
 clutter_actor_set_name
+clutter_actor_set_offscreen_redirect
 clutter_actor_set_opacity
 clutter_actor_set_parent
 clutter_actor_set_position
@@ -528,6 +536,7 @@ clutter_drag_action_set_drag_handle
 clutter_drag_action_set_drag_threshold
 clutter_drag_axis_get_type
 clutter_effect_get_type
+clutter_effect_queue_rerun
 clutter_events_pending
 clutter_event_copy
 clutter_event_flags_get_type
@@ -602,7 +611,11 @@ clutter_geometry_get_type
 clutter_geometry_intersects
 clutter_geometry_union
 clutter_get_accessibility_enabled
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_get_actor_by_gid
+#endif
+
 clutter_get_current_event
 clutter_get_current_event_time
 clutter_get_debug_enabled
@@ -1108,6 +1121,7 @@ clutter_text_get_line_wrap_mode
 clutter_text_get_max_length
 clutter_text_get_password_char
 clutter_text_get_selectable
+clutter_text_get_selected_text_color
 clutter_text_get_selection
 clutter_text_get_selection_bound
 clutter_text_get_selection_color
@@ -1141,6 +1155,7 @@ clutter_text_set_max_length
 clutter_text_set_password_char
 clutter_text_set_preedit_string
 clutter_text_set_selectable
+clutter_text_set_selected_text_color
 clutter_text_set_selection
 clutter_text_set_selection_bound
 clutter_text_set_selection_color

@@ -32,7 +32,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;COGL_ENABLE_EXPERIMENTAL_API;$(TestDataDef)"
+				PreprocessorDefinitions="_DEBUG;COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;COGL_ENABLE_EXPERIMENTAL_API;$(TestDataDef)"
+				PreprocessorDefinitions="_DEBUG;COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -97,7 +97,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="COGL_ENABLE_EXPERIMENTAL_API;$(TestDataDef)"
+				PreprocessorDefinitions="COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -128,7 +128,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="COGL_ENABLE_EXPERIMENTAL_API;$(TestDataDef)"
+				PreprocessorDefinitions="COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
