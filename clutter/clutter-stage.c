@@ -3249,10 +3249,10 @@ _clutter_stage_get_clip (ClutterStage *stage)
  * didn't explicitly do so.
  */
 ClutterStageQueueRedrawEntry *
-_clutter_stage_queue_actor_redraw (ClutterStage *stage,
+_clutter_stage_queue_actor_redraw (ClutterStage                 *stage,
                                    ClutterStageQueueRedrawEntry *entry,
-                                   ClutterActor *actor,
-                                   ClutterPaintVolume *clip)
+                                   ClutterActor                 *actor,
+                                   ClutterPaintVolume           *clip)
 {
   ClutterStagePrivate *priv = stage->priv;
 
@@ -3287,7 +3287,7 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
    */
   _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
 
-  if (entry)
+  if (entry != NULL)
     {
       /* Ignore all requests to queue a redraw for an actor if a full
        * (non-clipped) redraw of the actor has already been queued. */
@@ -3304,26 +3304,27 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
           clutter_paint_volume_free (&entry->clip);
           entry->has_clip = FALSE;
         }
+
       return entry;
     }
   else
     {
-      entry = g_slice_new (ClutterStageQueueRedrawEntry);
-      entry->actor = g_object_ref (actor);
+      ClutterStageQueueRedrawEntry *new_entry;
 
-      if (clip)
+      new_entry = g_slice_new0 (ClutterStageQueueRedrawEntry);
+      new_entry->actor = g_object_ref (actor);
+
+      if (clip != NULL)
         {
-          entry->has_clip = TRUE;
-          _clutter_paint_volume_init_static (actor, &entry->clip);
-          _clutter_paint_volume_set_from_volume (&entry->clip, clip);
+          new_entry->has_clip = TRUE;
+          _clutter_paint_volume_init_static (actor, &new_entry->clip);
+          _clutter_paint_volume_set_from_volume (&new_entry->clip, clip);
         }
-      else
-        entry->has_clip = FALSE;
 
-      stage->priv->pending_queue_redraws =
-        g_list_prepend (stage->priv->pending_queue_redraws, entry);
+      priv->pending_queue_redraws =
+        g_list_prepend (priv->pending_queue_redraws, new_entry);
 
-      return entry;
+      return new_entry;
     }
 }
 

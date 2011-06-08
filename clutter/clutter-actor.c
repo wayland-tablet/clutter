@@ -4950,7 +4950,7 @@ clutter_actor_destroy (ClutterActor *self)
 }
 
 void
-_clutter_actor_finish_queue_redraw (ClutterActor *self,
+_clutter_actor_finish_queue_redraw (ClutterActor       *self,
                                     ClutterPaintVolume *clip)
 {
   ClutterActorPrivate *priv = self->priv;
@@ -4985,6 +4985,9 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
           ClutterPaintVolume stage_pv;
           ClutterActorBox *box = &priv->last_paint_box;
           ClutterVertex origin;
+
+          if (stage == NULL)
+            return;
 
           _clutter_paint_volume_init_static (stage, &stage_pv);
 
@@ -5136,7 +5139,7 @@ clutter_actor_queue_redraw (ClutterActor *self)
 }
 
 static void
-_clutter_actor_get_allocation_clip (ClutterActor *self,
+_clutter_actor_get_allocation_clip (ClutterActor    *self,
                                     ClutterActorBox *clip)
 {
   ClutterActorBox allocation;
