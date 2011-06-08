@@ -92,7 +92,7 @@ GType clutter_actor_meta_get_type (void) G_GNUC_CONST;
 
 void                  clutter_actor_meta_set_name    (ClutterActorMeta *meta,
                                                       const gchar      *name);
-G_CONST_RETURN gchar *clutter_actor_meta_get_name    (ClutterActorMeta *meta);
+const gchar *         clutter_actor_meta_get_name    (ClutterActorMeta *meta);
 void                  clutter_actor_meta_set_enabled (ClutterActorMeta *meta,
                                                       gboolean          is_enabled);
 gboolean              clutter_actor_meta_get_enabled (ClutterActorMeta *meta);

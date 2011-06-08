@@ -56,7 +56,7 @@ void                  _clutter_meta_group_add_meta    (ClutterMetaGroup *group,
                                                        ClutterActorMeta *meta);
 void                  _clutter_meta_group_remove_meta (ClutterMetaGroup *group,
                                                        ClutterActorMeta *meta);
-G_CONST_RETURN GList *_clutter_meta_group_peek_metas  (ClutterMetaGroup *group);
+const GList *         _clutter_meta_group_peek_metas  (ClutterMetaGroup *group);
 void                  _clutter_meta_group_clear_metas (ClutterMetaGroup *group);
 ClutterActorMeta *    _clutter_meta_group_get_meta    (ClutterMetaGroup *group,
                                                        const gchar      *name);

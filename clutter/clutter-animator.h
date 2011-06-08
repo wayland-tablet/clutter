@@ -161,7 +161,7 @@ void                 clutter_animator_property_set_interpolation (ClutterAnimato
 
 GType                 clutter_animator_key_get_type          (void) G_GNUC_CONST;
 GObject *             clutter_animator_key_get_object        (const ClutterAnimatorKey *key);
-G_CONST_RETURN gchar *clutter_animator_key_get_property_name (const ClutterAnimatorKey *key);
+const gchar *         clutter_animator_key_get_property_name (const ClutterAnimatorKey *key);
 GType                 clutter_animator_key_get_property_type (const ClutterAnimatorKey *key);
 gulong                clutter_animator_key_get_mode          (const ClutterAnimatorKey *key);
 gdouble               clutter_animator_key_get_progress      (const ClutterAnimatorKey *key);

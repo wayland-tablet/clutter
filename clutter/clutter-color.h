@@ -140,7 +140,7 @@ struct _ClutterParamSpecColor
 
 void                         clutter_value_set_color (GValue             *value,
                                                       const ClutterColor *color);
-G_CONST_RETURN ClutterColor *clutter_value_get_color (const GValue       *value);
+const ClutterColor          *clutter_value_get_color (const GValue       *value);
 
 GType       clutter_param_color_get_type (void) G_GNUC_CONST;
 GParamSpec *clutter_param_spec_color     (const gchar        *name,
@@ -254,7 +254,7 @@ typedef enum { /*< prefix=CLUTTER_COLOR >*/
   CLUTTER_COLOR_TRANSPARENT
 } ClutterStaticColor;
 
-G_CONST_RETURN ClutterColor *clutter_color_get_static (ClutterStaticColor color);
+const ClutterColor *clutter_color_get_static (ClutterStaticColor color);
 
 G_END_DECLS
 

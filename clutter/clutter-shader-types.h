@@ -84,11 +84,11 @@ void                    clutter_value_set_shader_int    (GValue       *value,
 void                    clutter_value_set_shader_matrix (GValue       *value,
                                                          gint          size,
                                                          const gfloat *matrix);
-G_CONST_RETURN gfloat * clutter_value_get_shader_float  (const GValue *value,
+const gfloat *          clutter_value_get_shader_float  (const GValue *value,
                                                          gsize        *length);
-G_CONST_RETURN gint   * clutter_value_get_shader_int    (const GValue *value,
+const gint   *          clutter_value_get_shader_int    (const GValue *value,
                                                          gsize        *length);
-G_CONST_RETURN gfloat * clutter_value_get_shader_matrix (const GValue *value,
+const gfloat *          clutter_value_get_shader_matrix (const GValue *value,
                                                          gsize        *length);
 
 G_END_DECLS

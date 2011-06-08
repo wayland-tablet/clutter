@@ -117,8 +117,8 @@ void                  clutter_shader_set_fragment_source      (ClutterShader    
                                                                const gchar        *data,
                                                                gssize              length);
 
-G_CONST_RETURN gchar *clutter_shader_get_vertex_source        (ClutterShader      *shader);
-G_CONST_RETURN gchar *clutter_shader_get_fragment_source      (ClutterShader      *shader);
+const gchar *clutter_shader_get_vertex_source        (ClutterShader      *shader);
+const gchar *clutter_shader_get_fragment_source      (ClutterShader      *shader);
 
 void                  clutter_shader_set_uniform              (ClutterShader      *shader,
                                                                const gchar        *name,
