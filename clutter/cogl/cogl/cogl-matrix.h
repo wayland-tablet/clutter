@@ -277,7 +277,7 @@ cogl_matrix_init_from_array (CoglMatrix *matrix,
  *
  * Return value: a pointer to the float array
  */
-G_CONST_RETURN float *
+const float *
 cogl_matrix_get_array (const CoglMatrix *matrix);
 
 /**
