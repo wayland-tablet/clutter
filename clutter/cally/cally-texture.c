@@ -42,7 +42,7 @@ static void cally_texture_init       (CallyTexture *texture);
 /* AtkObject */
 static void                  cally_texture_real_initialize (AtkObject *obj,
                                                            gpointer   data);
-static G_CONST_RETURN gchar *cally_texture_get_description (AtkObject *obj);
+static const gchar          *cally_texture_get_description (AtkObject *obj);
 
 
 G_DEFINE_TYPE (CallyTexture, cally_texture, CALLY_TYPE_ACTOR)
@@ -100,10 +100,10 @@ cally_texture_real_initialize (AtkObject *obj,
   obj->role = ATK_ROLE_IMAGE;
 }
 
-static G_CONST_RETURN gchar *
+static const gchar *
 cally_texture_get_description (AtkObject *obj)
 {
-  G_CONST_RETURN gchar *description = NULL;
+  const gchar *description = NULL;
 
   g_return_val_if_fail (CALLY_IS_TEXTURE (obj), NULL);
 

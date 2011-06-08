@@ -52,8 +52,8 @@ static void cally_stage_class_init (CallyStageClass *klass);
 static void cally_stage_init       (CallyStage      *stage);
 
 /* AtkObject.h */
-static G_CONST_RETURN gchar *cally_stage_get_name        (AtkObject *obj);
-static G_CONST_RETURN gchar *cally_stage_get_description (AtkObject *obj);
+static const gchar          *cally_stage_get_name        (AtkObject *obj);
+static const gchar          *cally_stage_get_description (AtkObject *obj);
 static void                  cally_stage_real_initialize (AtkObject *obj,
                                                           gpointer   data);
 static AtkStateSet*          cally_stage_ref_state_set   (AtkObject *obj);
@@ -214,10 +214,10 @@ cally_stage_new (ClutterActor *actor)
 }
 
 /* AtkObject.h */
-static G_CONST_RETURN gchar *
+static const gchar *
 cally_stage_get_name (AtkObject *obj)
 {
-  G_CONST_RETURN gchar *name = NULL;
+  const gchar *name = NULL;
 
   g_return_val_if_fail (CALLY_IS_STAGE (obj), NULL);
 
@@ -230,10 +230,10 @@ cally_stage_get_name (AtkObject *obj)
   return name;
 }
 
-static G_CONST_RETURN gchar *
+static const gchar *
 cally_stage_get_description (AtkObject *obj)
 {
-  G_CONST_RETURN gchar *description = NULL;
+  const gchar *description = NULL;
 
   g_return_val_if_fail (CALLY_IS_STAGE (obj), NULL);
 

@@ -81,7 +81,7 @@ static void cally_clone_init       (CallyClone *clone);
 /* AtkObject */
 static void                  cally_clone_real_initialize (AtkObject *obj,
                                                            gpointer   data);
-static G_CONST_RETURN gchar *cally_clone_get_description (AtkObject *obj);
+static const gchar          *cally_clone_get_description (AtkObject *obj);
 
 
 G_DEFINE_TYPE (CallyClone, cally_clone, CALLY_TYPE_ACTOR)
@@ -138,10 +138,10 @@ cally_clone_real_initialize (AtkObject *obj,
   obj->role = ATK_ROLE_IMAGE;
 }
 
-static G_CONST_RETURN gchar *
+static const gchar *
 cally_clone_get_description (AtkObject *obj)
 {
-  G_CONST_RETURN gchar *description = NULL;
+  const gchar *description = NULL;
 
   g_return_val_if_fail (CALLY_IS_CLONE (obj), NULL);
 
