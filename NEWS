@@ -1,3 +1,55 @@
+Clutter 1.6.16                                                       2011-06-14
+===============================================================================
+
+  • List of changes since Clutter 1.6.14
+
+    » Handle pressing bare modifiers on OSX.
+
+    » Fix the flags passed when creating the CoglAtlas for the Pango glyphs
+      cache, to avoid issues when running on platforms without FBO support.
+
+    » Use the GL_IMG_TEXTURE_NPOT extension as a fall-back for the
+      functionally equivalent GL_OES_TEXTURE_NPOT one.
+
+    » Make sure to combine multiple clipped redraws.
+
+    » Fix the maximum texture units detection on fixed function pipelines.
+
+    » Avoid doing unnecessary work when destroying actors — especially the
+      Stage.
+
+    » Do not segfault when disposing an Input device without a master.
+
+    » Use the correct size when setting up the viewport with Offscreen
+      effects.
+
+    » Implement the paint volume detection in ClutterText using the ink
+      rectangle instead of the logical one, to allow glyphs spilling.
+
+    » Fix the can_hardware_repeat wrapper, and avoid the creation of
+      multiple weak materials.
+
+    » Fix a leak in the CoglVertexBuffer.
+
+  • List of bugs fixes since Clutter 1.6.14
+
+    #650597 - clutter-id-pool: fix warning on bad pick
+    #650650 - clutter-offscreen-effect: use target size when setting up
+              the viewport
+    #650966 - CoglPipeline doesn't support any layers on fixed function
+              hardware
+    #650979 - cogl-pipeline-fragend-fixed: Fix enabling texture targets
+
+    #2599 - The paint volume for ClutterText is wrong
+    #2652 - clutter_actor_queue_redraw() on destroyed stage
+    #2655 - segfault when disposing a slave device without a master
+    #2656 - Clutter can crash when destroying a stage from an event
+
+Many thanks to:
+
+  Neil Roberts, Craig R. Hughes, Dan Winship, James Athey,
+  Kjartan Maraas, Peter Ward, Robert Bragg, Tomeu Vizoso
+
 Clutter 1.6.14                                                       2011-04-05
 ===============================================================================
 
