@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-04-05 18:44+0100\n"
+"POT-Creation-Date: 2011-06-14 14:19+0100\n"
 "PO-Revision-Date: 2011-03-22 15:07+0000\n"
 "Last-Translator: veeven <veeven@gmail.com>\n"
 "Language-Team: Telugu <te@li.org>\n"
@@ -1397,7 +1397,7 @@ msgstr ""
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1341 clutter/clutter-text.c:2667
+#: clutter/clutter-stage.c:1341 clutter/clutter-text.c:2844
 msgid "Cursor Visible"
 msgstr ""
 
@@ -1549,191 +1549,191 @@ msgstr ""
 msgid "Spacing between rows"
 msgstr ""
 
-#: clutter/clutter-text.c:2554
+#: clutter/clutter-text.c:2731
 msgid "Font Name"
 msgstr ""
 
-#: clutter/clutter-text.c:2555
+#: clutter/clutter-text.c:2732
 msgid "The font to be used by the text"
 msgstr ""
 
-#: clutter/clutter-text.c:2572
+#: clutter/clutter-text.c:2749
 msgid "Font Description"
 msgstr ""
 
-#: clutter/clutter-text.c:2573
+#: clutter/clutter-text.c:2750
 msgid "The font description to be used"
 msgstr ""
 
-#: clutter/clutter-text.c:2589
+#: clutter/clutter-text.c:2766
 msgid "Text"
 msgstr "పాఠ్యం"
 
-#: clutter/clutter-text.c:2590
+#: clutter/clutter-text.c:2767
 msgid "The text to render"
 msgstr ""
 
-#: clutter/clutter-text.c:2604
+#: clutter/clutter-text.c:2781
 msgid "Font Color"
 msgstr ""
 
-#: clutter/clutter-text.c:2605
+#: clutter/clutter-text.c:2782
 msgid "Color of the font used by the text"
 msgstr ""
 
-#: clutter/clutter-text.c:2619
+#: clutter/clutter-text.c:2796
 msgid "Editable"
 msgstr ""
 
-#: clutter/clutter-text.c:2620
+#: clutter/clutter-text.c:2797
 msgid "Whether the text is editable"
 msgstr ""
 
-#: clutter/clutter-text.c:2635
+#: clutter/clutter-text.c:2812
 msgid "Selectable"
 msgstr ""
 
-#: clutter/clutter-text.c:2636
+#: clutter/clutter-text.c:2813
 msgid "Whether the text is selectable"
 msgstr ""
 
-#: clutter/clutter-text.c:2650
+#: clutter/clutter-text.c:2827
 msgid "Activatable"
 msgstr ""
 
-#: clutter/clutter-text.c:2651
+#: clutter/clutter-text.c:2828
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr ""
 
-#: clutter/clutter-text.c:2668
+#: clutter/clutter-text.c:2845
 msgid "Whether the input cursor is visible"
 msgstr ""
 
-#: clutter/clutter-text.c:2682 clutter/clutter-text.c:2683
+#: clutter/clutter-text.c:2859 clutter/clutter-text.c:2860
 msgid "Cursor Color"
 msgstr ""
 
-#: clutter/clutter-text.c:2697
+#: clutter/clutter-text.c:2874
 msgid "Cursor Color Set"
 msgstr ""
 
-#: clutter/clutter-text.c:2698
+#: clutter/clutter-text.c:2875
 msgid "Whether the cursor color has been set"
 msgstr ""
 
-#: clutter/clutter-text.c:2713
+#: clutter/clutter-text.c:2890
 msgid "Cursor Size"
 msgstr ""
 
-#: clutter/clutter-text.c:2714
+#: clutter/clutter-text.c:2891
 msgid "The width of the cursor, in pixels"
 msgstr ""
 
-#: clutter/clutter-text.c:2728
+#: clutter/clutter-text.c:2905
 msgid "Cursor Position"
 msgstr ""
 
-#: clutter/clutter-text.c:2729
+#: clutter/clutter-text.c:2906
 msgid "The cursor position"
 msgstr ""
 
-#: clutter/clutter-text.c:2744
+#: clutter/clutter-text.c:2921
 msgid "Selection-bound"
 msgstr ""
 
-#: clutter/clutter-text.c:2745
+#: clutter/clutter-text.c:2922
 msgid "The cursor position of the other end of the selection"
 msgstr ""
 
-#: clutter/clutter-text.c:2760 clutter/clutter-text.c:2761
+#: clutter/clutter-text.c:2937 clutter/clutter-text.c:2938
 msgid "Selection Color"
 msgstr ""
 
-#: clutter/clutter-text.c:2775
+#: clutter/clutter-text.c:2952
 msgid "Selection Color Set"
 msgstr ""
 
-#: clutter/clutter-text.c:2776
+#: clutter/clutter-text.c:2953
 msgid "Whether the selection color has been set"
 msgstr ""
 
-#: clutter/clutter-text.c:2791
+#: clutter/clutter-text.c:2968
 msgid "Attributes"
 msgstr ""
 
-#: clutter/clutter-text.c:2792
+#: clutter/clutter-text.c:2969
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr ""
 
-#: clutter/clutter-text.c:2814
+#: clutter/clutter-text.c:2991
 msgid "Use markup"
 msgstr ""
 
-#: clutter/clutter-text.c:2815
+#: clutter/clutter-text.c:2992
 msgid "Whether or not the text includes Pango markup"
 msgstr ""
 
-#: clutter/clutter-text.c:2831
+#: clutter/clutter-text.c:3008
 msgid "Line wrap"
 msgstr ""
 
-#: clutter/clutter-text.c:2832
+#: clutter/clutter-text.c:3009
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr ""
 
-#: clutter/clutter-text.c:2847
+#: clutter/clutter-text.c:3024
 msgid "Line wrap mode"
 msgstr ""
 
-#: clutter/clutter-text.c:2848
+#: clutter/clutter-text.c:3025
 msgid "Control how line-wrapping is done"
 msgstr ""
 
-#: clutter/clutter-text.c:2863
+#: clutter/clutter-text.c:3040
 msgid "Ellipsize"
 msgstr ""
 
-#: clutter/clutter-text.c:2864
+#: clutter/clutter-text.c:3041
 msgid "The preferred place to ellipsize the string"
 msgstr ""
 
-#: clutter/clutter-text.c:2880
+#: clutter/clutter-text.c:3057
 msgid "Line Alignment"
 msgstr ""
 
-#: clutter/clutter-text.c:2881
+#: clutter/clutter-text.c:3058
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr ""
 
-#: clutter/clutter-text.c:2897
+#: clutter/clutter-text.c:3074
 msgid "Justify"
 msgstr ""
 
-#: clutter/clutter-text.c:2898
+#: clutter/clutter-text.c:3075
 msgid "Whether the text should be justified"
 msgstr ""
 
-#: clutter/clutter-text.c:2913
+#: clutter/clutter-text.c:3090
 msgid "Password Character"
 msgstr ""
 
-#: clutter/clutter-text.c:2914
+#: clutter/clutter-text.c:3091
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 
-#: clutter/clutter-text.c:2928
+#: clutter/clutter-text.c:3105
 msgid "Max Length"
 msgstr ""
 
-#: clutter/clutter-text.c:2929
+#: clutter/clutter-text.c:3106
 msgid "Maximum length of the text inside the actor"
 msgstr ""
 
-#: clutter/clutter-text.c:2952
+#: clutter/clutter-text.c:3129
 msgid "Single Line Mode"
 msgstr ""
 
-#: clutter/clutter-text.c:2953
+#: clutter/clutter-text.c:3130
 msgid "Whether the text should be a single line"
 msgstr ""
 
