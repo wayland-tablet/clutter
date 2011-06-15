@@ -201,6 +201,8 @@ copy ..\..\..\clutter\clutter-flow-layout.h $(CopyDir)\include\clutter-$(Clutter
 
 copy ..\..\..\clutter\clutter-frame-source.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
+copy ..\..\..\clutter\clutter-gesture-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
 copy ..\..\..\clutter\clutter-group.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-input-device.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -258,6 +260,8 @@ copy ..\..\..\clutter\clutter-stage-manager.h $(CopyDir)\include\clutter-$(Clutt
 copy ..\..\..\clutter\clutter-stage-window.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-state.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-swipe-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-table-layout.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 

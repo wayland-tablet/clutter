@@ -451,6 +451,7 @@ clutter_child_meta_get_container
 clutter_child_meta_get_type
 clutter_clear_glyph_cache
 clutter_click_action_get_button
+clutter_click_action_get_coords
 clutter_click_action_get_state
 clutter_click_action_get_type
 clutter_click_action_new
@@ -573,6 +574,7 @@ clutter_event_set_key_symbol
 clutter_event_set_key_unicode
 clutter_event_set_related
 clutter_event_set_scroll_direction
+clutter_event_set_source
 clutter_event_set_source_device
 clutter_event_set_stage
 clutter_event_set_state
@@ -610,6 +612,13 @@ clutter_frame_source_add_full
 clutter_geometry_get_type
 clutter_geometry_intersects
 clutter_geometry_union
+
+clutter_gesture_action_get_motion_coords
+clutter_gesture_action_get_press_coords
+clutter_gesture_action_get_release_coords
+clutter_gesture_action_get_type
+clutter_gesture_action_new
+
 clutter_get_accessibility_enabled
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
@@ -892,6 +901,7 @@ clutter_scriptable_parse_custom_node
 clutter_scriptable_set_custom_property
 clutter_scriptable_set_id
 clutter_script_add_search_paths
+clutter_script_add_states
 clutter_script_connect_signals
 clutter_script_connect_signals_full
 clutter_script_ensure_objects
@@ -899,6 +909,7 @@ clutter_script_error_get_type
 clutter_script_error_quark
 clutter_script_get_object
 clutter_script_get_objects
+clutter_script_get_states
 clutter_script_get_type
 clutter_script_get_type_from_name
 clutter_script_list_objects
@@ -917,6 +928,7 @@ clutter_shader_compile
 clutter_shader_effect_get_program
 clutter_shader_effect_get_shader
 clutter_shader_effect_get_type
+clutter_shader_effect_new
 clutter_shader_effect_set_shader_source
 clutter_shader_effect_set_uniform
 clutter_shader_effect_set_uniform_value
@@ -1039,6 +1051,8 @@ clutter_state_set_key
 clutter_state_set_state
 clutter_state_warp_to_state
 clutter_static_color_get_type
+clutter_swipe_action_get_type
+clutter_swipe_action_new
 clutter_table_alignment_get_type
 clutter_table_layout_get_alignment
 clutter_table_layout_get_column_count
@@ -1116,6 +1130,7 @@ clutter_text_get_font_name
 clutter_text_get_justify
 clutter_text_get_line_alignment
 clutter_text_get_layout
+clutter_text_get_layout_offsets
 clutter_text_get_line_wrap
 clutter_text_get_line_wrap_mode
 clutter_text_get_max_length
