@@ -410,6 +410,8 @@ void                    clutter_event_set_source_device         (ClutterEvent   
                                                                  ClutterInputDevice     *device);
 
 ClutterInputDevice *    clutter_event_get_source_device         (const ClutterEvent     *event);
+void                    clutter_event_set_source                (ClutterEvent           *event,
+                                                                 ClutterActor           *actor);
 ClutterActor *          clutter_event_get_source                (const ClutterEvent     *event);
 void                    clutter_event_set_stage                 (ClutterEvent           *event,
                                                                  ClutterStage           *stage);
@@ -454,8 +456,7 @@ ClutterScrollDirection  clutter_event_get_scroll_direction      (const ClutterEv
 guint32                 clutter_keysym_to_unicode               (guint                   keyval);
 
 guint32                 clutter_get_current_event_time          (void);
-
-G_CONST_RETURN ClutterEvent *clutter_get_current_event          (void);
+const ClutterEvent *    clutter_get_current_event               (void);
 
 G_END_DECLS
 

@@ -29,9 +29,12 @@
 #ifndef __CLUTTER_SHADER_H__
 #define __CLUTTER_SHADER_H__
 
+#include <clutter/clutter-types.h>
 #include <clutter/clutter-shader-types.h>
 
 G_BEGIN_DECLS
+
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 
 #define CLUTTER_TYPE_SHADER         (clutter_shader_get_type ())
 #define CLUTTER_SHADER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), CLUTTER_TYPE_SHADER, ClutterShader))
@@ -46,6 +49,8 @@ G_BEGIN_DECLS
  * Error domain for #ClutterShader errors
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8
  */
 #define CLUTTER_SHADER_ERROR        (clutter_shader_error_quark ())
 
@@ -58,6 +63,8 @@ G_BEGIN_DECLS
  * #ClutterShader error enumeration
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8
  */
 typedef enum {
   CLUTTER_SHADER_ERROR_NO_ASM,
@@ -75,6 +82,8 @@ typedef struct _ClutterShaderClass   ClutterShaderClass;
  * and should be accessed using the provided API
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8: Use #ClutterShaderEffect instead
  */
 struct _ClutterShader
 {
@@ -89,6 +98,8 @@ struct _ClutterShader
  * The #ClutterShaderClass structure contains only private data
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8: Use #ClutterShaderEffectClass instead
  */
 struct _ClutterShaderClass
 {
@@ -96,8 +107,8 @@ struct _ClutterShaderClass
   GObjectClass parent_class;
 };
 
-GQuark                clutter_shader_error_quark              (void);
-GType                 clutter_shader_get_type                 (void) G_GNUC_CONST;
+GQuark clutter_shader_error_quark (void);
+GType clutter_shader_get_type (void) G_GNUC_CONST;
 
 ClutterShader *       clutter_shader_new                      (void);
 
@@ -117,8 +128,8 @@ void                  clutter_shader_set_fragment_source      (ClutterShader    
                                                                const gchar        *data,
                                                                gssize              length);
 
-G_CONST_RETURN gchar *clutter_shader_get_vertex_source        (ClutterShader      *shader);
-G_CONST_RETURN gchar *clutter_shader_get_fragment_source      (ClutterShader      *shader);
+const gchar *         clutter_shader_get_vertex_source        (ClutterShader      *shader);
+const gchar *         clutter_shader_get_fragment_source      (ClutterShader      *shader);
 
 void                  clutter_shader_set_uniform              (ClutterShader      *shader,
                                                                const gchar        *name,
@@ -130,6 +141,8 @@ CoglHandle            clutter_shader_get_cogl_vertex_shader   (ClutterShader    
 
 /* private */
 void                  _clutter_shader_release_all        (void);
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

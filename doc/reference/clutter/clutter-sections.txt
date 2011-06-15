@@ -1383,6 +1383,8 @@ clutter_script_list_objects
 ClutterScriptConnectFunc
 clutter_script_connect_signals
 clutter_script_connect_signals_full
+clutter_script_add_states
+clutter_script_get_states
 
 <SUBSECTION>
 clutter_script_get_type_from_name
@@ -1721,6 +1723,7 @@ clutter_interval_get_type
 <SECTION>
 <FILE>clutter-cairo-texture</FILE>
 <TITLE>ClutterCairoTexture</TITLE>
+CLUTTER_CAIRO_FORMAT_ARGB32
 ClutterCairoTexture
 ClutterCairoTextureClass
 clutter_cairo_texture_new
@@ -1810,6 +1813,8 @@ clutter_text_set_cursor_color
 clutter_text_get_cursor_color
 clutter_text_set_selection_color
 clutter_text_get_selection_color
+clutter_text_set_selected_text_color
+clutter_text_get_selected_text_color
 clutter_text_set_cursor_position
 clutter_text_get_cursor_position
 clutter_text_set_cursor_visible
@@ -1821,6 +1826,7 @@ clutter_text_get_cursor_size
 clutter_text_activate
 clutter_text_position_to_coords
 clutter_text_set_preedit_string
+clutter_text_get_layout_offsets
 
 <SUBSECTION Standard>
 CLUTTER_IS_TEXT
@@ -2447,9 +2453,13 @@ ClutterStatePrivate
 <TITLE>ClutterClickAction</TITLE>
 ClutterClickAction
 ClutterClickActionClass
+ClutterLongPressState
 clutter_click_action_new
+
+<SUBSECTION>
 clutter_click_action_get_button
 clutter_click_action_get_state
+clutter_click_action_get_coords
 
 <SUBSECTION>
 clutter_click_action_release
@@ -2512,6 +2522,7 @@ clutter_offscreen_effect_get_type
 ClutterShaderType
 ClutterShaderEffect
 ClutterShaderEffectClass
+clutter_shader_effect_new
 clutter_shader_effect_set_uniform
 clutter_shader_effect_set_uniform_value
 <SUBSECTION>
@@ -2665,4 +2676,42 @@ CLUTTER_TYPE_SNAP_CONSTRAINT
 <SUBSECTION Private>
 ClutterSnapConstraintClass
 clutter_snap_constraint_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-gesture-action</FILE>
+ClutterGestureAction
+ClutterGestureActionClass
+clutter_gesture_action_new
+clutter_gesture_action_get_press_coords
+clutter_gesture_action_get_motion_coords
+clutter_gesture_action_get_release_coords
+<SUBSECTION Standard>
+CLUTTER_GESTURE_ACTION
+CLUTTER_GESTURE_ACTION_CLASS
+CLUTTER_IS_GESTURE_ACTION
+CLUTTER_IS_GESTURE_ACTION_CLASS
+CLUTTER_GESTURE_ACTION_GET_CLASS
+CLUTTER_TYPE_GESTURE_ACTION
+<SUBSECTION Private>
+ClutterGestureActionPrivate
+clutter_gesture_action_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-swipe-action</FILE>
+ClutterSwipeAction
+ClutterSwipeActionClass
+ClutterSwipeDirection
+clutter_swipe_action_new
+<SUBSECTION Standard>
+CLUTTER_SWIPE_ACTION
+CLUTTER_SWIPE_ACTION_CLASS
+CLUTTER_IS_SWIPE_ACTION
+CLUTTER_IS_SWIPE_ACTION_CLASS
+CLUTTER_SWIPE_ACTION_GET_CLASS
+CLUTTER_TYPE_SWIPE_ACTION
+<SUBSECTION Private>
+ClutterSwipeActionPrivate
+clutter_swipe_action_get_type
 </SECTION>

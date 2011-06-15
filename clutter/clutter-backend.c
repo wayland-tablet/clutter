@@ -260,6 +260,15 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 
   g_type_class_add_private (gobject_class, sizeof (ClutterBackendPrivate));
 
+  /**
+   * ClutterBackend::resolution-changed:
+   * @backend: the #ClutterBackend that emitted the signal
+   *
+   * The ::resolution-changed signal is emitted each time the font
+   * resolutions has been changed through #ClutterSettings.
+   *
+   * Since: 1.0
+   */
   backend_signals[RESOLUTION_CHANGED] =
     g_signal_new (I_("resolution-changed"),
                   G_TYPE_FROM_CLASS (klass),
@@ -269,6 +278,15 @@ clutter_backend_class_init (ClutterBackendClass *klass)
                   _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * ClutterBackend::font-changed:
+   * @backend: the #ClutterBackend that emitted the signal
+   *
+   * The ::font-changed signal is emitted each time the font options
+   * have been changed through #ClutterSettings.
+   *
+   * Since: 1.0
+   */
   backend_signals[FONT_CHANGED] =
     g_signal_new (I_("font-changed"),
                   G_TYPE_FROM_CLASS (klass),
@@ -278,6 +296,15 @@ clutter_backend_class_init (ClutterBackendClass *klass)
                   _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * ClutterBackend::settings-changed:
+   * @backend: the #ClutterBackend that emitted the signal
+   *
+   * The ::settings-changed signal is emitted each time the #ClutterSettings
+   * properties have been changed.
+   *
+   * Since: 1.4
+   */
   backend_signals[SETTINGS_CHANGED] =
     g_signal_new (I_("settings-changed"),
                   G_TYPE_FROM_CLASS (klass),
@@ -451,17 +478,17 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
                         new_stage);
         }
 
-      _clutter_backend_ensure_context_internal (backend, new_stage);
-
       /* XXX: Until Cogl becomes fully responsible for backend windows
        * Clutter need to manually keep it informed of the current window size
        *
        * NB: This must be done after we ensure_context above because Cogl
        * always assumes there is a current GL context.
        */
-      if (new_stage)
+      if (new_stage != NULL)
         {
           float width, height;
+
+          _clutter_backend_ensure_context_internal (backend, new_stage);
 
           clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
 
@@ -474,7 +501,8 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
            * switch between stages.
            *
            * This dirty mechanism will ensure they are asserted before
-           * the next paint... */
+           * the next paint...
+           */
           _clutter_stage_dirty_viewport (stage);
           _clutter_stage_dirty_projection (stage);
         }
@@ -482,7 +510,7 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
       /* FIXME: With a NULL stage and thus no active context it may make more
        * sense to clean the context but then re call with the default stage 
        * so at least there is some kind of context in place (as to avoid
-       * potential issue of GL calls with no context)
+       * potential issue of GL calls with no context).
        */
       current_context_stage = new_stage;
     }
@@ -879,7 +907,7 @@ clutter_backend_set_font_name (ClutterBackend *backend,
  *
  * Deprecated: 1.4: Use #ClutterSettings:font-name instead
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_backend_get_font_name (ClutterBackend *backend)
 {
   ClutterBackendPrivate *priv;

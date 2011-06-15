@@ -10,7 +10,7 @@
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
 m4_define([clutter_minor_version], [7])
-m4_define([clutter_micro_version], [1])
+m4_define([clutter_micro_version], [3])
 
 # • for stable releases: increase the interface age by 1 for each release;
 #   if the API changes, set to 0. interface_age and binary_age are used to
@@ -207,7 +207,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_XLIB=1
           SUPPORT_GLX=1
 
-          CLUTTER_WINSYS=glx
+          CLUTTER_WINSYS=cogl
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
           CLUTTER_SONAME_INFIX=glx
@@ -238,7 +238,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_POWERVR_X11=1
 
-          CLUTTER_WINSYS=egl
+          CLUTTER_WINSYS=cogl
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
           # I think this winsys can be API and ABI compatible with the
@@ -275,7 +275,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_POWERVR_X11=1
 
-          CLUTTER_WINSYS=egl
+          CLUTTER_WINSYS=cogl
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
           CLUTTER_SONAME_INFIX=eglx
@@ -310,7 +310,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS $EVDEV_LIBS"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
 
-          CLUTTER_WINSYS=egl
+          CLUTTER_WINSYS=cogl
           CLUTTER_SONAME_INFIX=eglnative
         ],
 
@@ -323,7 +323,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_EGL_PLATFORM_GDL=1
 
           # The cex100 is a small specialization of the EGL backend
-          CLUTTER_WINSYS=egl
+          CLUTTER_WINSYS=cogl
           CLUTTER_SONAME_INFIX=cex100
 
           found_gdl=no
@@ -687,6 +687,38 @@ AS_CASE([$enable_debug],
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
+dnl === Enable deprecation guards ==================================================
+
+m4_define([deprecated_default],
+          [m4_if(m4_eval(clutter_minor_version % 2),
+                 [1],
+                 [no],
+                 [yes])])
+
+AC_ARG_ENABLE([deprecated],
+              [AS_HELP_STRING([--enable-deprecated=@<:@no/yes@:>@],
+                              [Whether deprecated symbols should be disabled when compiling Clutter])],
+              [],
+              [enable_deprecated=deprecated_default])
+
+AS_CASE([$enable_deprecated],
+
+        [no],
+        [
+          CLUTTER_DEPRECATED_CFLAGS="-DG_DISABLE_DEPRECATED -DG_DISABLE_SINGLE_INCLUDES -DCOGL_DISABLE_DEPRECATED -DCLUTTER_DISABLE_DEPRECATED"
+        ],
+
+        [yes],
+        [
+          CLUTTER_DEPRECATED_CFLAGS=""
+        ],
+
+        [AC_MSG_ERROR([Unknown argument for --enable-deprecated])]
+)
+
+AC_SUBST([CLUTTER_DEPRECATED_CFLAGS])
+
+
 dnl === Conformance test suite ================================================
 
 AC_ARG_ENABLE([conformance],
@@ -911,7 +943,7 @@ AC_CONFIG_FILES([
 
 	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
 
-	clutter/egl/clutter-cex100.h
+	clutter/cogl/clutter-cex100.h
 
 	tests/Makefile
 	tests/accessibility/Makefile
@@ -959,6 +991,7 @@ echo "        Clutter debug level: ${enable_debug}"
 echo "        Compiler flags: ${CFLAGS} ${MAINTAINER_CFLAGS}"
 echo "        Profiling enabled: ${enable_profile}"
 echo "        Enable coverage tests: ${enable_gcov}"
+echo "        Enable deprecated symbols: ${enable_deprecated}"
 
 # Documentation
 echo ""

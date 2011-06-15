@@ -53,7 +53,7 @@
 #include "config.h"
 #endif
 
-#include <cairo/cairo.h>
+#include <cairo.h>
 
 #include "clutter-stage.h"
 
@@ -1053,13 +1053,16 @@ clutter_stage_do_redraw (ClutterStage *stage)
 gboolean
 _clutter_stage_do_update (ClutterStage *stage)
 {
-  ClutterStagePrivate *priv;
+  ClutterStagePrivate *priv = stage->priv;
 
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+  /* if the stage is being destroyed, or if the destruction already
+   * happened and we don't have an StageWindow any more, then we
+   * should bail out
+   */
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage) || priv->impl == NULL)
+    return FALSE;
 
-  priv = stage->priv;
-
-  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
     return FALSE;
 
   /* NB: We need to ensure we have an up to date layout *before* we
@@ -2726,7 +2729,7 @@ clutter_stage_set_title (ClutterStage       *stage,
  *
  * Since: 0.4
  **/
-G_CONST_RETURN gchar *
+const gchar *
 clutter_stage_get_title (ClutterStage       *stage)
 {
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
