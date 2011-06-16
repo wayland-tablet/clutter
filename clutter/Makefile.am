@@ -85,8 +85,7 @@ source_h =					\
 	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-fixed-layout.h	\
 	$(srcdir)/clutter-flow-layout.h		\
-	$(srcdir)/clutter-frame-source.h        \
-	$(srcdir)/clutter-gesture-action.h 		\
+	$(srcdir)/clutter-gesture-action.h 	\
 	$(srcdir)/clutter-group.h 		\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
@@ -119,7 +118,6 @@ source_h =					\
 	$(srcdir)/clutter-texture.h 		\
         $(srcdir)/clutter-text.h                \
 	$(srcdir)/clutter-timeline.h 		\
-	$(srcdir)/clutter-timeout-pool.h 	\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
@@ -163,8 +161,7 @@ source_c = \
 	$(srcdir)/clutter-fixed-layout.c	\
 	$(srcdir)/clutter-flatten-effect.c	\
 	$(srcdir)/clutter-flow-layout.c		\
-	$(srcdir)/clutter-frame-source.c	\
-	$(srcdir)/clutter-gesture-action.c 		\
+	$(srcdir)/clutter-gesture-action.c 	\
 	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
@@ -198,7 +195,6 @@ source_c = \
 	$(srcdir)/clutter-texture.c 		\
 	$(srcdir)/clutter-text.c                \
 	$(srcdir)/clutter-timeline.c 		\
-	$(srcdir)/clutter-timeout-pool.c	\
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\
 	$(srcdir)/clutter-paint-volume.c 	\
@@ -226,7 +222,6 @@ source_h_priv = \
 	$(srcdir)/clutter-script-private.h		\
 	$(srcdir)/clutter-stage-manager-private.h	\
 	$(srcdir)/clutter-stage-private.h		\
-	$(srcdir)/clutter-timeout-interval.h    	\
 	$(NULL)
 
 # private source code; these should not be introspected
@@ -234,7 +229,6 @@ source_c_priv = \
 	$(srcdir)/clutter-event-translator.c	\
 	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-profile.c		\
-	$(srcdir)/clutter-timeout-interval.c    \
 	$(NULL)
 
 # built sources
