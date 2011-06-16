@@ -17,7 +17,6 @@ units_sources =
 # animation tests
 units_sources += \
 	test-animator.c			\
-	test-behaviours.c		\
 	test-score.c			\
 	test-state.c			\
 	test-timeline.c			\

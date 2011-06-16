@@ -32,73 +32,6 @@ static const gchar *test_unmerge =
 "  }"
 "]";
 
-static const gchar *test_behaviour =
-"["
-"  {"
-"    \"id\" : \"main-timeline\","
-"    \"type\" : \"ClutterTimeline\","
-"    \"duration\" : 5000,"
-"    \"loop\" : true"
-"  },"
-"  {"
-"    \"id\" : \"sine-alpha\","
-"    \"type\" : \"ClutterAlpha\","
-"    \"function\" : \"sine_alpha\","
-"    \"timeline\" : \"main-timeline\""
-"  },"
-"  {"
-"    \"id\"          : \"path-behaviour\","
-"    \"type\"        : \"ClutterBehaviourPath\","
-"    \"path\"        : \"M 50 50 L 100 100\","
-"    \"alpha\"       : {"
-"      \"timeline\" : \"main-timeline\","
-"      \"function\" : \"double_ramp_alpha\""
-"    }"
-"  },"
-"  {"
-"    \"id\"          : \"rotate-behaviour\","
-"    \"type\"        : \"ClutterBehaviourRotate\","
-"    \"angle-start\" : 0.0,"
-"    \"angle-end\"   : 360.0,"
-"    \"axis\"        : \"y-axis\","
-"    \"alpha\"       : \"sine-alpha\""
-"  },"
-"  {"
-"    \"id\"            : \"fade-behaviour\","
-"    \"type\"          : \"ClutterBehaviourOpacity\","
-"    \"opacity-start\" : 255,"
-"    \"opacity-end\"   : 0,"
-"    \"alpha\"         : {"
-"      \"id\"       : \"fade-alpha\","
-"      \"type\"     : \"ClutterAlpha\","
-"      \"timeline\" : \"main-timeline\","
-"      \"mode\"     : \"linear\""
-"    }"
-"  }"
-"]";
-
-gdouble
-sine_alpha (ClutterAlpha *alpha,
-            gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = clutter_alpha_get_timeline (alpha);
-
-  return sin (clutter_timeline_get_progress (timeline) * G_PI);
-}
-
-gdouble
-double_ramp_alpha (ClutterAlpha *alpha,
-                   gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = clutter_alpha_get_timeline (alpha);
-  gdouble progress = clutter_timeline_get_progress (timeline);
-
-  if (progress >= 0.5)
-    return 1.0 - progress;
-
-  return progress;
-}
-
 static gboolean
 blue_button_press (ClutterActor       *actor,
                    ClutterButtonEvent *event,
@@ -117,17 +50,7 @@ red_button_press (ClutterActor *actor,
                   ClutterButtonEvent *event,
                   gpointer            data)
 {
-  GObject *timeline;
-
   g_print ("[*] Pressed '%s'\n", clutter_get_script_id (G_OBJECT (actor)));
-
-  timeline = clutter_script_get_object (script, "main-timeline");
-  g_assert (CLUTTER_IS_TIMELINE (timeline));
-
-  if (!clutter_timeline_is_playing (CLUTTER_TIMELINE (timeline)))
-    clutter_timeline_start (CLUTTER_TIMELINE (timeline));
-  else
-    clutter_timeline_pause (CLUTTER_TIMELINE (timeline));
 
   return TRUE;
 }
@@ -145,16 +68,6 @@ test_script_main (int argc, char *argv[])
 
   script = clutter_script_new ();
   g_assert (CLUTTER_IS_SCRIPT (script));
-
-  clutter_script_load_from_data (script, test_behaviour, -1, &error);
-  if (error)
-    {
-      g_print ("*** Error:\n"
-               "***   %s\n", error->message);
-      g_error_free (error);
-      g_object_unref (script);
-      return EXIT_FAILURE;
-    }
 
   file = g_build_filename (TESTS_DATADIR, "test-script.json", NULL);
   clutter_script_load_from_file (script, file, &error);
