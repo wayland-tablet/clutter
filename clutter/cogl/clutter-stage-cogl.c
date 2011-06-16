@@ -41,7 +41,6 @@
 #include "clutter-private.h"
 #include "clutter-actor-private.h"
 #include "clutter-stage-private.h"
-#include "clutter-util.h"
 
 #ifdef COGL_HAS_X11_SUPPORT
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;

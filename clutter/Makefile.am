@@ -119,7 +119,6 @@ source_h =					\
 	$(srcdir)/clutter-timeline.h 		\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
-	$(srcdir)/clutter-util.h 		\
 	$(NULL)
 
 source_c = \

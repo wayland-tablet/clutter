@@ -100,7 +100,6 @@
 #include "clutter-timeline.h"
 #include "clutter-types.h"
 #include "clutter-units.h"
-#include "clutter-util.h"
 #include "clutter-version.h"
 
 #include "clutter-enum-types.h"
