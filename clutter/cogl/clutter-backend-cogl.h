@@ -41,8 +41,6 @@
 #include "../x11/clutter-backend-x11.h"
 #endif
 
-#include "clutter-egl.h"
-
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND_COGL                (_clutter_backend_cogl_get_type ())
@@ -98,7 +96,7 @@ void _clutter_events_tslib_init   (ClutterBackendCogl *backend);
 void _clutter_events_tslib_uninit (ClutterBackendCogl *backend);
 #endif
 
-const gchar *_clutter_backend_egl_get_vblank (void);
+const gchar *_clutter_backend_cogl_get_vblank (void);
 
 G_END_DECLS
 
