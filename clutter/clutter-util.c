@@ -23,42 +23,13 @@
  *
  */
 
-/**
- * SECTION:clutter-util
- * @short_description: Utility functions
- *
- * Various miscellaneous utilility functions.
- */
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
 #include <glib/gi18n-lib.h>
 
-#include "clutter-util.h"
 #include "clutter-main.h"
-
-/**
- * clutter_util_next_p2:
- * @a: Value to get the next power
- *
- * Calculates the nearest power of two, greater than or equal to @a.
- *
- * Return value: The nearest power of two, greater or equal to @a.
- *
- * Deprecated: 1.2
- */
-gint
-clutter_util_next_p2 (gint a)
-{
-  int rval = 1;
-
-  while (rval < a)
-    rval <<= 1;
-
-  return rval;
-}
 
 /*< private >
  * _clutter_gettext:

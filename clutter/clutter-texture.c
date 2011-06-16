@@ -55,7 +55,6 @@
 #include "clutter-private.h"
 #include "clutter-scriptable.h"
 #include "clutter-stage-private.h"
-#include "clutter-util.h"
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
