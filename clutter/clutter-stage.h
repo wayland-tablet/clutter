@@ -46,32 +46,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_STAGE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_STAGE))
 #define CLUTTER_STAGE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_STAGE, ClutterStageClass))
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-
-/**
- * CLUTTER_STAGE_WIDTH:
- *
- * Macro that evaluates to the width of the default stage
- *
- * Since: 0.2
- *
- * Deprecated: 1.2: Use clutter_actor_get_width() instead
- */
-#define CLUTTER_STAGE_WIDTH()           (clutter_actor_get_width (clutter_stage_get_default ()))
-
-/**
- * CLUTTER_STAGE_HEIGHT:
- *
- * Macro that evaluates to the height of the default stage
- *
- * Since: 0.2
- *
- * Deprecated: 1.2: use clutter_actor_get_height() instead
- */
-#define CLUTTER_STAGE_HEIGHT()          (clutter_actor_get_height (clutter_stage_get_default ()))
-
-#endif /* !CLUTTER_DISABLE_DEPRECATED */
-
 /**
  * ClutterPickMode:
  * @CLUTTER_PICK_NONE: Do not paint any actor
@@ -263,26 +237,12 @@ void                  clutter_stage_set_accept_focus  (ClutterStage *stage,
                                                        gboolean      accept_focus);
 gboolean              clutter_stage_get_accept_focus  (ClutterStage *stage);
 
-
 void                  clutter_stage_get_redraw_clip_bounds    (ClutterStage    *stage,
                                                                cairo_rectangle_int_t *clip);
 
 void                  clutter_stage_set_motion_events_enabled (ClutterStage *stage,
                                                                gboolean      enabled);
 gboolean              clutter_stage_get_motion_events_enabled (ClutterStage *stage);
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-
-/* Commodity macro, for mallum only */
-#define clutter_stage_add(stage,actor)                  G_STMT_START {  \
-  if (CLUTTER_IS_STAGE ((stage)) && CLUTTER_IS_ACTOR ((actor)))         \
-    {                                                                   \
-      ClutterContainer *_container = (ClutterContainer *) (stage);      \
-      ClutterActor *_actor = (ClutterActor *) (actor);                  \
-      clutter_container_add_actor (_container, _actor);                 \
-    }                                                   } G_STMT_END
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
