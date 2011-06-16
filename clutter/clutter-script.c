@@ -236,7 +236,6 @@
 
 #include "clutter-actor.h"
 #include "clutter-alpha.h"
-#include "clutter-behaviour.h"
 #include "clutter-container.h"
 #include "clutter-stage.h"
 #include "clutter-state.h"
