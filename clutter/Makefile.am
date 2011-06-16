@@ -114,7 +114,6 @@ source_h =					\
 	$(srcdir)/clutter-script.h		\
 	$(srcdir)/clutter-scriptable.h		\
 	$(srcdir)/clutter-settings.h		\
-	$(srcdir)/clutter-shader.h		\
 	$(srcdir)/clutter-shader-effect.h	\
 	$(srcdir)/clutter-shader-types.h	\
 	$(srcdir)/clutter-swipe-action.h	\
@@ -201,7 +200,6 @@ source_c = \
 	$(srcdir)/clutter-script-parser.c	\
 	$(srcdir)/clutter-scriptable.c		\
 	$(srcdir)/clutter-settings.c		\
-	$(srcdir)/clutter-shader.c		\
 	$(srcdir)/clutter-shader-effect.c	\
 	$(srcdir)/clutter-shader-types.c	\
 	$(srcdir)/clutter-swipe-action.c	\
