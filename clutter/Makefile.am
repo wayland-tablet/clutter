@@ -89,7 +89,6 @@ source_h =					\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
-	$(srcdir)/clutter-keysyms-compat.h	\
 	$(srcdir)/clutter-layout-manager.h	\
 	$(srcdir)/clutter-layout-meta.h		\
 	$(srcdir)/clutter-list-model.h		\

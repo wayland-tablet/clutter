@@ -2209,9 +2209,4 @@
 #define CLUTTER_KEY_Next_VMode 0x1008fe22
 #define CLUTTER_KEY_Prev_VMode 0x1008fe23
 
-/* include the compatibility header */
-#ifndef CLUTTER_DISABLE_DEPRECATED
-#include "clutter-keysyms-compat.h"
-#endif
-
 #endif /* __CLUTTER_KEYSYMS_H__ */
