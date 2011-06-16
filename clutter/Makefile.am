@@ -58,13 +58,6 @@ source_h =					\
 	$(srcdir)/clutter-animation.h           \
 	$(srcdir)/clutter-animator.h		\
 	$(srcdir)/clutter-backend.h		\
-	$(srcdir)/clutter-behaviour.h     	\
-	$(srcdir)/clutter-behaviour-depth.h 	\
-	$(srcdir)/clutter-behaviour-ellipse.h 	\
-	$(srcdir)/clutter-behaviour-opacity.h 	\
-	$(srcdir)/clutter-behaviour-path.h 	\
-	$(srcdir)/clutter-behaviour-rotate.h 	\
-	$(srcdir)/clutter-behaviour-scale.h 	\
 	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-bin-layout.h		\
@@ -143,13 +136,6 @@ source_c = \
 	$(srcdir)/clutter-animation.c		\
 	$(srcdir)/clutter-animator.c		\
 	$(srcdir)/clutter-backend.c		\
-	$(srcdir)/clutter-behaviour.c 		\
-	$(srcdir)/clutter-behaviour-depth.c	\
-	$(srcdir)/clutter-behaviour-ellipse.c	\
-	$(srcdir)/clutter-behaviour-opacity.c	\
-	$(srcdir)/clutter-behaviour-path.c	\
-	$(srcdir)/clutter-behaviour-rotate.c	\
-	$(srcdir)/clutter-behaviour-scale.c	\
 	$(srcdir)/clutter-bezier.c		\
 	$(srcdir)/clutter-bind-constraint.c	\
 	$(srcdir)/clutter-binding-pool.c	\
