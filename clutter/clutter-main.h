@@ -127,17 +127,6 @@ guint            clutter_threads_add_timeout_full      (gint           priority,
                                                         gpointer       data,
                                                         GDestroyNotify notify);
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-guint            clutter_threads_add_frame_source      (guint          fps,
-						        GSourceFunc    func,
-						        gpointer       data);
-guint            clutter_threads_add_frame_source_full (gint           priority,
-						        guint          fps,
-						        GSourceFunc    func,
-						        gpointer       data,
-						        GDestroyNotify notify);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
 guint            clutter_threads_add_repaint_func      (GSourceFunc    func,
                                                         gpointer       data,
                                                         GDestroyNotify notify);

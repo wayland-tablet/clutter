@@ -100,7 +100,6 @@
 #include "clutter-device-manager-private.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
-#include "clutter-frame-source.h"
 #include "clutter-main.h"
 #include "clutter-master-clock.h"
 #include "clutter-private.h"
@@ -963,9 +962,7 @@ clutter_threads_add_idle (GSourceFunc func,
  *
  * It is important to note that, due to how the Clutter main loop is
  * implemented, the timing will not be accurate and it will not try to
- * "keep up" with the interval. A more reliable source is available
- * using clutter_threads_add_frame_source_full(), which is also internally
- * used by #ClutterTimeline.
+ * "keep up" with the interval.
  *
  * See also clutter_threads_add_idle_full().
  *
