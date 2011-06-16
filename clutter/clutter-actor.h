@@ -461,10 +461,6 @@ void                  clutter_actor_set_name                  (ClutterActor     
                                                                const gchar           *name);
 const gchar *         clutter_actor_get_name                  (ClutterActor          *self);
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-guint32               clutter_actor_get_gid                   (ClutterActor          *self);
-#endif
-
 void                  clutter_actor_set_clip                  (ClutterActor          *self,
                                                                gfloat                 xoff,
                                                                gfloat                 yoff,
@@ -532,25 +528,6 @@ gboolean              clutter_actor_get_reactive              (ClutterActor     
 gboolean              clutter_actor_event                     (ClutterActor          *actor,
                                                                ClutterEvent          *event,
                                                                gboolean               capture);
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-ClutterActor *        clutter_get_actor_by_gid                (guint32                id_);
-#endif
-
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-gboolean              clutter_actor_set_shader                (ClutterActor          *self,
-                                                               ClutterShader         *shader);
-ClutterShader *       clutter_actor_get_shader                (ClutterActor          *self);
-void                  clutter_actor_set_shader_param          (ClutterActor          *self,
-                                                               const gchar           *param,
-                                                               const GValue          *value);
-void                  clutter_actor_set_shader_param_int      (ClutterActor          *self,
-                                                               const gchar           *param,
-                                                               gint                   value);
-void                  clutter_actor_set_shader_param_float    (ClutterActor          *self,
-                                                               const gchar           *param,
-                                                               gfloat                 value);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 void     clutter_actor_set_anchor_point               (ClutterActor   *self,
                                                        gfloat          anchor_x,
