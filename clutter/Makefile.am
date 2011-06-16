@@ -74,7 +74,6 @@ source_h =					\
 	$(srcdir)/clutter-constraint.h		\
 	$(srcdir)/clutter-container.h		\
 	$(srcdir)/clutter-deform-effect.h	\
-	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-desaturate-effect.h	\
 	$(srcdir)/clutter-device-manager.h	\
 	$(srcdir)/clutter-drag-action.h		\

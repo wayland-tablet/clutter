@@ -28,8 +28,6 @@
 
 #define __CLUTTER_H_INSIDE__
 
-#include "clutter-deprecated.h"
-
 #include "clutter-config.h"
 
 #include "clutter-action.h"
