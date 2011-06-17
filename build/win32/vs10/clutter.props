@@ -38,7 +38,7 @@ if exist ..\..\..\clutter\clutter-enum-types.h goto DONE_CLUTTER_ENUM_H
 
 cd ..\..\..\clutter
 
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.h.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-behaviour.h ./clutter-behaviour-depth.h ./clutter-behaviour-ellipse.h ./clutter-behaviour-opacity.h ./clutter-behaviour-path.h ./clutter-behaviour-rotate.h ./clutter-behaviour-scale.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-deprecated.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-frame-source.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-keysyms-compat.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-timeout-pool.h ./clutter-types.h ./clutter-units.h ./clutter-util.h ./win32/clutter-win32.h &gt; clutter-enum-types.h
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.h.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-types.h ./clutter-units.h ./win32/clutter-win32.h &gt; clutter-enum-types.h
 
 cd ..\build\win32\vs10
 
@@ -49,7 +49,7 @@ if exist ..\..\..\clutter\clutter-enum-types.c goto DONE_CLUTTER_ENUM_C
 
 cd ..\..\..\clutter
 
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.c.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-behaviour.h ./clutter-behaviour-depth.h ./clutter-behaviour-ellipse.h ./clutter-behaviour-opacity.h ./clutter-behaviour-path.h ./clutter-behaviour-rotate.h ./clutter-behaviour-scale.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-deprecated.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-frame-source.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-keysyms-compat.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-timeout-pool.h ./clutter-types.h ./clutter-units.h ./clutter-util.h ./win32/clutter-win32.h &gt; clutter-enum-types.c
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.c.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-types.h ./clutter-units.h ./win32/clutter-win32.h &gt; clutter-enum-types.c
 
 cd ..\build\win32\vs10
 
@@ -129,20 +129,6 @@ copy ..\..\..\clutter\clutter-animator.h $(CopyDir)\include\clutter-$(ClutterApi
 
 copy ..\..\..\clutter\clutter-backend.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
-copy ..\..\..\clutter\clutter-behaviour.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
-copy ..\..\..\clutter\clutter-behaviour-depth.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
-copy ..\..\..\clutter\clutter-behaviour-ellipse.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
-copy ..\..\..\clutter\clutter-behaviour-opacity.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
-copy ..\..\..\clutter\clutter-behaviour-path.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
-copy ..\..\..\clutter\clutter-behaviour-rotate.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
-copy ..\..\..\clutter\clutter-behaviour-scale.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
 copy ..\..\..\clutter\clutter-bind-constraint.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-binding-pool.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -177,8 +163,6 @@ copy ..\..\..\clutter\clutter-container.h $(CopyDir)\include\clutter-$(ClutterAp
 
 copy ..\..\..\clutter\clutter-deform-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
-copy ..\..\..\clutter\clutter-deprecated.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
 copy ..\..\..\clutter\clutter-desaturate-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-device-manager.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -199,8 +183,6 @@ copy ..\..\..\clutter\clutter-fixed-layout.h $(CopyDir)\include\clutter-$(Clutte
 
 copy ..\..\..\clutter\clutter-flow-layout.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
-copy ..\..\..\clutter\clutter-frame-source.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
 copy ..\..\..\clutter\clutter-gesture-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-group.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -210,8 +192,6 @@ copy ..\..\..\clutter\clutter-input-device.h $(CopyDir)\include\clutter-$(Clutte
 copy ..\..\..\clutter\clutter-interval.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-keysyms.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
-copy ..\..\..\clutter\clutter-keysyms-compat.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-layout-manager.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
@@ -245,8 +225,6 @@ copy ..\..\..\clutter\clutter-scriptable.h $(CopyDir)\include\clutter-$(ClutterA
 
 copy ..\..\..\clutter\clutter-settings.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
-copy ..\..\..\clutter\clutter-shader.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
 copy ..\..\..\clutter\clutter-shader-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-shader-types.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -271,13 +249,9 @@ copy ..\..\..\clutter\clutter-text.h $(CopyDir)\include\clutter-$(ClutterApiVers
 
 copy ..\..\..\clutter\clutter-timeline.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
-copy ..\..\..\clutter\clutter-timeout-pool.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
 copy ..\..\..\clutter\clutter-types.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-units.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
-copy ..\..\..\clutter\clutter-util.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-version.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
