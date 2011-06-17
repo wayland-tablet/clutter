@@ -143,7 +143,9 @@ void
 _clutter_paint_volume_set_from_volume (ClutterPaintVolume       *pv,
                                        const ClutterPaintVolume *src)
 {
+  gboolean is_static = pv->is_static;
   memcpy (pv, src, sizeof (ClutterPaintVolume));
+  pv->is_static = is_static;
 }
 
 /**
@@ -188,7 +190,6 @@ clutter_paint_volume_set_origin (ClutterPaintVolume  *pv,
   int i;
 
   g_return_if_fail (pv != NULL);
-  g_return_if_fail (pv->is_axis_aligned);
 
   dx = origin->x - pv->vertices[0].x;
   dy = origin->y - pv->vertices[0].y;
@@ -423,8 +424,10 @@ clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
  *      union
  * @another_pv: A second #ClutterPaintVolume to union with @pv
  *
- * Updates the geometry of @pv to be the union bounding box that
- * encompases @pv and @another_pv.
+ * Updates the geometry of @pv to encompass @pv and @another_pv.
+ *
+ * <note>There are no guarantees about how precisely the two volumes
+ * will be encompassed.</note>
  *
  * Since: 1.6
  */
@@ -433,11 +436,12 @@ clutter_paint_volume_union (ClutterPaintVolume *pv,
                             const ClutterPaintVolume *another_pv)
 {
   ClutterPaintVolume aligned_pv;
-  static const int key_vertices[4] = { 0, 1, 3, 4 };
 
   g_return_if_fail (pv != NULL);
-  g_return_if_fail (pv->is_axis_aligned);
   g_return_if_fail (another_pv != NULL);
+
+  /* Both volumes have to belong to the same local coordinate space */
+  g_return_if_fail (pv->actor == another_pv->actor);
 
   /* NB: we only have to update vertices 0, 1, 3 and 4
    * (See the ClutterPaintVolume typedef for more details) */
@@ -451,12 +455,12 @@ clutter_paint_volume_union (ClutterPaintVolume *pv,
 
   if (pv->is_empty)
     {
-      int i;
-      for (i = 0; i < 4; i++)
-        pv->vertices[key_vertices[i]] = another_pv->vertices[key_vertices[i]];
-      pv->is_2d = another_pv->is_2d;
+      _clutter_paint_volume_set_from_volume (pv, another_pv);
       goto done;
     }
+
+  if (!pv->is_axis_aligned)
+    _clutter_paint_volume_axis_align (pv);
 
   if (!another_pv->is_axis_aligned)
     {
@@ -549,33 +553,45 @@ done:
 void
 _clutter_paint_volume_complete (ClutterPaintVolume *pv)
 {
-  if (pv->is_complete || pv->is_empty)
+  float dx_l2r, dy_l2r, dz_l2r;
+  float dx_t2b, dy_t2b, dz_t2b;
+
+  if (pv->is_empty)
     return;
 
-  /* TODO: it is possible to complete non axis aligned volumes too. */
-  g_return_if_fail (pv->is_axis_aligned);
+  /* Find the vector that takes us from any vertex on the left face to
+   * the corresponding vertex on the right face. */
+  dx_l2r = pv->vertices[1].x - pv->vertices[0].x;
+  dy_l2r = pv->vertices[1].y - pv->vertices[0].y;
+  dz_l2r = pv->vertices[1].z - pv->vertices[0].z;
+
+  /* Find the vector that takes us from any vertex on the top face to
+   * the corresponding vertex on the bottom face. */
+  dx_t2b = pv->vertices[3].x - pv->vertices[0].x;
+  dy_t2b = pv->vertices[3].y - pv->vertices[0].y;
+  dz_t2b = pv->vertices[3].z - pv->vertices[0].z;
 
   /* front-bottom-right */
-  pv->vertices[2].x = pv->vertices[1].x;
-  pv->vertices[2].y = pv->vertices[3].y;
-  pv->vertices[2].z = pv->vertices[0].z;
+  pv->vertices[2].x = pv->vertices[3].x + dx_l2r;
+  pv->vertices[2].y = pv->vertices[3].y + dy_l2r;
+  pv->vertices[2].z = pv->vertices[3].z + dz_l2r;
 
   if (G_UNLIKELY (!pv->is_2d))
     {
       /* back-top-right */
-      pv->vertices[5].x = pv->vertices[1].x;
-      pv->vertices[5].y = pv->vertices[0].y;
-      pv->vertices[5].z = pv->vertices[4].z;
+      pv->vertices[5].x = pv->vertices[4].x + dx_l2r;
+      pv->vertices[5].y = pv->vertices[4].y + dy_l2r;
+      pv->vertices[5].z = pv->vertices[4].z + dz_l2r;
 
       /* back-bottom-right */
-      pv->vertices[6].x = pv->vertices[1].x;
-      pv->vertices[6].y = pv->vertices[3].y;
-      pv->vertices[6].z = pv->vertices[4].z;
+      pv->vertices[6].x = pv->vertices[5].x + dx_t2b;
+      pv->vertices[6].y = pv->vertices[5].y + dy_t2b;
+      pv->vertices[6].z = pv->vertices[5].z + dz_t2b;
 
       /* back-bottom-left */
-      pv->vertices[7].x = pv->vertices[0].x;
-      pv->vertices[7].y = pv->vertices[3].y;
-      pv->vertices[7].z = pv->vertices[4].z;
+      pv->vertices[7].x = pv->vertices[4].x + dx_t2b;
+      pv->vertices[7].y = pv->vertices[4].y + dy_t2b;
+      pv->vertices[7].z = pv->vertices[4].z + dz_t2b;
     }
 
   pv->is_complete = TRUE;
@@ -753,8 +769,6 @@ _clutter_paint_volume_axis_align (ClutterPaintVolume *pv)
   if (pv->is_empty)
     return;
 
-  g_return_if_fail (pv->is_complete);
-
   if (G_LIKELY (pv->is_axis_aligned))
     return;
 
@@ -765,6 +779,9 @@ _clutter_paint_volume_axis_align (ClutterPaintVolume *pv)
       pv->is_axis_aligned = TRUE;
       return;
     }
+
+  if (!pv->is_complete)
+    _clutter_paint_volume_complete (pv);
 
   origin = pv->vertices[0];
   max_x = pv->vertices[0].x;
