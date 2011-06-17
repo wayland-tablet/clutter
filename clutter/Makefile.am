@@ -58,13 +58,6 @@ source_h =					\
 	$(srcdir)/clutter-animation.h           \
 	$(srcdir)/clutter-animator.h		\
 	$(srcdir)/clutter-backend.h		\
-	$(srcdir)/clutter-behaviour.h     	\
-	$(srcdir)/clutter-behaviour-depth.h 	\
-	$(srcdir)/clutter-behaviour-ellipse.h 	\
-	$(srcdir)/clutter-behaviour-opacity.h 	\
-	$(srcdir)/clutter-behaviour-path.h 	\
-	$(srcdir)/clutter-behaviour-rotate.h 	\
-	$(srcdir)/clutter-behaviour-scale.h 	\
 	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-bin-layout.h		\
@@ -81,7 +74,6 @@ source_h =					\
 	$(srcdir)/clutter-constraint.h		\
 	$(srcdir)/clutter-container.h		\
 	$(srcdir)/clutter-deform-effect.h	\
-	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-desaturate-effect.h	\
 	$(srcdir)/clutter-device-manager.h	\
 	$(srcdir)/clutter-drag-action.h		\
@@ -91,13 +83,11 @@ source_h =					\
 	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-fixed-layout.h	\
 	$(srcdir)/clutter-flow-layout.h		\
-	$(srcdir)/clutter-frame-source.h        \
-	$(srcdir)/clutter-gesture-action.h 		\
+	$(srcdir)/clutter-gesture-action.h 	\
 	$(srcdir)/clutter-group.h 		\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
-	$(srcdir)/clutter-keysyms-compat.h	\
 	$(srcdir)/clutter-layout-manager.h	\
 	$(srcdir)/clutter-layout-meta.h		\
 	$(srcdir)/clutter-list-model.h		\
@@ -113,7 +103,6 @@ source_h =					\
 	$(srcdir)/clutter-script.h		\
 	$(srcdir)/clutter-scriptable.h		\
 	$(srcdir)/clutter-settings.h		\
-	$(srcdir)/clutter-shader.h		\
 	$(srcdir)/clutter-shader-effect.h	\
 	$(srcdir)/clutter-shader-types.h	\
 	$(srcdir)/clutter-swipe-action.h	\
@@ -126,10 +115,8 @@ source_h =					\
 	$(srcdir)/clutter-texture.h 		\
         $(srcdir)/clutter-text.h                \
 	$(srcdir)/clutter-timeline.h 		\
-	$(srcdir)/clutter-timeout-pool.h 	\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
-	$(srcdir)/clutter-util.h 		\
 	$(NULL)
 
 source_c = \
@@ -143,13 +130,6 @@ source_c = \
 	$(srcdir)/clutter-animation.c		\
 	$(srcdir)/clutter-animator.c		\
 	$(srcdir)/clutter-backend.c		\
-	$(srcdir)/clutter-behaviour.c 		\
-	$(srcdir)/clutter-behaviour-depth.c	\
-	$(srcdir)/clutter-behaviour-ellipse.c	\
-	$(srcdir)/clutter-behaviour-opacity.c	\
-	$(srcdir)/clutter-behaviour-path.c	\
-	$(srcdir)/clutter-behaviour-rotate.c	\
-	$(srcdir)/clutter-behaviour-scale.c	\
 	$(srcdir)/clutter-bezier.c		\
 	$(srcdir)/clutter-bind-constraint.c	\
 	$(srcdir)/clutter-binding-pool.c	\
@@ -176,8 +156,7 @@ source_c = \
 	$(srcdir)/clutter-fixed-layout.c	\
 	$(srcdir)/clutter-flatten-effect.c	\
 	$(srcdir)/clutter-flow-layout.c		\
-	$(srcdir)/clutter-frame-source.c	\
-	$(srcdir)/clutter-gesture-action.c 		\
+	$(srcdir)/clutter-gesture-action.c 	\
 	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
@@ -199,7 +178,6 @@ source_c = \
 	$(srcdir)/clutter-script-parser.c	\
 	$(srcdir)/clutter-scriptable.c		\
 	$(srcdir)/clutter-settings.c		\
-	$(srcdir)/clutter-shader.c		\
 	$(srcdir)/clutter-shader-effect.c	\
 	$(srcdir)/clutter-shader-types.c	\
 	$(srcdir)/clutter-swipe-action.c	\
@@ -212,7 +190,6 @@ source_c = \
 	$(srcdir)/clutter-texture.c 		\
 	$(srcdir)/clutter-text.c                \
 	$(srcdir)/clutter-timeline.c 		\
-	$(srcdir)/clutter-timeout-pool.c	\
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\
 	$(srcdir)/clutter-paint-volume.c 	\
@@ -240,7 +217,6 @@ source_h_priv = \
 	$(srcdir)/clutter-script-private.h		\
 	$(srcdir)/clutter-stage-manager-private.h	\
 	$(srcdir)/clutter-stage-private.h		\
-	$(srcdir)/clutter-timeout-interval.h    	\
 	$(NULL)
 
 # private source code; these should not be introspected
@@ -248,7 +224,6 @@ source_c_priv = \
 	$(srcdir)/clutter-event-translator.c	\
 	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-profile.c		\
-	$(srcdir)/clutter-timeout-interval.c    \
 	$(NULL)
 
 # built sources

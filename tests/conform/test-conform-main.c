@@ -192,7 +192,6 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/script", test_script_single);
   TEST_CONFORM_SIMPLE ("/script", test_script_child);
-  TEST_CONFORM_SIMPLE ("/script", test_script_implicit_alpha);
   TEST_CONFORM_SIMPLE ("/script", test_script_object_property);
   TEST_CONFORM_SIMPLE ("/script", test_script_animation);
   TEST_CONFORM_SIMPLE ("/script", test_script_named_object);
@@ -207,8 +206,6 @@ main (int argc, char **argv)
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", timeline_rewind);
 
   TEST_CONFORM_SIMPLE ("/score", test_score);
-
-  TEST_CONFORM_SIMPLE ("/behaviours", test_behaviours);
 
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_object);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
