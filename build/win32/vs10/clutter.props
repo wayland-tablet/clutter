@@ -300,10 +300,9 @@ copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApi
     <ClutterDllSuffix>$(ClutterSeparateVS10DllSuffix)</ClutterDllSuffix>
   </PropertyGroup>
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <_PropertySheetDisplayName>clutterprops</_PropertySheetDisplayName>
     <OutDir>$(SolutionDir)$(Configuration)\$(PlatformName)\bin\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
