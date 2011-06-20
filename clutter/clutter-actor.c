@@ -415,6 +415,11 @@ struct _ClutterActorPrivate
   guint last_paint_volume_valid     : 1;
   guint in_clone_paint              : 1;
   guint transform_valid             : 1;
+  /* This is TRUE if anything has queued a redraw since we were last
+     painted. In this case effect_to_redraw will point to an effect
+     the redraw was queued from or it will be NULL if the redraw was
+     queued without an effect. */
+  guint is_dirty                    : 1;
 
   gfloat clip[4];
 
@@ -485,7 +490,9 @@ struct _ClutterActorPrivate
      redraw can be queued to start from a particular effect. This is
      used by parametrised effects that can cache an image of the
      actor. If a parameter of the effect changes then it only needs to
-     redraw the cached image, not the actual actor */
+     redraw the cached image, not the actual actor. The pointer is
+     only valid if is_dirty == TRUE. If the pointer is NULL then the
+     whole actor is dirty. */
   ClutterEffect *effect_to_redraw;
 
   ClutterPaintVolume paint_volume;
@@ -676,9 +683,9 @@ static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
 
 static void _clutter_actor_queue_only_relayout (ClutterActor *self);
 
-static void _clutter_actor_get_relative_modelview (ClutterActor *self,
-                                                   ClutterActor *ancestor,
-                                                   CoglMatrix *matrix);
+static void _clutter_actor_get_relative_transformation_matrix (ClutterActor *self,
+                                                               ClutterActor *ancestor,
+                                                               CoglMatrix *matrix);
 
 static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor *self);
 
@@ -1910,6 +1917,14 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
   if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
     return;
 
+  /* If the queue redraw is coming from a child then the actor has
+     become dirty and any queued effect is no longer valid */
+  if (self != origin)
+    {
+      self->priv->is_dirty = TRUE;
+      self->priv->effect_to_redraw = NULL;
+    }
+
   /* If the actor isn't visible, we still had to emit the signal
    * to allow for a ClutterClone, but the appearance of the parent
    * won't change so we don't have to propagate up the hierarchy.
@@ -1933,14 +1948,6 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
     }
 
   self->priv->propagated_one_redraw = TRUE;
-
-  /* If the queue redraw is coming from a child actor then we'll
-     assume the queued effect is no longer valid. If this actor has
-     had a redraw queued then that will mean it will instead redraw
-     the whole actor. If it hasn't had a redraw queued then it will
-     stay that way */
-  if (self != origin)
-    self->priv->effect_to_redraw = NULL;
 
   /* notify parents, if they are all visible eventually we'll
    * queue redraw on the stage, which queues the redraw idle.
@@ -2022,7 +2029,7 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
       return;
     }
 
-  _clutter_actor_get_relative_modelview (self, ancestor, &matrix);
+  _clutter_actor_get_relative_transformation_matrix (self, ancestor, &matrix);
   cogl_matrix_transform_point (&matrix, &vertex->x, &vertex->y, &vertex->z, &w);
 }
 
@@ -2039,10 +2046,6 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  /* NB: _clutter_actor_apply_modelview_transform_recursive will never
-   * include the transformation between stage coordinates and OpenGL
-   * eye coordinates, we have to explicitly use the
-   * stage->apply_transform to get that... */
   stage = _clutter_actor_get_stage_internal (self);
 
   /* We really can't do anything meaningful in this case so don't try
@@ -2050,10 +2053,10 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
   if (stage == NULL)
     return FALSE;
 
-  /* Setup the modelview */
-  cogl_matrix_init_identity (&modelview);
-  _clutter_actor_apply_modelview_transform (stage, &modelview);
-  _clutter_actor_apply_modelview_transform_recursive (self, stage, &modelview);
+  /* Note: we pass NULL as the ancestor because we don't just want the modelview
+   * that gets us to stage coordinates, we want to go all the way to eye
+   * coordinates */
+  _clutter_actor_apply_relative_transformation_matrix (self, NULL, &modelview);
 
   /* Fetch the projection and viewport */
   _clutter_stage_get_projection_matrix (CLUTTER_STAGE (stage), &projection);
@@ -2095,37 +2098,43 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
   _clutter_actor_fully_transform_vertices (self, point, vertex, 1);
 }
 
-/* _clutter_actor_get_relative_modelview:
+/*
+ * _clutter_actor_get_relative_transformation_matrix:
+ * @self: The actor whose coordinate space you want to transform from.
+ * @ancestor: The ancestor actor whose coordinate space you want to transform too
+ *            or %NULL if you want to transform all the way to eye coordinates.
+ * @matrix: A #CoglMatrix to store the transformation
  *
- * Retrieves the modelview transformation relative to some ancestor
- * actor, or the stage if NULL is given for the ancestor.
+ * This gets a transformation @matrix that will transform coordinates from the
+ * coordinate space of @self into the coordinate space of @ancestor.
  *
- * Note: This will never include the transformations from
- * stage::apply_transform since that would give you a modelview
- * transform relative to the OpenGL window coordinate space that the
- * stage lies within.
+ * For example if you need a matrix that can transform the local actor
+ * coordinates of @self into stage coordinates you would pass the actor's stage
+ * pointer as the @ancestor.
  *
- * If you need to do a full modelview + projective transform and get
- * to window coordinates then you should explicitly apply the stage
- * transform to an identity matrix and use
- * _clutter_actor_apply_modelview_transform like:
+ * If you pass %NULL then the transformation will take you all the way through
+ * to eye coordinates. This can be useful if you want to extract the entire
+ * modelview transform that Clutter applies before applying the projection
+ * transformation. If you want to explicitly set a modelview on a CoglFramebuffer
+ * using cogl_set_modelview_matrix() for example then you would want a matrix
+ * that transforms into eye coordinates.
  *
- *   cogl_matrix_init_identity (&mtx);
- *   stage = _clutter_actor_get_stage_internal (self);
- *   _clutter_actor_apply_modelview_transform (stage, &mtx);
+ * <note>This function explicitly initializes the given @matrix. If you just
+ * want clutter to multiply a relative transformation with an existing matrix
+ * you can use clutter_actor_apply_relative_transformation_matrix() instead.
+ * </note>
+ *
  */
-/* FIXME: We should be caching the stage relative modelview along with the
- * actor itself */
+/* XXX: We should consider caching the stage relative modelview along with
+ * the actor itself */
 static void
-_clutter_actor_get_relative_modelview (ClutterActor *self,
-                                       ClutterActor *ancestor,
-                                       CoglMatrix *matrix)
+_clutter_actor_get_relative_transformation_matrix (ClutterActor *self,
+                                                   ClutterActor *ancestor,
+                                                   CoglMatrix *matrix)
 {
-  g_return_if_fail (ancestor != NULL);
-
   cogl_matrix_init_identity (matrix);
 
-  _clutter_actor_apply_modelview_transform_recursive (self, ancestor, matrix);
+  _clutter_actor_apply_relative_transformation_matrix (self, ancestor, matrix);
 }
 
 /* Project the given @box into stage window coordinates, writing the
@@ -2233,7 +2242,8 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
   vertices[3].y = box.y2;
   vertices[3].z = 0;
 
-  _clutter_actor_get_relative_modelview (self, ancestor, &modelview);
+  _clutter_actor_get_relative_transformation_matrix (self, ancestor,
+                                                     &modelview);
 
   cogl_matrix_transform_points (&modelview,
                                 3,
@@ -2379,14 +2389,37 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self,
   CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
 }
 
-/* Recursively applies the transforms associated with this actor and
- * its ancestors to the given matrix. Use NULL if you want this
- * to go all the way down to the stage.
+/*
+ * clutter_actor_apply_relative_transformation_matrix:
+ * @self: The actor whose coordinate space you want to transform from.
+ * @ancestor: The ancestor actor whose coordinate space you want to transform too
+ *            or %NULL if you want to transform all the way to eye coordinates.
+ * @matrix: A #CoglMatrix to apply the transformation too.
+ *
+ * This multiplies a transform with @matrix that will transform coordinates
+ * from the coordinate space of @self into the coordinate space of @ancestor.
+ *
+ * For example if you need a matrix that can transform the local actor
+ * coordinates of @self into stage coordinates you would pass the actor's stage
+ * pointer as the @ancestor.
+ *
+ * If you pass %NULL then the transformation will take you all the way through
+ * to eye coordinates. This can be useful if you want to extract the entire
+ * modelview transform that Clutter applies before applying the projection
+ * transformation. If you want to explicitly set a modelview on a CoglFramebuffer
+ * using cogl_set_modelview_matrix() for example then you would want a matrix
+ * that transforms into eye coordinates.
+ *
+ * <note>This function doesn't initialize the given @matrix, it simply
+ * multiplies the requested transformation matrix with the existing contents of
+ * @matrix. You can use cogl_matrix_init_identity() to initialize the @matrix
+ * before calling this function, or you can use
+ * clutter_actor_get_relative_transformation_matrix() instead.</note>
  */
 void
-_clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
-						    ClutterActor *ancestor,
-                                                    CoglMatrix *matrix)
+_clutter_actor_apply_relative_transformation_matrix (ClutterActor *self,
+                                                     ClutterActor *ancestor,
+                                                     CoglMatrix *matrix)
 {
   ClutterActor *parent;
 
@@ -2400,8 +2433,8 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
   parent = clutter_actor_get_parent (self);
 
   if (parent != NULL)
-    _clutter_actor_apply_modelview_transform_recursive (parent, ancestor,
-                                                        matrix);
+    _clutter_actor_apply_relative_transformation_matrix (parent, ancestor,
+                                                         matrix);
 
   _clutter_actor_apply_modelview_transform (self, matrix);
 }
@@ -2413,7 +2446,7 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
                                        const CoglColor *color)
 {
   static CoglMaterial *outline = NULL;
-  CoglHandle vbo;
+  CoglPrimitive *prim;
   ClutterVertex line_ends[12 * 2];
   int n_vertices;
 
@@ -2445,20 +2478,13 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
       line_ends[22] = pv->vertices[3]; line_ends[23] = pv->vertices[7];
     }
 
-  vbo = cogl_vertex_buffer_new (n_vertices);
-  cogl_vertex_buffer_add (vbo,
-                          "gl_Vertex",
-                          3, /* n_components */
-                          COGL_ATTRIBUTE_TYPE_FLOAT,
-                          FALSE, /* normalized */
-                          0, /* stride */
-                          line_ends);
+  prim = cogl_primitive_new_p3 (COGL_VERTICES_MODE_LINES, n_vertices,
+                                (CoglVertexP3 *)line_ends);
 
   cogl_material_set_color (outline, color);
   cogl_set_source (outline);
-  cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINES,
-                           0 , n_vertices);
-  cogl_object_unref (vbo);
+  cogl_primitive_draw (prim);
+  cogl_object_unref (prim);
 
   if (label)
     {
@@ -2700,6 +2726,10 @@ needs_flatten_effect (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
 
+  if (G_UNLIKELY (clutter_paint_debug_flags &
+                  CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT))
+    return FALSE;
+
   switch (priv->offscreen_redirect)
     {
     case CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY:
@@ -2802,6 +2832,9 @@ clutter_actor_paint (ClutterActor *self)
 
   pick_mode = _clutter_context_get_pick_mode ();
 
+  if (pick_mode == CLUTTER_PICK_NONE)
+    priv->propagated_one_redraw = FALSE;
+
   /* It's an important optimization that we consider painting of
    * actors with 0 opacity to be a NOP... */
   if (pick_mode == CLUTTER_PICK_NONE &&
@@ -2810,10 +2843,7 @@ clutter_actor_paint (ClutterActor *self)
       /* Use the override opacity if its been set */
       ((priv->opacity_override >= 0) ?
        priv->opacity_override : priv->opacity) == 0)
-    {
-      priv->propagated_one_redraw = FALSE;
-      return;
-    }
+    return;
 
   /* if we aren't paintable (not in a toplevel with all
    * parents paintable) then do nothing.
@@ -2901,7 +2931,8 @@ clutter_actor_paint (ClutterActor *self)
 
       success = cull_actor (self, &result);
 
-      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS))
+      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
+                      pick_mode == CLUTTER_PICK_NONE))
         _clutter_actor_paint_cull_result (self, success, result);
       else if (result == CLUTTER_CULL_RESULT_OUT && success)
         goto done;
@@ -2923,10 +2954,16 @@ clutter_actor_paint (ClutterActor *self)
       actor_has_shader_data (self))
     clutter_actor_shader_post_paint (self);
 
-  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES))
+  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES &&
+                  pick_mode == CLUTTER_PICK_NONE))
     _clutter_actor_draw_paint_volume (self);
 
 done:
+  /* If we make it here then the actor has run through a complete
+     paint run including all the effects so it's no longer dirty */
+  if (pick_mode == CLUTTER_PICK_NONE)
+    priv->is_dirty = FALSE;
+
   if (clip_set)
     cogl_clip_pop();
 
@@ -2970,11 +3007,7 @@ clutter_actor_continue_paint (ClutterActor *self)
   if (priv->next_effect_to_paint == NULL)
     {
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
-        {
-          priv->propagated_one_redraw = FALSE;
-
-          g_signal_emit (self, actor_signals[PAINT], 0);
-        }
+        g_signal_emit (self, actor_signals[PAINT], 0);
       else
         {
           ClutterColor col = { 0, };
@@ -3002,7 +3035,7 @@ clutter_actor_continue_paint (ClutterActor *self)
 
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
         {
-          if (priv->propagated_one_redraw)
+          if (priv->is_dirty)
             {
               /* If there's an effect queued with this redraw then all
                  effects up to that one will be considered dirty. It
@@ -5413,7 +5446,6 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
   ClutterPaintVolume *pv;
   gboolean should_free_pv;
   ClutterActor *stage;
-  gboolean was_dirty;
 
   /* Here's an outline of the actor queue redraw mechanism:
    *
@@ -5536,8 +5568,6 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
       should_free_pv = FALSE;
     }
 
-  was_dirty = priv->queue_redraw_entry != NULL;
-
   self->priv->queue_redraw_entry =
     _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
                                        priv->queue_redraw_entry,
@@ -5549,7 +5579,7 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
 
   /* If this is the first redraw queued then we can directly use the
      effect parameter */
-  if (!was_dirty)
+  if (!priv->is_dirty)
     priv->effect_to_redraw = effect;
   /* Otherwise we need to merge it with the existing effect parameter */
   else if (effect)
@@ -5582,6 +5612,8 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
     /* If no effect is specified then we need to redraw the whole
        actor */
     priv->effect_to_redraw = NULL;
+
+  priv->is_dirty = TRUE;
 }
 
 /**
