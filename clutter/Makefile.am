@@ -85,6 +85,7 @@ source_h =					\
 	$(srcdir)/clutter-desaturate-effect.h	\
 	$(srcdir)/clutter-device-manager.h	\
 	$(srcdir)/clutter-drag-action.h		\
+	$(srcdir)/clutter-drop-action.h		\
 	$(srcdir)/clutter-effect.h		\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
@@ -169,6 +170,7 @@ source_c = \
 	$(srcdir)/clutter-desaturate-effect.c	\
 	$(srcdir)/clutter-device-manager.c	\
 	$(srcdir)/clutter-drag-action.c		\
+	$(srcdir)/clutter-drop-action.c		\
 	$(srcdir)/clutter-effect.c		\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
@@ -381,8 +383,8 @@ clutterglx_include_HEADERS = $(glx_source_h)
 endif
 
 if SUPPORT_GLX
-backend_source_h += $(cogl_source_h)
-backend_source_c += $(cogl_source_c)
+backend_source_h += $(cogl_source_h) $(glx_source_h)
+backend_source_c += $(cogl_source_c) $(glx_source_c)
 backend_source_h_priv += $(cogl_source_h_priv)
 endif # SUPPORT_GLX
 

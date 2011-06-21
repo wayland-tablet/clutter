@@ -247,8 +247,8 @@ clutter_redraw (ClutterStage *stage)
  * clutter_set_motion_events_enabled:
  * @enable: %TRUE to enable per-actor motion events
  *
- * Sets whether per-actor motion events should be enabled or not (the
- * default is to enable them).
+ * Sets whether per-actor motion events should be enabled or not on
+ * all #ClutterStage<!-- -->s managed by Clutter.
  *
  * If @enable is %FALSE the following events will not work:
  * <itemizedlist>
@@ -259,6 +259,8 @@ clutter_redraw (ClutterStage *stage)
  * </itemizedlist>
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8: Use clutter_stage_set_motion_events_enabled() instead.
  */
 void
 clutter_set_motion_events_enabled (gboolean enable)
@@ -283,7 +285,7 @@ clutter_set_motion_events_enabled (gboolean enable)
        l != NULL;
        l = l->next)
     {
-      _clutter_stage_set_motion_events_enabled (l->data, enable);
+      clutter_stage_set_motion_events_enabled (l->data, enable);
     }
 }
 
@@ -295,13 +297,13 @@ clutter_set_motion_events_enabled (gboolean enable)
  * Return value: %TRUE if the motion events are enabled
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8: Use clutter_stage_get_motion_events_enabled() instead.
  */
 gboolean
 clutter_get_motion_events_enabled (void)
 {
-  ClutterMainContext *context = _clutter_context_get_default ();
-
-  return context->motion_events_per_actor;
+  return _clutter_context_get_motion_events_enabled ();
 }
 
 ClutterActor *
@@ -2132,7 +2134,7 @@ _clutter_process_event_details (ClutterActor        *stage,
 
       case CLUTTER_MOTION:
         /* only the stage gets motion events if they are enabled */
-        if (!_clutter_stage_get_motion_events_enabled (CLUTTER_STAGE (stage)) &&
+        if (!clutter_stage_get_motion_events_enabled (CLUTTER_STAGE (stage)) &&
             event->any.source == NULL)
           {
             /* Only stage gets motion events */
@@ -3094,4 +3096,12 @@ _clutter_context_pop_shader_stack (ClutterActor *actor)
   context->shaders = g_slist_remove (context->shaders, actor);
 
   return _clutter_context_peek_shader_stack ();
+}
+
+gboolean
+_clutter_context_get_motion_events_enabled (void)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  return context->motion_events_per_actor;
 }
