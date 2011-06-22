@@ -162,7 +162,6 @@ struct _ClutterMainContext
 
   /* boolean flags */
   guint is_initialized          : 1;
-  guint motion_events_per_actor : 1;
   guint defer_display_setup     : 1;
   guint options_parsed          : 1;
 };
@@ -188,7 +187,6 @@ ClutterActor *          _clutter_context_pop_shader_stack               (Clutter
 ClutterActor *          _clutter_context_peek_shader_stack              (void);
 guint32                 _clutter_context_acquire_id                     (gpointer      key);
 void                    _clutter_context_release_id                     (guint32       id_);
-gboolean                _clutter_context_get_motion_events_enabled      (void);
 
 const gchar *_clutter_gettext (const gchar *str);
 

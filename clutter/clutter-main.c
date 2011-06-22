@@ -242,69 +242,6 @@ clutter_redraw (ClutterStage *stage)
   clutter_stage_ensure_redraw (stage);
 }
 
-/**
- * clutter_set_motion_events_enabled:
- * @enable: %TRUE to enable per-actor motion events
- *
- * Sets whether per-actor motion events should be enabled or not on
- * all #ClutterStage<!-- -->s managed by Clutter.
- *
- * If @enable is %FALSE the following events will not work:
- * <itemizedlist>
- *   <listitem><para>ClutterActor::motion-event, unless on the
- *     #ClutterStage</para></listitem>
- *   <listitem><para>ClutterActor::enter-event</para></listitem>
- *   <listitem><para>ClutterActor::leave-event</para></listitem>
- * </itemizedlist>
- *
- * Since: 0.6
- *
- * Deprecated: 1.8: Use clutter_stage_set_motion_events_enabled() instead.
- */
-void
-clutter_set_motion_events_enabled (gboolean enable)
-{
-  ClutterStageManager *stage_manager;
-  ClutterMainContext *context;
-  const GSList *l;
-
-  enable = !!enable;
-
-  context = _clutter_context_get_default ();
-  if (context->motion_events_per_actor == enable)
-    return;
-
-  /* store the flag for later query and for newly created stages */
-  context->motion_events_per_actor = enable;
-
-  /* propagate the change to all stages */
-  stage_manager = clutter_stage_manager_get_default ();
-
-  for (l = clutter_stage_manager_peek_stages (stage_manager);
-       l != NULL;
-       l = l->next)
-    {
-      clutter_stage_set_motion_events_enabled (l->data, enable);
-    }
-}
-
-/**
- * clutter_get_motion_events_enabled:
- *
- * Gets whether the per-actor motion events are enabled.
- *
- * Return value: %TRUE if the motion events are enabled
- *
- * Since: 0.6
- *
- * Deprecated: 1.8: Use clutter_stage_get_motion_events_enabled() instead.
- */
-gboolean
-clutter_get_motion_events_enabled (void)
-{
-  return _clutter_context_get_motion_events_enabled ();
-}
-
 ClutterActor *
 _clutter_get_actor_by_id (ClutterStage *stage,
                           guint32       actor_id)
@@ -1087,7 +1024,6 @@ _clutter_context_get_default (void)
       ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
 
       ctx->is_initialized = FALSE;
-      ctx->motion_events_per_actor = TRUE;
 
 #ifdef CLUTTER_ENABLE_DEBUG
       ctx->timer = g_timer_new ();
@@ -3093,12 +3029,4 @@ _clutter_context_pop_shader_stack (ClutterActor *actor)
   context->shaders = g_slist_remove (context->shaders, actor);
 
   return _clutter_context_peek_shader_stack ();
-}
-
-gboolean
-_clutter_context_get_motion_events_enabled (void)
-{
-  ClutterMainContext *context = _clutter_context_get_default ();
-
-  return context->motion_events_per_actor;
 }
