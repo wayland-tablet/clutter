@@ -1303,30 +1303,6 @@ ClutterX11TexturePixmapPrivate
 </SECTION>
 
 <SECTION>
-<FILE>clutter-glx-texture-pixmap</FILE>
-ClutterGLXTexturePixmap
-ClutterGLXTexturePixmapClass
-clutter_glx_texture_pixmap_new
-clutter_glx_texture_pixmap_new_with_pixmap
-clutter_glx_texture_pixmap_new_with_window
-
-<SUBSECTION>
-clutter_glx_texture_pixmap_using_extension
-
-<SUBSECTION Standard>
-CLUTTER_GLX_TYPE_TEXTURE_PIXMAP
-CLUTTER_GLX_TEXTURE_PIXMAP
-CLUTTER_GLX_IS_TEXTURE_PIXMAP
-CLUTTER_GLX_TEXTURE_PIXMAP_CLASS
-CLUTTER_GLX_IS_TEXTURE_PIXMAP_CLASS
-CLUTTER_GLX_TEXTURE_PIXMAP_GET_CLASS
-
-<SUBSECTION Private>
-ClutterGLXTexturePixmapPrivate
-clutter_glx_texture_pixmap_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-win32</FILE>
 <TITLE>Win32 Specific Support</TITLE>
 clutter_win32_disable_event_retrieval

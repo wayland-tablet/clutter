@@ -52,7 +52,6 @@ HFILE_GLOB=\
 	$(top_builddir)/clutter/*.h \
 	$(top_srcdir)/clutter/x11/clutter-x11.h \
 	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/cogl/clutter-glx-texture-pixmap.h \
 	$(top_srcdir)/clutter/cogl/clutter-egl.h \
 	$(top_srcdir)/clutter/cogl/clutter-cex100.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h
@@ -105,7 +104,6 @@ IGNORE_HFILES=\
 EXTRA_HFILES=\
         $(top_srcdir)/clutter/x11/clutter-x11.h \
 	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/cogl/clutter-glx-texture-pixmap.h \
 	$(top_srcdir)/clutter/cogl/clutter-egl.h \
 	$(top_srcdir)/clutter/cogl/clutter-cex100.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
