@@ -2051,12 +2051,6 @@ msgstr "Ruta ao dispositivo"
 msgid "Path of the device node"
 msgstr "Ruta ao nodo dodispositivo"
 
-#: clutter/glx/clutter-backend-glx.c:107
-msgid "Set to 'none' or '0' to disable throttling framerate to vblank"
-msgstr ""
-"Estabelecer a «none» ou a «0» para desactivar o límite de imaxes por segundo "
-"de «vblank»"
-
 #: clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
 msgstr "Visor [display] X que usar"

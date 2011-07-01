@@ -2074,10 +2074,6 @@ msgstr "Apparaat-type"
 msgid "Path of the device node"
 msgstr "De naam van het apparaat"
 
-#: clutter/glx/clutter-backend-glx.c:107
-msgid "Set to 'none' or '0' to disable throttling framerate to vblank"
-msgstr ""
-
 #: clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
 msgstr "Te gebruiken X-display"

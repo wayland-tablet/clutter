@@ -2055,10 +2055,6 @@ msgstr "Gestionnaire"
 msgid "Path of the device node"
 msgstr "Le nom du périphérique"
 
-#: clutter/glx/clutter-backend-glx.c:107
-msgid "Set to 'none' or '0' to disable throttling framerate to vblank"
-msgstr ""
-
 #: clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
 msgstr "Affichage X à utiliser"

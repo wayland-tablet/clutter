@@ -2193,10 +2193,6 @@ msgstr "Manajer"
 msgid "Path of the device node"
 msgstr "Nama perangkat"
 
-#: clutter/glx/clutter-backend-glx.c:107
-msgid "Set to 'none' or '0' to disable throttling framerate to vblank"
-msgstr ""
-
 #: clutter/x11/clutter-backend-x11.c:483
 #, fuzzy
 msgid "X display to use"

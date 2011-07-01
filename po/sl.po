@@ -2035,11 +2035,6 @@ msgstr "Pot naprave"
 msgid "Path of the device node"
 msgstr "Pot do vozlišča naprave"
 
-#: clutter/glx/clutter-backend-glx.c:107
-msgid "Set to 'none' or '0' to disable throttling framerate to vblank"
-msgstr ""
-"Nastavitev 'brez' ali '0' onemogoči omejevanje hitrosti sličic z vblank"
-
 #: clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
 msgstr "Zaslon X, ki naj bo uporabljen"
