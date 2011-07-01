@@ -535,7 +535,11 @@ clutter_get_font_flags
 clutter_get_font_map
 clutter_get_input_device_for_id
 clutter_get_keyboard_grab
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_get_motion_events_enabled
+#endif
+
 clutter_get_option_group
 clutter_get_option_group_without_init
 clutter_get_pointer_grab
@@ -823,7 +827,11 @@ clutter_settings_get_default
 clutter_settings_get_type
 clutter_set_default_frame_rate
 clutter_set_font_flags
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_set_motion_events_enabled
+#endif
+
 clutter_shader_effect_get_program
 clutter_shader_effect_get_shader
 clutter_shader_effect_get_type
@@ -887,6 +895,7 @@ clutter_egl_display
 clutter_egl_get_egl_display
 #endif
 
+clutter_stage_get_motion_events_enabled
 clutter_stage_new
 clutter_stage_queue_redraw
 clutter_stage_read_pixels
@@ -896,6 +905,7 @@ clutter_stage_set_fog
 clutter_stage_set_fullscreen
 clutter_stage_set_key_focus
 clutter_stage_set_minimum_size
+clutter_stage_set_motion_events_enabled
 clutter_stage_set_no_clear_hint
 clutter_stage_set_perspective
 clutter_stage_set_throttle_motion_events
@@ -1157,16 +1167,8 @@ clutter_x11_get_current_event_time
 clutter_x11_get_default_display
 clutter_x11_get_default_screen
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_x11_get_input_devices
-#endif
-
 clutter_x11_get_root_window
 clutter_x11_get_stage_from_window
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_x11_get_stage_visual
-#endif
 
 clutter_x11_get_stage_window
 clutter_x11_get_use_argb_visual
