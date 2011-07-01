@@ -78,6 +78,7 @@ struct _ClutterDragActionPrivate
   ClutterActor *drag_handle;
   ClutterDragAxis drag_axis;
 
+  ClutterInputDevice *device;
   gulong button_press_id;
   gulong capture_id;
 
@@ -164,7 +165,14 @@ emit_drag_begin (ClutterDragAction *action,
   ClutterDragActionPrivate *priv = action->priv;
 
   if (priv->stage != NULL)
-    _clutter_stage_set_motion_events_enabled (priv->stage, FALSE);
+    {
+      clutter_stage_set_motion_events_enabled (priv->stage, FALSE);
+      _clutter_stage_add_drag_actor (priv->stage,
+                                     clutter_event_get_device (event),
+                                     priv->drag_handle != NULL
+                                       ? priv->drag_handle
+                                       : actor);
+    }
 
   g_signal_emit (action, drag_signals[DRAG_BEGIN], 0,
                  actor,
@@ -262,8 +270,10 @@ emit_drag_end (ClutterDragAction *action,
       priv->capture_id = 0;
     }
 
-  _clutter_stage_set_motion_events_enabled (priv->stage,
-                                            priv->motion_events_enabled);
+  clutter_stage_set_motion_events_enabled (priv->stage,
+                                           priv->motion_events_enabled);
+  _clutter_stage_remove_drag_actor (priv->stage,
+                                    clutter_event_get_device (event));
 
   priv->in_drag = FALSE;
 }
@@ -279,6 +289,9 @@ on_captured_event (ClutterActor      *stage,
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
 
   if (!priv->in_drag)
+    return FALSE;
+
+  if (clutter_event_get_device (event) != priv->device)
     return FALSE;
 
   switch (clutter_event_type (event))
@@ -335,6 +348,8 @@ on_button_press (ClutterActor      *actor,
   clutter_event_get_coords (event, &priv->press_x, &priv->press_y);
   priv->press_state = clutter_event_get_state (event);
 
+  priv->device = clutter_event_get_device (event);
+
   priv->last_motion_x = priv->press_x;
   priv->last_motion_y = priv->press_y;
 
@@ -345,7 +360,7 @@ on_button_press (ClutterActor      *actor,
                                        &priv->transformed_press_y);
 
   priv->motion_events_enabled =
-    _clutter_stage_get_motion_events_enabled (priv->stage);
+    clutter_stage_get_motion_events_enabled (priv->stage);
 
   if (priv->x_drag_threshold == 0 || priv->y_drag_threshold == 0)
     emit_drag_begin (action, actor, event);
@@ -506,6 +521,8 @@ clutter_drag_action_dispose (GObject *gobject)
       g_signal_handler_disconnect (actor, priv->button_press_id);
       priv->button_press_id = 0;
     }
+
+  clutter_drag_action_set_drag_handle (CLUTTER_DRAG_ACTION (gobject), NULL);
 
   G_OBJECT_CLASS (clutter_drag_action_parent_class)->dispose (gobject);
 }
@@ -828,12 +845,19 @@ clutter_drag_action_get_drag_threshold (ClutterDragAction *action,
     *y_threshold = y_res;
 }
 
+static void
+on_drag_handle_destroy (ClutterActor      *actor,
+                        ClutterDragAction *action)
+{
+  action->priv->drag_handle = NULL;
+}
+
 /**
  * clutter_drag_action_set_drag_handle:
  * @action: a #ClutterDragAction
- * @handle: a #ClutterActor
+ * @handle: (allow-none): a #ClutterActor, or %NULL to unset
  *
- * Sets the actor to be used as the drag handle
+ * Sets the actor to be used as the drag handle.
  *
  * Since: 1.4
  */
@@ -844,14 +868,24 @@ clutter_drag_action_set_drag_handle (ClutterDragAction *action,
   ClutterDragActionPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_DRAG_ACTION (action));
-  g_return_if_fail (CLUTTER_IS_ACTOR (handle));
+  g_return_if_fail (handle == NULL || CLUTTER_IS_ACTOR (handle));
 
   priv = action->priv;
 
   if (priv->drag_handle == handle)
     return;
 
+  if (priv->drag_handle != NULL)
+    g_signal_handlers_disconnect_by_func (priv->drag_handle,
+                                          G_CALLBACK (on_drag_handle_destroy),
+                                          action);
+
   priv->drag_handle = handle;
+
+  if (priv->drag_handle != NULL)
+    g_signal_connect (priv->drag_handle, "destroy",
+                      G_CALLBACK (on_drag_handle_destroy),
+                      action);
 
   g_object_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_HANDLE]);
 }

@@ -179,7 +179,8 @@ static const GDebugKey clutter_paint_debug_keys[] = {
   { "disable-clipped-redraws", CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS },
   { "redraws", CLUTTER_DEBUG_REDRAWS },
   { "paint-volumes", CLUTTER_DEBUG_PAINT_VOLUMES },
-  { "disable-culling", CLUTTER_DEBUG_DISABLE_CULLING }
+  { "disable-culling", CLUTTER_DEBUG_DISABLE_CULLING },
+  { "disable-offscreen-redirect", CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT }
 };
 
 #ifdef CLUTTER_ENABLE_PROFILE
@@ -239,67 +240,6 @@ clutter_redraw (ClutterStage *stage)
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   clutter_stage_ensure_redraw (stage);
-}
-
-/**
- * clutter_set_motion_events_enabled:
- * @enable: %TRUE to enable per-actor motion events
- *
- * Sets whether per-actor motion events should be enabled or not (the
- * default is to enable them).
- *
- * If @enable is %FALSE the following events will not work:
- * <itemizedlist>
- *   <listitem><para>ClutterActor::motion-event, unless on the
- *     #ClutterStage</para></listitem>
- *   <listitem><para>ClutterActor::enter-event</para></listitem>
- *   <listitem><para>ClutterActor::leave-event</para></listitem>
- * </itemizedlist>
- *
- * Since: 0.6
- */
-void
-clutter_set_motion_events_enabled (gboolean enable)
-{
-  ClutterStageManager *stage_manager;
-  ClutterMainContext *context;
-  const GSList *l;
-
-  enable = !!enable;
-
-  context = _clutter_context_get_default ();
-  if (context->motion_events_per_actor == enable)
-    return;
-
-  /* store the flag for later query and for newly created stages */
-  context->motion_events_per_actor = enable;
-
-  /* propagate the change to all stages */
-  stage_manager = clutter_stage_manager_get_default ();
-
-  for (l = clutter_stage_manager_peek_stages (stage_manager);
-       l != NULL;
-       l = l->next)
-    {
-      _clutter_stage_set_motion_events_enabled (l->data, enable);
-    }
-}
-
-/**
- * clutter_get_motion_events_enabled:
- *
- * Gets whether the per-actor motion events are enabled.
- *
- * Return value: %TRUE if the motion events are enabled
- *
- * Since: 0.6
- */
-gboolean
-clutter_get_motion_events_enabled (void)
-{
-  ClutterMainContext *context = _clutter_context_get_default ();
-
-  return context->motion_events_per_actor;
 }
 
 ClutterActor *
@@ -1084,7 +1024,6 @@ _clutter_context_get_default (void)
       ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
 
       ctx->is_initialized = FALSE;
-      ctx->motion_events_per_actor = TRUE;
 
 #ifdef CLUTTER_ENABLE_DEBUG
       ctx->timer = g_timer_new ();
@@ -1232,7 +1171,10 @@ clutter_init_real (GError **error)
 
   /* The same is true when drawing the outlines of paint volumes... */
   if (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES)
-    clutter_paint_debug_flags |= CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS;
+    {
+      clutter_paint_debug_flags |=
+        CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS | CLUTTER_DEBUG_DISABLE_CULLING;
+    }
 
   /* this will take care of initializing Cogl's state and
    * query the GL machinery for features
@@ -2125,7 +2067,7 @@ _clutter_process_event_details (ClutterActor        *stage,
 
       case CLUTTER_MOTION:
         /* only the stage gets motion events if they are enabled */
-        if (!_clutter_stage_get_motion_events_enabled (CLUTTER_STAGE (stage)) &&
+        if (!clutter_stage_get_motion_events_enabled (CLUTTER_STAGE (stage)) &&
             event->any.source == NULL)
           {
             /* Only stage gets motion events */

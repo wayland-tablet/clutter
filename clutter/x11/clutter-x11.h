@@ -106,10 +106,6 @@ Window   clutter_x11_get_root_window     (void);
 XVisualInfo *clutter_x11_get_visual_info (void);
 void     clutter_x11_set_display         (Display * xdpy);
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-XVisualInfo *clutter_x11_get_stage_visual  (ClutterStage *stage) G_GNUC_DEPRECATED;
-#endif
-
 Window       clutter_x11_get_stage_window  (ClutterStage *stage);
 gboolean     clutter_x11_set_stage_foreign (ClutterStage *stage,
                                             Window        xwindow);
@@ -125,10 +121,6 @@ void     clutter_x11_disable_event_retrieval (void);
 gboolean clutter_x11_has_event_retrieval (void);
 
 ClutterStage *clutter_x11_get_stage_from_window (Window win);
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-const GSList* clutter_x11_get_input_devices (void) G_GNUC_DEPRECATED;
-#endif
 
 void     clutter_x11_enable_xinput (void);
 gboolean clutter_x11_has_xinput (void);

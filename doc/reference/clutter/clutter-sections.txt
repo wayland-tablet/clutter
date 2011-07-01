@@ -612,6 +612,8 @@ clutter_stage_set_no_clear_hint
 clutter_stage_get_no_clear_hint
 clutter_stage_set_accept_focus
 clutter_stage_get_accept_focus
+clutter_stage_get_motion_events_enabled
+clutter_stage_set_motion_events_enabled
 
 <SUBSECTION>
 ClutterPerspective
@@ -1838,29 +1840,6 @@ clutter_binding_pool_get_type
 </SECTION>
 
 <SECTION>
-<TITLE>GLX Specific Support</TITLE>
-<FILE>clutter-glx</FILE>
-ClutterGLXTexturePixmap
-ClutterGLXTexturePixmapClass
-clutter_glx_texture_pixmap_new
-clutter_glx_texture_pixmap_new_with_pixmap
-clutter_glx_texture_pixmap_new_with_window
-clutter_glx_texture_pixmap_using_extension
-
-<SUBSECTION Standard>
-CLUTTER_GLX_IS_TEXTURE_PIXMAP
-CLUTTER_GLX_IS_TEXTURE_PIXMAP_CLASS
-CLUTTER_GLX_TEXTURE_PIXMAP
-CLUTTER_GLX_TEXTURE_PIXMAP_CLASS
-CLUTTER_GLX_TEXTURE_PIXMAP_GET_CLASS
-CLUTTER_GLX_TYPE_TEXTURE_PIXMAP
-clutter_glx_texture_pixmap_get_type
-
-<SUBSECTION Private>
-ClutterGLXTexturePixmapPrivate
-</SECTION>
-
-<SECTION>
 <TITLE>EGL Specific Support</TITLE>
 <FILE>clutter-egl</FILE>
 clutter_egl_display
@@ -2424,8 +2403,8 @@ ClutterClickActionPrivate
 <FILE>clutter-effect</FILE>
 ClutterEffect
 ClutterEffectClass
-ClutterEffectRunFlags
-clutter_effect_queue_rerun
+ClutterEffectPaintFlags
+clutter_effect_queue_repaint
 <SUBSECTION Standard>
 CLUTTER_TYPE_EFFECT
 CLUTTER_EFFECT
@@ -2680,4 +2659,21 @@ CLUTTER_TYPE_SWIPE_ACTION
 <SUBSECTION Private>
 ClutterSwipeActionPrivate
 clutter_swipe_action_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-drop-action</FILE>
+ClutterDropAction
+ClutterDropActionClass
+clutter_drop_action_new
+<SUBSECTION Standard>
+CLUTTER_TYPE_DROP_ACTION
+CLUTTER_DROP_ACTION
+CLUTTER_DROP_ACTION_CLASS
+CLUTTER_IS_DROP_ACTION
+CLUTTER_IS_DROP_ACTION_CLASS
+CLUTTER_DROP_ACTION_GET_CLASS
+<SUBSECTION Private>
+ClutterDropActionPrivate
+clutter_drop_action_get_type
 </SECTION>

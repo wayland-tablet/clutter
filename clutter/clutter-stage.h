@@ -236,6 +236,10 @@ void                  clutter_stage_set_accept_focus  (ClutterStage *stage,
                                                        gboolean      accept_focus);
 gboolean              clutter_stage_get_accept_focus  (ClutterStage *stage);
 
+void                  clutter_stage_set_motion_events_enabled (ClutterStage *stage,
+                                                               gboolean      enabled);
+gboolean              clutter_stage_get_motion_events_enabled (ClutterStage *stage);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_H__ */

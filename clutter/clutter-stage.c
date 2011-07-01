@@ -1997,7 +1997,7 @@ clutter_stage_init (ClutterStage *self)
   priv->use_fog                = FALSE;
   priv->throttle_motion_events = TRUE;
   priv->min_size_changed       = FALSE;
-  priv->motion_events_enabled  = clutter_get_motion_events_enabled ();
+  priv->motion_events_enabled  = TRUE;
 
   priv->color = default_stage_color;
 
@@ -3973,23 +3973,69 @@ _clutter_stage_has_device (ClutterStage       *stage,
   return g_hash_table_lookup (priv->devices, device) != NULL;
 }
 
+/**
+ * clutter_stage_set_motion_events_enabled:
+ * @stage: a #ClutterStage
+ * @enabled: %TRUE to enable the motion events delivery, and %FALSE
+ *   otherwise
+ *
+ * Sets whether per-actor motion events (and relative crossing
+ * events) should be disabled or not.
+ *
+ * The default is %TRUE.
+ *
+ * If @enable is %FALSE the following events will not be delivered
+ * to the actors children of @stage.
+ *
+ * <itemizedlist>
+ *   <listitem><para>#ClutterActor::motion-event</para></listitem>
+ *   <listitem><para>#ClutterActor::enter-event</para></listitem>
+ *   <listitem><para>#ClutterActor::leave-event</para></listitem>
+ * </itemizedlist>
+ *
+ * The events will still be delivered to the #ClutterStage.
+ *
+ * The main side effect of this function is that disabling the motion
+ * events will disable picking to detect the #ClutterActor underneath
+ * the pointer for each motion event. This is useful, for instance,
+ * when dragging a #ClutterActor across the @stage: the actor underneath
+ * the pointer is not going to change, so it's meaningless to perform
+ * a pick.
+ *
+ * Since: 1.8
+ */
 void
-_clutter_stage_set_motion_events_enabled (ClutterStage *stage,
-                                          gboolean      enabled)
+clutter_stage_set_motion_events_enabled (ClutterStage *stage,
+                                         gboolean      enabled)
 {
-  ClutterStagePrivate *priv = stage->priv;
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
 
   enabled = !!enabled;
 
   if (priv->motion_events_enabled != enabled)
-    {
-      priv->motion_events_enabled = enabled;
-    }
+    priv->motion_events_enabled = enabled;
 }
 
+/**
+ * clutter_stage_get_motion_events_enabled:
+ * @stage: a #ClutterStage
+ *
+ * Retrieves the value set using clutter_stage_set_motion_events_enabled().
+ *
+ * Return value: %TRUE if the per-actor motion event delivery is enabled
+ *   and %FALSE otherwise
+ *
+ * Since: 1.8
+ */
 gboolean
-_clutter_stage_get_motion_events_enabled (ClutterStage *stage)
+clutter_stage_get_motion_events_enabled (ClutterStage *stage)
 {
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
   return stage->priv->motion_events_enabled;
 }
 
@@ -4036,4 +4082,52 @@ _clutter_stage_get_actor_by_pick_id (ClutterStage *stage,
   g_assert (priv->pick_id_pool != NULL);
 
   return _clutter_id_pool_lookup (priv->pick_id_pool, pick_id);
+}
+
+void
+_clutter_stage_add_drag_actor (ClutterStage       *stage,
+                               ClutterInputDevice *device,
+                               ClutterActor       *actor)
+{
+  GHashTable *drag_actors;
+
+  drag_actors = g_object_get_data (G_OBJECT (stage), "__clutter_stage_drag_actors");
+  if (drag_actors == NULL)
+    {
+      drag_actors = g_hash_table_new (NULL, NULL);
+      g_object_set_data_full (G_OBJECT (stage), "__clutter_stage_drag_actors",
+                              drag_actors,
+                              (GDestroyNotify) g_hash_table_destroy);
+    }
+
+  g_hash_table_replace (drag_actors, device, actor);
+}
+
+ClutterActor *
+_clutter_stage_get_drag_actor (ClutterStage       *stage,
+                               ClutterInputDevice *device)
+{
+  GHashTable *drag_actors;
+
+  drag_actors = g_object_get_data (G_OBJECT (stage), "__clutter_stage_drag_actors");
+  if (drag_actors == NULL)
+    return NULL;
+
+  return g_hash_table_lookup (drag_actors, device);
+}
+
+void
+_clutter_stage_remove_drag_actor (ClutterStage       *stage,
+                                  ClutterInputDevice *device)
+{
+  GHashTable *drag_actors;
+
+  drag_actors = g_object_get_data (G_OBJECT (stage), "__clutter_stage_drag_actors");
+  if (drag_actors == NULL)
+    return;
+
+  g_hash_table_remove (drag_actors, device);
+
+  if (g_hash_table_size (drag_actors) == 0)
+    g_object_set_data (G_OBJECT (stage), "__clutter_stage_drag_actors", NULL);
 }
