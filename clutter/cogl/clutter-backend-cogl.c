@@ -347,10 +347,6 @@ clutter_backend_cogl_create_context (ClutterBackend  *backend,
   if (!backend->cogl_context)
     goto error;
 
-  /* XXX: eventually this should go away but a lot of Cogl code still
-   * depends on a global default context. */
-  cogl_set_default_context (backend->cogl_context);
-
   return TRUE;
 
 error:
@@ -508,7 +504,7 @@ clutter_egl_get_egl_display (void)
       return 0;
     }
 
-  return cogl_context_egl_get_egl_display (backend_singleton->cogl_context);
+  return cogl_egl_context_get_egl_display (backend_singleton->cogl_context);
 }
 #endif
 
