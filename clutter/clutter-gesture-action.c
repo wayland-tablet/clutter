@@ -133,6 +133,18 @@ stage_captured_event_cb (ClutterActor       *stage,
     {
     case CLUTTER_MOTION:
       {
+        ClutterModifierType mods = clutter_event_get_state (event);
+
+        /* we might miss a button-release event in case of grabs,
+         * so we need to check whether the button is still down
+         * during a motion event
+         */
+        if (!(mods & CLUTTER_BUTTON1_MASK))
+          {
+            cancel_gesture (action);
+            return FALSE;
+          }
+
         clutter_event_get_coords (event, &priv->last_motion_x,
                                          &priv->last_motion_y);
 
@@ -278,7 +290,6 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
 
   klass->gesture_begin = default_event_handler;
   klass->gesture_progress = default_event_handler;
-  klass->gesture_end = default_event_handler;
 
   /**
    * ClutterGestureAction::gesture-begin:
