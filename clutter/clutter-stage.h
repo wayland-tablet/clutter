@@ -239,7 +239,6 @@ gboolean              clutter_stage_get_accept_focus  (ClutterStage *stage);
 
 void                  clutter_stage_get_redraw_clip_bounds    (ClutterStage    *stage,
                                                                cairo_rectangle_int_t *clip);
-
 void                  clutter_stage_set_motion_events_enabled (ClutterStage *stage,
                                                                gboolean      enabled);
 gboolean              clutter_stage_get_motion_events_enabled (ClutterStage *stage);
