@@ -868,6 +868,7 @@ clutter_stage_get_key_focus
 clutter_stage_get_minimum_size
 clutter_stage_get_no_clear_hint
 clutter_stage_get_perspective
+clutter_stage_get_redraw_clip_bounds
 clutter_stage_get_throttle_motion_events
 clutter_stage_get_title
 clutter_stage_get_type
@@ -985,7 +986,11 @@ clutter_texture_get_repeat
 clutter_texture_get_sync_size
 clutter_texture_get_type
 clutter_texture_new
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_texture_new_from_actor
+#endif
+
 clutter_texture_new_from_file
 clutter_texture_quality_get_type
 clutter_texture_set_area_from_rgb_data
