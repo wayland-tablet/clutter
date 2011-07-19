@@ -102,8 +102,8 @@ stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 			;; \
 		esac; \
 		( echo "test-interactive $$test_bin" ) > $$test_bin.bat ; \
+		( echo "test-interactive $$test_bin" ) >> test-interactive.bat ; \
 	done \
-	&& ls *.bat > test-interactive.bat	\
 	&& cp *.bat $(top_srcdir)/build/win32/
 
 clean-wrappers:
