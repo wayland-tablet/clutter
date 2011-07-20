@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
-				AdditionalDependencies="atk-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="atk-1.0.lib gmodule-2.0.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="atk-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="atk-1.0.lib gmodule-2.0.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -104,7 +104,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				AdditionalDependencies="atk-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="atk-1.0.lib gmodule-2.0.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -134,7 +134,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				AdditionalDependencies="atk-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="atk-1.0.lib gmodule-2.0.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
