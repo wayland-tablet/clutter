@@ -357,7 +357,10 @@ clutter_clock_dispatch (GSource     *source,
        * motion compression, and avoid multiple picks per frame.
        */
       if (_clutter_stage_get_pending_swaps (l->data) == 0)
-        _clutter_stage_process_queued_events (l->data);
+        {
+          _clutter_stage_update_input_devices (l->data);
+          _clutter_stage_process_queued_events (l->data);
+        }
     }
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, master_event_process);

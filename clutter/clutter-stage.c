@@ -4022,6 +4022,25 @@ _clutter_stage_has_device (ClutterStage       *stage,
   return g_hash_table_lookup (priv->devices, device) != NULL;
 }
 
+void
+_clutter_stage_update_input_devices (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv = stage->priv;
+  GHashTableIter iter;
+  gpointer key, value;
+
+  if (!priv->motion_events_enabled)
+    return;
+
+  g_hash_table_iter_init (&iter, priv->devices);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      ClutterInputDevice *device = key;
+
+      _clutter_input_device_update (device, TRUE);
+    }
+}
+
 /**
  * clutter_stage_set_motion_events_enabled:
  * @stage: a #ClutterStage
