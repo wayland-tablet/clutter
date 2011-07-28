@@ -1756,10 +1756,16 @@ ClutterCairoTextureClass
 clutter_cairo_texture_new
 clutter_cairo_texture_set_surface_size
 clutter_cairo_texture_get_surface_size
+clutter_cairo_texture_set_auto_resize
+clutter_cairo_texture_get_auto_resize
 
 <SUBSECTION>
 clutter_cairo_texture_create
 clutter_cairo_texture_create_region
+
+<SUBSECTION>
+clutter_cairo_texture_invalidate_rectangle
+clutter_cairo_texture_invalidate
 clutter_cairo_texture_clear
 
 <SUBSECTION>

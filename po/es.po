@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-19 13:12+0000\n"
-"PO-Revision-Date: 2011-07-20 12:50+0200\n"
+"POT-Creation-Date: 2011-07-26 13:55+0000\n"
+"PO-Revision-Date: 2011-07-27 09:51+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -737,7 +737,7 @@ msgstr "El desplazamiento en píxeles que aplicar a la asociación"
 msgid "The unique name of the binding pool"
 msgstr "El nombre único de la asociación de la agrupación"
 
-#: ../clutter/clutter-bin-layout.c:261 ../clutter/clutter-bin-layout.c:580
+#: ../clutter/clutter-bin-layout.c:261 ../clutter/clutter-bin-layout.c:584
 #: ../clutter/clutter-box-layout.c:395 ../clutter/clutter-table-layout.c:652
 msgid "Horizontal Alignment"
 msgstr "Alineación horizontal"
@@ -746,7 +746,7 @@ msgstr "Alineación horizontal"
 msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr "Alineación horizontal del actor dentro del gestor de distribución"
 
-#: ../clutter/clutter-bin-layout.c:270 ../clutter/clutter-bin-layout.c:597
+#: ../clutter/clutter-bin-layout.c:270 ../clutter/clutter-bin-layout.c:601
 #: ../clutter/clutter-box-layout.c:404 ../clutter/clutter-table-layout.c:667
 msgid "Vertical Alignment"
 msgstr "Alineación vertical"
@@ -755,13 +755,13 @@ msgstr "Alineación vertical"
 msgid "Vertical alignment for the actor inside the layout manager"
 msgstr "Alineación vertical del actor dentro del gestor de distribución"
 
-#: ../clutter/clutter-bin-layout.c:581
+#: ../clutter/clutter-bin-layout.c:585
 msgid "Default horizontal alignment for the actors inside the layout manager"
 msgstr ""
 "Alineación horizontal predeterminada de los actores dentro del gestor de "
 "distribución"
 
-#: ../clutter/clutter-bin-layout.c:598
+#: ../clutter/clutter-bin-layout.c:602
 msgid "Default vertical alignment for the actors inside the layout manager"
 msgstr ""
 "Alineación vertical predeterminada de los actores dentro del gestor de "
@@ -891,21 +891,31 @@ msgstr "Duración de la desaceleración"
 msgid "The duration of the animations"
 msgstr "La duración de las animaciones"
 
-#: ../clutter/clutter-cairo-texture.c:404
+#: ../clutter/clutter-cairo-texture.c:582
 msgid "Surface Width"
 msgstr "Anchura de la superficie"
 
-#: ../clutter/clutter-cairo-texture.c:405
+#: ../clutter/clutter-cairo-texture.c:583
 msgid "The width of the Cairo surface"
 msgstr "La anchura de la superficie Cairo"
 
-#: ../clutter/clutter-cairo-texture.c:419
+#: ../clutter/clutter-cairo-texture.c:597
 msgid "Surface Height"
 msgstr "Altura de la superficie"
 
-#: ../clutter/clutter-cairo-texture.c:420
+#: ../clutter/clutter-cairo-texture.c:598
 msgid "The height of the Cairo surface"
 msgstr "La altura de la superficie Cairo"
+
+#: ../clutter/clutter-cairo-texture.c:615
+#| msgid "Auto Reverse"
+msgid "Auto Resize"
+msgstr "Redimensionar automáticamente"
+
+#: ../clutter/clutter-cairo-texture.c:616
+#| msgid "Whether each item should receive the same allocation"
+msgid "Whether the surface should match the allocation"
+msgstr "Indica si la superficie debe coincidir con la asignación"
 
 #: ../clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -2016,7 +2026,6 @@ msgstr "Dar forma al actor con canal alfa al seleccionarlo"
 #: ../clutter/clutter-texture.c:1557 ../clutter/clutter-texture.c:1967
 #: ../clutter/clutter-texture.c:2062 ../clutter/clutter-texture.c:2343
 #, c-format
-#| msgid "The path of the file containing the image data"
 msgid "Failed to load the image data"
 msgstr "Fallo al cargar los datos de la imagen"
 
