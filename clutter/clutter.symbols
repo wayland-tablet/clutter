@@ -228,10 +228,15 @@ clutter_alpha_set_closure
 clutter_alpha_set_func
 clutter_alpha_set_mode
 clutter_alpha_set_timeline
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_animatable_animate_property
+#endif
+
 clutter_animatable_find_property
 clutter_animatable_get_initial_state
 clutter_animatable_get_type
+clutter_animatable_interpolate_value
 clutter_animatable_set_final_state
 clutter_animation_bind
 clutter_animation_bind_interval
