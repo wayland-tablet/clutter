@@ -541,9 +541,11 @@ update_fbo (ClutterActor *self)
       if ((source_parent = clutter_actor_get_parent (priv->fbo_source)))
         {
           CoglMatrix modelview;
-          cogl_matrix_init_identity (&modelview);
+          const ClutterCamera *camera =
+            _clutter_stage_get_camera (CLUTTER_STAGE (stage), 0);
+          cogl_matrix_init_from_array (&modelview, (float *)&camera->view);
           _clutter_actor_apply_relative_transformation_matrix (source_parent,
-                                                               NULL,
+                                                               stage,
                                                                &modelview);
           cogl_set_modelview_matrix (&modelview);
         }
@@ -2363,14 +2365,30 @@ on_fbo_source_size_change (GObject          *object,
                            GParamSpec       *param_spec,
                            ClutterTexture   *texture)
 {
+  ClutterStage *stage;
   ClutterTexturePrivate *priv = texture->priv;
   gfloat w, h;
   ClutterActorBox box;
   gboolean status;
 
-  status = clutter_actor_get_paint_box (priv->fbo_source, &box);
-  if (status)
-    clutter_actor_box_get_size (&box, &w, &h);
+  stage = CLUTTER_STAGE (_clutter_actor_get_stage_internal (priv->fbo_source));
+  if (stage)
+    {
+      const ClutterCamera *left_eye;
+
+      g_return_if_fail (_clutter_stage_get_current_camera (stage) == NULL);
+
+      left_eye = _clutter_stage_get_camera (stage, 0);
+      _clutter_stage_set_current_camera (stage, left_eye);
+
+      status = clutter_actor_get_paint_box (priv->fbo_source, &box);
+      if (status)
+        clutter_actor_box_get_size (&box, &w, &h);
+
+      _clutter_stage_set_current_camera (stage, NULL);
+    }
+  else
+    status = FALSE;
 
   /* In the end we will size the framebuffer according to the paint
    * box, but for code that does:
@@ -2532,6 +2550,10 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
  *   </listitem>
  * </itemizedlist>
  *
+ * <note>If clutter is being used for stereo rendering then the
+ * texture represent the actor as it would be seen from the left
+ * eye.</note>
+ *
  * Return value: A newly created #ClutterTexture object, or %NULL on failure.
  *
  * Deprecated: 1.8: Use the #ClutterOffscreenEffect and #ClutterShaderEffect
@@ -2543,6 +2565,7 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
 ClutterActor *
 clutter_texture_new_from_actor (ClutterActor *actor)
 {
+  ClutterStage *stage;
   ClutterTexture        *texture;
   ClutterTexturePrivate *priv;
   gfloat w, h;
@@ -2562,9 +2585,24 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 	return NULL;
     }
 
-  status = clutter_actor_get_paint_box (actor, &box);
-  if (status)
-    clutter_actor_box_get_size (&box, &w, &h);
+  stage = CLUTTER_STAGE (_clutter_actor_get_stage_internal (actor));
+  if (stage)
+    {
+      const ClutterCamera *left_eye;
+
+      g_return_val_if_fail (_clutter_stage_get_current_camera (stage) == NULL, NULL);
+
+      left_eye = _clutter_stage_get_camera (stage, 0);
+      _clutter_stage_set_current_camera (stage, left_eye);
+
+      status = clutter_actor_get_paint_box (actor, &box);
+      if (status)
+        clutter_actor_box_get_size (&box, &w, &h);
+
+      _clutter_stage_set_current_camera (stage, NULL);
+    }
+  else
+    status = FALSE;
 
   /* In the end we will size the framebuffer according to the paint
    * box, but for code that does:

@@ -44,7 +44,7 @@ void                _clutter_stage_set_window            (ClutterStage          
 ClutterStageWindow *_clutter_stage_get_window            (ClutterStage          *stage);
 void                _clutter_stage_get_projection_matrix (ClutterStage          *stage,
                                                           CoglMatrix            *projection);
-void                _clutter_stage_dirty_projection      (ClutterStage          *stage);
+void                _clutter_stage_dirty_cogl_projection (ClutterStage          *stage);
 void                _clutter_stage_set_viewport          (ClutterStage          *stage,
                                                           float                  x,
                                                           float                  y,
@@ -55,9 +55,9 @@ void                _clutter_stage_get_viewport          (ClutterStage          
                                                           float                 *y,
                                                           float                 *width,
                                                           float                 *height);
-void                _clutter_stage_dirty_viewport        (ClutterStage          *stage);
+void                _clutter_stage_dirty_cogl_viewport   (ClutterStage          *stage);
 void                _clutter_stage_maybe_setup_viewport  (ClutterStage          *stage);
-void                _clutter_stage_maybe_relayout        (ClutterActor          *stage);
+void                _clutter_stage_maybe_relayout        (ClutterStage          *stage);
 gboolean            _clutter_stage_needs_update          (ClutterStage          *stage);
 gboolean            _clutter_stage_do_update             (ClutterStage          *stage);
 
@@ -115,6 +115,14 @@ gboolean                _clutter_stage_is_fullscreen    (ClutterStage      *stag
 gboolean                _clutter_stage_update_state     (ClutterStage      *stage,
                                                          ClutterStageState  unset_state,
                                                          ClutterStageState  set_state);
+
+const ClutterCamera  *_clutter_stage_get_camera         (ClutterStage        *stage,
+                                                         int                  camera_index);
+const ClutterCamera  *_clutter_stage_get_current_camera (ClutterStage        *stage);
+void                  _clutter_stage_set_current_camera (ClutterStage        *stage,
+                                                         const ClutterCamera *camera);
+int                   _clutter_stage_get_n_cameras      (ClutterStage        *stage);
+int                   _clutter_stage_get_cameras_age    (ClutterStage        *stage);
 
 G_END_DECLS
 

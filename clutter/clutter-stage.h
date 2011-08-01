@@ -202,6 +202,11 @@ void            clutter_stage_ensure_current                    (ClutterStage   
 void            clutter_stage_ensure_viewport                   (ClutterStage          *stage);
 void            clutter_stage_ensure_redraw                     (ClutterStage          *stage);
 
+void                  clutter_stage_set_stereo_enabled        (ClutterStage     *stage,
+                                                               gboolean          enabled);
+void                  clutter_stage_set_stereo_mode           (ClutterStage     *stage,
+                                                               ClutterStereoMode  mode);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_H__ */

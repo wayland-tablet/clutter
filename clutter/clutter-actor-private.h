@@ -251,8 +251,7 @@ void _clutter_actor_queue_redraw_full        (ClutterActor              *self,
                                               ClutterEffect             *effect);
 
 ClutterPaintVolume *_clutter_actor_get_queue_redraw_clip (ClutterActor *self);
-void _clutter_actor_set_queue_redraw_clip     (ClutterActor             *self,
-                                               ClutterPaintVolume *clip_volume);
+int _clutter_actor_get_queue_redraw_camera_index (ClutterActor *self);
 void _clutter_actor_finish_queue_redraw       (ClutterActor             *self,
                                                ClutterPaintVolume       *clip);
 

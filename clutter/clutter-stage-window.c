@@ -38,6 +38,21 @@ clutter_stage_window_default_init (ClutterStageWindowInterface *iface)
   g_object_interface_install_property (iface, pspec);
 }
 
+gboolean
+_clutter_stage_window_has_feature (ClutterStageWindow       *window,
+                                   ClutterStageWindowFeature feature)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE_WINDOW (window), FALSE);
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->redraw_without_swap)
+    return iface->has_feature (window, feature);
+  else
+    return FALSE;
+}
+
 ClutterActor *
 _clutter_stage_window_get_wrapper (ClutterStageWindow *window)
 {
@@ -234,6 +249,30 @@ _clutter_stage_window_redraw (ClutterStageWindow *window)
   iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
   if (iface->redraw)
     iface->redraw (window);
+}
+
+void
+_clutter_stage_window_redraw_without_swap (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (window));
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->redraw_without_swap)
+    iface->redraw_without_swap (window);
+}
+
+void
+_clutter_stage_window_swap_buffers (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (window));
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->swap_buffers)
+    iface->swap_buffers (window);
 }
 
 /* NB: The presumption shouldn't be that a stage can't be comprised of

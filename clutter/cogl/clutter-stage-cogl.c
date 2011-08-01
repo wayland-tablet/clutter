@@ -63,6 +63,16 @@ enum {
   PROP_LAST
 };
 
+static gboolean
+clutter_stage_cogl_has_feature (ClutterStageWindow       *window,
+                                ClutterStageWindowFeature feature)
+{
+  if (feature == CLUTTER_STAGE_WINDOW_FEATURE_SWAP_BUFFERS)
+    return TRUE;
+  else
+    return FALSE;
+}
+
 static void
 clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
 {
@@ -312,9 +322,42 @@ clutter_stage_cogl_get_redraw_clip_bounds (ClutterStageWindow    *stage_window,
   return FALSE;
 }
 
-/* XXX: This is basically identical to clutter_stage_glx_redraw */
 static void
-clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
+get_clipped_redraw_status (ClutterStageWindow *stage_window,
+                           gboolean *may_use_clipped_redraw,
+                           gboolean *use_clipped_redraw)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  gboolean can_blit_sub_buffer =
+    cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION);
+
+  if (G_LIKELY (can_blit_sub_buffer) &&
+      /* NB: a zero width redraw clip == full stage redraw */
+      stage_cogl->bounding_redraw_clip.width != 0 &&
+      /* some drivers struggle to get going and produce some junk
+       * frames when starting up... */
+      G_LIKELY (stage_cogl->frame_count > 3)
+      /* While resizing a window clipped redraws are disabled to avoid
+       * artefacts. See clutter-event-x11.c:event_translate for a
+       * detailed explanation */
+      && _clutter_stage_window_can_clip_redraws (stage_window)
+      )
+    {
+      *may_use_clipped_redraw = TRUE;
+    }
+  else
+    *may_use_clipped_redraw = FALSE;
+
+  if (*may_use_clipped_redraw &&
+      G_LIKELY (!(clutter_paint_debug_flags &
+                  CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+    *use_clipped_redraw = TRUE;
+  else
+    *use_clipped_redraw = FALSE;
+}
+
+static void
+clutter_stage_cogl_swap_buffers (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
   gboolean may_use_clipped_redraw;
@@ -322,11 +365,6 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   gboolean can_blit_sub_buffer;
   ClutterActor *wrapper;
 
-  CLUTTER_STATIC_TIMER (painting_timer,
-                        "Redrawing", /* parent */
-                        "Painting actors",
-                        "The time spent painting actors",
-                        0 /* no application private data */);
   CLUTTER_STATIC_TIMER (swapbuffers_timer,
                         "Redrawing", /* parent */
                         "SwapBuffers",
@@ -338,6 +376,83 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
                         "The time spent in blit_sub_buffer",
                         0 /* no application private data */);
 
+  if (!stage_cogl->onscreen)
+    return;
+
+  get_clipped_redraw_status (stage_window,
+                             &may_use_clipped_redraw,
+                             &use_clipped_redraw);
+
+  /* push on the screen */
+  if (use_clipped_redraw)
+    {
+      cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
+      int copy_area[4];
+
+      /* XXX: It seems there will be a race here in that the stage
+       * window may be resized before the cogl_onscreen_swap_region
+       * is handled and so we may copy the wrong region. I can't
+       * really see how we can handle this with the current state of X
+       * but at least in this case a full redraw should be queued by
+       * the resize anyway so it should only exhibit temporary
+       * artefacts.
+       */
+
+      copy_area[0] = clip->x;
+      copy_area[1] = clip->y;
+      copy_area[2] = clip->width;
+      copy_area[3] = clip->height;
+
+      CLUTTER_NOTE (BACKEND,
+                    "cogl_onscreen_swap_region (onscreen: %p, "
+                                                "x: %d, y: %d, "
+                                                "width: %d, height: %d)",
+                    stage_cogl->onscreen,
+                    copy_area[0], copy_area[1], copy_area[2], copy_area[3]);
+
+
+      CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
+
+      cogl_onscreen_swap_region (stage_cogl->onscreen, copy_area, 1);
+
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
+    }
+  else
+    {
+      CLUTTER_NOTE (BACKEND, "cogl_onscreen_swap_buffers (onscreen: %p)",
+                    stage_cogl->onscreen);
+
+      /* If we have swap buffer events then
+       * cogl_onscreen_swap_buffers will return immediately and we
+       * need to track that there is a swap in progress... */
+      if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
+        stage_cogl->pending_swaps++;
+
+      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
+      cogl_onscreen_swap_buffers (stage_cogl->onscreen);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
+    }
+
+  /* reset the redraw clipping for the next paint... */
+  stage_cogl->initialized_redraw_clip = FALSE;
+
+  stage_cogl->frame_count++;
+}
+
+static void
+clutter_stage_cogl_redraw_without_swap (ClutterStageWindow *stage_window)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  ClutterActor *wrapper;
+  gboolean may_use_clipped_redraw;
+  gboolean use_clipped_redraw;
+
+  CLUTTER_STATIC_TIMER (painting_timer,
+                        "Redrawing", /* parent */
+                        "Painting actors",
+                        "The time spent painting actors",
+                        0 /* no application private data */);
+
   wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
 
   if (!stage_cogl->onscreen)
@@ -345,27 +460,9 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
-  can_blit_sub_buffer =
-    cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION);
-
-  may_use_clipped_redraw = FALSE;
-  if (_clutter_stage_window_can_clip_redraws (stage_window) &&
-      can_blit_sub_buffer &&
-      /* NB: a zero width redraw clip == full stage redraw */
-      stage_cogl->bounding_redraw_clip.width != 0 &&
-      /* some drivers struggle to get going and produce some junk
-       * frames when starting up... */
-      stage_cogl->frame_count > 3)
-    {
-      may_use_clipped_redraw = TRUE;
-    }
-
-  if (may_use_clipped_redraw &&
-      G_LIKELY (!(clutter_paint_debug_flags &
-                  CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
-    use_clipped_redraw = TRUE;
-  else
-    use_clipped_redraw = FALSE;
+  get_clipped_redraw_status (stage_window,
+                             &may_use_clipped_redraw,
+                             &use_clipped_redraw);
 
   if (use_clipped_redraw)
     {
@@ -454,61 +551,13 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
     }
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
+}
 
-  /* push on the screen */
-  if (use_clipped_redraw)
-    {
-      cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
-      int copy_area[4];
-
-      /* XXX: It seems there will be a race here in that the stage
-       * window may be resized before the cogl_onscreen_swap_region
-       * is handled and so we may copy the wrong region. I can't
-       * really see how we can handle this with the current state of X
-       * but at least in this case a full redraw should be queued by
-       * the resize anyway so it should only exhibit temporary
-       * artefacts.
-       */
-
-      copy_area[0] = clip->x;
-      copy_area[1] = clip->y;
-      copy_area[2] = clip->width;
-      copy_area[3] = clip->height;
-
-      CLUTTER_NOTE (BACKEND,
-                    "cogl_onscreen_swap_region (onscreen: %p, "
-                                                "x: %d, y: %d, "
-                                                "width: %d, height: %d)",
-                    stage_cogl->onscreen,
-                    copy_area[0], copy_area[1], copy_area[2], copy_area[3]);
-
-
-      CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
-
-      cogl_onscreen_swap_region (stage_cogl->onscreen, copy_area, 1);
-
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
-    }
-  else
-    {
-      CLUTTER_NOTE (BACKEND, "cogl_onscreen_swap_buffers (onscreen: %p)",
-                    stage_cogl->onscreen);
-
-      /* If we have swap buffer events then cogl_onscreen_swap_buffers
-       * will return immediately and we need to track that there is a
-       * swap in progress... */
-      if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
-        stage_cogl->pending_swaps++;
-
-      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
-      cogl_onscreen_swap_buffers (stage_cogl->onscreen);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
-    }
-
-  /* reset the redraw clipping for the next paint... */
-  stage_cogl->initialized_redraw_clip = FALSE;
-
-  stage_cogl->frame_count++;
+static void
+clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
+{
+  clutter_stage_cogl_redraw_without_swap (stage_window);
+  clutter_stage_cogl_swap_buffers (stage_window);
 }
 
 static CoglFramebuffer *
@@ -522,6 +571,7 @@ clutter_stage_cogl_get_active_framebuffer (ClutterStageWindow *stage_window)
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
+  iface->has_feature = clutter_stage_cogl_has_feature;
   iface->realize = clutter_stage_cogl_realize;
   iface->unrealize = clutter_stage_cogl_unrealize;
   iface->get_wrapper = clutter_stage_cogl_get_wrapper;
@@ -535,6 +585,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->ignoring_redraw_clips = clutter_stage_cogl_ignoring_redraw_clips;
   iface->get_redraw_clip_bounds = clutter_stage_cogl_get_redraw_clip_bounds;
   iface->redraw = clutter_stage_cogl_redraw;
+  iface->redraw_without_swap = clutter_stage_cogl_redraw_without_swap;
+  iface->swap_buffers = clutter_stage_cogl_swap_buffers;
   iface->get_active_framebuffer = clutter_stage_cogl_get_active_framebuffer;
 }
 

@@ -1128,14 +1128,12 @@ _clutter_paint_volume_cull (ClutterPaintVolume *pv,
 }
 
 void
-_clutter_paint_volume_get_stage_paint_box (ClutterPaintVolume *pv,
-                                           ClutterStage *stage,
-                                           ClutterActorBox *box)
+_clutter_paint_volume_get_camera_paint_box (ClutterPaintVolume *pv,
+                                            const ClutterCamera *camera,
+                                            ClutterActorBox *box)
 {
   ClutterPaintVolume projected_pv;
   CoglMatrix modelview;
-  CoglMatrix projection;
-  float viewport[4];
   float width;
   float height;
 
@@ -1145,20 +1143,18 @@ _clutter_paint_volume_get_stage_paint_box (ClutterPaintVolume *pv,
 
   /* If the paint volume isn't already in eye coordinates... */
   if (pv->actor)
-    _clutter_actor_apply_relative_transformation_matrix (pv->actor, NULL,
-                                                         &modelview);
-
-  _clutter_stage_get_projection_matrix (stage, &projection);
-  _clutter_stage_get_viewport (stage,
-                               &viewport[0],
-                               &viewport[1],
-                               &viewport[2],
-                               &viewport[3]);
+    {
+      ClutterActor *stage =
+        CLUTTER_ACTOR (_clutter_actor_get_stage_internal (pv->actor));
+      cogl_matrix_init_from_array (&modelview, (float *)&camera->view);
+      _clutter_actor_apply_relative_transformation_matrix (pv->actor, stage,
+                                                           &modelview);
+    }
 
   _clutter_paint_volume_project (&projected_pv,
                                  &modelview,
-                                 &projection,
-                                 viewport);
+                                 &camera->projection,
+                                 camera->viewport);
 
   _clutter_paint_volume_get_bounding_box (&projected_pv, box);
 
@@ -1220,13 +1216,38 @@ _clutter_paint_volume_transform_relative (ClutterPaintVolume *pv,
   actor = pv->actor;
 
   g_return_if_fail (actor != NULL);
+  g_return_if_fail (relative_to_ancestor != NULL);
 
   _clutter_paint_volume_set_reference_actor (pv, relative_to_ancestor);
 
   cogl_matrix_init_identity (&matrix);
   _clutter_actor_apply_relative_transformation_matrix (actor,
                                                        relative_to_ancestor,
-                                                      &matrix);
+                                                       &matrix);
 
   _clutter_paint_volume_transform (pv, &matrix);
+}
+
+void
+_clutter_paint_volume_transform_relative_to_camera (ClutterPaintVolume *pv,
+                                                    const ClutterCamera *camera)
+{
+  CoglMatrix modelview;
+  ClutterActor *stage;
+  ClutterActor *actor;
+
+  actor = pv->actor;
+
+  g_return_if_fail (actor != NULL);
+
+  stage = CLUTTER_ACTOR (_clutter_actor_get_stage_internal (actor));
+
+  _clutter_paint_volume_set_reference_actor (pv, NULL);
+
+  cogl_matrix_init_from_array (&modelview, (float *)&camera->view);
+  _clutter_actor_apply_relative_transformation_matrix (actor,
+                                                       CLUTTER_ACTOR (stage),
+                                                       &modelview);
+
+  _clutter_paint_volume_transform (pv, &modelview);
 }

@@ -126,12 +126,15 @@ void                _clutter_paint_volume_set_reference_actor  (ClutterPaintVolu
 ClutterCullResult   _clutter_paint_volume_cull                 (ClutterPaintVolume *pv,
                                                                 const ClutterPlane       *planes);
 
-void                _clutter_paint_volume_get_stage_paint_box  (ClutterPaintVolume *pv,
-                                                                ClutterStage *stage,
+void                _clutter_paint_volume_get_camera_paint_box (ClutterPaintVolume *pv,
+                                                                const ClutterCamera *camera,
                                                                 ClutterActorBox *box);
 
 void                _clutter_paint_volume_transform_relative   (ClutterPaintVolume *pv,
                                                                 ClutterActor *relative_to_ancestor);
+
+void                _clutter_paint_volume_transform_relative_to_camera (ClutterPaintVolume *pv,
+                                                                        const ClutterCamera *camera);
 
 G_END_DECLS
 

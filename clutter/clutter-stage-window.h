@@ -22,7 +22,13 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageWindow      ClutterStageWindow; /* dummy */
 typedef struct _ClutterStageWindowIface ClutterStageWindowIface;
 
-/*
+typedef enum
+{
+  /*< private >*/
+  CLUTTER_STAGE_WINDOW_FEATURE_SWAP_BUFFERS
+} ClutterStageWindowFeature;
+
+/**
  * ClutterStageWindowIface: (skip)
  *
  * The interface implemented by backends for stage windows
@@ -33,6 +39,9 @@ struct _ClutterStageWindowIface
 {
   /*< private >*/
   GTypeInterface parent_iface;
+
+  gboolean          (* has_feature)             (ClutterStageWindow       *stage_window,
+                                                 ClutterStageWindowFeature feature);
 
   ClutterActor     *(* get_wrapper)             (ClutterStageWindow *stage_window);
 
@@ -72,6 +81,8 @@ struct _ClutterStageWindowIface
                                                  gboolean            accept_focus);
 
   void              (* redraw)                  (ClutterStageWindow *stage_window);
+  void              (* redraw_without_swap)     (ClutterStageWindow *stage_window);
+  void              (* swap_buffers)            (ClutterStageWindow *stage_window);
 
   CoglFramebuffer  *(* get_active_framebuffer)  (ClutterStageWindow *stage_window);
 
@@ -79,6 +90,9 @@ struct _ClutterStageWindowIface
 };
 
 GType _clutter_stage_window_get_type (void) G_GNUC_CONST;
+
+gboolean          _clutter_stage_window_has_feature        (ClutterStageWindow       *window,
+                                                            ClutterStageWindowFeature feature);
 
 ClutterActor *    _clutter_stage_window_get_wrapper        (ClutterStageWindow *window);
 
@@ -116,6 +130,8 @@ void              _clutter_stage_window_set_accept_focus        (ClutterStageWin
                                                                  gboolean            accept_focus);
 
 void              _clutter_stage_window_redraw                  (ClutterStageWindow *window);
+void              _clutter_stage_window_redraw_without_swap     (ClutterStageWindow *window);
+void              _clutter_stage_window_swap_buffers            (ClutterStageWindow *window);
 
 CoglFramebuffer  *_clutter_stage_window_get_active_framebuffer  (ClutterStageWindow *window);
 

@@ -373,6 +373,21 @@ typedef enum {
                               */
 } MapStateChange;
 
+typedef struct
+{
+  const ClutterCamera *camera;
+
+  /* NB: This volume isn't relative to this actor, it is in eye
+   * coordinates so that it can remain valid after the actor changes.
+   */
+  ClutterPaintVolume eye_volume;
+  gboolean eye_volume_valid;
+
+  /* If this doesn't match camera->age then the above paint-volume
+   * is invalid. */
+  int valid_for_age;
+} PerCameraState;
+
 /* 3 entries should be a good compromise, few layout managers
  * will ask for 3 different preferred size in each allocation cycle */
 #define N_CACHED_SIZE_REQUESTS 3
@@ -396,6 +411,12 @@ struct _ClutterActorPrivate
   ClutterActorBox allocation;
   ClutterAllocationFlags allocation_flags;
 
+  /* State we cache that's specific to a camera view. We only currently
+   * consider their may be two cameras for stereo rendering. */
+  PerCameraState *camera_state;
+  int n_cameras;
+  int cameras_age;
+
   /* depth */
   gfloat z;
 
@@ -415,6 +436,7 @@ struct _ClutterActorPrivate
   ClutterEffect *flatten_effect;
 
   /* scene graph */
+  ClutterStage *stage_cache;
   ClutterActor *parent;
   ClutterActor *prev_sibling;
   ClutterActor *next_sibling;
@@ -449,6 +471,13 @@ struct _ClutterActorPrivate
   /* a counter used to toggle the CLUTTER_INTERNAL_CHILD flag */
   gint internal_child;
 
+  /* XXX: These are a workaround for not being able to break the ABI
+   * of the QUEUE_REDRAW signal. They are out-of-band arguments.
+   * See clutter_actor_queue_clipped_redraw() for details.
+   */
+  ClutterPaintVolume *oob_queue_redraw_clip;
+  int oob_queue_redraw_camera_index;
+
   /* meta classes */
   ClutterMetaGroup *actions;
   ClutterMetaGroup *constraints;
@@ -475,11 +504,6 @@ struct _ClutterActorPrivate
   const GList *next_effect_to_paint;
 
   ClutterPaintVolume paint_volume;
-
-  /* NB: This volume isn't relative to this actor, it is in eye
-   * coordinates so that it can remain valid after the actor changes.
-   */
-  ClutterPaintVolume last_paint_volume;
 
   ClutterStageQueueRedrawEntry *queue_redraw_entry;
 
@@ -1096,11 +1120,40 @@ clutter_actor_update_map_state (ClutterActor  *self,
 #endif
 }
 
+static ClutterStage *
+_clutter_actor_get_stage_real (ClutterActor *actor)
+{
+  ClutterActor *self;
+
+  if (G_LIKELY (actor->priv->stage_cache))
+    return actor->priv->stage_cache;
+
+  self = actor;
+
+  /* Check to see if the actor is associated with a stage yet... */
+  while (actor && !CLUTTER_ACTOR_IS_TOPLEVEL (actor))
+    actor = actor->priv->parent;
+
+  /* Note: we never want to have a type check when we cast here
+   * since this is function can be used very heavily. */
+  self->priv->stage_cache = (ClutterStage *)actor;
+  return self->priv->stage_cache;
+}
+
+ClutterActor *
+_clutter_actor_get_stage_internal (ClutterActor *actor)
+{
+  /* Note: we never want to have a type check when we cast here
+   * since this is function can be used very heavily. */
+  return (ClutterActor *)_clutter_actor_get_stage_real (actor);
+}
+
 static void
 clutter_actor_real_map (ClutterActor *self)
 {
+  ClutterStage *stage = _clutter_actor_get_stage_real (self);
   ClutterActorPrivate *priv = self->priv;
-  ClutterActor *stage, *iter;
+  ClutterActor *iter;
 
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
 
@@ -1109,9 +1162,7 @@ clutter_actor_real_map (ClutterActor *self)
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
 
-  stage = _clutter_actor_get_stage_internal (self);
-  priv->pick_id = _clutter_stage_acquire_pick_id (CLUTTER_STAGE (stage), self);
-
+  priv->pick_id = _clutter_stage_acquire_pick_id (stage, self);
   CLUTTER_NOTE (ACTOR, "Pick id '%d' for actor '%s'",
                 priv->pick_id,
                 _clutter_actor_get_debug_name (self));
@@ -1165,6 +1216,7 @@ clutter_actor_real_unmap (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActor *iter;
+  int i;
 
   g_assert (CLUTTER_ACTOR_IS_MAPPED (self));
 
@@ -1180,11 +1232,29 @@ clutter_actor_real_unmap (ClutterActor *self)
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
 
-  /* clear the contents of the last paint volume, so that hiding + moving +
-   * showing will not result in the wrong area being repainted
+  /* clear the contents of the - per camera - eye coordinate paint
+   * volumes, so that if we later show the actor again we won't
+   * redundantly also redraw the old location of the actor.
+   *
+   * Note: We only do this if the actor doesn't already have redraw
+   * queued for it that may depend on the last eye_volume to clear
+   * its old location. For example if you were to hide, move and
+   * re-show an actor in preparing for a single frame then in that
+   * case we would have queued a redraw for the hide and and do
+   * need to make sure that the actors old location is redrawn.
    */
-  _clutter_paint_volume_init_static (&priv->last_paint_volume, NULL);
-  priv->last_paint_volume_valid = TRUE;
+  if (priv->queue_redraw_entry != NULL)
+    {
+      for (i = 0; i < priv->n_cameras; i++)
+        {
+          PerCameraState *camera_state = &priv->camera_state[i];
+
+          if (!camera_state->eye_volume_valid)
+            clutter_paint_volume_free (&camera_state->eye_volume);
+          _clutter_paint_volume_init_static (&camera_state->eye_volume, NULL);
+          camera_state->eye_volume_valid = TRUE;
+        }
+    }
 
   /* notify on parent mapped after potentially unmapping
    * children, so apps see a bottom-up notification.
@@ -1194,10 +1264,7 @@ clutter_actor_real_unmap (ClutterActor *self)
   /* relinquish keyboard focus if we were unmapped while owning it */
   if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
-      ClutterStage *stage;
-
-      stage = CLUTTER_STAGE (_clutter_actor_get_stage_internal (self));
-
+      ClutterStage *stage = _clutter_actor_get_stage_real (self);
       if (stage != NULL)
         _clutter_stage_release_pick_id (stage, priv->pick_id);
 
@@ -1340,6 +1407,14 @@ clutter_actor_show (ClutterActor *self)
   g_signal_emit (self, actor_signals[SHOW], 0);
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
 
+  /* XXX: shouldn't this be:
+   * if (_clutter_actor_get_stage_real (self))
+   *   clutter_actor_queue_redraw (self);
+   *
+   * XXX: actually shouldn't we queue redraws from map/unmap changes
+   * instead since there's no point queueing a redraw for an actor if
+   * one of its ancestors is unmapped.
+   */
   if (priv->parent != NULL)
     clutter_actor_queue_redraw (priv->parent);
 
@@ -1435,6 +1510,14 @@ clutter_actor_hide (ClutterActor *self)
   g_signal_emit (self, actor_signals[HIDE], 0);
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
 
+  /* XXX: shouldn't this be:
+   * if (_clutter_actor_get_stage_real (self))
+   *   clutter_actor_queue_redraw (self);
+   *
+   * XXX: actually shouldn't we queue redraws from map/unmap changes
+   * instead since there's no point queueing a redraw for an actor if
+   * one of its ancestors is unmapped.
+   */
   if (priv->parent != NULL)
     clutter_actor_queue_redraw (priv->parent);
 
@@ -2176,9 +2259,8 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
    */
   if (self->priv->propagated_one_redraw)
     {
-      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
-      if (stage != NULL &&
-          _clutter_stage_has_full_redraw_queued (CLUTTER_STAGE (stage)))
+      ClutterStage *stage = _clutter_actor_get_stage_real (self);
+      if (stage != NULL && _clutter_stage_has_full_redraw_queued (stage))
         return;
     }
 
@@ -2256,7 +2338,7 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
   w = 1.0;
 
   if (ancestor == NULL)
-    ancestor = _clutter_actor_get_stage_internal (self);
+    ancestor = CLUTTER_ACTOR (_clutter_actor_get_stage_real (self));
 
   if (ancestor == NULL)
     {
@@ -2270,40 +2352,32 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
 
 static gboolean
 _clutter_actor_fully_transform_vertices (ClutterActor *self,
+                                         int camera_index,
                                          const ClutterVertex *vertices_in,
                                          ClutterVertex *vertices_out,
                                          int n_vertices)
 {
   ClutterActor *stage;
+  const ClutterCamera *camera;
   CoglMatrix modelview;
-  CoglMatrix projection;
-  float viewport[4];
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  stage = _clutter_actor_get_stage_internal (self);
-
   /* We really can't do anything meaningful in this case so don't try
    * to do any transform */
+  stage = CLUTTER_ACTOR (_clutter_actor_get_stage_real (self));
   if (stage == NULL)
     return FALSE;
 
-  /* Note: we pass NULL as the ancestor because we don't just want the modelview
-   * that gets us to stage coordinates, we want to go all the way to eye
-   * coordinates */
-  _clutter_actor_apply_relative_transformation_matrix (self, NULL, &modelview);
+  camera = _clutter_stage_get_camera (CLUTTER_STAGE (stage), camera_index);
+  cogl_matrix_init_from_array (&modelview, (float *)&camera->view);
+
+  _clutter_actor_apply_relative_transformation_matrix (self, stage, &modelview);
 
   /* Fetch the projection and viewport */
-  _clutter_stage_get_projection_matrix (CLUTTER_STAGE (stage), &projection);
-  _clutter_stage_get_viewport (CLUTTER_STAGE (stage),
-                               &viewport[0],
-                               &viewport[1],
-                               &viewport[2],
-                               &viewport[3]);
-
   _clutter_util_fully_transform_vertices (&modelview,
-                                          &projection,
-                                          viewport,
+                                          &camera->projection,
+                                          camera->viewport,
                                           vertices_in,
                                           vertices_out,
                                           n_vertices);
@@ -2321,6 +2395,9 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
  * into screen-relative coordinates with the current actor
  * transformation (i.e. scale, rotation, etc)
  *
+ * <note>If clutter is being used for stereo rendering then this will
+ * simply transform the point according the left eye's view</note>
+ *
  * Since: 0.4
  **/
 void
@@ -2330,14 +2407,13 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
 {
   g_return_if_fail (point != NULL);
   g_return_if_fail (vertex != NULL);
-  _clutter_actor_fully_transform_vertices (self, point, vertex, 1);
+  _clutter_actor_fully_transform_vertices (self, 0, point, vertex, 1);
 }
 
 /*
  * _clutter_actor_get_relative_transformation_matrix:
  * @self: The actor whose coordinate space you want to transform from.
- * @ancestor: The ancestor actor whose coordinate space you want to transform too
- *            or %NULL if you want to transform all the way to eye coordinates.
+ * @ancestor: The ancestor actor whose coordinate space you want to transform too.
  * @matrix: A #CoglMatrix to store the transformation
  *
  * This gets a transformation @matrix that will transform coordinates from the
@@ -2346,13 +2422,6 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
  * For example if you need a matrix that can transform the local actor
  * coordinates of @self into stage coordinates you would pass the actor's stage
  * pointer as the @ancestor.
- *
- * If you pass %NULL then the transformation will take you all the way through
- * to eye coordinates. This can be useful if you want to extract the entire
- * modelview transform that Clutter applies before applying the projection
- * transformation. If you want to explicitly set a modelview on a CoglFramebuffer
- * using cogl_set_modelview_matrix() for example then you would want a matrix
- * that transforms into eye coordinates.
  *
  * <note><para>This function explicitly initializes the given @matrix. If you just
  * want clutter to multiply a relative transformation with an existing matrix
@@ -2367,6 +2436,8 @@ _clutter_actor_get_relative_transformation_matrix (ClutterActor *self,
                                                    ClutterActor *ancestor,
                                                    CoglMatrix *matrix)
 {
+  g_return_if_fail (ancestor != NULL);
+
   cogl_matrix_init_identity (matrix);
 
   _clutter_actor_apply_relative_transformation_matrix (self, ancestor, matrix);
@@ -2376,6 +2447,7 @@ _clutter_actor_get_relative_transformation_matrix (ClutterActor *self,
  * transformed vertices to @verts[]. */
 static gboolean
 _clutter_actor_transform_and_project_box (ClutterActor          *self,
+                                          int                    camera_index,
 					  const ClutterActorBox *box,
 					  ClutterVertex          verts[])
 {
@@ -2395,7 +2467,8 @@ _clutter_actor_transform_and_project_box (ClutterActor          *self,
   box_vertices[3].z = 0;
 
   return
-    _clutter_actor_fully_transform_vertices (self, box_vertices, verts, 4);
+    _clutter_actor_fully_transform_vertices (self, camera_index,
+                                             box_vertices, verts, 4);
 }
 
 /**
@@ -2432,25 +2505,26 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
   ClutterActorBox box;
   ClutterVertex vertices[4];
   CoglMatrix modelview;
+  ClutterStage *stage;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
 
+  priv = self->priv;
+  stage = _clutter_actor_get_stage_real (self);
+
   if (ancestor == NULL)
-    ancestor = _clutter_actor_get_stage_internal (self);
+    ancestor = CLUTTER_ACTOR (stage);
 
   /* Fallback to a NOP transform if the actor isn't parented under a
    * stage. */
   if (ancestor == NULL)
     ancestor = self;
 
-  priv = self->priv;
-
   /* if the actor needs to be allocated we force a relayout, so that
    * we will have valid values to use in the transformations */
   if (priv->needs_allocation)
     {
-      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
       if (stage)
         _clutter_stage_maybe_relayout (stage);
       else
@@ -2505,6 +2579,9 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
  *   <listitem><para>v[3] contains (x2, y2)</para></listitem>
  * </itemizedlist>
  *
+ * <note>If clutter is being used for stereo rendering then this will
+ * simply return a box according the left eye's view.</note>
+ *
  * Since: 0.4
  */
 void
@@ -2524,7 +2601,7 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
    */
   if (priv->needs_allocation)
     {
-      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
+      ClutterStage *stage = _clutter_actor_get_stage_real (self);
       /* There's nothing meaningful we can do now */
       if (!stage)
         return;
@@ -2539,6 +2616,7 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
   actor_space_allocation.x2 = priv->allocation.x2 - priv->allocation.x1;
   actor_space_allocation.y2 = priv->allocation.y2 - priv->allocation.y1;
   _clutter_actor_transform_and_project_box (self,
+                                            0,
 					    &actor_space_allocation,
 					    verts);
 }
@@ -2630,8 +2708,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self,
 /*
  * clutter_actor_apply_relative_transformation_matrix:
  * @self: The actor whose coordinate space you want to transform from.
- * @ancestor: The ancestor actor whose coordinate space you want to transform too
- *            or %NULL if you want to transform all the way to eye coordinates.
+ * @ancestor: The ancestor actor whose coordinate space you want to transform too.
  * @matrix: A #CoglMatrix to apply the transformation too.
  *
  * This multiplies a transform with @matrix that will transform coordinates
@@ -2640,13 +2717,6 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self,
  * For example if you need a matrix that can transform the local actor
  * coordinates of @self into stage coordinates you would pass the actor's stage
  * pointer as the @ancestor.
- *
- * If you pass %NULL then the transformation will take you all the way through
- * to eye coordinates. This can be useful if you want to extract the entire
- * modelview transform that Clutter applies before applying the projection
- * transformation. If you want to explicitly set a modelview on a CoglFramebuffer
- * using cogl_set_modelview_matrix() for example then you would want a matrix
- * that transforms into eye coordinates.
  *
  * <note>This function doesn't initialize the given @matrix, it simply
  * multiplies the requested transformation matrix with the existing contents of
@@ -2660,6 +2730,8 @@ _clutter_actor_apply_relative_transformation_matrix (ClutterActor *self,
                                                      CoglMatrix *matrix)
 {
   ClutterActor *parent;
+
+  g_return_if_fail (ancestor != NULL);
 
   /* Note we terminate before ever calling stage->apply_transform()
    * since that would conceptually be relative to the underlying
@@ -2754,9 +2826,9 @@ _clutter_actor_draw_paint_volume (ClutterActor *self)
     {
       gfloat width, height;
       ClutterPaintVolume fake_pv;
+      ClutterStage *stage = _clutter_actor_get_stage_real (self);
 
-      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
-      _clutter_paint_volume_init_static (&fake_pv, stage);
+      _clutter_paint_volume_init_static (&fake_pv, CLUTTER_ACTOR (stage));
 
       clutter_actor_get_size (self, &width, &height);
       clutter_paint_volume_set_width (&fake_pv, width);
@@ -2780,6 +2852,7 @@ _clutter_actor_draw_paint_volume (ClutterActor *self)
 
 static void
 _clutter_actor_paint_cull_result (ClutterActor *self,
+                                  const ClutterCamera *camera,
                                   gboolean success,
                                   ClutterCullResult result)
 {
@@ -2851,22 +2924,15 @@ static gboolean
 cull_actor (ClutterActor *self, ClutterCullResult *result_out)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterActor *stage;
   const ClutterPlane *stage_clip;
-
-  if (!priv->last_paint_volume_valid)
-    {
-      CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
-                    "->last_paint_volume_valid == FALSE",
-                    _clutter_actor_get_debug_name (self));
-      return FALSE;
-    }
+  const ClutterCamera *camera;
+  PerCameraState *camera_state;
+  ClutterStage *stage = _clutter_actor_get_stage_real (self);
 
   if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_CULLING))
     return FALSE;
 
-  stage = _clutter_actor_get_stage_internal (self);
-  stage_clip = _clutter_stage_get_clip (CLUTTER_STAGE (stage));
+  stage_clip = _clutter_stage_get_clip (stage);
   if (G_UNLIKELY (!stage_clip))
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
@@ -2875,8 +2941,19 @@ cull_actor (ClutterActor *self, ClutterCullResult *result_out)
       return FALSE;
     }
 
+  camera = _clutter_stage_get_current_camera (stage);
+  camera_state = &priv->camera_state[camera->index];
+
+  if (!camera_state->eye_volume_valid)
+    {
+      CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
+                    "->paint_volume_valid == FALSE",
+                    _clutter_actor_get_debug_name (self));
+      return FALSE;
+    }
+
   if (cogl_get_draw_framebuffer () !=
-      _clutter_stage_get_active_framebuffer (CLUTTER_STAGE (stage)))
+      _clutter_stage_get_active_framebuffer (stage))
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
                     "Current framebuffer doesn't correspond to stage",
@@ -2885,37 +2962,107 @@ cull_actor (ClutterActor *self, ClutterCullResult *result_out)
     }
 
   *result_out =
-    _clutter_paint_volume_cull (&priv->last_paint_volume, stage_clip);
+    _clutter_paint_volume_cull (&camera_state->eye_volume, stage_clip);
   return TRUE;
 }
 
 static void
-_clutter_actor_update_last_paint_volume (ClutterActor *self)
+invalidate_per_camera_eye_volume (PerCameraState *camera_state)
+{
+  if (camera_state->eye_volume_valid)
+    {
+      clutter_paint_volume_free (&camera_state->eye_volume);
+      camera_state->eye_volume_valid = FALSE;
+    }
+}
+
+static PerCameraState *
+_clutter_actor_get_per_camera_state (ClutterActor *self,
+                                     int camera_index)
 {
   ClutterActorPrivate *priv = self->priv;
-  const ClutterPaintVolume *pv;
+  ClutterStage *stage = _clutter_actor_get_stage_real (self);
+  int cameras_age = _clutter_stage_get_cameras_age (stage);
+  PerCameraState *camera_state;
 
-  if (priv->last_paint_volume_valid)
+  /* Whenever there are additions or removals of cameras associated with the
+   * stage then the stage's 'cameras_age' is bumped and we throw away any
+   * per-actor cached state associated with the old cameras. */
+
+  if (G_UNLIKELY (cameras_age != priv->cameras_age))
     {
-      clutter_paint_volume_free (&priv->last_paint_volume);
-      priv->last_paint_volume_valid = FALSE;
+      int i;
+      int n_cameras;
+
+      for (i = 0; i < priv->n_cameras; i++)
+        invalidate_per_camera_eye_volume (&priv->camera_state[i]);
+
+      if (priv->camera_state)
+        g_slice_free1 (sizeof (PerCameraState) * priv->n_cameras,
+                       priv->camera_state);
+
+      /* NB: We always allocate for the total number of cameras since
+       * we expect that each camera is likely going to be painted each
+       * frame so we should save having to re-allocate later. */
+      n_cameras = _clutter_stage_get_n_cameras (stage);
+      priv->camera_state = g_slice_alloc (sizeof (PerCameraState) * n_cameras);
+
+      for (i = 0; i < n_cameras; i++)
+        {
+          camera_state = &priv->camera_state[i];
+
+          camera_state->camera = _clutter_stage_get_camera (stage, i);
+          camera_state->eye_volume_valid = FALSE;
+          camera_state->valid_for_age = camera_state->camera->age;
+        }
+
+      priv->n_cameras = n_cameras;
+      priv->cameras_age = cameras_age;
+    }
+
+  camera_state = &priv->camera_state[camera_index];
+  if (camera_state->camera->age != camera_state->valid_for_age)
+    {
+      invalidate_per_camera_eye_volume (camera_state);
+      camera_state->valid_for_age = camera_state->camera->age;
+    }
+
+  return camera_state;
+}
+
+/* NB: This updates the eye coordinates paint volume ("eye_volume") for the
+ * current camera and it's assumed that this is only used during painting where
+ * the current camera is meaningful. */
+static void
+_clutter_actor_update_eye_volume (ClutterActor *self)
+{
+  const ClutterPaintVolume *pv;
+  ClutterStage *stage = _clutter_actor_get_stage_real (self);
+  const ClutterCamera *camera = _clutter_stage_get_current_camera (stage);
+  PerCameraState *camera_state =
+    _clutter_actor_get_per_camera_state (self, camera->index);
+
+  if (camera_state->eye_volume_valid)
+    {
+      clutter_paint_volume_free (&camera_state->eye_volume);
+      camera_state->eye_volume_valid = FALSE;
     }
 
   pv = clutter_actor_get_paint_volume (self);
   if (!pv)
     {
-      CLUTTER_NOTE (CLIPPING, "Bail from update_last_paint_volume (%s): "
+      CLUTTER_NOTE (CLIPPING, "Bail from update_paint_volume (%s): "
                     "Actor failed to report a paint volume",
                     _clutter_actor_get_debug_name (self));
       return;
     }
 
-  _clutter_paint_volume_copy_static (pv, &priv->last_paint_volume);
+  _clutter_paint_volume_copy_static (pv, &camera_state->eye_volume);
 
-  _clutter_paint_volume_transform_relative (&priv->last_paint_volume,
-                                            NULL); /* eye coordinates */
+  _clutter_paint_volume_transform_relative_to_camera (&camera_state->eye_volume,
+                                                      camera);
 
-  priv->last_paint_volume_valid = TRUE;
+  camera_state->eye_volume_valid = TRUE;
 }
 
 static inline gboolean
@@ -3095,6 +3242,9 @@ clutter_actor_paint (ClutterActor *self)
   ClutterPickMode pick_mode;
   gboolean clip_set = FALSE;
   gboolean shader_applied = FALSE;
+  ClutterStage *stage;
+  const ClutterCamera *camera;
+  gboolean set_current_camera;
 
   CLUTTER_STATIC_COUNTER (actor_paint_counter,
                           "Actor real-paint counter",
@@ -3136,6 +3286,39 @@ clutter_actor_paint (ClutterActor *self)
 
   /* mark that we are in the paint process */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_PAINT);
+
+  stage = _clutter_actor_get_stage_real (self);
+  camera = _clutter_stage_get_current_camera (stage);
+
+  /* Although not ideal, we have to support toolkits that may
+   * manually paint actors outside of a standard paint-cycle
+   * (such as as MxOffscreen which may paint individual actors
+   * to an offscreen fbo)
+   *
+   * In this situation we won't have setup a current camera and so,
+   * for compatibility, we make the left_eye camera current so code
+   * relying on this capability won't simply crash.
+   *
+   * It should be noted though that code relying on this behaviour
+   * won't work with stereoscopic rendering.
+   *
+   * XXX: This code should stay very near the beginning of
+   * clutter_actor_paint() to ensure that we do have a valid camera for
+   * subsequent code.
+   */
+  if (!camera)
+    {
+      camera = _clutter_stage_get_camera (stage, 0);
+
+      /* XXX: code relying on this really should be encourage to
+       * switch to a solution that works within the paint-cycle not
+       * least because the state of the current camera is basically
+       * un-defined and may change before the next paint. */
+      _clutter_stage_set_current_camera (stage, camera);
+      set_current_camera = TRUE;
+    }
+  else
+    set_current_camera = FALSE;
 
   cogl_push_matrix();
 
@@ -3249,7 +3432,9 @@ clutter_actor_paint (ClutterActor *self)
    * paint then the last-paint-volume would likely represent the new
    * actor position not the old.
    */
-  if (!in_clone_paint () && pick_mode == CLUTTER_PICK_NONE)
+  if (!set_current_camera &&
+      !in_clone_paint () &&
+      pick_mode == CLUTTER_PICK_NONE)
     {
       gboolean success;
       /* annoyingly gcc warns if uninitialized even though
@@ -3261,12 +3446,12 @@ clutter_actor_paint (ClutterActor *self)
                       CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)) !=
                     (CLUTTER_DEBUG_DISABLE_CULLING |
                      CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
-        _clutter_actor_update_last_paint_volume (self);
+        _clutter_actor_update_eye_volume (self);
 
       success = cull_actor (self, &result);
 
       if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS))
-        _clutter_actor_paint_cull_result (self, success, result);
+        _clutter_actor_paint_cull_result (self, camera, success, result);
       else if (result == CLUTTER_CULL_RESULT_OUT && success)
         goto done;
     }
@@ -3300,6 +3485,9 @@ done:
      paint run including all the effects so it's no longer dirty */
   if (pick_mode == CLUTTER_PICK_NONE)
     priv->is_dirty = FALSE;
+
+  if (set_current_camera)
+    _clutter_stage_set_current_camera (stage, NULL);
 
   if (clip_set)
     cogl_clip_pop();
@@ -3439,6 +3627,7 @@ remove_child (ClutterActor *self,
   if (self->priv->last_child == child)
     self->priv->last_child = prev_sibling;
 
+  child->priv->stage_cache = NULL;
   child->priv->parent = NULL;
   child->priv->prev_sibling = NULL;
   child->priv->next_sibling = NULL;
@@ -4609,6 +4798,21 @@ clutter_actor_dispose (GObject *object)
       clutter_layout_manager_set_container (priv->layout_manager, NULL);
       g_object_unref (priv->layout_manager);
       priv->layout_manager = NULL;
+    }
+
+  if (priv->n_cameras > 0)
+    {
+      int i;
+      for (i = 0; i < priv->n_cameras; i++)
+        {
+          PerCameraState *camera_state = &priv->camera_state[i];
+          if (camera_state->eye_volume_valid)
+            clutter_paint_volume_free (&camera_state->eye_volume);
+        }
+      g_slice_free1 (sizeof (PerCameraState) * priv->n_cameras,
+                     priv->camera_state);
+      priv->camera_state = NULL;
+      priv->n_cameras = -1;
     }
 
   G_OBJECT_CLASS (clutter_actor_parent_class)->dispose (object);
@@ -6455,6 +6659,8 @@ clutter_actor_init (ClutterActor *self)
 
   self->priv = priv = CLUTTER_ACTOR_GET_PRIVATE (self);
 
+  priv->stage_cache = NULL;
+
   priv->id = _clutter_context_acquire_id (self);
   priv->pick_id = -1;
 
@@ -6471,9 +6677,16 @@ clutter_actor_init (ClutterActor *self)
   priv->opacity_override = -1;
   priv->enable_model_view_transform = TRUE;
 
-  /* Initialize an empty paint volume to start with */
-  _clutter_paint_volume_init_static (&priv->last_paint_volume, NULL);
-  priv->last_paint_volume_valid = TRUE;
+  priv->camera_state = NULL;
+  priv->n_cameras = 0;
+
+  /* When an actor first gets associated with a stage we make sure to
+   * initialize this to a value not matching the
+   * stage's->priv->cameras_age, but for the stage itself we need to
+   * make sure the age is initialized to a value other than 0 so that
+   * get_per_camera_state() will correctly initialize the per-camera
+   * state. */
+  priv->cameras_age = -1;
 
   priv->transform_valid = FALSE;
 }
@@ -6529,13 +6742,44 @@ clutter_actor_destroy (ClutterActor *self)
   g_object_unref (self);
 }
 
+/* XXX: This is a workaround for not being able to break the ABI of
+ * the QUEUE_REDRAW signal. It is an out-of-band argument.  See
+ * clutter_actor_queue_clipped_redraw() for details.
+ */
+ClutterPaintVolume *
+_clutter_actor_get_queue_redraw_clip (ClutterActor *self)
+{
+  return self->priv->oob_queue_redraw_clip;
+}
+
+static void
+_clutter_actor_set_queue_redraw_clip (ClutterActor *self,
+                                      ClutterPaintVolume *clip)
+{
+  self->priv->oob_queue_redraw_clip = clip;
+}
+
+int
+_clutter_actor_get_queue_redraw_camera_index (ClutterActor *self)
+{
+  return self->priv->oob_queue_redraw_camera_index;
+}
+
+static void
+_clutter_actor_set_queue_redraw_camera_index (ClutterActor *self,
+                                              int camera_index)
+{
+  self->priv->oob_queue_redraw_camera_index = camera_index;
+}
+
 void
 _clutter_actor_finish_queue_redraw (ClutterActor *self,
                                     ClutterPaintVolume *clip)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterPaintVolume *pv;
-  gboolean clipped;
+  ClutterStage *stage = _clutter_actor_get_stage_real (self);
+  int n_cameras = _clutter_stage_get_n_cameras (stage);
+  int i;
 
   /* Remove queue entry early in the process, otherwise a new
      queue_redraw() during signal handling could put back this
@@ -6563,46 +6807,65 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
   if (clip)
     {
       _clutter_actor_set_queue_redraw_clip (self, clip);
-      clipped = TRUE;
-    }
-  else if (G_LIKELY (priv->last_paint_volume_valid))
-    {
-      pv = _clutter_actor_get_paint_volume_mutable (self);
-      if (pv)
+      for (i = 0; i < n_cameras; i++)
         {
-          ClutterActor *stage = _clutter_actor_get_stage_internal (self);
-
-          /* make sure we redraw the actors old position... */
-          _clutter_actor_set_queue_redraw_clip (stage,
-                                                &priv->last_paint_volume);
-          _clutter_actor_signal_queue_redraw (stage, stage);
-          _clutter_actor_set_queue_redraw_clip (stage, NULL);
-
-          /* XXX: Ideally the redraw signal would take a clip volume
-           * argument, but that would be an ABI break. Until we can
-           * break the ABI we pass the argument out-of-band
-           */
-
-          /* setup the clip for the actors new position... */
-          _clutter_actor_set_queue_redraw_clip (self, pv);
-          clipped = TRUE;
+          _clutter_actor_set_queue_redraw_camera_index (self, i);
+          _clutter_actor_signal_queue_redraw (self, self);
         }
-      else
-        clipped = FALSE;
     }
   else
-    clipped = FALSE;
+    {
+      for (i = 0; i < n_cameras; i++)
+        {
+          PerCameraState *camera_state =
+            _clutter_actor_get_per_camera_state (self, i);
+          ClutterPaintVolume *pv;
 
-  _clutter_actor_signal_queue_redraw (self, self);
+          if (G_LIKELY (camera_state->eye_volume_valid))
+            {
+              pv = _clutter_actor_get_paint_volume_mutable (self);
+              if (pv)
+                {
+                  ClutterActor *stage_actor = CLUTTER_ACTOR (stage);
+
+                  /* make sure we redraw the actors old position... */
+                  _clutter_actor_set_queue_redraw_clip (stage_actor,
+                                                        &camera_state->eye_volume);
+                  _clutter_actor_signal_queue_redraw (stage_actor,
+                                                      stage_actor);
+                  _clutter_actor_set_queue_redraw_clip (stage_actor, NULL);
+                }
+            }
+          else
+            pv = NULL;
+
+          /* XXX: Ideally the redraw signal would take clip volume and
+           * camera arguments, but that would be an ABI break. Until
+           * we can break the ABI we pass these arguments out-of-band
+           * via actor->priv members...
+           */
+
+          /* Setup the clip for the actor's new position.
+           * Note: pv could be NULL here which will result in a full
+           * redraw. */
+          _clutter_actor_set_queue_redraw_clip (self, pv);
+          _clutter_actor_set_queue_redraw_camera_index (self, i);
+          _clutter_actor_signal_queue_redraw (self, self);
+        }
+    }
 
   /* Just in case anyone is manually firing redraw signals without
    * using the public queue_redraw() API we are careful to ensure that
-   * our out-of-band clip member is cleared before returning...
+   * our out-of-band clip member is cleared before returning and
+   * the out-of-band camera index reset to zero.
    *
-   * Note: A NULL clip denotes a full-stage, un-clipped redraw
+   * Note: A NULL clip denotes a full-stage, un-clipped redraw and
+   * camera index 0 corresponds to the main stage camera or the
+   * left eye camera while stereoscopic rendering is enabled.
    */
-  if (G_LIKELY (clipped))
-    _clutter_actor_set_queue_redraw_clip (self, NULL);
+  _clutter_actor_set_queue_redraw_clip (self, NULL);
+
+  _clutter_actor_set_queue_redraw_camera_index (self, 0);
 }
 
 static void
@@ -6638,10 +6901,10 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
                                   ClutterEffect      *effect)
 {
   ClutterActorPrivate *priv = self->priv;
+  ClutterStage *stage;
   ClutterPaintVolume allocation_pv;
   ClutterPaintVolume *pv;
   gboolean should_free_pv;
-  ClutterActor *stage;
 
   /* Here's an outline of the actor queue redraw mechanism:
    *
@@ -6716,9 +6979,8 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
   if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
     return;
 
-  stage = _clutter_actor_get_stage_internal (self);
-
   /* Ignore queueing a redraw for actors not descended from a stage */
+  stage = _clutter_actor_get_stage_real (self);
   if (stage == NULL)
     return;
 
@@ -6726,6 +6988,8 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
   if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
     return;
 
+  /* FIXME: in this case if a clip was explicitly passed we should
+   * intersect the clip with the allocation. */
   if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
     {
       ClutterActorBox allocation_clip;
@@ -6736,9 +7000,12 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
       if (priv->needs_allocation)
         {
           /* NB: NULL denotes an undefined clip which will result in a
-           * full redraw... */
-          _clutter_actor_set_queue_redraw_clip (self, NULL);
-          _clutter_actor_signal_queue_redraw (self, self);
+           * full redraw according to the stage paint-volume. */
+          priv->queue_redraw_entry =
+            _clutter_stage_queue_actor_redraw (stage,
+                                               priv->queue_redraw_entry,
+                                               self,
+                                               NULL);
           return;
         }
 
@@ -6764,8 +7031,8 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
       should_free_pv = FALSE;
     }
 
-  self->priv->queue_redraw_entry =
-    _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
+  priv->queue_redraw_entry =
+    _clutter_stage_queue_actor_redraw (stage,
                                        priv->queue_redraw_entry,
                                        self,
                                        pv);
@@ -7557,7 +7824,11 @@ void
 clutter_actor_get_allocation_box (ClutterActor    *self,
                                   ClutterActorBox *box)
 {
+  ClutterActorPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
 
   /* XXX - if needs_allocation=TRUE, we can either 1) g_return_if_fail,
    * which limits calling get_allocation to inside paint() basically; or
@@ -7572,16 +7843,15 @@ clutter_actor_get_allocation_box (ClutterActor    *self,
    */
 
   /* this implements 2) */
-  if (G_UNLIKELY (self->priv->needs_allocation))
+  if (G_UNLIKELY (priv->needs_allocation))
     {
-      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
-
+      ClutterStage *stage = _clutter_actor_get_stage_real (self);
       /* do not queue a relayout on an unparented actor */
       if (stage)
         _clutter_stage_maybe_relayout (stage);
     }
 
-  /* commenting out the code above and just keeping this assigment
+  /* commenting out the code above and just keeping this assignment
    * implements 3)
    */
   *box = self->priv->allocation;
@@ -7780,17 +8050,19 @@ clutter_actor_allocate (ClutterActor           *self,
   ClutterActorBox old_allocation, real_allocation;
   gboolean origin_changed, child_moved, size_changed;
   gboolean stage_allocation_changed;
+  ClutterStage *stage;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  if (G_UNLIKELY (_clutter_actor_get_stage_internal (self) == NULL))
+  priv = self->priv;
+  stage = _clutter_actor_get_stage_real (self);
+
+  if (G_UNLIKELY (stage == NULL))
     {
       g_warning ("Spurious clutter_actor_allocate called for actor %p/%s "
                  "which isn't a descendent of the stage!\n",
                  self, _clutter_actor_get_debug_name (self));
       return;
     }
-
-  priv = self->priv;
 
   old_allocation = priv->allocation;
   real_allocation = *box;
@@ -8633,6 +8905,9 @@ clutter_actor_get_transformed_position (ClutterActor *self,
  * information, you need to use clutter_actor_get_abs_allocation_vertices()
  * to get the coords of the actual quadrangle.</note>
  *
+ * <note>If clutter is being used for stereo rendering then this will
+ * simply return a size according the left eye's view.</note>
+ *
  * Since: 0.8
  */
 void
@@ -8673,7 +8948,7 @@ clutter_actor_get_transformed_size (ClutterActor *self,
       box.x2 = natural_width;
       box.y2 = natural_height;
 
-      _clutter_actor_transform_and_project_box (self, &box, v);
+      _clutter_actor_transform_and_project_box (self, 0, &box, v);
     }
   else
     clutter_actor_get_abs_allocation_vertices (self, v);
@@ -9892,6 +10167,53 @@ clutter_actor_get_clip (ClutterActor *self,
     *height = priv->clip.height;
 }
 
+typedef struct
+{
+  ClutterStage *stage;
+  int stage_n_cameras;
+  int stage_cameras_age;
+} InitPerCameraStateClosure;
+
+static ClutterActorTraverseVisitFlags
+init_per_camera_state_cb (ClutterActor *self,
+                          int           depth,
+                          gpointer      user_data)
+{
+  ClutterActorPrivate *priv = self->priv;
+  InitPerCameraStateClosure *closure = user_data;
+  int n_cameras = closure->stage_n_cameras;
+  int i;
+
+  /* This is the first point at which this actor has been
+   * associated with a specific stage and now that we have been
+   * associated with a set of cameras we need to initialize the
+   * actor's per-camera paint-volume to be empty so when it first
+   * gets shown we will only redraw the new area of the actor.
+   *
+   * XXX: it could be nice if re-parenting an actor within the
+   * same stage didn't hit this path too.
+   */
+
+  /* Make sure our camera state doesn't have the same age as the
+   * stage's camera state so we can be sure it will be invalidated
+   * during _clutter_actor_get_per_camera_state() */
+  priv->cameras_age = closure->stage_cameras_age - 1;
+
+  /* XXX: note we don't just rely on the initialization of per camera
+   * state by _clutter_actor_get_per_camera_state() since that will
+   * mark the initial paint_volume as invalid.
+   */
+  for (i = 0; i < n_cameras; i++)
+    {
+      PerCameraState *camera_state =
+        _clutter_actor_get_per_camera_state (self, i);
+      _clutter_paint_volume_init_static (&camera_state->eye_volume, NULL);
+      camera_state->eye_volume_valid = TRUE;
+    }
+
+  return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
+}
+
 /**
  * clutter_actor_get_children:
  * @self: a #ClutterActor
@@ -10185,6 +10507,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   gboolean check_state;
   gboolean notify_first_last;
   ClutterActor *old_first_child, *old_last_child;
+  ClutterStage *stage;
 
   if (child->priv->parent != NULL)
     {
@@ -10288,6 +10611,25 @@ clutter_actor_add_child_internal (ClutterActor              *self,
    */
   if (self->priv->internal_child)
     CLUTTER_SET_PRIVATE_FLAGS (child, CLUTTER_INTERNAL_CHILD);
+
+  /* Check to see if the actor is associated with a stage yet... */
+  stage = _clutter_actor_get_stage_real (self);
+
+  if (stage)
+    {
+      InitPerCameraStateClosure init_per_camera_state_closure;
+
+      init_per_camera_state_closure.stage_n_cameras =
+        _clutter_stage_get_n_cameras (stage);
+      init_per_camera_state_closure.stage_cameras_age =
+        _clutter_stage_get_cameras_age (stage);
+
+      _clutter_actor_traverse (self,
+                               CLUTTER_ACTOR_TRAVERSE_DEPTH_FIRST,
+                               init_per_camera_state_cb,
+                               NULL,
+                               &init_per_camera_state_closure);
+    }
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (emit_parent_set && !CLUTTER_ACTOR_IN_REPARENT (child))
@@ -12628,15 +12970,6 @@ clutter_actor_is_scaled (ClutterActor *self)
   return FALSE;
 }
 
-ClutterActor *
-_clutter_actor_get_stage_internal (ClutterActor *actor)
-{
-  while (actor && !CLUTTER_ACTOR_IS_TOPLEVEL (actor))
-    actor = actor->priv->parent;
-
-  return actor;
-}
-
 /**
  * clutter_actor_get_stage:
  * @actor: a #ClutterActor
@@ -12653,7 +12986,7 @@ clutter_actor_get_stage (ClutterActor *actor)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
-  return _clutter_actor_get_stage_internal (actor);
+  return CLUTTER_ACTOR (_clutter_actor_get_stage_real (actor));
 }
 
 /**
@@ -12966,13 +13299,13 @@ out:
 void
 clutter_actor_grab_key_focus (ClutterActor *self)
 {
-  ClutterActor *stage;
+  ClutterStage *stage;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  stage = _clutter_actor_get_stage_internal (self);
+  stage = _clutter_actor_get_stage_real (self);
   if (stage != NULL)
-    clutter_stage_set_key_focus (CLUTTER_STAGE (stage), self);
+    clutter_stage_set_key_focus (stage, self);
 }
 
 /**
@@ -13710,26 +14043,6 @@ clutter_actor_has_pointer (ClutterActor *self)
   return self->priv->has_pointer;
 }
 
-/* XXX: This is a workaround for not being able to break the ABI of
- * the QUEUE_REDRAW signal. It is an out-of-band argument.  See
- * clutter_actor_queue_clipped_redraw() for details.
- */
-ClutterPaintVolume *
-_clutter_actor_get_queue_redraw_clip (ClutterActor *self)
-{
-  return g_object_get_data (G_OBJECT (self),
-                            "-clutter-actor-queue-redraw-clip");
-}
-
-void
-_clutter_actor_set_queue_redraw_clip (ClutterActor       *self,
-                                      ClutterPaintVolume *clip)
-{
-  g_object_set_data (G_OBJECT (self),
-                     "-clutter-actor-queue-redraw-clip",
-                     clip);
-}
-
 /**
  * clutter_actor_has_allocation:
  * @self: a #ClutterActor
@@ -14425,15 +14738,15 @@ clutter_actor_clear_effects (ClutterActor *self)
 gboolean
 clutter_actor_has_key_focus (ClutterActor *self)
 {
-  ClutterActor *stage;
+  ClutterStage *stage;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  stage = _clutter_actor_get_stage_internal (self);
+  stage = _clutter_actor_get_stage_real (self);
   if (stage == NULL)
     return FALSE;
 
-  return clutter_stage_get_key_focus (CLUTTER_STAGE (stage)) == self;
+  return clutter_stage_get_key_focus (stage) == self;
 }
 
 static gboolean
@@ -14561,10 +14874,12 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
 static ClutterPaintVolume *
 _clutter_actor_get_paint_volume_mutable (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
+  ClutterActorPrivate *priv = self->priv;
 
-  priv = self->priv;
-
+  /* NB: the paint volume isn't slice/heap allocated; it's actually
+   * just a member of priv, but we still have to call _free incase
+   * cogl-paint-volume.c associates object/memory references with
+   * the volume... */
   if (priv->paint_volume_valid)
     clutter_paint_volume_free (&priv->paint_volume);
 
@@ -14639,29 +14954,30 @@ clutter_actor_get_paint_volume (ClutterActor *self)
  *   not guaranteed to be valid across multiple frames; if you wish to
  *   keep it, you will have to copy it using clutter_paint_volume_copy().
  *
+ * <note>If stereoscopic rendering has been enabled then the paint
+ * volume is only valid for the eye currently being rendered.</note>
+ *
  * Since: 1.6
  */
 const ClutterPaintVolume *
 clutter_actor_get_transformed_paint_volume (ClutterActor *self,
                                             ClutterActor *relative_to_ancestor)
 {
+  ClutterStage *stage = _clutter_actor_get_stage_real (self);
   const ClutterPaintVolume *volume;
-  ClutterActor *stage;
   ClutterPaintVolume *transformed_volume;
 
-  stage = _clutter_actor_get_stage_internal (self);
   if (G_UNLIKELY (stage == NULL))
     return NULL;
 
   if (relative_to_ancestor == NULL)
-    relative_to_ancestor = stage;
+    relative_to_ancestor = CLUTTER_ACTOR (stage);
 
   volume = clutter_actor_get_paint_volume (self);
   if (volume == NULL)
     return NULL;
 
-  transformed_volume =
-    _clutter_stage_paint_volume_stack_allocate (CLUTTER_STAGE (stage));
+  transformed_volume = _clutter_stage_paint_volume_stack_allocate (stage);
 
   _clutter_paint_volume_copy_static (volume, transformed_volume);
 
@@ -14689,8 +15005,14 @@ clutter_actor_get_transformed_paint_volume (ClutterActor *self,
  * because the actor isn't yet parented under a stage or because
  * the actor is unable to determine a paint volume.
  *
+ * This function may only be called during a paint cycle.
+ *
  * Return value: %TRUE if a 2D paint box could be determined, else
  * %FALSE.
+ *
+ * <note>If stereoscopic rendering has been enabled then the paint box
+ * returned will only be valid for the current eye being
+ * rendered</note>
  *
  * Since: 1.6
  */
@@ -14698,21 +15020,24 @@ gboolean
 clutter_actor_get_paint_box (ClutterActor    *self,
                              ClutterActorBox *box)
 {
-  ClutterActor *stage;
   ClutterPaintVolume *pv;
+  const ClutterCamera *camera;
+  ClutterStage *stage;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
   g_return_val_if_fail (box != NULL, FALSE);
 
-  stage = _clutter_actor_get_stage_internal (self);
+  stage = _clutter_actor_get_stage_real (self);
   if (G_UNLIKELY (!stage))
     return FALSE;
+
+  camera = _clutter_stage_get_current_camera (stage);
 
   pv = _clutter_actor_get_paint_volume_mutable (self);
   if (G_UNLIKELY (!pv))
     return FALSE;
 
-  _clutter_paint_volume_get_stage_paint_box (pv, CLUTTER_STAGE (stage), box);
+  _clutter_paint_volume_get_camera_paint_box (pv, camera, box);
 
   return TRUE;
 }

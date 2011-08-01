@@ -1094,6 +1094,31 @@ typedef enum {
   CLUTTER_ACTOR_ALIGN_END
 } ClutterActorAlign;
 
+/**
+ * ClutterStereoMode:
+ * @CLUTTER_STEREO_MODE_DEFAULT: Use the platform's default stereoscopic mode
+ * @CLUTTER_STEREO_MODE_ANAGLYPH: Use anaglyph based stereoscopic rendering; assuming
+ *    a red filter for the left eye and a cyan filter for the right eye.
+ * @CLUTTER_STEREO_MODE_VERTICAL_SPLIT: Split the scene vertically and show the left
+ *    eye contents on the left and the right eye contents on the
+ *    right.
+ * @CLUTTER_STEREO_MODE_HORIZONTAL_SPLIT: Split the scene horizontally and show the left
+ *    eye contents on the top and the right eye contents on the bottom.
+ *
+ * Defines the mode of outputing stereoscopic content to the user.
+ * %CLUTTER_STEREO_MODE_DEFAULT should just do the right thing for any platform that
+ * has native support for stereoscopic hardware, but for platforms without native
+ * stereoscopic support there are several fallback methods including anaglpyh for
+ * using filter glasses and split screen, which many 3D TVs can handle.
+ */
+typedef enum
+{
+  CLUTTER_STEREO_MODE_DEFAULT,
+  CLUTTER_STEREO_MODE_ANAGLYPH,
+  CLUTTER_STEREO_MODE_VERTICAL_SPLIT,
+  CLUTTER_STEREO_MODE_HORIZONTAL_SPLIT
+} ClutterStereoMode;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */

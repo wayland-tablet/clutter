@@ -50,6 +50,7 @@
 
 #include <math.h>
 #include <cairo.h>
+#include <stdlib.h>
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
@@ -121,11 +122,27 @@ struct _ClutterStagePrivate
   /* the stage implementation */
   ClutterStageWindow *impl;
 
-  ClutterPerspective perspective;
-  CoglMatrix projection;
-  CoglMatrix inverse_projection;
-  CoglMatrix view;
   float viewport[4];
+  ClutterPerspective perspective;
+
+  /* NB: When we start adding support for more cameras we'll need to ensure
+   * that we continue to maintain all valid cameras as a contiguous range of
+   * indices from 0 since we have various bits of code that expect to iterate
+   * through indices 0 to (n_cameras - 1) */
+  ClutterCamera cameras[2];
+  int n_cameras;
+  /* NB: The age is bumped whenever cameras are added or removed. It
+   * isn't bumped when cameras are modified. To determine if an
+   * individual camera has been modified there is a per camera age.
+   *
+   * NB: only do == or != comparisons with the age so wrapping should never be
+   * a problem. */
+  int cameras_age;
+
+  const ClutterCamera *current_camera;
+  const ClutterCamera *last_flushed_camera;
+
+  ClutterStereoMode stereo_mode;
 
   ClutterFog fog;
 
@@ -171,11 +188,15 @@ struct _ClutterStagePrivate
   guint use_alpha              : 1;
   guint min_size_changed       : 1;
   guint dirty_viewport         : 1;
+  guint dirty_cogl_viewport    : 1;
   guint dirty_projection       : 1;
+  guint dirty_cogl_projection  : 1;
+  guint dirty_view             : 1;
   guint have_valid_pick_buffer : 1;
   guint accept_focus           : 1;
   guint motion_events_enabled  : 1;
   guint has_custom_perspective : 1;
+  guint stereo_enabled         : 1;
 };
 
 enum
@@ -495,7 +516,7 @@ typedef struct _Vector4
 static void
 _cogl_util_get_eye_planes_for_screen_poly (float *polygon,
                                            int n_vertices,
-                                           float *viewport,
+                                           const float *viewport,
                                            const CoglMatrix *projection,
                                            const CoglMatrix *inverse_project,
                                            ClutterPlane *planes)
@@ -657,9 +678,9 @@ _clutter_stage_do_paint (ClutterStage                *stage,
 
   _cogl_util_get_eye_planes_for_screen_poly (clip_poly,
                                              4,
-                                             priv->viewport,
-                                             &priv->projection,
-                                             &priv->inverse_projection,
+                                             priv->current_camera->viewport,
+                                             &priv->current_camera->projection,
+                                             &priv->current_camera->inverse_projection,
                                              priv->current_clip_planes);
 
   _clutter_stage_paint_volume_stack_free_all (stage);
@@ -753,6 +774,7 @@ clutter_stage_realize (ClutterActor *self)
    */
   priv->dirty_viewport = TRUE;
   priv->dirty_projection = TRUE;
+  priv->dirty_view = TRUE;
 
   g_assert (priv->impl != NULL);
   is_realized = _clutter_stage_window_realize (priv->impl);
@@ -814,7 +836,7 @@ clutter_stage_show (ClutterActor *self)
 
   /* Possibly do an allocation run so that the stage will have the
      right size before we map it */
-  _clutter_stage_maybe_relayout (self);
+  _clutter_stage_maybe_relayout (CLUTTER_STAGE (self));
 
   g_assert (priv->impl != NULL);
   _clutter_stage_window_show (priv->impl, TRUE);
@@ -1046,9 +1068,8 @@ _clutter_stage_needs_update (ClutterStage *stage)
 }
 
 void
-_clutter_stage_maybe_relayout (ClutterActor *actor)
+_clutter_stage_maybe_relayout (ClutterStage *stage)
 {
-  ClutterStage *stage = CLUTTER_STAGE (actor);
   ClutterStagePrivate *priv = stage->priv;
   gfloat natural_width, natural_height;
   ClutterActorBox box = { 0, };
@@ -1115,12 +1136,376 @@ _clutter_stage_set_pick_buffer_valid (ClutterStage   *stage,
   stage->priv->pick_buffer_mode = mode;
 }
 
+void
+_clutter_stage_set_current_camera (ClutterStage *stage,
+                                   const ClutterCamera *camera)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  if (priv->current_camera == camera)
+    return;
+
+  priv->current_camera = camera;
+}
+
+/* This calculates a distance into the view frustum to position the
+ * stage so there is a decent amount of space to position geometry
+ * between the stage and the near clipping plane.
+ *
+ * Some awkward issues with this problem are:
+ * - It's not possible to have a gap as large as the stage size with
+ *   a fov > 53° which is basically always the case since the default
+ *   fov is 60°.
+ *    - This can be deduced if you consider that this requires a
+ *      triangle as wide as it is deep to fit in the frustum in front
+ *      of the z_near plane. That triangle will always have an angle
+ *      of 53.13° at the point sitting on the z_near plane, but if the
+ *      frustum has a wider fov angle the left/right clipping planes
+ *      can never converge with the two corners of our triangle no
+ *      matter what size the triangle has.
+ * - With a fov > 53° there is a trade off between maximizing the gap
+ *   size relative to the stage size but not loosing depth precision.
+ * - Perhaps ideally we wouldn't just consider the fov on the y-axis
+ *   that is usually used to define a perspective, we would consider
+ *   the fov of the axis with the largest stage size so the gap would
+ *   accommodate that size best.
+ *
+ * After going around in circles a few times with how to handle these
+ * issues, we decided in the end to go for the simplest solution to
+ * start with instead of an elaborate function that handles arbitrary
+ * fov angles that we currently have no use-case for.
+ *
+ * The solution assumes a fovy of 60° and for that case gives a gap
+ * that's 85% of the stage height. We can consider more elaborate
+ * functions if necessary later.
+ *
+ * One guide we had to steer the gap size we support is the
+ * interactive test, test-texture-quality which expects to animate an
+ * actor to +400 on the z axis with a stage size of 640x480. A gap
+ * that's 85% of the stage height gives a gap of 408 in that case.
+ */
+static float
+calculate_z_translation (float z_near)
+{
+  /* This solution uses fairly basic trigonometry, but is seems worth
+   * clarifying the particular geometry we are looking at in-case
+   * anyone wants to develop this further later. Not sure how well an
+   * ascii diagram is going to work :-)
+   *
+   *    |--- stage_height ---|
+   *    |     stage line     |
+   *   ╲━━━━━━━━━━━━━━━━━━━━━╱------------
+   *    ╲.  (2)   │        .╱       |   |
+   *   C ╲ .      │      . ╱     gap|   |
+   * =0.5°╲  . a  │    .  ╱         |   |
+   *      b╲(1). D│  .   ╱          |   |
+   *        ╲   B.│.    ╱near plane |   |
+   *      A= ╲━━━━━━━━━╱-------------   |
+   *     120° ╲ c │   ╱  |            z_2d
+   *           ╲  │  ╱  z_near          |
+   *       left ╲ │ ╱    |              |
+   *       clip  60°fovy |              |
+   *       plane  ╳----------------------
+   *              |
+   *              |
+   *         origin line
+   *
+   * The area of interest is the triangle labeled (1) at the top left
+   * marked with the ... line (a) from where the origin line crosses
+   * the near plane to the top left where the stage line cross the
+   * left clip plane.
+   *
+   * The sides of the triangle are a, b and c and the corresponding
+   * angles opposite those sides are A, B and C.
+   *
+   * The angle of C is what trades off the gap size we have relative
+   * to the stage size vs the depth precision we have.
+   *
+   * As mentioned above we arove at the angle for C is by working
+   * backwards from how much space we want for test-texture-quality.
+   * With a stage_height of 480 we want a gap > 400, ideally we also
+   * wanted a somewhat round number as a percentage of the height for
+   * documentation purposes. ~87% or a gap of ~416 is the limit
+   * because that's where we approach a C angle of 0° and effectively
+   * loose all depth precision.
+   *
+   * So for our test app with a stage_height of 480 if we aim for a
+   * gap of 408 (85% of 480) we can get the angle D as
+   * atan (stage_height/2/408) = 30.5°.
+   *
+   * That gives us the angle for B as 90° - 30.5° = 59.5°
+   *
+   * We can already determine that A has an angle of (fovy/2 + 90°) =
+   * 120°
+   *
+   * Therefore C = 180 - A - B = 0.5°
+   *
+   * The length of c = z_near * tan (30°)
+   *
+   * Now we can use the rule a/SinA = c/SinC to calculate the
+   * length of a. After some rearranging that gives us:
+   *
+   *      a              c
+   *  ----------  =  ----------
+   *  sin (120°)     sin (0.5°)
+   *
+   *      c * sin (120°)
+   *  a = --------------
+   *        sin (0.5°)
+   *
+   * And with that we can determine z_2d = cos (D) * a =
+   * cos (30.5°) * a + z_near:
+   *
+   *         c * sin (120°) * cos (30.5°)
+   *  z_2d = --------------------------- + z_near
+   *                 sin (0.5°)
+   */
+#define _DEG_TO_RAD (G_PI / 180.0)
+  return z_near * tanf (30.0f * _DEG_TO_RAD) *
+         sinf (120.0f * _DEG_TO_RAD) * cosf (30.5f * _DEG_TO_RAD) /
+         sinf (0.5f * _DEG_TO_RAD) +
+         z_near;
+#undef _DEG_TO_RAD
+   /* We expect the compiler should boil this down to z_near * CONSTANT */
+}
+
+static void
+clutter_stage_set_perspective_internal (ClutterStage       *stage,
+                                        ClutterPerspective *perspective)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  if (priv->perspective.fovy == perspective->fovy &&
+      priv->perspective.aspect == perspective->aspect &&
+      priv->perspective.z_near == perspective->z_near &&
+      priv->perspective.z_far == perspective->z_far)
+    return;
+
+  priv->perspective = *perspective;
+
+  priv->dirty_projection = TRUE;
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+}
+
+static void
+_clutter_stage_update_modelview_projection (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  if (priv->dirty_viewport)
+    {
+      /* The Cogl viewport is implicitly dirty... */
+      priv->dirty_cogl_viewport = TRUE;
+
+      /* The view transform is based on the viewport width/height */
+      priv->dirty_view = TRUE;
+
+      if (priv->stereo_enabled)
+        {
+          priv->cameras[0].viewport[0] = priv->viewport[0];
+          priv->cameras[0].viewport[1] = priv->viewport[1];
+
+          if (priv->stereo_mode == CLUTTER_STEREO_MODE_VERTICAL_SPLIT)
+            {
+              priv->cameras[0].viewport[2] = priv->viewport[2] / 2;
+              priv->cameras[0].viewport[3] = priv->viewport[3];
+              priv->cameras[0].age++;
+
+              priv->cameras[1].viewport[0] =
+                (priv->viewport[0] / 2) + (priv->viewport[2] / 2);
+              priv->cameras[1].viewport[1] = priv->viewport[1];
+              priv->cameras[1].viewport[2] = priv->viewport[2] / 2;
+              priv->cameras[1].viewport[3] = priv->viewport[3];
+              priv->cameras[1].age++;
+            }
+          else if (priv->stereo_mode == CLUTTER_STEREO_MODE_HORIZONTAL_SPLIT)
+            {
+              priv->cameras[0].viewport[2] = priv->viewport[2];
+              priv->cameras[0].viewport[3] = priv->viewport[3] / 2;
+              priv->cameras[0].age++;
+
+              priv->cameras[1].viewport[0] = priv->viewport[0];
+              priv->cameras[1].viewport[1] =
+                (priv->viewport[1] / 2)  + (priv->viewport[3] / 2);
+              priv->cameras[1].viewport[2] = priv->viewport[2];
+              priv->cameras[1].viewport[3] = priv->viewport[3] / 2;
+              priv->cameras[1].age++;
+            }
+          else
+            {
+              memcpy (priv->cameras[0].viewport, priv->viewport,
+                      sizeof (float) * 4);
+              memcpy (priv->cameras[1].viewport, priv->viewport,
+                      sizeof (float) * 4);
+            }
+        }
+      else
+        {
+          memcpy (priv->cameras[0].viewport, priv->viewport,
+                  sizeof (float) * 4);
+          memcpy (priv->cameras[1].viewport, priv->viewport,
+                  sizeof (float) * 4);
+        }
+
+      priv->dirty_viewport = FALSE;
+    }
+
+  if (priv->dirty_view)
+    {
+      ClutterPerspective perspective;
+      float z_2d;
+
+      perspective = priv->perspective;
+
+      /* Ideally we want to regenerate the perspective matrix whenever
+       * the size changes but if the user has provided a custom matrix
+       * then we don't want to override it */
+      if (!priv->has_custom_perspective)
+        {
+          perspective.aspect = priv->viewport[2] / priv->viewport[3];
+          z_2d = calculate_z_translation (perspective.z_near);
+
+#define _DEG_TO_RAD (G_PI / 180.0)
+          /* NB: z_2d is only enough room for 85% of the stage_height between
+           * the stage and the z_near plane. For behind the stage plane we
+           * want a more consistent gap of 10 times the stage_height before
+           * hitting the far plane so we calculate that relative to the final
+           * height of the stage plane at the z_2d_distance we got... */
+          perspective.z_far = z_2d +
+            tanf ((perspective.fovy / 2.0f) * _DEG_TO_RAD) * z_2d * 20.0f;
+#undef _DEG_TO_RAD
+
+          clutter_stage_set_perspective_internal (stage, &perspective);
+        }
+      else
+        z_2d = calculate_z_translation (perspective.z_near);
+
+      cogl_matrix_init_identity (&priv->cameras[0].view);
+
+      /* For now we use the simple "toe-in" method for stereoscopic
+       * rendering whereby we simply offset two cameras to the left
+       * and to the right of the origin, both pointing diagonally into
+       * the center of our z_2d plane. A disadvantage of this approach
+       * is that straight lines on the z_2d plane will not be
+       * perceived as straight since the planes intersecting each
+       * camera frustum at the z_2d distance aren't equal. */
+      if (priv->stereo_enabled)
+        {
+          cogl_matrix_init_identity (&priv->cameras[1].view);
+
+#define EYE_OFFSET 0.1
+          /* FIXME: the 0.5 offsets are just hacky constants for now! */
+          cogl_matrix_look_at (&priv->cameras[0].view,
+                               -EYE_OFFSET, 0, 0,
+                               0, 0, -z_2d,
+                               0, 1, 0);
+          cogl_matrix_look_at (&priv->cameras[1].view,
+                               EYE_OFFSET, 0, 0,
+                               0, 0, -z_2d,
+                               0, 1, 0);
+        }
+
+      cogl_matrix_view_2d_in_perspective (&priv->cameras[0].view,
+                                          perspective.fovy,
+                                          perspective.aspect,
+                                          perspective.z_near,
+                                          z_2d,
+                                          priv->viewport[2],
+                                          priv->viewport[3]);
+      priv->cameras[0].age++;
+
+      if (priv->stereo_enabled)
+        {
+          cogl_matrix_view_2d_in_perspective (&priv->cameras[1].view,
+                                              perspective.fovy,
+                                              perspective.aspect,
+                                              perspective.z_near,
+                                              z_2d,
+                                              priv->viewport[2],
+                                              priv->viewport[3]);
+          priv->cameras[1].age++;
+        }
+
+      priv->dirty_view = FALSE;
+    }
+
+  /* XXX: This must be done after checking for a dirty view since updates to
+   * the view might also result in a corresponding update to the projection */
+  if (priv->dirty_projection)
+    {
+      /* The Cogl projection is implicitly dirty... */
+      priv->dirty_cogl_projection = TRUE;
+
+      cogl_matrix_init_identity (&priv->cameras[0].projection);
+      cogl_matrix_perspective (&priv->cameras[0].projection,
+                               priv->perspective.fovy,
+                               priv->perspective.aspect,
+                               priv->perspective.z_near,
+                               priv->perspective.z_far);
+      cogl_matrix_get_inverse (&priv->cameras[0].projection,
+                               &priv->cameras[0].inverse_projection);
+      priv->cameras[0].age++;
+
+      /* NB: For now, we simply use the toe in approach for handling
+       * stereoscopic rendering and so both eyes always have the same
+       * projection matrix. */
+      if (priv->stereo_enabled)
+        {
+          cogl_matrix_init_from_array (&priv->cameras[1].projection,
+                                       (float *)&priv->cameras[0].projection);
+          cogl_matrix_init_from_array (&priv->cameras[1].inverse_projection,
+                                       (float *)
+                                       &priv->cameras[0].inverse_projection);
+          priv->cameras[1].age++;
+        }
+
+      priv->dirty_projection = FALSE;
+    }
+}
+
+static void
+_clutter_stage_flush_modelview_projection (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  g_return_if_fail (priv->current_camera != NULL);
+
+  if (priv->last_flushed_camera != priv->current_camera)
+    {
+      priv->dirty_cogl_viewport = TRUE;
+      priv->dirty_cogl_projection = TRUE;
+    }
+  priv->last_flushed_camera = priv->current_camera;
+
+  if (priv->dirty_cogl_viewport)
+    {
+      CLUTTER_NOTE (PAINT,
+                    "Setting up the viewport { w:%f, h:%f }",
+                    priv->current_camera->viewport[2], priv->current_camera->viewport[3]);
+      cogl_set_viewport (priv->current_camera->viewport[0],
+                         priv->current_camera->viewport[1],
+                         priv->current_camera->viewport[2],
+                         priv->current_camera->viewport[3]);
+
+      priv->dirty_cogl_viewport = FALSE;
+    }
+
+  if (priv->dirty_cogl_projection)
+    {
+      cogl_set_projection_matrix ((CoglMatrix *)
+                                  &priv->current_camera->projection);
+
+      priv->dirty_cogl_projection = FALSE;
+    }
+}
+
 static void
 clutter_stage_do_redraw (ClutterStage *stage)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterActor *actor = CLUTTER_ACTOR (stage);
   ClutterStagePrivate *priv = stage->priv;
+  CoglFramebuffer *fb;
 
   CLUTTER_STATIC_COUNTER (redraw_counter,
                           "clutter_stage_do_redraw counter",
@@ -1153,14 +1538,68 @@ clutter_stage_do_redraw (ClutterStage *stage)
         priv->fps_timer = g_timer_new ();
     }
 
-  _clutter_stage_maybe_setup_viewport (stage);
+  _clutter_stage_update_modelview_projection (stage);
 
-  CLUTTER_COUNTER_INC (_clutter_uprof_context, redraw_counter);
-  CLUTTER_TIMER_START (_clutter_uprof_context, redraw_timer);
+  if (priv->stereo_enabled)
+    {
+      gboolean anaglyph =
+        (priv->stereo_mode == CLUTTER_STEREO_MODE_DEFAULT) ||
+        (priv->stereo_mode == CLUTTER_STEREO_MODE_ANAGLYPH);
+      float viewport[4];
 
-  _clutter_stage_window_redraw (priv->impl);
+      _clutter_stage_set_current_camera (stage, &priv->cameras[0]);
+      _clutter_stage_flush_modelview_projection (stage);
 
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, redraw_timer);
+      fb = cogl_get_draw_framebuffer ();
+
+      if (anaglyph)
+        cogl_framebuffer_set_color_mask (fb, COGL_COLOR_MASK_RED);
+
+      _clutter_stage_window_redraw_without_swap (priv->impl);
+
+      _clutter_stage_set_current_camera (stage, &priv->cameras[1]);
+      _clutter_stage_flush_modelview_projection (stage);
+      if (anaglyph)
+        cogl_framebuffer_set_color_mask (fb,
+                                         COGL_COLOR_MASK_GREEN |
+                                         COGL_COLOR_MASK_BLUE);
+      else
+        {
+          /* XXX: For now we scissor the right-eye render so that the stage
+           * clear doesn't clobber the rendering of the left-eye, but later it
+           * might be better to instead add a mechanism for painting the stage
+           * except without clearing the color buffer. */
+          cogl_framebuffer_get_viewport4fv (fb, viewport);
+          cogl_clip_push_window_rectangle (viewport[0], viewport[1],
+                                           viewport[2], viewport[3]);
+        }
+
+      CLUTTER_COUNTER_INC (_clutter_uprof_context, redraw_counter);
+      CLUTTER_TIMER_START (_clutter_uprof_context, redraw_timer);
+
+      _clutter_stage_window_redraw (priv->impl);
+
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, redraw_timer);
+
+      if (anaglyph)
+        cogl_framebuffer_set_color_mask (fb, COGL_COLOR_MASK_ALL);
+      else
+        cogl_clip_pop ();
+    }
+  else
+    {
+      _clutter_stage_set_current_camera (stage, &priv->cameras[0]);
+      _clutter_stage_flush_modelview_projection (stage);
+
+      CLUTTER_COUNTER_INC (_clutter_uprof_context, redraw_counter);
+      CLUTTER_TIMER_START (_clutter_uprof_context, redraw_timer);
+
+      _clutter_stage_window_redraw (priv->impl);
+
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, redraw_timer);
+    }
+
+  _clutter_stage_set_current_camera (stage, NULL);
 
   if (_clutter_context_get_show_fps ())
     {
@@ -1209,7 +1648,7 @@ _clutter_stage_do_update (ClutterStage *stage)
    * check or clear the pending redraws flag since a relayout may
    * queue a redraw.
    */
-  _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
+  _clutter_stage_maybe_relayout (stage);
 
   if (!priv->redraw_pending)
     return FALSE;
@@ -1255,6 +1694,8 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
   ClutterStage *stage = CLUTTER_STAGE (actor);
   ClutterStageWindow *stage_window;
   ClutterPaintVolume *redraw_clip;
+  int camera_index;
+  ClutterCamera *camera;
   ClutterActorBox bounding_box;
   ClutterActorBox intersection_box;
   cairo_rectangle_int_t geom, stage_clip;
@@ -1285,9 +1726,11 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
       return;
     }
 
-  _clutter_paint_volume_get_stage_paint_box (redraw_clip,
-                                             stage,
-                                             &bounding_box);
+  camera_index = _clutter_actor_get_queue_redraw_camera_index (leaf);
+  camera = &stage->priv->cameras[camera_index];
+
+  _clutter_paint_volume_get_camera_paint_box (redraw_clip,
+                                              camera, &bounding_box);
 
   _clutter_stage_window_get_geometry (stage_window, &geom);
 
@@ -1305,9 +1748,14 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
    * clip rectangle outwards... */
   stage_clip.x = intersection_box.x1;
   stage_clip.y = intersection_box.y1;
+  /* XXX: This doesn't seem right - it seems like this will
+   * potentially round down to be smaller than it needs to be‽ */
   stage_clip.width = intersection_box.x2 - stage_clip.x;
   stage_clip.height = intersection_box.y2 - stage_clip.y;
 
+  /* XXX: When we add support for cameras associated with
+   * CoglOffscreen framebuffers then we shouldn't assume that the
+   * backend needs to be notified of redraw clips. */
   _clutter_stage_window_add_redraw_clip (stage_window, &stage_clip);
 }
 
@@ -1473,8 +1921,13 @@ _clutter_stage_do_pick (ClutterStage   *stage,
 
   _clutter_backend_ensure_context (context->backend, stage);
 
+  /* Note: If stereoscopic rendering is enabled then we will currently
+   * just perform picking according to the left eye... */
+  _clutter_stage_set_current_camera (stage, &priv->cameras[0]);
+
   /* needed for when a context switch happens */
-  _clutter_stage_maybe_setup_viewport (stage);
+  _clutter_stage_update_modelview_projection (stage);
+  _clutter_stage_flush_modelview_projection (stage);
 
   /* If we are seeing multiple picks per frame that means the scene is static
    * so we promote to doing a non-scissored pick render so that all subsequent
@@ -1513,6 +1966,8 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   _clutter_stage_do_paint (stage, NULL);
   context->pick_mode = CLUTTER_PICK_NONE;
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
+
+  _clutter_stage_set_current_camera (stage, NULL);
 
   if (is_clipped)
     {
@@ -1601,7 +2056,7 @@ clutter_stage_real_apply_transform (ClutterActor *stage,
   /* FIXME: we probably shouldn't be explicitly reseting the matrix
    * here... */
   cogl_matrix_init_identity (matrix);
-  cogl_matrix_multiply (matrix, matrix, &priv->view);
+  cogl_matrix_multiply (matrix, matrix, &priv->current_camera->view);
 }
 
 static void
@@ -2203,6 +2658,17 @@ clutter_stage_init (ClutterStage *self)
   ClutterStageWindow *impl;
   ClutterBackend *backend;
   GError *error;
+  char *stereo_mode;
+  struct {
+      const char *name;
+      ClutterStereoMode mode;
+  } stereo_modes[] = {
+        { "default", CLUTTER_STEREO_MODE_DEFAULT },
+        { "anaglyph", CLUTTER_STEREO_MODE_ANAGLYPH },
+        { "vertical-split", CLUTTER_STEREO_MODE_VERTICAL_SPLIT },
+        { "horizontal-split", CLUTTER_STEREO_MODE_HORIZONTAL_SPLIT },
+        { 0 }
+  };
 
   /* a stage is a top-level object */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IS_TOPLEVEL);
@@ -2232,6 +2698,32 @@ clutter_stage_init (ClutterStage *self)
         g_critical ("Unable to create a new stage implementation.");
     }
 
+  stereo_mode = getenv ("CLUTTER_STEREO_MODE");
+  if (stereo_mode)
+    {
+      int i;
+      priv->stereo_enabled = TRUE;
+      priv->stereo_mode = CLUTTER_STEREO_MODE_DEFAULT;
+      for (i = 0; stereo_modes[i].name; i++)
+        {
+          if (strcmp (stereo_modes[i].name, stereo_mode) == 0)
+            priv->stereo_mode = stereo_modes[i].mode;
+        }
+    }
+  else
+    {
+      priv->stereo_enabled = FALSE;
+      priv->stereo_mode = CLUTTER_STEREO_MODE_DEFAULT;
+    }
+
+  priv->n_cameras = priv->stereo_enabled ? 2 : 1;
+  priv->cameras_age = 0;
+
+  priv->cameras[0].index = 0;
+  priv->cameras[1].index = 1;
+
+  priv->current_camera = NULL;
+
   priv->event_queue = g_queue_new ();
 
   priv->is_fullscreen = FALSE;
@@ -2257,16 +2749,22 @@ clutter_stage_init (ClutterStage *self)
   priv->perspective.z_near = 0.1;
   priv->perspective.z_far  = 100.0;
 
-  cogl_matrix_init_identity (&priv->projection);
-  cogl_matrix_perspective (&priv->projection,
+  /* Ideally we would set the cameras up lazily when we first paint,
+   * but we have to consider for example that using
+   * clutter_texture_new_from_actor results in clutter trying to
+   * calculate the paint-box of the source-actor outside of the paint
+   * cycle and so it gets upset if we don't initialize the left-eye
+   * camera to something reasonable early... */
+  cogl_matrix_init_identity (&priv->cameras[0].projection);
+  cogl_matrix_perspective (&priv->cameras[0].projection,
                            priv->perspective.fovy,
                            priv->perspective.aspect,
                            priv->perspective.z_near,
                            priv->perspective.z_far);
-  cogl_matrix_get_inverse (&priv->projection,
-                           &priv->inverse_projection);
-  cogl_matrix_init_identity (&priv->view);
-  cogl_matrix_view_2d_in_perspective (&priv->view,
+  cogl_matrix_get_inverse (&priv->cameras[0].projection,
+                           &priv->cameras[0].inverse_projection);
+  cogl_matrix_init_identity (&priv->cameras[0].view);
+  cogl_matrix_view_2d_in_perspective (&priv->cameras[0].view,
                                       priv->perspective.fovy,
                                       priv->perspective.aspect,
                                       priv->perspective.z_near,
@@ -2274,6 +2772,9 @@ clutter_stage_init (ClutterStage *self)
                                       geom.width,
                                       geom.height);
 
+  priv->dirty_viewport = TRUE;
+  priv->dirty_projection = TRUE;
+  priv->dirty_view = TRUE;
 
   /* FIXME - remove for 2.0 */
   priv->fog.z_near = 1.0;
@@ -2387,33 +2888,6 @@ clutter_stage_get_color (ClutterStage *stage,
   clutter_actor_get_background_color (CLUTTER_ACTOR (stage), color);
 }
 
-static void
-clutter_stage_set_perspective_internal (ClutterStage       *stage,
-                                        ClutterPerspective *perspective)
-{
-  ClutterStagePrivate *priv = stage->priv;
-
-  if (priv->perspective.fovy == perspective->fovy &&
-      priv->perspective.aspect == perspective->aspect &&
-      priv->perspective.z_near == perspective->z_near &&
-      priv->perspective.z_far == perspective->z_far)
-    return;
-
-  priv->perspective = *perspective;
-
-  cogl_matrix_init_identity (&priv->projection);
-  cogl_matrix_perspective (&priv->projection,
-                           priv->perspective.fovy,
-                           priv->perspective.aspect,
-                           priv->perspective.z_near,
-                           priv->perspective.z_far);
-  cogl_matrix_get_inverse (&priv->projection,
-                           &priv->inverse_projection);
-
-  priv->dirty_projection = TRUE;
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-}
-
 /**
  * clutter_stage_set_perspective:
  * @stage: A #ClutterStage
@@ -2471,7 +2945,10 @@ clutter_stage_get_perspective (ClutterStage       *stage,
  * Retrieves the @stage's projection matrix. This is derived from the
  * current perspective set using clutter_stage_set_perspective().
  *
- * Since: 1.6
+ * XXX: it's not clear a.t.m what the right way to make something like
+ * this public would be, considering that the stage may be associated
+ * with multiple cameras. The limited internal use-cases we have
+ * currently will work if we just return the current camera.
  */
 void
 _clutter_stage_get_projection_matrix (ClutterStage *stage,
@@ -2480,7 +2957,7 @@ _clutter_stage_get_projection_matrix (ClutterStage *stage,
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
   g_return_if_fail (projection != NULL);
 
-  *projection = stage->priv->projection;
+  *projection = stage->priv->current_camera->projection;
 }
 
 /* This simply provides a simple mechanism for us to ensure that
@@ -2488,9 +2965,9 @@ _clutter_stage_get_projection_matrix (ClutterStage *stage,
  *
  * This is used when switching between multiple stages */
 void
-_clutter_stage_dirty_projection (ClutterStage *stage)
+_clutter_stage_dirty_cogl_projection (ClutterStage *stage)
 {
-  stage->priv->dirty_projection = TRUE;
+  stage->priv->dirty_cogl_projection = TRUE;
 }
 
 /*
@@ -2543,7 +3020,9 @@ _clutter_stage_set_viewport (ClutterStage *stage,
 
   priv = stage->priv;
 
-
+  /* NB: in stereo mode we don't have to worry about checking against
+   * the second camera too since we can assume both cameras have the
+   * same viewport */
   if (x == priv->viewport[0] &&
       y == priv->viewport[1] &&
       width == priv->viewport[2] &&
@@ -2555,6 +3034,8 @@ _clutter_stage_set_viewport (ClutterStage *stage,
   priv->viewport[2] = width;
   priv->viewport[3] = height;
 
+  /* NB: we update the actual camera viewports lazily during
+   * _clutter_stage_update_modelview_projection () */
   priv->dirty_viewport = TRUE;
 
   queue_full_redraw (stage);
@@ -2565,9 +3046,9 @@ _clutter_stage_set_viewport (ClutterStage *stage,
  *
  * This is used when switching between multiple stages */
 void
-_clutter_stage_dirty_viewport (ClutterStage *stage)
+_clutter_stage_dirty_cogl_viewport (ClutterStage *stage)
 {
-  stage->priv->dirty_viewport = TRUE;
+  stage->priv->dirty_cogl_viewport = TRUE;
 }
 
 /*
@@ -2829,14 +3310,41 @@ clutter_stage_read_pixels (ClutterStage *stage,
                            gint          width,
                            gint          height)
 {
+  ClutterStagePrivate *priv;
+  gboolean set_camera = FALSE;
   ClutterGeometry geom;
   guchar *pixels;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
 
+  priv = stage->priv;
+
   /* Force a redraw of the stage before reading back pixels */
   clutter_stage_ensure_current (stage);
+
+  /* XXX: Ideally we'd just assert that priv->current_camera is NULL
+   * but I think there is already code in the wild that expects to be
+   * able to issue a read_pixels request mid-scene, so even though
+   * that's quite likely to break anyway we try not to make it
+   * any more likely than before.
+   *
+   * If a read_pixels request is made mid-scene then we will already
+   * have a current_camera which we don't want to disrupt but
+   * otherwise we make the left_eye camera current before issuing
+   * the stage paint.
+   */
+  if (!priv->current_camera)
+    {
+      _clutter_stage_update_modelview_projection (stage);
+      _clutter_stage_set_current_camera (stage, &priv->cameras[0]);
+      _clutter_stage_flush_modelview_projection (stage);
+      set_camera = TRUE;
+    }
+
   clutter_actor_paint (CLUTTER_ACTOR (stage));
+
+  if (set_camera)
+    _clutter_stage_set_current_camera (stage, NULL);
 
   clutter_actor_get_allocation_geometry (CLUTTER_ACTOR (stage), &geom);
 
@@ -3338,194 +3846,17 @@ clutter_stage_ensure_viewport (ClutterStage *stage)
 {
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  _clutter_stage_dirty_viewport (stage);
+  _clutter_stage_dirty_cogl_viewport (stage);
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
 
-/* This calculates a distance into the view frustum to position the
- * stage so there is a decent amount of space to position geometry
- * between the stage and the near clipping plane.
- *
- * Some awkward issues with this problem are:
- * - It's not possible to have a gap as large as the stage size with
- *   a fov > 53° which is basically always the case since the default
- *   fov is 60°.
- *    - This can be deduced if you consider that this requires a
- *      triangle as wide as it is deep to fit in the frustum in front
- *      of the z_near plane. That triangle will always have an angle
- *      of 53.13° at the point sitting on the z_near plane, but if the
- *      frustum has a wider fov angle the left/right clipping planes
- *      can never converge with the two corners of our triangle no
- *      matter what size the triangle has.
- * - With a fov > 53° there is a trade off between maximizing the gap
- *   size relative to the stage size but not loosing depth precision.
- * - Perhaps ideally we wouldn't just consider the fov on the y-axis
- *   that is usually used to define a perspective, we would consider
- *   the fov of the axis with the largest stage size so the gap would
- *   accommodate that size best.
- *
- * After going around in circles a few times with how to handle these
- * issues, we decided in the end to go for the simplest solution to
- * start with instead of an elaborate function that handles arbitrary
- * fov angles that we currently have no use-case for.
- *
- * The solution assumes a fovy of 60° and for that case gives a gap
- * that's 85% of the stage height. We can consider more elaborate
- * functions if necessary later.
- *
- * One guide we had to steer the gap size we support is the
- * interactive test, test-texture-quality which expects to animate an
- * actor to +400 on the z axis with a stage size of 640x480. A gap
- * that's 85% of the stage height gives a gap of 408 in that case.
- */
-static float
-calculate_z_translation (float z_near)
-{
-  /* This solution uses fairly basic trigonometry, but is seems worth
-   * clarifying the particular geometry we are looking at in-case
-   * anyone wants to develop this further later. Not sure how well an
-   * ascii diagram is going to work :-)
-   *
-   *    |--- stage_height ---|
-   *    |     stage line     |
-   *   ╲━━━━━━━━━━━━━━━━━━━━━╱------------
-   *    ╲.  (2)   │        .╱       |   |
-   *   C ╲ .      │      . ╱     gap|   |
-   * =0.5°╲  . a  │    .  ╱         |   |
-   *      b╲(1). D│  .   ╱          |   |
-   *        ╲   B.│.    ╱near plane |   |
-   *      A= ╲━━━━━━━━━╱-------------   |
-   *     120° ╲ c │   ╱  |            z_2d
-   *           ╲  │  ╱  z_near          |
-   *       left ╲ │ ╱    |              |
-   *       clip  60°fovy |              |
-   *       plane  ╳----------------------
-   *              |
-   *              |
-   *         origin line
-   *
-   * The area of interest is the triangle labeled (1) at the top left
-   * marked with the ... line (a) from where the origin line crosses
-   * the near plane to the top left where the stage line cross the
-   * left clip plane.
-   *
-   * The sides of the triangle are a, b and c and the corresponding
-   * angles opposite those sides are A, B and C.
-   *
-   * The angle of C is what trades off the gap size we have relative
-   * to the stage size vs the depth precision we have.
-   *
-   * As mentioned above we arove at the angle for C is by working
-   * backwards from how much space we want for test-texture-quality.
-   * With a stage_height of 480 we want a gap > 400, ideally we also
-   * wanted a somewhat round number as a percentage of the height for
-   * documentation purposes. ~87% or a gap of ~416 is the limit
-   * because that's where we approach a C angle of 0° and effectively
-   * loose all depth precision.
-   *
-   * So for our test app with a stage_height of 480 if we aim for a
-   * gap of 408 (85% of 480) we can get the angle D as
-   * atan (stage_height/2/408) = 30.5°.
-   *
-   * That gives us the angle for B as 90° - 30.5° = 59.5°
-   *
-   * We can already determine that A has an angle of (fovy/2 + 90°) =
-   * 120°
-   *
-   * Therefore C = 180 - A - B = 0.5°
-   *
-   * The length of c = z_near * tan (30°)
-   *
-   * Now we can use the rule a/SinA = c/SinC to calculate the
-   * length of a. After some rearranging that gives us:
-   *
-   *      a              c
-   *  ----------  =  ----------
-   *  sin (120°)     sin (0.5°)
-   *
-   *      c * sin (120°)
-   *  a = --------------
-   *        sin (0.5°)
-   *
-   * And with that we can determine z_2d = cos (D) * a =
-   * cos (30.5°) * a + z_near:
-   *
-   *         c * sin (120°) * cos (30.5°)
-   *  z_2d = --------------------------- + z_near
-   *                 sin (0.5°)
-   */
-#define _DEG_TO_RAD (G_PI / 180.0)
-  return z_near * tanf (30.0f * _DEG_TO_RAD) *
-         sinf (120.0f * _DEG_TO_RAD) * cosf (30.5f * _DEG_TO_RAD) /
-         sinf (0.5f * _DEG_TO_RAD) +
-         z_near;
-#undef _DEG_TO_RAD
-   /* We expect the compiler should boil this down to z_near * CONSTANT */
-}
-
+/* TODO: remove this badly named API */
 void
 _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
 {
-  ClutterStagePrivate *priv = stage->priv;
-
-  if (priv->dirty_viewport)
-    {
-      ClutterPerspective perspective;
-      float z_2d;
-
-      CLUTTER_NOTE (PAINT,
-                    "Setting up the viewport { w:%f, h:%f }",
-                    priv->viewport[2], priv->viewport[3]);
-
-      cogl_set_viewport (priv->viewport[0],
-                         priv->viewport[1],
-                         priv->viewport[2],
-                         priv->viewport[3]);
-
-      perspective = priv->perspective;
-
-      /* Ideally we want to regenerate the perspective matrix whenever
-       * the size changes but if the user has provided a custom matrix
-       * then we don't want to override it */
-      if (!priv->has_custom_perspective)
-        {
-          perspective.aspect = priv->viewport[2] / priv->viewport[3];
-          z_2d = calculate_z_translation (perspective.z_near);
-
-#define _DEG_TO_RAD (G_PI / 180.0)
-          /* NB: z_2d is only enough room for 85% of the stage_height between
-           * the stage and the z_near plane. For behind the stage plane we
-           * want a more consistent gap of 10 times the stage_height before
-           * hitting the far plane so we calculate that relative to the final
-           * height of the stage plane at the z_2d_distance we got... */
-          perspective.z_far = z_2d +
-            tanf ((perspective.fovy / 2.0f) * _DEG_TO_RAD) * z_2d * 20.0f;
-#undef _DEG_TO_RAD
-
-          clutter_stage_set_perspective_internal (stage, &perspective);
-        }
-      else
-        z_2d = calculate_z_translation (perspective.z_near);
-
-      cogl_matrix_init_identity (&priv->view);
-      cogl_matrix_view_2d_in_perspective (&priv->view,
-                                          perspective.fovy,
-                                          perspective.aspect,
-                                          perspective.z_near,
-                                          z_2d,
-                                          priv->viewport[2],
-                                          priv->viewport[3]);
-
-      priv->dirty_viewport = FALSE;
-    }
-
-  if (priv->dirty_projection)
-    {
-      cogl_set_projection_matrix (&priv->projection);
-
-      priv->dirty_projection = FALSE;
-    }
+  _clutter_stage_update_modelview_projection (stage);
+  _clutter_stage_flush_modelview_projection (stage);
 }
 
 /**
@@ -4423,4 +4754,112 @@ _clutter_stage_update_state (ClutterStage      *stage,
   _clutter_event_push (event, FALSE);
 
   return TRUE;
+}
+
+/**
+ * clutter_stage_set_stereo_enabled:
+ * @stage: A #ClutterStage
+ * @enabled: Whether stereoscopic rendering should be enabled or not
+ *
+ * Enables stereoscopic rendering of the stage if @enabled = %TRUE or
+ * disables stereoscopic rendering if enabled = %FALSE;
+ *
+ * Since: 1.8
+ */
+void
+clutter_stage_set_stereo_enabled (ClutterStage *stage,
+                                  gboolean enabled)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (priv->stereo_enabled == enabled)
+    return;
+
+  /* Currently we only support anaglyph based stereoscopic rendering
+   * and for that we compose each frame by asking the backend to
+   * redraw the scene from two eye positions per frame but that
+   * also means we don't want the backend to automatically present
+   * the frame until we have drawn for both eyes so we need
+   * the swap-buffers feature to enable stereo rendering... */
+  if (enabled &&
+      !_clutter_stage_window_has_feature (stage->priv->impl,
+                                          CLUTTER_STAGE_WINDOW_FEATURE_SWAP_BUFFERS))
+    return;
+
+  priv->stereo_enabled = enabled;
+
+  priv->n_cameras = priv->stereo_enabled ? 2 : 1;
+
+  priv->dirty_viewport = TRUE;
+  priv->dirty_projection = TRUE;
+  priv->dirty_view = TRUE;
+  priv->cameras_age++;
+}
+
+/**
+ * clutter_stage_set_stereo_mode:
+ * @stage: A #ClutterStage
+ * @mode: A #ClutterStereoMode selecting the mode of stereoscopic
+ *        output.
+ *
+ * Changes the mode of outputing stereoscopic content. The default
+ * mode will take advantage of any platform specific support for
+ * stereoscopic output but there are also some platform independent
+ * modes including anaglyph rendering for use with filter glasses with
+ * a red filter for the left eye and a cyan filter for the right, it's
+ * also possible to split the stage horizontally or vertically showing
+ * the left and right eye content on opposite sides of the stage. This
+ * can be used with a lot of 3D TVs.
+ *
+ * Since: 1.8
+ */
+void
+clutter_stage_set_stereo_mode (ClutterStage     *stage,
+                               ClutterStereoMode mode)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (priv->stereo_mode == mode)
+    return;
+
+  priv->stereo_mode = mode;
+
+  if (priv->stereo_enabled)
+    {
+      priv->dirty_viewport = TRUE;
+      priv->dirty_projection = TRUE;
+      priv->dirty_view = TRUE;
+    }
+}
+
+const ClutterCamera *
+_clutter_stage_get_current_camera (ClutterStage *stage)
+{
+  return stage->priv->current_camera;
+}
+
+const ClutterCamera *
+_clutter_stage_get_camera (ClutterStage *stage, int camera_index)
+{
+  return &stage->priv->cameras[camera_index];
+}
+
+int
+_clutter_stage_get_n_cameras (ClutterStage *stage)
+{
+  return stage->priv->n_cameras;
+}
+
+int
+_clutter_stage_get_cameras_age (ClutterStage *stage)
+{
+  return stage->priv->cameras_age;
 }

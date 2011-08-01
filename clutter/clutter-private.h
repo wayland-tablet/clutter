@@ -265,6 +265,32 @@ typedef enum _ClutterCullResult
   CLUTTER_CULL_RESULT_PARTIAL
 } ClutterCullResult;
 
+typedef struct _ClutterCamera
+{
+  /* Cameras are always maintained in a packed array associated with the stage
+   * and this is the index into that array. */
+  int       index;
+
+  /* TODO: It should be possible to associate cameras with CoglOffscreen
+   * framebuffers. Currently cameras are only used for stereoscopic rendering
+   * and it's assumed that all cameras are associated with the stage's
+   * ClutterStageWindow. */
+
+  CoglMatrix projection;
+  CoglMatrix inverse_projection;
+  float      viewport[4];
+  CoglMatrix view;
+
+  /* NB: This age is bumped when the viewport, view or projection change.
+   *
+   * For example clutter-actor.c can use this age to know if something cached
+   * in eye coordinates (which depends on a view transform) is still valid.
+   *
+   * NB: only do == or != comparisons with the age so wrapping should never be
+   * a problem. */
+  int        age;
+} ClutterCamera;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_PRIVATE_H__ */

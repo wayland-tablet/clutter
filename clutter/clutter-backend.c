@@ -804,8 +804,8 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
            * This dirty mechanism will ensure they are asserted before
            * the next paint...
            */
-          _clutter_stage_dirty_viewport (stage);
-          _clutter_stage_dirty_projection (stage);
+          _clutter_stage_dirty_cogl_viewport (stage);
+          _clutter_stage_dirty_cogl_projection (stage);
         }
 
       /* FIXME: With a NULL stage and thus no active context it may make more
