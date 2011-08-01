@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
-				AdditionalDependencies="pango-1.0.lib cairo.lib OpenGL32.lib"
+				AdditionalDependencies="pango-1.0.lib cairo.lib atk-1.0.lib OpenGL32.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pango-1.0.lib cairo.lib OpenGL32.lib"
+				AdditionalDependencies="pango-1.0.lib cairo.lib atk-1.0.lib OpenGL32.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -107,7 +107,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				AdditionalDependencies="pango-1.0.lib cairo.lib OpenGL32.lib"
+				AdditionalDependencies="pango-1.0.lib cairo.lib atk-1.0.lib OpenGL32.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -137,7 +137,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pango-1.0.lib cairo.lib OpenGL32.lib"
+				AdditionalDependencies="pango-1.0.lib cairo.lib atk-1.0.lib OpenGL32.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
