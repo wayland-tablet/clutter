@@ -111,7 +111,8 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
   if (self->stage_osx->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
     {
       [self setLevel: NSNormalWindowLevel];
-      [self orderBack: nil];
+      if (!self->stage_osx->isHiding)
+        [self orderBack: nil];
     }
 
   clutter_stage_osx_state_update (self->stage_osx, CLUTTER_STAGE_STATE_ACTIVATED, 0);
@@ -130,6 +131,11 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
     }
   else 
     return [self frame].size;
+}
+
+- (void)windowDidChangeScreen:(NSNotification *)notification
+{
+  clutter_redraw(CLUTTER_STAGE(self->stage_osx->wrapper));
 }
 @end
 
@@ -300,7 +306,6 @@ static gboolean
 clutter_stage_osx_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
-  ClutterBackendOSX *backend_osx;
   gfloat width, height;
   NSRect rect;
 
@@ -308,33 +313,39 @@ clutter_stage_osx_realize (ClutterStageWindow *stage_window)
 
   CLUTTER_NOTE (BACKEND, "[%p] realize", self);
 
-  backend_osx = CLUTTER_BACKEND_OSX (self->backend);
+  if (!self->haveRealized)
+    {
+      ClutterBackendOSX *backend_osx;
 
-  /* Call get_size - this will either get the geometry size (which
-   * before we create the window is set to 640x480), or if a size
-   * is set, it will get that. This lets you set a size on the
-   * stage before it's realized.
-   */
-  clutter_actor_get_size (CLUTTER_ACTOR (self->wrapper), &width, &height);
-  self->requisition_width = width; 
-  self->requisition_height = height;
+      backend_osx = CLUTTER_BACKEND_OSX (self->backend);
 
-  rect = NSMakeRect(0, 0, self->requisition_width, self->requisition_height);
+      /* Call get_size - this will either get the geometry size (which
+       * before we create the window is set to 640x480), or if a size
+       * is set, it will get that. This lets you set a size on the
+       * stage before it's realized.
+       */
+      clutter_actor_get_size (CLUTTER_ACTOR (self->wrapper), &width, &height);
+      self->requisition_width = width;
+      self->requisition_height= height;
 
-  self->view = [[ClutterGLView alloc]
-                initWithFrame: rect
-                  pixelFormat: backend_osx->pixel_format
-                        stage: self];
-  [self->view setOpenGLContext: backend_osx->context];
+      rect = NSMakeRect (0, 0, self->requisition_width, self->requisition_height);
 
-  self->window = [[ClutterGLWindow alloc]
-                  initWithView: self->view
-                     UTF8Title: clutter_stage_get_title (CLUTTER_STAGE (self->wrapper))
-                         stage: self];
-  /* looks better than positioning to 0,0 (bottom right) */
-  [self->window center];
+      self->view = [[ClutterGLView alloc]
+                    initWithFrame: rect
+                      pixelFormat: backend_osx->pixel_format
+                            stage: self];
+      [self->view setOpenGLContext:backend_osx->context];
 
-  CLUTTER_NOTE (BACKEND, "Stage successfully realized");
+      self->window = [[ClutterGLWindow alloc]
+                      initWithView: self->view
+                         UTF8Title: clutter_stage_get_title (CLUTTER_STAGE (self->wrapper))
+                             stage: self];
+      /* looks better than positioning to 0,0 (bottom right) */
+      [self->window center];
+      self->haveRealized = true;
+
+      CLUTTER_NOTE (BACKEND, "Stage successfully realized");
+    }
 
   CLUTTER_OSX_POOL_RELEASE();
 
@@ -358,6 +369,7 @@ clutter_stage_osx_unrealize (ClutterStageWindow *stage_window)
 
   self->view = NULL;
   self->window = NULL;
+  self->haveRealized = false;
 
   CLUTTER_OSX_POOL_RELEASE();
 }
@@ -391,6 +403,7 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
     [self->window orderFront: nil];
 
   [self->view setHidden:isViewHidden];
+  [self->window setExcludedFromWindowsMenu:NO];
 
   /*
    * After hiding we cease to be first responder.
@@ -409,9 +422,13 @@ clutter_stage_osx_hide (ClutterStageWindow *stage_window)
 
   CLUTTER_NOTE (BACKEND, "[%p] hide", self);
 
+  self->isHiding = true;
   [self->window orderOut: nil];
+  [self->window setExcludedFromWindowsMenu:YES];
 
   clutter_actor_unmap (CLUTTER_ACTOR (self->wrapper));
+
+  self->isHiding = false;
 
   CLUTTER_OSX_POOL_RELEASE();
 }
@@ -594,6 +611,10 @@ _clutter_stage_osx_new (ClutterBackend *backend,
   self = g_object_new (CLUTTER_TYPE_STAGE_OSX, NULL);
   self->backend = backend;
   self->wrapper = wrapper;
+  self->isHiding = false;
+  self->haveRealized = false;
+  self->view = NULL;
+  self->window = NULL;
 
   return CLUTTER_STAGE_WINDOW(self);
 }

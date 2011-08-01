@@ -1761,8 +1761,6 @@ struct _ClutterModelIterPrivate
   ClutterModel  *model;
 
   gint row;
-
-  guint ignore_sort : 1;
 };
 
 enum
@@ -1972,36 +1970,38 @@ clutter_model_iter_init (ClutterModelIter *self)
 
   priv->model = NULL;
   priv->row = 0;
-
-  priv->ignore_sort = FALSE;
 }
 
 /*
  *  Public functions
  */
 
+static inline void
+clutter_model_iter_set_value_internal (ClutterModelIter *iter,
+                                       guint             column,
+                                       const GValue     *value)
+{
+  CLUTTER_MODEL_ITER_GET_CLASS (iter)->set_value (iter, column, value);
+}
+
 static void
 clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
                                         va_list           args)
 {
-  ClutterModel *model;
-  ClutterModelIterPrivate *priv;
+  ClutterModelIterPrivate *priv = iter->priv;
+  ClutterModel *model = priv->model;
   guint column = 0;
   gboolean sort = FALSE;
   
-  priv = iter->priv;
-  model = priv->model;
   g_assert (CLUTTER_IS_MODEL (model));
 
   column = va_arg (args, gint);
   
-  /* Don't want to sort while setting lots of fields, leave that till the end
-   */
-  priv->ignore_sort = TRUE;
   while (column != -1)
     {
       GValue value = { 0, };
       gchar *error = NULL;
+      GType col_type;
 
       if (column < 0 || column >= clutter_model_get_n_columns (model))
         { 
@@ -2010,9 +2010,10 @@ clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
                      G_STRLOC, column);
           break;
         }
-      g_value_init (&value, clutter_model_get_column_type (model, column));
 
-      G_VALUE_COLLECT (&value, args, 0, &error);
+      col_type = clutter_model_get_column_type (model, column);
+
+      G_VALUE_COLLECT_INIT (&value, col_type, args, 0, &error);
       if (error)
         {
           g_warning ("%s: %s", G_STRLOC, error);
@@ -2022,7 +2023,7 @@ clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
           break;
         }
 
-      clutter_model_iter_set_value (iter, column, &value);
+      clutter_model_iter_set_value_internal (iter, column, &value);
       
       g_value_unset (&value);
       
@@ -2032,9 +2033,19 @@ clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
       column = va_arg (args, gint);
     }
 
-  priv->ignore_sort = FALSE;
   if (sort)
     clutter_model_resort (model);
+}
+
+static void inline
+clutter_model_iter_emit_row_changed (ClutterModelIter *iter)
+{
+  ClutterModelIterPrivate *priv = iter->priv;
+  ClutterModel *model = priv->model;
+
+  g_assert (CLUTTER_IS_MODEL (model));
+
+  g_signal_emit (model, model_signals[ROW_CHANGED], 0, iter);
 }
 
 /**
@@ -2051,18 +2062,10 @@ void
 clutter_model_iter_set_valist (ClutterModelIter *iter,
                                va_list           args)
 {
-  ClutterModelIterPrivate *priv;
-  ClutterModel *model;
-
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
 
   clutter_model_iter_set_internal_valist (iter, args);
-
-  priv = iter->priv;
-  model = priv->model;
-  g_assert (CLUTTER_IS_MODEL (model));
-
-  g_signal_emit (model, model_signals[ROW_CHANGED], 0, iter);
+  clutter_model_iter_emit_row_changed (iter);
 }
 
 /**
@@ -2098,6 +2101,14 @@ clutter_model_iter_get (ClutterModelIter *iter,
   va_end (args);
 }
 
+static inline void
+clutter_model_iter_get_value_internal (ClutterModelIter *iter,
+                                       guint             column,
+                                       GValue           *value)
+{
+  CLUTTER_MODEL_ITER_GET_CLASS (iter)->get_value (iter, column, value);
+}
+
 /**
  * clutter_model_iter_get_value:
  * @iter: a #ClutterModelIter
@@ -2114,18 +2125,16 @@ clutter_model_iter_get_value (ClutterModelIter *iter,
                               guint             column,
                               GValue           *value)
 {
-  ClutterModelIterClass *klass;
   ClutterModel *model;
 
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
   
   model = iter->priv->model;
 
-  g_value_init (value, clutter_model_get_column_type (model, column));
+  if (G_VALUE_TYPE (value) == G_TYPE_INVALID)
+    g_value_init (value, clutter_model_get_column_type (model, column));
 
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass && klass->get_value)
-    klass->get_value (iter, column, value);
+  CLUTTER_MODEL_ITER_GET_CLASS (iter)->get_value (iter, column, value);
 }
 
 /**
@@ -2158,6 +2167,7 @@ clutter_model_iter_get_valist (ClutterModelIter *iter,
     {
       GValue value = { 0, };
       gchar *error = NULL;
+      GType col_type;
 
       if (column < 0 || column >= clutter_model_get_n_columns (model))
         { 
@@ -2167,10 +2177,10 @@ clutter_model_iter_get_valist (ClutterModelIter *iter,
           break;
         }
 
-      /* this one will take care of initialising value to the
-       * correct type
-       */
-      clutter_model_iter_get_value (iter, column, &value);
+      col_type = clutter_model_get_column_type (model, column);
+      g_value_init (&value, col_type);
+
+      clutter_model_iter_get_value_internal (iter, column, &value);
 
       G_VALUE_LCOPY (&value, args, 0, &error);
       if (error)
@@ -2214,10 +2224,10 @@ clutter_model_iter_set (ClutterModelIter *iter,
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
 
   va_start (args, iter);
-  clutter_model_iter_set_valist (iter, args);
+  clutter_model_iter_set_internal_valist (iter, args);
+  clutter_model_iter_emit_row_changed (iter);
   va_end (args);
 }
-
 
 /**
  * clutter_model_iter_set_value:
@@ -2235,13 +2245,10 @@ clutter_model_iter_set_value (ClutterModelIter *iter,
                               guint             column,
                               const GValue     *value)
 {
-  ClutterModelIterClass *klass;
-
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
-  
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass && klass->set_value)
-    klass->set_value (iter, column, value);
+
+  clutter_model_iter_set_value_internal (iter, column, value);
+  clutter_model_iter_emit_row_changed (iter);
 }
 
 /**
@@ -2258,15 +2265,9 @@ clutter_model_iter_set_value (ClutterModelIter *iter,
 gboolean
 clutter_model_iter_is_first (ClutterModelIter *iter)
 {
-  ClutterModelIterClass *klass;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (iter), FALSE);
   
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass && klass->is_first)
-    return klass->is_first (iter);
-
-  return FALSE;
+  return CLUTTER_MODEL_ITER_GET_CLASS (iter)->is_first (iter);
 }
 
 /**
@@ -2283,15 +2284,9 @@ clutter_model_iter_is_first (ClutterModelIter *iter)
 gboolean
 clutter_model_iter_is_last (ClutterModelIter *iter)
 {
-  ClutterModelIterClass *klass;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (iter), FALSE);
   
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass && klass->is_last)
-    return klass->is_last (iter);
-
-  return FALSE;
+  return CLUTTER_MODEL_ITER_GET_CLASS (iter)->is_last (iter);
 }
 
 /**
@@ -2310,15 +2305,9 @@ clutter_model_iter_is_last (ClutterModelIter *iter)
 ClutterModelIter *
 clutter_model_iter_next (ClutterModelIter *iter)
 {
-  ClutterModelIterClass *klass;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (iter), NULL);
   
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass && klass->next)
-    return klass->next (iter);
-
-  return NULL;
+  return CLUTTER_MODEL_ITER_GET_CLASS (iter)->next (iter);
 }
 
 /**
@@ -2337,15 +2326,9 @@ clutter_model_iter_next (ClutterModelIter *iter)
 ClutterModelIter *
 clutter_model_iter_prev (ClutterModelIter *iter)
 {
-  ClutterModelIterClass *klass;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (iter), NULL);
   
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass && klass->prev)
-    return klass->prev (iter);
-
-  return NULL;
+  return CLUTTER_MODEL_ITER_GET_CLASS (iter)->prev (iter);
 }
 
 /**
@@ -2361,15 +2344,9 @@ clutter_model_iter_prev (ClutterModelIter *iter)
 ClutterModel *
 clutter_model_iter_get_model (ClutterModelIter *iter)
 {
-  ClutterModelIterClass *klass;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (iter), NULL);
   
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass && klass->get_model)
-    return klass->get_model (iter);
-
-  return NULL;
+  return CLUTTER_MODEL_ITER_GET_CLASS (iter)->get_model (iter);
 }
 
 /**
@@ -2385,15 +2362,9 @@ clutter_model_iter_get_model (ClutterModelIter *iter)
 guint
 clutter_model_iter_get_row (ClutterModelIter *iter)
 {
-  ClutterModelIterClass *klass;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (iter), 0);
   
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass && klass->get_row)
-    return klass->get_row (iter);
-
-  return 0;
+  return CLUTTER_MODEL_ITER_GET_CLASS (iter)->get_row (iter);
 }
 
 /**
@@ -2409,13 +2380,7 @@ clutter_model_iter_get_row (ClutterModelIter *iter)
 ClutterModelIter *
 clutter_model_iter_copy (ClutterModelIter *iter)
 {
-  ClutterModelIterClass *klass;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (iter), NULL);
 
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass->copy)
-    return klass->copy (iter);
-
-  return NULL;
+  return CLUTTER_MODEL_ITER_GET_CLASS (iter)->copy (iter);
 }
