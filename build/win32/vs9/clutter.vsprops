@@ -36,7 +36,7 @@
 	/>
 	<UserMacro
 		Name="LibBuildDefines"
-		Value="HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT"
+		Value="HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT;CLUTTER_ENABLE_EXPERIMENTAL_API"
 	/>
 	<UserMacro
 		Name="DebugLibBuildDefines"
@@ -227,7 +227,7 @@ copy ..\..\..\clutter\cally\cally-util.h $(OutDir)\include\clutter-$(ClutterApiV
 		Name="GenerateClutterDef"
 		Value="
 		       echo EXPORTS &gt; ..\..\..\clutter\clutter.def&#x0D;&#x0A;
-			   cl -EP -DHAVE_CAIRO -DHAVE_CLUTTER_WIN32 ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def&#x0D;&#x0A;
+			   cl -EP -DHAVE_CAIRO -DHAVE_CLUTTER_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro

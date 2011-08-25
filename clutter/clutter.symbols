@@ -285,6 +285,10 @@ clutter_animator_set_duration
 clutter_animator_set_timeline
 clutter_animator_start
 
+#ifdef CLUTTER_ENABLE_EXPERIMENTAL_API
+clutter_backend_get_cogl_context
+#endif
+
 #ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_backend_get_double_click_distance
 clutter_backend_get_double_click_time
