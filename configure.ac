@@ -10,7 +10,7 @@
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
 m4_define([clutter_minor_version], [7])
-m4_define([clutter_micro_version], [11])
+m4_define([clutter_micro_version], [13])
 
 # • for stable releases: increase the interface age by 1 for each release;
 #   if the API changes, set to 0. interface_age and binary_age are used to
@@ -116,7 +116,7 @@ AC_HEADER_STDC
 m4_define([glib_req_version],           [2.26.0])
 m4_define([cogl_req_version],           [1.7.6])
 m4_define([json_glib_req_version],      [0.12.0])
-m4_define([atk_req_version],            [1.17])
+m4_define([atk_req_version],            [2.1.5])
 m4_define([cairo_req_version],          [1.10])
 m4_define([pango_req_version],          [1.20])
 m4_define([gi_req_version],             [0.9.5])
