@@ -11,7 +11,7 @@
     <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
     <ClutterBuildDefines>$(BaseBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_PREFIX="../";CLUTTER_LIBDIR="../lib";CLUTTER_DATADIR="../share";CLUTTER_LOCALEDIR="../share/locale"</ClutterBuildDefines>
     <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir"</CallyTestDefs>
-    <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../tests/data"</TestProgDef>
+    <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../share/clutter-$(ClutterApiVersion)/data"</TestProgDef>
     <PreBuildCmd>
 if exist ..\..\..\config.h goto DONE_CONFIG_H
 
@@ -85,7 +85,7 @@ mkdir $(CopyDir)
 
 mkdir $(CopyDir)\bin
 
-mkdir $(CopyDir)\tests\data
+mkdir $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
 
@@ -94,11 +94,11 @@ copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.exe $(CopyDir)\bin
 
 copy ..\*.bat $(CopyDir)\bin
 
-copy ..\..\..\tests\data\*.png $(CopyDir)\tests\data
+copy ..\..\..\tests\data\*.png $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
 
-copy ..\..\..\tests\data\clutter-1.0.suppressions $(CopyDir)\tests\data
+copy ..\..\..\tests\data\clutter-1.0.suppressions $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
 
-copy ..\..\..\tests\data\*.json $(CopyDir)\tests\data
+copy ..\..\..\tests\data\*.json $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
 
 
 mkdir $(CopyDir)\lib
@@ -312,6 +312,16 @@ copy ..\..\..\clutter\cally\cally-texture.h $(CopyDir)\include\clutter-$(Clutter
 
 copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
 
+
+mkdir $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
+
+copy ..\..\..\doc\cookbook\examples\*.c $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
+
+copy ..\..\..\doc\cookbook\examples\*.h $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
+
+copy ..\..\..\doc\cookbook\examples\*.json $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
+
+copy ..\..\..\doc\cookbook\examples\*.png $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
 
 </ClutterDoInstall>
     <GenerateClutterDef>
