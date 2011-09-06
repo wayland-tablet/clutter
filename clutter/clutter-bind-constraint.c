@@ -77,6 +77,21 @@
  *                        NULL);
  * ]|
  *
+ * <example id="bind-constraint-example">
+ *   <title>Animating the offset property of ClutterBindConstraint</title>
+ *   <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-constraints.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *   </programlisting>
+ *   <para>The example above creates eight rectangles and binds them to a
+ *   rectangle positioned in the center of the stage; when the user presses
+ *   the center rectangle, the #ClutterBindConstraint:offset property is
+ *   animated through the clutter_actor_animate() function to lay out the
+ *   eight rectangles around the center one. Pressing one of the outer
+ *   rectangles will animate the offset back to 0.</para>
+ * </example>
+ *
  * #ClutterBindConstraint is available since Clutter 1.4
  */
 
@@ -88,6 +103,8 @@
 
 #include "clutter-bind-constraint.h"
 
+#include "clutter-actor-meta-private.h"
+#include "clutter-actor-private.h"
 #include "clutter-constraint.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -208,6 +225,19 @@ clutter_bind_constraint_set_actor (ClutterActorMeta *meta,
   ClutterBindConstraint *bind = CLUTTER_BIND_CONSTRAINT (meta);
   ClutterActorMetaClass *parent;
 
+  if (new_actor != NULL &&
+      bind->source != NULL &&
+      clutter_actor_contains (new_actor, bind->source))
+    {
+      g_warning (G_STRLOC ": The source actor '%s' is contained "
+                 "by the actor '%s' associated to the constraint "
+                 "'%s'",
+                 _clutter_actor_get_debug_name (bind->source),
+                 _clutter_actor_get_debug_name (new_actor),
+                 _clutter_actor_meta_get_debug_name (meta));
+      return;
+    }
+
   /* store the pointer to the actor, for later use */
   bind->actor = new_actor;
 
@@ -307,7 +337,10 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
   /**
    * ClutterBindConstraint:source:
    *
-   * The #ClutterActor used as the source for the binding
+   * The #ClutterActor used as the source for the binding.
+   *
+   * The #ClutterActor must not be contained inside the actor associated
+   * to the constraint.
    *
    * Since: 1.4
    */
@@ -403,13 +436,30 @@ void
 clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
                                     ClutterActor          *source)
 {
-  ClutterActor *old_source;
+  ClutterActor *old_source, *actor;
+  ClutterActorMeta *meta;
 
   g_return_if_fail (CLUTTER_IS_BIND_CONSTRAINT (constraint));
   g_return_if_fail (source == NULL || CLUTTER_IS_ACTOR (source));
 
   if (constraint->source == source)
     return;
+
+  meta = CLUTTER_ACTOR_META (constraint);
+  actor = clutter_actor_meta_get_actor (meta);
+  if (source != NULL && actor != NULL)
+    {
+      if (clutter_actor_contains (actor, source))
+        {
+          g_warning (G_STRLOC ": The source actor '%s' is contained "
+                     "by the actor '%s' associated to the constraint "
+                     "'%s'",
+                     _clutter_actor_get_debug_name (source),
+                     _clutter_actor_get_debug_name (actor),
+                     _clutter_actor_meta_get_debug_name (meta));
+          return;
+        }
+    }
 
   old_source = constraint->source;
   if (old_source != NULL)

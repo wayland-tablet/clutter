@@ -1378,7 +1378,7 @@ collect_markers (const gchar *key,
  * @msecs: the time to check, or -1
  * @n_markers: the number of markers returned
  *
- * Retrieves the list of markers at time @msecs. If @frame_num is a
+ * Retrieves the list of markers at time @msecs. If @msecs is a
  * negative integer, all the markers attached to @timeline will be
  * returned.
  *
@@ -1555,7 +1555,7 @@ clutter_timeline_has_marker (ClutterTimeline *timeline,
  * Sets whether @timeline should reverse the direction after the
  * emission of the #ClutterTimeline::completed signal.
  *
- * Setting the #ClutterTimeline:reverse property to %TRUE is the
+ * Setting the #ClutterTimeline:auto-reverse property to %TRUE is the
  * equivalent of connecting a callback to the #ClutterTimeline::completed
  * signal and changing the direction of the timeline from that callback;
  * for instance, this code:
