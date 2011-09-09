@@ -1,1249 +1,1176 @@
-# Indonesian translation of clutter
-# Copyright (C) 2010 Intel Corporation
+# Latvian translation for clutter.
+# Copyright (C) 2011 clutter's COPYRIGHT HOLDER
 # This file is distributed under the same license as the clutter package.
-# Andika Triwidada <andika@gmail.com>, 2010, 2011.
 #
+# Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-06 09:19+0000\n"
-"PO-Revision-Date: 2011-09-07 15:45+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
-"Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=clutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-03 22:35+0000\n"
+"PO-Revision-Date: 2011-09-06 00:26+0300\n"
+"Last-Translator: Rūdofls Mazurs <rudolfs.mazurs@gmail.com>\n"
+"Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-Language: Indonesian\n"
-"X-Poedit-Country: Indonesia\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+"X-Generator: Lokalize 1.1\n"
 
 #: ../clutter/clutter-actor.c:3851
 msgid "X coordinate"
-msgstr "Koordinat X"
+msgstr "X koordināta"
 
 #: ../clutter/clutter-actor.c:3852
 msgid "X coordinate of the actor"
-msgstr "Koordinat X dari aktor"
+msgstr "Izpildītāja X koordināta"
 
 #: ../clutter/clutter-actor.c:3867
 msgid "Y coordinate"
-msgstr "Koordinat Y"
+msgstr "Y koordināta"
 
 #: ../clutter/clutter-actor.c:3868
 msgid "Y coordinate of the actor"
-msgstr "Koordinat Y dari aktor"
+msgstr "Izpildītāja Y koordināta"
 
-#: ../clutter/clutter-actor.c:3883
-#: ../clutter/clutter-behaviour-ellipse.c:477
+#: ../clutter/clutter-actor.c:3883 ../clutter/clutter-behaviour-ellipse.c:477
 msgid "Width"
-msgstr "Lebar"
+msgstr "Platums"
 
 #: ../clutter/clutter-actor.c:3884
 msgid "Width of the actor"
-msgstr "Lebar aktor"
+msgstr "Izpildītāja platums"
 
-#: ../clutter/clutter-actor.c:3898
-#: ../clutter/clutter-behaviour-ellipse.c:493
+#: ../clutter/clutter-actor.c:3898 ../clutter/clutter-behaviour-ellipse.c:493
 msgid "Height"
-msgstr "Tinggi"
+msgstr "Augstums"
 
 #: ../clutter/clutter-actor.c:3899
 msgid "Height of the actor"
-msgstr "Tinggi aktor"
+msgstr "Izpildītāja augstums"
 
 #: ../clutter/clutter-actor.c:3917
 msgid "Fixed X"
-msgstr "X Tetap"
+msgstr "Fiksēts X"
 
 #: ../clutter/clutter-actor.c:3918
 msgid "Forced X position of the actor"
-msgstr "Posisi X aktor yang dipaksakan"
+msgstr "Fiksēta izpildītāja X pozīcija"
 
 #: ../clutter/clutter-actor.c:3936
 msgid "Fixed Y"
-msgstr "Y Tetap"
+msgstr "Fiksēts Y"
 
 #: ../clutter/clutter-actor.c:3937
 msgid "Forced Y position of the actor"
-msgstr "Posisi Y aktor yang dipaksakan"
+msgstr "Fiksēta izpildītāja Y pozīcija"
 
 #: ../clutter/clutter-actor.c:3953
 msgid "Fixed position set"
-msgstr "Posisi yang ditetapkan ditata"
+msgstr "Fiksēta pozīcija iestatīta"
 
 #: ../clutter/clutter-actor.c:3954
 msgid "Whether to use fixed positioning for the actor"
-msgstr "Apakah memakai penempatan yang ditetapkan bagi aktor"
+msgstr "Vai izpildītājam izmantot fiksētu pozicionēšanu"
 
 #: ../clutter/clutter-actor.c:3976
 msgid "Min Width"
-msgstr "Lebar Min"
+msgstr "Min. platums"
 
 #: ../clutter/clutter-actor.c:3977
 msgid "Forced minimum width request for the actor"
-msgstr "Permintaan lebar minimal yang dipaksakan bagi aktor"
+msgstr "Aktiem forsēts minimālā platuma pieprasījums"
 
 #: ../clutter/clutter-actor.c:3996
 msgid "Min Height"
-msgstr "Tinggi Min"
+msgstr "Min. augstums"
 
 #: ../clutter/clutter-actor.c:3997
 msgid "Forced minimum height request for the actor"
-msgstr "Permintaan tinggi minimal yang dipaksakan bagi aktor"
+msgstr "Aktiem forsēts minimālā augstuma pieprasījums"
 
 #: ../clutter/clutter-actor.c:4016
 msgid "Natural Width"
-msgstr "Lebar Alami"
+msgstr "Dabīgais platums"
 
 #: ../clutter/clutter-actor.c:4017
 msgid "Forced natural width request for the actor"
-msgstr "Permintaan lebar alami yang dipaksakan bagi aktor"
+msgstr "Aktiem forsēts dabīgā platuma pieprasījums"
 
 #: ../clutter/clutter-actor.c:4036
 msgid "Natural Height"
-msgstr "Tinggi Alami"
+msgstr "Dabīgais augstums"
 
 #: ../clutter/clutter-actor.c:4037
 msgid "Forced natural height request for the actor"
-msgstr "Permintaan tinggi alami yang dipaksakan bagi aktor"
+msgstr "Aktiem forsēts dabīgā augstuma pieprasījums"
 
 #: ../clutter/clutter-actor.c:4053
 msgid "Minimum width set"
-msgstr "Lebar minimal ditata"
+msgstr "Minimālais platums iestatīts"
 
 #: ../clutter/clutter-actor.c:4054
 msgid "Whether to use the min-width property"
-msgstr "Apakah memakai properti min-width"
+msgstr "Vai izmantot minimālā platuma īpašību"
 
 #: ../clutter/clutter-actor.c:4069
 msgid "Minimum height set"
-msgstr "Tinggi minimal ditata"
+msgstr "Minimālais augstums iestatīts"
 
 #: ../clutter/clutter-actor.c:4070
 msgid "Whether to use the min-height property"
-msgstr "Apakah memakai properti min-height"
+msgstr "Vai izmantot minimālā augstuma īpašību"
 
 #: ../clutter/clutter-actor.c:4085
 msgid "Natural width set"
-msgstr "Lebar alami ditata"
+msgstr "Dabīgs platums iestatīts"
 
 #: ../clutter/clutter-actor.c:4086
 msgid "Whether to use the natural-width property"
-msgstr "Apakah memakai properti natural-width"
+msgstr "Vai izmantot dabīgā platuma īpašību"
 
 #: ../clutter/clutter-actor.c:4103
 msgid "Natural height set"
-msgstr "Tinggi alami ditata"
+msgstr "Dabīgs augstums iestatīts"
 
 #: ../clutter/clutter-actor.c:4104
 msgid "Whether to use the natural-height property"
-msgstr "Apakah memakai properti natural-height"
+msgstr "Vai izmantot dabīgā augstuma īpašību"
 
 #: ../clutter/clutter-actor.c:4123
 msgid "Allocation"
-msgstr "Alokasi"
+msgstr "Piešķiršana"
 
 #: ../clutter/clutter-actor.c:4124
 msgid "The actor's allocation"
-msgstr "Alokasi aktor"
+msgstr "Izpildītāja piešķiršana"
 
 #: ../clutter/clutter-actor.c:4180
 msgid "Request Mode"
-msgstr "Moda Permintaan"
+msgstr "Pieprasīšanas režīms"
 
 #: ../clutter/clutter-actor.c:4181
 msgid "The actor's request mode"
-msgstr "Moda permintaan aktor"
+msgstr "Izpildītāja pieprasīšanas režīms"
 
 #: ../clutter/clutter-actor.c:4196
 msgid "Depth"
-msgstr "Kedalaman"
+msgstr "Dziļums"
 
 #: ../clutter/clutter-actor.c:4197
 msgid "Position on the Z axis"
-msgstr "Posisi pada sumbu Z"
+msgstr "Z ass pozīcija"
 
 #: ../clutter/clutter-actor.c:4211
 msgid "Opacity"
-msgstr "Kelegapan"
+msgstr "Necaurspīdīgums"
 
 #: ../clutter/clutter-actor.c:4212
 msgid "Opacity of an actor"
-msgstr "Tingkat kelegapan aktor"
+msgstr "Izpildītāja necaurspīdīgums"
 
 #: ../clutter/clutter-actor.c:4231
 msgid "Offscreen redirect"
-msgstr "Pengalihan luar layar"
+msgstr "Ārpus ekrāna pārsūtīšana"
 
 #: ../clutter/clutter-actor.c:4232
 msgid "Flags controlling when to flatten the actor into a single image"
-msgstr "Flag yang mengendalikan kapan untuk meratakan aktor ke gambar tunggal"
+msgstr "Atzīme, kas nosaka, kad saplacināt izpildītāju uz vienu attēlu"
 
 #: ../clutter/clutter-actor.c:4250
 msgid "Visible"
-msgstr "Tampak"
+msgstr "Redzams"
 
 #: ../clutter/clutter-actor.c:4251
 msgid "Whether the actor is visible or not"
-msgstr "Apakah aktor nampak atau tidak"
+msgstr "Vai izpildītājs ir redzams vai neredzams"
 
 #: ../clutter/clutter-actor.c:4266
 msgid "Mapped"
-msgstr "Dipetakan"
+msgstr "Kartēts"
 
 #: ../clutter/clutter-actor.c:4267
 msgid "Whether the actor will be painted"
-msgstr "Apakah aktor akan digambar"
+msgstr "Vai izpildītājs tiks uzzīmēts"
 
 #: ../clutter/clutter-actor.c:4281
 msgid "Realized"
-msgstr "Direalisasikan"
+msgstr "Realizēts"
 
 #: ../clutter/clutter-actor.c:4282
 msgid "Whether the actor has been realized"
-msgstr "Apakah aktor telah direalisasikan"
+msgstr "Vai izpildītājs tika realizēts"
 
 #: ../clutter/clutter-actor.c:4298
 msgid "Reactive"
-msgstr "Reaktif"
+msgstr "Reaktīvs"
 
 #: ../clutter/clutter-actor.c:4299
 msgid "Whether the actor is reactive to events"
-msgstr "Apakah aktor reaktif terhadap kejadian"
+msgstr "Vai izpildītājs uz notikumiem ir reaktīvs"
 
 #: ../clutter/clutter-actor.c:4311
 msgid "Has Clip"
-msgstr "Punya Klip"
+msgstr ""
 
 #: ../clutter/clutter-actor.c:4312
 msgid "Whether the actor has a clip set"
-msgstr "Apakah aktor telah ditata punya klip"
+msgstr ""
 
 #: ../clutter/clutter-actor.c:4327
 msgid "Clip"
-msgstr "Klip"
+msgstr ""
 
 #: ../clutter/clutter-actor.c:4328
 msgid "The clip region for the actor"
-msgstr "Wilayah klip bagi aktor"
+msgstr ""
 
-#: ../clutter/clutter-actor.c:4342
-#: ../clutter/clutter-actor-meta.c:207
-#: ../clutter/clutter-binding-pool.c:319
-#: ../clutter/clutter-input-device.c:236
+#: ../clutter/clutter-actor.c:4342 ../clutter/clutter-actor-meta.c:207
+#: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:236
 msgid "Name"
-msgstr "Nama"
+msgstr "Nosaukums"
 
 #: ../clutter/clutter-actor.c:4343
 msgid "Name of the actor"
-msgstr "Nama aktor"
+msgstr "Nosaukums izpildītāja"
 
 #: ../clutter/clutter-actor.c:4357
 msgid "Scale X"
-msgstr "Skala X"
+msgstr "Mērogs X"
 
 #: ../clutter/clutter-actor.c:4358
 msgid "Scale factor on the X axis"
-msgstr "Faktor skala pada sumbu X"
+msgstr "Mēroga koeficients uz X ass"
 
 #: ../clutter/clutter-actor.c:4373
 msgid "Scale Y"
-msgstr "Skala Y"
+msgstr "Mērogs Y"
 
 #: ../clutter/clutter-actor.c:4374
 msgid "Scale factor on the Y axis"
-msgstr "Faktor skala pada sumbu Y"
+msgstr "Mēroga koeficients uz Y ass"
 
 #: ../clutter/clutter-actor.c:4389
 msgid "Scale Center X"
-msgstr "Pusat Skala X"
+msgstr "Mēroga vidus X"
 
 #: ../clutter/clutter-actor.c:4390
 msgid "Horizontal scale center"
-msgstr "Pusat skala horisontal"
+msgstr "Horizontālā mēroga vidus"
 
 #: ../clutter/clutter-actor.c:4405
 msgid "Scale Center Y"
-msgstr "Pusat Skala Y"
+msgstr "Mēroga vidus Y"
 
 #: ../clutter/clutter-actor.c:4406
 msgid "Vertical scale center"
-msgstr "Pusat skala vertikal"
+msgstr "Vertikālā mēroga vidus"
 
 #: ../clutter/clutter-actor.c:4421
 msgid "Scale Gravity"
-msgstr "Gravitasi Skala"
+msgstr "Mēroga svars"
 
 #: ../clutter/clutter-actor.c:4422
 msgid "The center of scaling"
-msgstr "Pusat penskalaan"
+msgstr "Mērogošanas vidus"
 
 #: ../clutter/clutter-actor.c:4439
 msgid "Rotation Angle X"
-msgstr "Sudut Rotasi X"
+msgstr "Rotācijas leņķis X"
 
 #: ../clutter/clutter-actor.c:4440
 msgid "The rotation angle on the X axis"
-msgstr "Sudut rotasi dari sumbu X"
+msgstr "X ass rotācijas leņķis"
 
 #: ../clutter/clutter-actor.c:4455
 msgid "Rotation Angle Y"
-msgstr "Sudut Rotasi Y"
+msgstr "Rotācijas leņķis Y"
 
 #: ../clutter/clutter-actor.c:4456
 msgid "The rotation angle on the Y axis"
-msgstr "Sudut rotasi dari sumbu Y"
+msgstr "Y ass rotācijas leņķis"
 
 #: ../clutter/clutter-actor.c:4471
 msgid "Rotation Angle Z"
-msgstr "Sudut Rotasi Z"
+msgstr "Rotācijas leņķis Z"
 
 #: ../clutter/clutter-actor.c:4472
 msgid "The rotation angle on the Z axis"
-msgstr "Sudut rotasi dari sumbu Z"
+msgstr "Z ass rotācijas leņķis"
 
 #: ../clutter/clutter-actor.c:4487
 msgid "Rotation Center X"
-msgstr "Pusat Rotasi X"
+msgstr "Rotācijas centrs X"
 
 #: ../clutter/clutter-actor.c:4488
 msgid "The rotation center on the X axis"
-msgstr "Pusat rotasi pada sumbu X"
+msgstr "X ass rotācijas centrs"
 
 #: ../clutter/clutter-actor.c:4504
 msgid "Rotation Center Y"
-msgstr "Pusat Rotasi Y"
+msgstr "Rotācijas centrs Y"
 
 #: ../clutter/clutter-actor.c:4505
 msgid "The rotation center on the Y axis"
-msgstr "Pusat rotasi pada sumbu Y"
+msgstr "Y ass rotācijas centrs"
 
 #: ../clutter/clutter-actor.c:4521
 msgid "Rotation Center Z"
-msgstr "Pusat Rotasi Z"
+msgstr "Rotācijas centrs Z"
 
 #: ../clutter/clutter-actor.c:4522
 msgid "The rotation center on the Z axis"
-msgstr "Pusat rotasi pada sumbu Z"
+msgstr "Z ass rotācijas centrs"
 
 #: ../clutter/clutter-actor.c:4538
 msgid "Rotation Center Z Gravity"
-msgstr "Gravitasi Z Pusat Rotasi"
+msgstr "Rotācijas centra Z svars"
 
 #: ../clutter/clutter-actor.c:4539
 msgid "Center point for rotation around the Z axis"
-msgstr "Titik pusat rotasi seputar sumbu Z"
+msgstr "Viduspunkts rotācijai ap Z asi"
 
 #: ../clutter/clutter-actor.c:4557
 msgid "Anchor X"
-msgstr "Jangkar X"
+msgstr "Enkurs X"
 
 #: ../clutter/clutter-actor.c:4558
 msgid "X coordinate of the anchor point"
-msgstr "Koordinat X titik jangkar"
+msgstr "Enkura punkta X koordināta"
 
 #: ../clutter/clutter-actor.c:4574
 msgid "Anchor Y"
-msgstr "Jangkar Y"
+msgstr "Enkurs Y"
 
 #: ../clutter/clutter-actor.c:4575
 msgid "Y coordinate of the anchor point"
-msgstr "Koordinat Y titik jangkar"
+msgstr "Enkura punkta Y koordināta"
 
 #: ../clutter/clutter-actor.c:4590
 msgid "Anchor Gravity"
-msgstr "Gravitasi Jangkar"
+msgstr "Enkura svars"
 
 #: ../clutter/clutter-actor.c:4591
 msgid "The anchor point as a ClutterGravity"
-msgstr "Titik jangkar sebagai ClutterGravity"
+msgstr "Enkura punkts kā ClutterGravity"
 
 #: ../clutter/clutter-actor.c:4610
 msgid "Show on set parent"
-msgstr "Tampilkan saat jadi induk"
+msgstr "Rādīt uz vecāka iestatīts"
 
 #: ../clutter/clutter-actor.c:4611
 msgid "Whether the actor is shown when parented"
-msgstr "Apakah aktor ditampilkan ketika dijadikan induk"
+msgstr "Vai izpildītājs ir redzams, kad ar vecāku"
 
 #: ../clutter/clutter-actor.c:4631
 msgid "Clip to Allocation"
-msgstr "Klip ke Alokasi"
+msgstr ""
 
 #: ../clutter/clutter-actor.c:4632
 msgid "Sets the clip region to track the actor's allocation"
-msgstr "Tata wilayah pemotongan untuk melacak alokasi aktor"
+msgstr ""
 
 #: ../clutter/clutter-actor.c:4642
 msgid "Text Direction"
-msgstr "Arah Teks"
+msgstr "Teksta virziens"
 
 #: ../clutter/clutter-actor.c:4643
 msgid "Direction of the text"
-msgstr "Arah teks"
+msgstr "Teksta virziens"
 
 #: ../clutter/clutter-actor.c:4661
 msgid "Has Pointer"
-msgstr "Punya Penunjuk"
+msgstr "Ir rādītājs"
 
 #: ../clutter/clutter-actor.c:4662
 msgid "Whether the actor contains the pointer of an input device"
-msgstr "Apakah aktor memuat penunjuk dari suatu perangkat masukan"
+msgstr "Vai izpildītājs satur ievades ierīces norādi"
 
 #: ../clutter/clutter-actor.c:4679
 msgid "Actions"
-msgstr "Aksi"
+msgstr "Darbības"
 
 #: ../clutter/clutter-actor.c:4680
 msgid "Adds an action to the actor"
-msgstr "Tambahkan aksi ke aktor"
+msgstr "Izpildītājam pievieno darbību"
 
 #: ../clutter/clutter-actor.c:4694
 msgid "Constraints"
-msgstr "Kendala"
+msgstr "Ierobežojumi"
 
 #: ../clutter/clutter-actor.c:4695
 msgid "Adds a constraint to the actor"
-msgstr "Tambahkan kendala ke aktor"
+msgstr "Izpildītājam pievieno ierobežojumu"
 
-#: ../clutter/clutter-actor-meta.c:193
-#: ../clutter/clutter-child-meta.c:142
+#: ../clutter/clutter-actor-meta.c:193 ../clutter/clutter-child-meta.c:142
 msgid "Actor"
-msgstr "Aktor"
+msgstr "Izpildītājs"
 
 #: ../clutter/clutter-actor-meta.c:194
 msgid "The actor attached to the meta"
-msgstr "Aktor yang dicantolkan ke meta"
+msgstr "Pie meta pievienotais izpildītājs"
 
 #: ../clutter/clutter-actor-meta.c:208
 msgid "The name of the meta"
-msgstr "Nama meta"
+msgstr "Šī meta nosaukums"
 
-#: ../clutter/clutter-actor-meta.c:221
-#: ../clutter/clutter-input-device.c:315
+#: ../clutter/clutter-actor-meta.c:221 ../clutter/clutter-input-device.c:315
 #: ../clutter/clutter-shader.c:307
 msgid "Enabled"
-msgstr "Diaktifkan"
+msgstr "Aktivēts"
 
 #: ../clutter/clutter-actor-meta.c:222
 msgid "Whether the meta is enabled"
-msgstr "Apakah meta diaktifkan"
+msgstr "Vai meta ir aktivēts"
 
 #: ../clutter/clutter-align-constraint.c:270
-#: ../clutter/clutter-bind-constraint.c:349
-#: ../clutter/clutter-clone.c:340
+#: ../clutter/clutter-bind-constraint.c:349 ../clutter/clutter-clone.c:340
 #: ../clutter/clutter-snap-constraint.c:321
 msgid "Source"
-msgstr "Sumber"
+msgstr "Avots"
 
 #: ../clutter/clutter-align-constraint.c:271
 msgid "The source of the alignment"
-msgstr "Sumber perataan"
+msgstr "Līdzinājuma avots"
 
 #: ../clutter/clutter-align-constraint.c:284
 msgid "Align Axis"
-msgstr "Sumbu Perataan"
+msgstr "Līdzināt asi"
 
 #: ../clutter/clutter-align-constraint.c:285
 msgid "The axis to align the position to"
-msgstr "Sumbu untuk meratakan posisi"
+msgstr "Ass, pie kuras pielīdzināt"
 
 #: ../clutter/clutter-align-constraint.c:304
 #: ../clutter/clutter-desaturate-effect.c:304
 msgid "Factor"
-msgstr "Faktor"
+msgstr "Koeficients"
 
 #: ../clutter/clutter-align-constraint.c:305
 msgid "The alignment factor, between 0.0 and 1.0"
-msgstr "Faktor perataan, antara 0.0 dan 1.0"
+msgstr "Līdzināšanas koeficients, starp 0.0 un 1.0"
 
-#: ../clutter/clutter-alpha.c:345
-#: ../clutter/clutter-animation.c:537
+#: ../clutter/clutter-alpha.c:345 ../clutter/clutter-animation.c:528
 #: ../clutter/clutter-animator.c:1802
 msgid "Timeline"
-msgstr "Alur waktu"
+msgstr "Laika skala"
 
 #: ../clutter/clutter-alpha.c:346
 msgid "Timeline used by the alpha"
-msgstr "Alur waktu (timeline) yang dipakai oleh alfa"
+msgstr "Laika skala, ko izmanto alfa"
 
 #: ../clutter/clutter-alpha.c:361
 msgid "Alpha value"
-msgstr "Nilai alfa"
+msgstr "Alfa vērtība"
 
 #: ../clutter/clutter-alpha.c:362
 msgid "Alpha value as computed by the alpha"
-msgstr "Nilai alfa yang dihitung oleh alfa"
+msgstr "Alfa vērtība, kādu izskaitļo alfa"
 
-#: ../clutter/clutter-alpha.c:382
-#: ../clutter/clutter-animation.c:493
+#: ../clutter/clutter-alpha.c:382 ../clutter/clutter-animation.c:484
 msgid "Mode"
-msgstr "Mode"
+msgstr "Režīms"
 
 #: ../clutter/clutter-alpha.c:383
 msgid "Progress mode"
-msgstr "Moda kemajuan"
+msgstr "Progresa režīms"
 
-#: ../clutter/clutter-animation.c:477
+#: ../clutter/clutter-animation.c:468
 msgid "Object"
-msgstr "Objek"
+msgstr "Objekts"
 
-#: ../clutter/clutter-animation.c:478
+#: ../clutter/clutter-animation.c:469
 msgid "Object to which the animation applies"
-msgstr "Objek yang menerapkan animasi"
+msgstr "Objekts, uz ko attiecināma animācija"
 
-#: ../clutter/clutter-animation.c:494
+#: ../clutter/clutter-animation.c:485
 msgid "The mode of the animation"
-msgstr "Mode animasi"
+msgstr "Animācijas režīms"
 
-#: ../clutter/clutter-animation.c:508
-#: ../clutter/clutter-animator.c:1786
-#: ../clutter/clutter-media.c:194
-#: ../clutter/clutter-state.c:1486
+#: ../clutter/clutter-animation.c:499 ../clutter/clutter-animator.c:1786
+#: ../clutter/clutter-media.c:194 ../clutter/clutter-state.c:1486
 #: ../clutter/clutter-timeline.c:294
 msgid "Duration"
-msgstr "Durasi"
+msgstr "Ilgums"
 
-#: ../clutter/clutter-animation.c:509
+#: ../clutter/clutter-animation.c:500
 msgid "Duration of the animation, in milliseconds"
-msgstr "Durasi animasi, dalam milidetik"
+msgstr "Animācijas ilgums milisekundēs"
 
-#: ../clutter/clutter-animation.c:523
-#: ../clutter/clutter-timeline.c:263
+#: ../clutter/clutter-animation.c:514 ../clutter/clutter-timeline.c:263
 msgid "Loop"
-msgstr "Pengulangan"
+msgstr "Cikls"
 
-#: ../clutter/clutter-animation.c:524
+#: ../clutter/clutter-animation.c:515
 msgid "Whether the animation should loop"
-msgstr "Apakah animasi mesti berulang"
+msgstr "Vai animācijai jāciklojas"
 
-#: ../clutter/clutter-animation.c:538
+#: ../clutter/clutter-animation.c:529
 msgid "The timeline used by the animation"
-msgstr "Alur waktu yang dipakai oleh animasi"
+msgstr "Laika skala, ko izmanto animācija"
 
-#: ../clutter/clutter-animation.c:551
-#: ../clutter/clutter-behaviour.c:304
+#: ../clutter/clutter-animation.c:542 ../clutter/clutter-behaviour.c:304
 msgid "Alpha"
 msgstr "Alfa"
 
-#: ../clutter/clutter-animation.c:552
+#: ../clutter/clutter-animation.c:543
 msgid "The alpha used by the animation"
-msgstr "Alfa yang dipakai oleh animasi"
+msgstr "Alfa, ko izmanto animācija"
 
 #: ../clutter/clutter-animator.c:1787
 msgid "The duration of the animation"
-msgstr "Durasi animasi"
+msgstr "Animācijas ilgums"
 
 #: ../clutter/clutter-animator.c:1803
 msgid "The timeline of the animation"
-msgstr "Alur waktu animasi"
+msgstr "Animācijas laika skala"
 
 #: ../clutter/clutter-behaviour.c:305
 msgid "Alpha Object to drive the behaviour"
-msgstr "Objek Alfa untuk mendorong perilaku"
+msgstr "Alfas objekts, kas nosaka uzvedību"
 
 #: ../clutter/clutter-behaviour-depth.c:178
 msgid "Start Depth"
-msgstr "Kedalaman Awal"
+msgstr "Sākuma dziļums"
 
 #: ../clutter/clutter-behaviour-depth.c:179
 msgid "Initial depth to apply"
-msgstr "Kedalaman awal untuk diterapkan"
+msgstr "Sākotnējais dziļums, ko pielietot"
 
 #: ../clutter/clutter-behaviour-depth.c:194
 msgid "End Depth"
-msgstr "Kedalaman Akhir"
+msgstr "Beigu dziļums"
 
 #: ../clutter/clutter-behaviour-depth.c:195
 msgid "Final depth to apply"
-msgstr "Kedalaman akhir untuk diterapkan"
+msgstr "Beigu dziļums, ko pielietot"
 
 #: ../clutter/clutter-behaviour-ellipse.c:397
 msgid "Start Angle"
-msgstr "Sudut Awal"
+msgstr "Starta leņķis"
 
 #: ../clutter/clutter-behaviour-ellipse.c:398
 #: ../clutter/clutter-behaviour-rotate.c:280
 msgid "Initial angle"
-msgstr "Sudut awal"
+msgstr "Sākotnējais leņķis"
 
 #: ../clutter/clutter-behaviour-ellipse.c:413
 msgid "End Angle"
-msgstr "Sudut Akhir"
+msgstr "Finiša leņķis"
 
 #: ../clutter/clutter-behaviour-ellipse.c:414
 #: ../clutter/clutter-behaviour-rotate.c:298
 msgid "Final angle"
-msgstr "Sudut akhir"
+msgstr "Beigu leņķis"
 
 #: ../clutter/clutter-behaviour-ellipse.c:429
 msgid "Angle x tilt"
-msgstr "Sudut miring x"
+msgstr "Leņķa x slīpums"
 
 #: ../clutter/clutter-behaviour-ellipse.c:430
 msgid "Tilt of the ellipse around x axis"
-msgstr "Kemiringan elips terhadap sumbu x"
+msgstr "Elipses slīpums ap x asi"
 
 #: ../clutter/clutter-behaviour-ellipse.c:445
 msgid "Angle y tilt"
-msgstr "Sudut miring y"
+msgstr "Leņķa y slīpums"
 
 #: ../clutter/clutter-behaviour-ellipse.c:446
 msgid "Tilt of the ellipse around y axis"
-msgstr "Kemiringan elips terhadap sumbu y"
+msgstr "Elipses slīpums ap y asi"
 
 #: ../clutter/clutter-behaviour-ellipse.c:461
 msgid "Angle z tilt"
-msgstr "Sudut miring z"
+msgstr "Leņķa z slīpums"
 
 #: ../clutter/clutter-behaviour-ellipse.c:462
 msgid "Tilt of the ellipse around z axis"
-msgstr "Kemiringan elips terhadap sumbu z"
+msgstr "Elipses slīpums ap z asi"
 
 #: ../clutter/clutter-behaviour-ellipse.c:478
 msgid "Width of the ellipse"
-msgstr "Lebar elips"
+msgstr "Elipses platums"
 
 #: ../clutter/clutter-behaviour-ellipse.c:494
 msgid "Height of ellipse"
-msgstr "Tinggi elips"
+msgstr "Elipses augstums"
 
 #: ../clutter/clutter-behaviour-ellipse.c:509
 msgid "Center"
-msgstr "Pusat"
+msgstr "Vidus"
 
 #: ../clutter/clutter-behaviour-ellipse.c:510
 msgid "Center of ellipse"
-msgstr "Pusat elips"
+msgstr "Elipses vidus"
 
 #: ../clutter/clutter-behaviour-ellipse.c:524
-#: ../clutter/clutter-behaviour-rotate.c:333
-#: ../clutter/clutter-timeline.c:310
+#: ../clutter/clutter-behaviour-rotate.c:333 ../clutter/clutter-timeline.c:310
 msgid "Direction"
-msgstr "Arah"
+msgstr "Virziens"
 
 #: ../clutter/clutter-behaviour-ellipse.c:525
 #: ../clutter/clutter-behaviour-rotate.c:334
 msgid "Direction of rotation"
-msgstr "Arah rotasi"
+msgstr "Rotācijas virziens"
 
 #: ../clutter/clutter-behaviour-opacity.c:181
 msgid "Opacity Start"
-msgstr "Kelegapan Awal"
+msgstr "Necaurspīdīguma sākums"
 
 #: ../clutter/clutter-behaviour-opacity.c:182
 msgid "Initial opacity level"
-msgstr "Aras kelegapan awal"
+msgstr "Sākotnējais necaurspīdīguma līmenis"
 
 #: ../clutter/clutter-behaviour-opacity.c:199
 msgid "Opacity End"
-msgstr "Kelegapan Akhir"
+msgstr "Necaurspīdīguma beigas"
 
 #: ../clutter/clutter-behaviour-opacity.c:200
 msgid "Final opacity level"
-msgstr "Aras kelegapan akhir"
+msgstr "Beidzamais necaurspīdīguma līmenis"
 
 #: ../clutter/clutter-behaviour-path.c:222
 #: ../clutter/clutter-path-constraint.c:212
 msgid "Path"
-msgstr "Path"
+msgstr "Ceļš"
 
 #: ../clutter/clutter-behaviour-path.c:223
 msgid "The ClutterPath object representing the path to animate along"
-msgstr "Objek ClutterPath yang mewakili lintasan animasi"
+msgstr "ClutterPath objekts, kas norāda ceļu, gar ko jāanimē"
 
 #: ../clutter/clutter-behaviour-rotate.c:279
 msgid "Angle Begin"
-msgstr "Awal Sudut"
+msgstr "Leņķa sākums"
 
 #: ../clutter/clutter-behaviour-rotate.c:297
 msgid "Angle End"
-msgstr "Akhir Sudut"
+msgstr "Leņķa beigas"
 
 #: ../clutter/clutter-behaviour-rotate.c:315
 msgid "Axis"
-msgstr "Sumbu"
+msgstr "Ass"
 
 #: ../clutter/clutter-behaviour-rotate.c:316
 msgid "Axis of rotation"
-msgstr "Sumbu rotasi"
+msgstr "Rotācijas ass"
 
 #: ../clutter/clutter-behaviour-rotate.c:351
 msgid "Center X"
-msgstr "Pusat X"
+msgstr "Centrs X"
 
 #: ../clutter/clutter-behaviour-rotate.c:352
 msgid "X coordinate of the center of rotation"
-msgstr "Koordinat X dari pusat rotasi"
+msgstr "Rotācijas centra X koordināta"
 
 #: ../clutter/clutter-behaviour-rotate.c:369
 msgid "Center Y"
-msgstr "Pusat Y"
+msgstr "Centrs Y"
 
 #: ../clutter/clutter-behaviour-rotate.c:370
 msgid "Y coordinate of the center of rotation"
-msgstr "Koordinat Y dari pusat rotasi"
+msgstr "Rotācijas centra Y koordināta"
 
 #: ../clutter/clutter-behaviour-rotate.c:387
 msgid "Center Z"
-msgstr "Pusat Z"
+msgstr "Centrs Z"
 
 #: ../clutter/clutter-behaviour-rotate.c:388
 msgid "Z coordinate of the center of rotation"
-msgstr "Koordinat Z dari pusat rotasi"
+msgstr "Rotācijas centra Z koordināta"
 
 #: ../clutter/clutter-behaviour-scale.c:222
 msgid "X Start Scale"
-msgstr "Skala Awal X"
+msgstr "X sākuma mērogs"
 
 #: ../clutter/clutter-behaviour-scale.c:223
 msgid "Initial scale on the X axis"
-msgstr "Skala awal pada sumbu X"
+msgstr "Sākuma mērogs uz X ass"
 
 #: ../clutter/clutter-behaviour-scale.c:241
 msgid "X End Scale"
-msgstr "Skala Akhir X"
+msgstr "X beigu mērogs"
 
 #: ../clutter/clutter-behaviour-scale.c:242
 msgid "Final scale on the X axis"
-msgstr "Skala akhir pada sumbu X"
+msgstr "Beigu mērogs uz X ass"
 
 #: ../clutter/clutter-behaviour-scale.c:260
 msgid "Y Start Scale"
-msgstr "Skala Awal Y"
+msgstr "Y sākuma mērogs"
 
 #: ../clutter/clutter-behaviour-scale.c:261
 msgid "Initial scale on the Y axis"
-msgstr "Skala awal pada sumbu Y"
+msgstr "Sākuma mērogs uz Y ass"
 
 #: ../clutter/clutter-behaviour-scale.c:279
 msgid "Y End Scale"
-msgstr "Skala Akhir Y"
+msgstr "Y beigu mērogs"
 
 #: ../clutter/clutter-behaviour-scale.c:280
 msgid "Final scale on the Y axis"
-msgstr "Skala akhir pada sumbu Y"
+msgstr "Beigu mērogs uz Y ass"
 
 #: ../clutter/clutter-bind-constraint.c:350
 msgid "The source of the binding"
-msgstr "Sumber pengikatan"
+msgstr "Saistījuma avots"
 
 #: ../clutter/clutter-bind-constraint.c:363
 msgid "Coordinate"
-msgstr "Koordinat"
+msgstr "Koordināta"
 
 #: ../clutter/clutter-bind-constraint.c:364
 msgid "The coordinate to bind"
-msgstr "Koordinat ikatan"
+msgstr "Saistījuma koordināta"
 
 #: ../clutter/clutter-bind-constraint.c:378
 #: ../clutter/clutter-path-constraint.c:226
 #: ../clutter/clutter-snap-constraint.c:366
 msgid "Offset"
-msgstr "Ofset"
+msgstr "Nobīde"
 
 #: ../clutter/clutter-bind-constraint.c:379
 msgid "The offset in pixels to apply to the binding"
-msgstr "Ofset dalam piksel untuk menerapkan pengikatan"
+msgstr "Nobīde pikseļos, ko pielietot saistījumiem"
 
 #: ../clutter/clutter-binding-pool.c:320
 msgid "The unique name of the binding pool"
-msgstr "Nama unik dari pul pengikatan"
+msgstr "Unikāls nosaukums saistījumu pūls"
 
-#: ../clutter/clutter-bin-layout.c:261
-#: ../clutter/clutter-bin-layout.c:585
-#: ../clutter/clutter-box-layout.c:395
-#: ../clutter/clutter-table-layout.c:652
+#: ../clutter/clutter-bin-layout.c:261 ../clutter/clutter-bin-layout.c:585
+#: ../clutter/clutter-box-layout.c:395 ../clutter/clutter-table-layout.c:652
 msgid "Horizontal Alignment"
-msgstr "Perataan Horisontal"
+msgstr "Horizontālā līdzināšana"
 
 #: ../clutter/clutter-bin-layout.c:262
 msgid "Horizontal alignment for the actor inside the layout manager"
-msgstr ""
+msgstr "Horizontālais līdzinājums izpildītājam slāņu pārvaldniekā"
 
-#: ../clutter/clutter-bin-layout.c:270
-#: ../clutter/clutter-bin-layout.c:602
-#: ../clutter/clutter-box-layout.c:404
-#: ../clutter/clutter-table-layout.c:667
+#: ../clutter/clutter-bin-layout.c:270 ../clutter/clutter-bin-layout.c:602
+#: ../clutter/clutter-box-layout.c:404 ../clutter/clutter-table-layout.c:667
 msgid "Vertical Alignment"
-msgstr "Perataan Vertikal"
+msgstr "Vertikālā līdzināšana"
 
 #: ../clutter/clutter-bin-layout.c:271
 msgid "Vertical alignment for the actor inside the layout manager"
-msgstr ""
+msgstr "Vertikālais līdzinājums izpildītājam slāņu pārvaldniekā"
 
 #: ../clutter/clutter-bin-layout.c:586
 msgid "Default horizontal alignment for the actors inside the layout manager"
-msgstr ""
+msgstr "Noklusētais horizontālais līdzinājums izpildītājiem slāņu pārvaldniekā"
 
 #: ../clutter/clutter-bin-layout.c:603
 msgid "Default vertical alignment for the actors inside the layout manager"
-msgstr ""
+msgstr "Noklusētais vertikālais līdzinājums izpildītājiem slāņu pārvaldniekā"
 
 #: ../clutter/clutter-box.c:544
 msgid "Layout Manager"
-msgstr "Manajer Tata Letak"
+msgstr "Slāņu pārvaldnieks"
 
 #: ../clutter/clutter-box.c:545
 msgid "The layout manager used by the box"
-msgstr "Manajer tata letak yang dipakai oleh kotak"
+msgstr "Izkārtojuma pārvaldnieks, ko izmanto kaste"
 
-#: ../clutter/clutter-box.c:564
-#: ../clutter/clutter-rectangle.c:267
+#: ../clutter/clutter-box.c:564 ../clutter/clutter-rectangle.c:267
 #: ../clutter/clutter-stage.c:1763
 msgid "Color"
-msgstr "Warna"
+msgstr "Krāsa"
 
 #: ../clutter/clutter-box.c:565
 msgid "The background color of the box"
-msgstr "Warna latar belakang kotak"
+msgstr "Kastes fona krāsa"
 
 #: ../clutter/clutter-box.c:579
 msgid "Color Set"
-msgstr "Warna Ditata"
+msgstr "Krāsa iestatīta"
 
 #: ../clutter/clutter-box.c:580
 msgid "Whether the background color is set"
-msgstr "Apakah warna latar belakang ditata"
+msgstr "Vai ir iestatīta fona krāsa"
 
 #: ../clutter/clutter-box-layout.c:370
-#, fuzzy
 msgid "Expand"
-msgstr "Ekspansi"
+msgstr "Izvērst"
 
 #: ../clutter/clutter-box-layout.c:371
 msgid "Allocate extra space for the child"
-msgstr ""
+msgstr "Bērnam piešķirt papildu vietu"
 
-#: ../clutter/clutter-box-layout.c:377
-#: ../clutter/clutter-table-layout.c:631
-#, fuzzy
+#: ../clutter/clutter-box-layout.c:377 ../clutter/clutter-table-layout.c:631
 msgid "Horizontal Fill"
-msgstr "Warna isi:"
+msgstr "Horizontālais aizpildījums"
 
-#: ../clutter/clutter-box-layout.c:378
-#: ../clutter/clutter-table-layout.c:632
-msgid "Whether the child should receive priority when the container is allocating spare space on the horizontal axis"
+#: ../clutter/clutter-box-layout.c:378 ../clutter/clutter-table-layout.c:632
+msgid ""
+"Whether the child should receive priority when the container is allocating "
+"spare space on the horizontal axis"
 msgstr ""
+"Vai bērnam vajadzētu saņemt prioritāti, kad konteineris piešķir papildu "
+"vietu uz horizontālās ass"
 
-#: ../clutter/clutter-box-layout.c:386
-#: ../clutter/clutter-table-layout.c:638
-#, fuzzy
+#: ../clutter/clutter-box-layout.c:386 ../clutter/clutter-table-layout.c:638
 msgid "Vertical Fill"
-msgstr "Warna isi:"
+msgstr "Vertikālais aizpildījums"
 
-#: ../clutter/clutter-box-layout.c:387
-#: ../clutter/clutter-table-layout.c:639
-msgid "Whether the child should receive priority when the container is allocating spare space on the vertical axis"
+#: ../clutter/clutter-box-layout.c:387 ../clutter/clutter-table-layout.c:639
+msgid ""
+"Whether the child should receive priority when the container is allocating "
+"spare space on the vertical axis"
 msgstr ""
+"Vai bērnam vajadzētu saņemt prioritāti, kad konteineris piešķir papildu "
+"vietu uz vertikālās ass"
 
-#: ../clutter/clutter-box-layout.c:396
-#: ../clutter/clutter-table-layout.c:653
+#: ../clutter/clutter-box-layout.c:396 ../clutter/clutter-table-layout.c:653
 msgid "Horizontal alignment of the actor within the cell"
-msgstr ""
+msgstr "Izpildītāja horizontālais līdzinājums šūnā"
 
-#: ../clutter/clutter-box-layout.c:405
-#: ../clutter/clutter-table-layout.c:668
+#: ../clutter/clutter-box-layout.c:405 ../clutter/clutter-table-layout.c:668
 msgid "Vertical alignment of the actor within the cell"
-msgstr ""
+msgstr "Izpildītāja vertikālais līdzinājums šūnā"
 
 #: ../clutter/clutter-box-layout.c:1305
 msgid "Vertical"
-msgstr "Vertikal"
+msgstr "Vertikāls"
 
 #: ../clutter/clutter-box-layout.c:1306
 msgid "Whether the layout should be vertical, rather than horizontal"
-msgstr ""
+msgstr "Vai izkārtojumam jābūt drīzāk vertikālam, nevis horizontālam"
 
-#: ../clutter/clutter-box-layout.c:1321
-#: ../clutter/clutter-flow-layout.c:901
+#: ../clutter/clutter-box-layout.c:1321 ../clutter/clutter-flow-layout.c:901
 msgid "Homogeneous"
-msgstr "Homogen"
+msgstr "Viendabīgs"
 
 #: ../clutter/clutter-box-layout.c:1322
-msgid "Whether the layout should be homogeneous, i.e. all childs get the same size"
+msgid ""
+"Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
+"Vai izkārtojumam jābūt viendabīgam, tas ir, visiem bērniem ir vienāds izmērs"
 
 #: ../clutter/clutter-box-layout.c:1337
-#, fuzzy
 msgid "Pack Start"
-msgstr "Tanggal mulai:"
+msgstr "Pakas sākums"
 
 #: ../clutter/clutter-box-layout.c:1338
 msgid "Whether to pack items at the start of the box"
-msgstr ""
+msgstr "Vai pakot vienumus kastes sākumā"
 
 #: ../clutter/clutter-box-layout.c:1351
-#, fuzzy
 msgid "Spacing"
-msgstr "Spasi"
+msgstr "Atstatums"
 
 #: ../clutter/clutter-box-layout.c:1352
-#, fuzzy
 msgid "Spacing between children"
-msgstr "Ruang antar cells"
+msgstr "Atstarpes starp bērniem"
 
-#: ../clutter/clutter-box-layout.c:1366
-#: ../clutter/clutter-table-layout.c:1742
+#: ../clutter/clutter-box-layout.c:1366 ../clutter/clutter-table-layout.c:1742
 msgid "Use Animations"
-msgstr "Gunakan Animasi"
+msgstr "Lietot animācijas"
 
-#: ../clutter/clutter-box-layout.c:1367
-#: ../clutter/clutter-table-layout.c:1743
+#: ../clutter/clutter-box-layout.c:1367 ../clutter/clutter-table-layout.c:1743
 msgid "Whether layout changes should be animated"
+msgstr "Vai vajadzētu animēt izkārtojuma izmaiņas"
+
+#: ../clutter/clutter-box-layout.c:1388 ../clutter/clutter-table-layout.c:1764
+msgid "Easing Mode"
 msgstr ""
 
-#: ../clutter/clutter-box-layout.c:1388
-#: ../clutter/clutter-table-layout.c:1764
-#, fuzzy
-msgid "Easing Mode"
-msgstr "Moda Impor:"
-
-#: ../clutter/clutter-box-layout.c:1389
-#: ../clutter/clutter-table-layout.c:1765
+#: ../clutter/clutter-box-layout.c:1389 ../clutter/clutter-table-layout.c:1765
 msgid "The easing mode of the animations"
 msgstr ""
 
-#: ../clutter/clutter-box-layout.c:1406
-#: ../clutter/clutter-table-layout.c:1782
-#, fuzzy
+#: ../clutter/clutter-box-layout.c:1406 ../clutter/clutter-table-layout.c:1782
 msgid "Easing Duration"
-msgstr "Durasi penyorotan"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:1407
-#: ../clutter/clutter-table-layout.c:1783
-#, fuzzy
+#: ../clutter/clutter-box-layout.c:1407 ../clutter/clutter-table-layout.c:1783
 msgid "The duration of the animations"
-msgstr "Tampilkan Animasi"
+msgstr "Animāciju ilgums"
 
 #: ../clutter/clutter-cairo-texture.c:582
 msgid "Surface Width"
-msgstr "Lebar Permukaan"
+msgstr "Virsmas platums"
 
 #: ../clutter/clutter-cairo-texture.c:583
 msgid "The width of the Cairo surface"
-msgstr ""
+msgstr "Cairo virsmas platums"
 
 #: ../clutter/clutter-cairo-texture.c:597
-#, fuzzy
 msgid "Surface Height"
-msgstr "Tinggi teks"
+msgstr "Virsmas augstums"
 
 #: ../clutter/clutter-cairo-texture.c:598
 msgid "The height of the Cairo surface"
-msgstr ""
+msgstr "Cairo virsmas augstums"
 
 #: ../clutter/clutter-cairo-texture.c:615
 msgid "Auto Resize"
-msgstr "Otomatis Ubah Ukuran"
+msgstr "Autom. mainīt izmēru"
 
 #: ../clutter/clutter-cairo-texture.c:616
 msgid "Whether the surface should match the allocation"
-msgstr ""
+msgstr "Vai virsmai būtu jāatbilst piešķīrumam"
 
 #: ../clutter/clutter-child-meta.c:127
-#, fuzzy
 msgid "Container"
-msgstr "Kontainer"
+msgstr "Konteineris"
 
 #: ../clutter/clutter-child-meta.c:128
 msgid "The container that created this data"
-msgstr ""
+msgstr "Konteineris, kas izveidoja šos datus"
 
 #: ../clutter/clutter-child-meta.c:143
 msgid "The actor wrapped by this data"
-msgstr ""
+msgstr "Izpildītājs, ko šie dati ietina"
 
 #: ../clutter/clutter-click-action.c:542
 msgid "Pressed"
-msgstr "Ditekan"
+msgstr "Piespiests"
 
 #: ../clutter/clutter-click-action.c:543
 msgid "Whether the clickable should be in pressed state"
-msgstr ""
+msgstr "Vai klikšķināmajam būtu jābūt piespiestā stāvoklī"
 
 #: ../clutter/clutter-click-action.c:556
-#, fuzzy
 msgid "Held"
-msgstr "Ditahan"
+msgstr "Turēts"
 
 #: ../clutter/clutter-click-action.c:557
 msgid "Whether the clickable has a grab"
-msgstr ""
+msgstr "Vai klikšķināmajam ir satvēriens"
 
-#: ../clutter/clutter-click-action.c:574
-#: ../clutter/clutter-settings.c:573
-#, fuzzy
+#: ../clutter/clutter-click-action.c:574 ../clutter/clutter-settings.c:573
 msgid "Long Press Duration"
-msgstr "Waktu tekan lama"
+msgstr "Ilgās piespiešanas ilgums"
 
 #: ../clutter/clutter-click-action.c:575
 msgid "The minimum duration of a long press to recognize the gesture"
-msgstr ""
+msgstr "Ilgās piespiešanas ilgums, līdz to atpazīst kā mājienu"
 
 #: ../clutter/clutter-click-action.c:593
-#, fuzzy
 msgid "Long Press Threshold"
-msgstr "Waktu tekan lama"
+msgstr "Ilgās piespiešanas slieksnis"
 
 #: ../clutter/clutter-click-action.c:594
 msgid "The maximum threshold before a long press is cancelled"
-msgstr ""
+msgstr "Maksimālais slieksnis, pirms ilgā piespiešana tiek atcelta"
 
 #: ../clutter/clutter-clone.c:341
 msgid "Specifies the actor to be cloned"
-msgstr ""
+msgstr "Norāda izpildītāju, ko klonēt"
 
 #: ../clutter/clutter-colorize-effect.c:307
 msgid "Tint"
-msgstr ""
+msgstr "Tonis"
 
 #: ../clutter/clutter-colorize-effect.c:308
-#, fuzzy
 msgid "The tint to apply"
-msgstr "Stash yang akan Diterapkan"
+msgstr "Tonis, ko izmantot"
 
 #: ../clutter/clutter-deform-effect.c:527
-#, fuzzy
 msgid "Horizontal Tiles"
-msgstr "kartu Mahjong"
+msgstr "Horizontālās flīzes"
 
 #: ../clutter/clutter-deform-effect.c:528
 msgid "The number of horizontal tiles"
-msgstr ""
+msgstr "Horizontālo flīžu skaits"
 
 #: ../clutter/clutter-deform-effect.c:543
-#, fuzzy
 msgid "Vertical Tiles"
-msgstr "kartu Mahjong"
+msgstr "Vertikālas flīzes"
 
 #: ../clutter/clutter-deform-effect.c:544
 msgid "The number of vertical tiles"
-msgstr ""
+msgstr "Vertikālo flīžu skaits"
 
 #: ../clutter/clutter-deform-effect.c:561
-#, fuzzy
 msgid "Back Material"
-msgstr "Sebelumnya - Identitas"
+msgstr "Melns materiāls"
 
 #: ../clutter/clutter-deform-effect.c:562
 msgid "The material to be used when painting the back of the actor"
-msgstr ""
+msgstr "Materiāls, kuru izmantot izpildītāja aizmugures drukāšanai"
 
 #: ../clutter/clutter-desaturate-effect.c:305
-#, fuzzy
 msgid "The desaturation factor"
-msgstr "Faktor koreksi"
+msgstr "Piesātinājuma mazinājuma koeficients"
 
 #: ../clutter/clutter-device-manager.c:131
 #: ../clutter/clutter-input-device.c:344
 #: ../clutter/x11/clutter-keymap-x11.c:316
-#, fuzzy
 msgid "Backend"
-msgstr "Backend"
+msgstr "Aizmugure"
 
 #: ../clutter/clutter-device-manager.c:132
-#, fuzzy
 msgid "The ClutterBackend of the device manager"
-msgstr "Peran perangkat di dalam manajer"
+msgstr "ClutterBackend ierīces pārvaldnieks"
 
 #: ../clutter/clutter-drag-action.c:596
 msgid "Horizontal Drag Threshold"
-msgstr ""
+msgstr "Horizontālās vilkšanas aizture"
 
 #: ../clutter/clutter-drag-action.c:597
 msgid "The horizontal amount of pixels required to start dragging"
-msgstr ""
+msgstr "Horizontālais pikseļu skaits, lai sāktu vilkšanu"
 
 #: ../clutter/clutter-drag-action.c:624
 msgid "Vertical Drag Threshold"
-msgstr ""
+msgstr "Vertikālās vilkšanas aizture"
 
 #: ../clutter/clutter-drag-action.c:625
 msgid "The vertical amount of pixels required to start dragging"
-msgstr ""
+msgstr "Vertikālais pikseļu skaits, lai sāktu vilkšanu"
 
 #: ../clutter/clutter-drag-action.c:646
-#, fuzzy
 msgid "Drag Handle"
-msgstr "Tambahkan Handel"
+msgstr "Vilkt turi"
 
 #: ../clutter/clutter-drag-action.c:647
 msgid "The actor that is being dragged"
-msgstr ""
+msgstr "Izpildītājs, kas tiek vilkts"
 
 #: ../clutter/clutter-drag-action.c:660
-#, fuzzy
 msgid "Drag Axis"
-msgstr "_Sumbu tunggal:"
+msgstr "Vilkt asi"
 
 #: ../clutter/clutter-drag-action.c:661
 msgid "Constraints the dragging to an axis"
-msgstr ""
+msgstr "Ierobežo vilkšanu pie ass"
 
 #: ../clutter/clutter-flow-layout.c:885
-#, fuzzy
 msgid "Orientation"
-msgstr "Orientasi"
+msgstr "Virziens"
 
 #: ../clutter/clutter-flow-layout.c:886
-#, fuzzy
 msgid "The orientation of the layout"
-msgstr "Tata Letak _Horisontal"
+msgstr "Izkārtojuma virziens"
 
 #: ../clutter/clutter-flow-layout.c:902
 msgid "Whether each item should receive the same allocation"
-msgstr ""
+msgstr "Vai katram vienumam vajadzēt saņemt to pašu piešķīrumu"
 
-#: ../clutter/clutter-flow-layout.c:917
-#: ../clutter/clutter-table-layout.c:1713
-#, fuzzy
+#: ../clutter/clutter-flow-layout.c:917 ../clutter/clutter-table-layout.c:1713
 msgid "Column Spacing"
-msgstr "Jarak Antar Kolom"
+msgstr "Kolonnu atstarpe"
 
 #: ../clutter/clutter-flow-layout.c:918
-#, fuzzy
 msgid "The spacing between columns"
-msgstr "Ruang antar cells"
+msgstr "Atstarpe starp kolonnām"
 
-#: ../clutter/clutter-flow-layout.c:934
-#: ../clutter/clutter-table-layout.c:1727
-#, fuzzy
+#: ../clutter/clutter-flow-layout.c:934 ../clutter/clutter-table-layout.c:1727
 msgid "Row Spacing"
-msgstr "Jarak Antar Baris"
+msgstr "Rindu atstarpe"
 
 #: ../clutter/clutter-flow-layout.c:935
-#, fuzzy
 msgid "The spacing between rows"
-msgstr "Ruang antar cells"
+msgstr "Atstarpe starp rindām"
 
 #: ../clutter/clutter-flow-layout.c:949
-#, fuzzy
 msgid "Minimum Column Width"
-msgstr "Lebar minimal kolom yang diizinkan"
+msgstr "Minimālais kolonnas platums"
 
 #: ../clutter/clutter-flow-layout.c:950
 msgid "Minimum width for each column"
-msgstr ""
+msgstr "Minimālais platums katrai kolonnai"
 
 #: ../clutter/clutter-flow-layout.c:965
-#, fuzzy
 msgid "Maximum Column Width"
-msgstr "Lebar maksimal kolom yang diizinkan"
+msgstr "Maksimālais kolonnas platums"
 
 #: ../clutter/clutter-flow-layout.c:966
 msgid "Maximum width for each column"
-msgstr ""
+msgstr "Maksimālais platums katrai kolonnai"
 
 #: ../clutter/clutter-flow-layout.c:980
-#, fuzzy
 msgid "Minimum Row Height"
-msgstr "Tinggi _baris (pt.):"
+msgstr "Minimālais rindas augstums"
 
 #: ../clutter/clutter-flow-layout.c:981
 msgid "Minimum height for each row"
-msgstr ""
+msgstr "Minimālais augstums katrai rindai"
 
 #: ../clutter/clutter-flow-layout.c:996
-#, fuzzy
 msgid "Maximum Row Height"
-msgstr "Tinggi _baris (pt.):"
+msgstr "Maksimālais rindas augstums"
 
 #: ../clutter/clutter-flow-layout.c:997
 msgid "Maximum height for each row"
-msgstr ""
+msgstr "Maksimālais augstums katrai rindai"
 
 #: ../clutter/clutter-input-device.c:220
 msgid "Id"
-msgstr "Id"
+msgstr "ID"
 
 #: ../clutter/clutter-input-device.c:221
 msgid "Unique identifier of the device"
-msgstr ""
+msgstr "Unikāls ierīces identifikators"
 
 #: ../clutter/clutter-input-device.c:237
-#, fuzzy
 msgid "The name of the device"
-msgstr "Nama devais:"
+msgstr "Ierīces nosaukums"
 
 #: ../clutter/clutter-input-device.c:251
-#, fuzzy
 msgid "Device Type"
-msgstr "Jenis perangka_t:"
+msgstr "Ierīces tips"
 
 #: ../clutter/clutter-input-device.c:252
-#, fuzzy
 msgid "The type of the device"
-msgstr "Jenis perangka_t:"
+msgstr "Ierīces tips"
 
 #: ../clutter/clutter-input-device.c:267
-#, fuzzy
 msgid "Device Manager"
-msgstr "Manajer perangkat"
+msgstr "Ierīču pārvaldnieks"
 
 #: ../clutter/clutter-input-device.c:268
-#, fuzzy
 msgid "The device manager instance"
-msgstr "Peran perangkat di dalam manajer"
+msgstr "Ierīces pārvaldnieka instance"
 
 #: ../clutter/clutter-input-device.c:281
-#, fuzzy
 msgid "Device Mode"
-msgstr "Moda Impor:"
+msgstr "Ierīces režīms"
 
 #: ../clutter/clutter-input-device.c:282
-#, fuzzy
 msgid "The mode of the device"
-msgstr "LOKASI PERANGKAT"
+msgstr "Ierīces režīms"
 
 #: ../clutter/clutter-input-device.c:296
-#, fuzzy
 msgid "Has Cursor"
-msgstr "Kursor Berkedip"
+msgstr "Ir kursors"
 
 #: ../clutter/clutter-input-device.c:297
-#, fuzzy
 msgid "Whether the device has a cursor"
-msgstr "Apakah perangkat memiliki kursor"
+msgstr "Vai ierīcei ir kursors"
 
 #: ../clutter/clutter-input-device.c:316
-#, fuzzy
 msgid "Whether the device is enabled"
-msgstr "Menentukan apkaah aksi diaktifkan"
+msgstr "Vai ierīce ir aktivēta"
 
 #: ../clutter/clutter-input-device.c:329
-#, fuzzy
 msgid "Number of Axes"
-msgstr "XSLT — Poros"
+msgstr "Asu skaits"
 
 #: ../clutter/clutter-input-device.c:330
-#, fuzzy
 msgid "The number of axes on the device"
-msgstr "Jumlah sumbu pada perangkat"
+msgstr "Asu skaits ierīcē"
 
 #: ../clutter/clutter-input-device.c:345
-#, fuzzy
 msgid "The backend instance"
-msgstr "Multi instan"
+msgstr "Aizmugures instance"
 
 #: ../clutter/clutter-interval.c:397
-#, fuzzy
 msgid "Value Type"
-msgstr "Jenis nilai tak didukung"
+msgstr "Vērtības tips"
 
 #: ../clutter/clutter-interval.c:398
 msgid "The type of the values in the interval"
-msgstr ""
+msgstr "Vērtību tipi intervālā"
 
 #: ../clutter/clutter-layout-meta.c:117
 msgid "Manager"
-msgstr "Manajer"
+msgstr "Pārvaldnieks"
 
 #: ../clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
-msgstr ""
+msgstr "Pārvaldnieks, kas ir izveidojis šos datus"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -1252,455 +1179,404 @@ msgstr ""
 #. * it isn't default:LTR or default:RTL it will not work
 #.
 #: ../clutter/clutter-main.c:490
-#, fuzzy
 msgid "default:LTR"
 msgstr "default:LTR"
 
 #: ../clutter/clutter-main.c:1321
 msgid "Show frames per second"
-msgstr ""
+msgstr "Rādīt kadrus sekundē"
 
 #: ../clutter/clutter-main.c:1323
-#, fuzzy
 msgid "Default frame rate"
-msgstr "Error pada nilai frame."
+msgstr "Noklusētais kadru ātrums"
 
 #: ../clutter/clutter-main.c:1325
-#, fuzzy
 msgid "Make all warnings fatal"
-msgstr "Semua peringatan dianggap fatal"
+msgstr "Atzīmēt visus brīdinājumus kā fatālus"
 
 #: ../clutter/clutter-main.c:1328
-#, fuzzy
 msgid "Direction for the text"
-msgstr "Fonta untuk teks"
+msgstr "Teksta virziens"
 
 #: ../clutter/clutter-main.c:1331
 msgid "Disable mipmapping on text"
-msgstr ""
+msgstr "Deaktivēt mip-kartēšanu uz teksta"
 
 #: ../clutter/clutter-main.c:1334
 msgid "Use 'fuzzy' picking"
-msgstr ""
+msgstr "Lietot 'aptuveno' izvēli"
 
 #: ../clutter/clutter-main.c:1337
-#, fuzzy
 msgid "Clutter debugging flags to set"
-msgstr "Flag debug GDict yang akan ditata"
+msgstr "Iestatāmie Clutter atkļūdošanas karodziņi"
 
 #: ../clutter/clutter-main.c:1339
-#, fuzzy
 msgid "Clutter debugging flags to unset"
-msgstr "Flag debug GDict yang akan dibebaskan"
+msgstr "Noņemamie Clutter atkļūdošanas karodziņi"
 
 #: ../clutter/clutter-main.c:1343
 msgid "Clutter profiling flags to set"
-msgstr ""
+msgstr "Iestatāmie Clutter profilēšanas karodziņi"
 
 #: ../clutter/clutter-main.c:1345
 msgid "Clutter profiling flags to unset"
-msgstr ""
+msgstr "Noņemamie Clutter profilēšanas karodziņi"
 
 #: ../clutter/clutter-main.c:1348
-#, fuzzy
 msgid "Enable accessibility"
-msgstr "Aktifkan Aksesibilitas"
+msgstr "Ieslēgt pieejamību"
 
 #: ../clutter/clutter-main.c:1530
-#, fuzzy
 msgid "Clutter Options"
-msgstr "Pilihan penerimaan"
+msgstr "Clutter opcijas"
 
 #: ../clutter/clutter-main.c:1531
-#, fuzzy
 msgid "Show Clutter Options"
-msgstr "Menampilkan opsi klien"
+msgstr "Rādīt Clutter opcijas"
 
 #: ../clutter/clutter-media.c:77
 msgid "URI"
 msgstr "URI"
 
 #: ../clutter/clutter-media.c:78
-#, fuzzy
 msgid "URI of a media file"
-msgstr "File Media Ogg (*.ogg)"
+msgstr "Datu nesēja faila URI"
 
 #: ../clutter/clutter-media.c:91
-#, fuzzy
 msgid "Playing"
-msgstr "Memutar"
+msgstr "Atskaņo"
 
 #: ../clutter/clutter-media.c:92
-#, fuzzy
 msgid "Whether the actor is playing"
-msgstr "Apakah aktor akan digambar"
+msgstr "Vai izpildītājs ir atskaņo"
 
 #: ../clutter/clutter-media.c:106
-#, fuzzy
 msgid "Progress"
-msgstr "Kemajuan"
+msgstr "Progress"
 
 #: ../clutter/clutter-media.c:107
-#, fuzzy
 msgid "Current progress of the playback"
-msgstr "Menyatakan tingkat kemajuan pengunduhan"
+msgstr "Pašreizējais atskaņošanas progress"
 
 #: ../clutter/clutter-media.c:120
-#, fuzzy
 msgid "Subtitle URI"
-msgstr "URI Basis"
+msgstr "Subtitru URI"
 
 #: ../clutter/clutter-media.c:121
-#, fuzzy
 msgid "URI of a subtitle file"
-msgstr "URI berkas audio"
+msgstr "Subtitru faila URI"
 
 #: ../clutter/clutter-media.c:136
-#, fuzzy
 msgid "Subtitle Font Name"
-msgstr "_Salin Nama Font"
+msgstr "Subtitru fonta nosaukums"
 
 #: ../clutter/clutter-media.c:137
-#, fuzzy
 msgid "The font used to display subtitles"
-msgstr "Ukuran huruf yang digunakan untuk menampilkan log"
+msgstr "Fonts, ko izmantot subtitru attēlošanai"
 
 #: ../clutter/clutter-media.c:151
-#, fuzzy
 msgid "Audio Volume"
-msgstr "Volume audio"
+msgstr "Audio skaļums"
 
 #: ../clutter/clutter-media.c:152
-#, fuzzy
 msgid "The volume of the audio"
-msgstr "Volume audio"
+msgstr "Audio skaļums"
 
 #: ../clutter/clutter-media.c:165
-#, fuzzy
 msgid "Can Seek"
-msgstr "Pencarian Sasaran (%s)"
+msgstr "Var meklēt"
 
 #: ../clutter/clutter-media.c:166
 msgid "Whether the current stream is seekable"
-msgstr ""
+msgstr "Vai šajā straumē var meklēt"
 
 #: ../clutter/clutter-media.c:180
-#, fuzzy
 msgid "Buffer Fill"
-msgstr "Warna isi:"
+msgstr "Bufera aizpildījums"
 
 #: ../clutter/clutter-media.c:181
-#, fuzzy
 msgid "The fill level of the buffer"
-msgstr "Tampilkan Tingkat Pengisian"
+msgstr "Bufera aizpildījuma līmenis"
 
 #: ../clutter/clutter-media.c:195
-#, fuzzy
 msgid "The duration of the stream, in seconds"
-msgstr "Durasi lagu dalam detik."
+msgstr "Straumes ilgums, sekundēs"
 
 #: ../clutter/clutter-path-constraint.c:213
-#, fuzzy
 msgid "The path used to constrain an actor"
-msgstr "Alfa yang dipakai oleh animasi"
+msgstr "Ceļš, ko izmantot izpildītāja ierobežošanai"
 
 #: ../clutter/clutter-path-constraint.c:227
-#, fuzzy
 msgid "The offset along the path, between -1.0 and 2.0"
-msgstr "Faktor konstanta antara 0 dan -1"
+msgstr "Nobīde gar ceļu, starp -1.0 un 2.0"
 
 #: ../clutter/clutter-rectangle.c:268
-#, fuzzy
 msgid "The color of the rectangle"
-msgstr "Petak seleksi"
+msgstr "Taisnstūra krāsa"
 
 #: ../clutter/clutter-rectangle.c:281
-#, fuzzy
 msgid "Border Color"
-msgstr "Warna pinggiran:"
+msgstr "Malas krāsa"
 
 #: ../clutter/clutter-rectangle.c:282
-#, fuzzy
 msgid "The color of the border of the rectangle"
-msgstr "Warna pinggir sorotan"
+msgstr "Taisnstūra malas krāsa"
 
 #: ../clutter/clutter-rectangle.c:297
-#, fuzzy
 msgid "Border Width"
-msgstr "Lebar batas"
+msgstr "Malas platums"
 
 #: ../clutter/clutter-rectangle.c:298
-#, fuzzy
 msgid "The width of the border of the rectangle"
-msgstr "Lebar kotak rekaman"
+msgstr "Taisnstūra malas platums"
 
 #: ../clutter/clutter-rectangle.c:312
-#, fuzzy
 msgid "Has Border"
-msgstr "Warna pinggiran:"
+msgstr "Ir mala"
 
 #: ../clutter/clutter-rectangle.c:313
 msgid "Whether the rectangle should have a border"
-msgstr ""
+msgstr "Vai taisnstūrim ir vajadzīga mala"
 
 #: ../clutter/clutter-script.c:434
-#, fuzzy
 msgid "Filename Set"
-msgstr "Menentukan nama berkas"
+msgstr "Faila nosaukums iestatīts"
 
 #: ../clutter/clutter-script.c:435
 msgid "Whether the :filename property is set"
-msgstr ""
+msgstr "Vai :filename īpašība tiek iestatīta"
 
-#: ../clutter/clutter-script.c:449
-#: ../clutter/clutter-texture.c:1081
+#: ../clutter/clutter-script.c:449 ../clutter/clutter-texture.c:1081
 msgid "Filename"
-msgstr "Nama Berkas"
+msgstr "Faila nosaukums"
 
 #: ../clutter/clutter-script.c:450
 msgid "The path of the currently parsed file"
-msgstr ""
+msgstr "Pašlaik parsētā faila ceļš"
 
 #: ../clutter/clutter-settings.c:414
-#, fuzzy
 msgid "Double Click Time"
-msgstr "Waktu Klik ganda"
+msgstr "Dubultklikšķa laiks"
 
 #: ../clutter/clutter-settings.c:415
 msgid "The time between clicks necessary to detect a multiple click"
-msgstr ""
+msgstr "Laiks starp klikšķiem, kas nepieciešams, lai noteiktu vairākus klikšķus"
 
 #: ../clutter/clutter-settings.c:430
-#, fuzzy
 msgid "Double Click Distance"
-msgstr "Rentang Waktu Klik Ganda"
+msgstr "Dubultklikšķa attālums"
 
 #: ../clutter/clutter-settings.c:431
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr ""
+"Attālums starp klikšķiem, kas nepieciešams, lai noteiktu vairākus klikšķus"
 
 #: ../clutter/clutter-settings.c:446
-#, fuzzy
 msgid "Drag Threshold"
-msgstr "Ambang Drag"
+msgstr "Vilkšanas slieksnis"
 
 #: ../clutter/clutter-settings.c:447
 msgid "The distance the cursor should travel before starting to drag"
-msgstr ""
+msgstr "Attālums, kas jāveic kursoram, pirms sākt vilkt"
 
-#: ../clutter/clutter-settings.c:462
-#: ../clutter/clutter-text.c:2893
+#: ../clutter/clutter-settings.c:462 ../clutter/clutter-text.c:2848
 msgid "Font Name"
-msgstr "Nama Fonta"
+msgstr "Fonta nosaukums"
 
 #: ../clutter/clutter-settings.c:463
 msgid "The description of the default font, as one that could be parsed by Pango"
-msgstr ""
+msgstr "Noklusētā fonta apraksts, kādu var parsēt Pango"
 
 #: ../clutter/clutter-settings.c:478
-#, fuzzy
 msgid "Font Antialias"
-msgstr "Antialias Xft"
+msgstr "Fonta nogludināšana"
 
 #: ../clutter/clutter-settings.c:479
-msgid "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the default)"
+msgid ""
+"Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
+"default)"
 msgstr ""
+"Vai lietot nogludināšanu (1, lai aktivētu; 0, lai deaktivētu; -1, lai "
+"izmantotu "
+"noklusēto)"
 
 #: ../clutter/clutter-settings.c:495
-#, fuzzy
 msgid "Font DPI"
-msgstr "DPI Horisontal"
+msgstr "Fonta DPI"
 
 #: ../clutter/clutter-settings.c:496
 msgid "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
+"Fonta izšķirtspēja, izteikta 1024 * punkti/colla, vai -1, lai izmantotu "
+"noklusēto"
 
 #: ../clutter/clutter-settings.c:512
-#, fuzzy
 msgid "Font Hinting"
-msgstr "Hint Xft"
+msgstr "Fonta norādīšana"
 
 #: ../clutter/clutter-settings.c:513
-msgid "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
+msgid ""
+"Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
+"Vai lietot norādīšanu (1, lai aktivētu; 0, lai deaktivētu; -1, lai izmantotu "
+"noklusēto)"
 
 #: ../clutter/clutter-settings.c:534
-#, fuzzy
 msgid "Font Hint Style"
-msgstr "Gaya Hint Xft"
+msgstr "Faila norādīšanas stils"
 
 #: ../clutter/clutter-settings.c:535
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
-msgstr ""
+msgstr "Norādīšanas stils (hintnone, hintslight, hintmedium, hintfull)"
 
 #: ../clutter/clutter-settings.c:556
 msgid "Font Subpixel Order"
-msgstr ""
+msgstr "Fonta apakšpikseļu secība"
 
 #: ../clutter/clutter-settings.c:557
-#, fuzzy
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
-msgstr "Jenis antialias subpiksel yang digunakan, none, rgb, bgt, vrgb, vbgr"
+msgstr "Apakšpikseļu gludināšanas tips (nekāds, rgb, bgr, vrgb, vbgr)"
 
 #: ../clutter/clutter-settings.c:574
 msgid "The minimum duration for a long press gesture to be recognized"
-msgstr ""
+msgstr "Minimālais ilgums, līdz tiek atpazīts ilgās piespiešanas žests"
 
 #: ../clutter/clutter-settings.c:581
-#, fuzzy
 msgid "Fontconfig configuration timestamp"
-msgstr "Penanda waktu konfigurasi fontconfig"
+msgstr "Fontconfig konfigurācijas laika spiedogs"
 
 #: ../clutter/clutter-settings.c:582
-#, fuzzy
 msgid "Timestamp of the current fontconfig configuration"
-msgstr "Penanda waktu dari konfigurasi fontconfig kini"
+msgstr "Pašreizējās fontconfig konfigurācijas laika spiedogs"
 
 #: ../clutter/clutter-shader.c:255
-#, fuzzy
 msgid "Vertex Source"
-msgstr "Berkas Sumber:"
+msgstr "Virsotnes avots"
 
 #: ../clutter/clutter-shader.c:256
 msgid "Source of vertex shader"
-msgstr ""
+msgstr "Virsotnes ēnotāja avots"
 
 #: ../clutter/clutter-shader.c:272
-#, fuzzy
 msgid "Fragment Source"
-msgstr "Berkas Sumber:"
+msgstr "Fragmenta avots"
 
 #: ../clutter/clutter-shader.c:273
 msgid "Source of fragment shader"
-msgstr ""
+msgstr "Fragmenta ēnotāja avots"
 
 #: ../clutter/clutter-shader.c:290
 msgid "Compiled"
-msgstr ""
+msgstr "Kompilēts"
 
 #: ../clutter/clutter-shader.c:291
 msgid "Whether the shader is compiled and linked"
-msgstr ""
+msgstr "Kad ēnotājs ir kompilēts un piesaistīts"
 
 #: ../clutter/clutter-shader.c:308
-#, fuzzy
 msgid "Whether the shader is enabled"
-msgstr "Menentukan apkaah aksi diaktifkan"
+msgstr "Kad ēnotājs ir aktivēts"
 
 #: ../clutter/clutter-shader.c:519
-#, fuzzy, c-format
+#, c-format
 msgid "%s compilation failed: %s"
-msgstr "Entri Gagal"
+msgstr "%s kompilēšana neizdevās: %s"
 
 #: ../clutter/clutter-shader.c:520
-#, fuzzy
 msgid "Vertex shader"
-msgstr "Bahasa CG Shader"
+msgstr "Virsotnes ēnotājs"
 
 #: ../clutter/clutter-shader.c:521
-#, fuzzy
 msgid "Fragment shader"
-msgstr "HTML (*.html) fragment"
+msgstr "Fragmenta ēnotājs"
 
 #: ../clutter/clutter-shader-effect.c:415
-#, fuzzy
 msgid "Shader Type"
-msgstr "Jenis Skrip"
+msgstr "Ēnotāja tips"
 
 #: ../clutter/clutter-shader-effect.c:416
-#, fuzzy
 msgid "The type of shader used"
-msgstr "Jenis arsip terakhir yang digunakan"
+msgstr "Izmantojamā ēnotāja tips"
 
 #: ../clutter/clutter-snap-constraint.c:322
-#, fuzzy
 msgid "The source of the constraint"
-msgstr "Tanpa Kendala"
+msgstr "Ierobežojuma avots"
 
 #: ../clutter/clutter-snap-constraint.c:335
-#, fuzzy
 msgid "From Edge"
-msgstr "Menggulung t_epi"
+msgstr "No malas"
 
 #: ../clutter/clutter-snap-constraint.c:336
-#, fuzzy
 msgid "The edge of the actor that should be snapped"
-msgstr "Apakah aktor telah direalisasikan"
+msgstr "Izpildītāja mala, kas būtu jāpievelk"
 
 #: ../clutter/clutter-snap-constraint.c:350
-#, fuzzy
 msgid "To Edge"
-msgstr "Menggulung t_epi"
+msgstr "Līdz malai"
 
 #: ../clutter/clutter-snap-constraint.c:351
 msgid "The edge of the source that should be snapped"
-msgstr ""
+msgstr "Avota mala, kas būtu jāpievelk"
 
 #: ../clutter/clutter-snap-constraint.c:367
 msgid "The offset in pixels to apply to the constraint"
-msgstr ""
+msgstr "Nobīde pikseļos, ko pielietot konstante"
 
 #: ../clutter/clutter-stage.c:1705
-#, fuzzy
 msgid "Fullscreen Set"
-msgstr "Set angkat"
+msgstr "Pilnekrāna iestatījums"
 
 #: ../clutter/clutter-stage.c:1706
 msgid "Whether the main stage is fullscreen"
-msgstr ""
+msgstr "Vai galvenajai skatuvei ir jābūt pilnekrāna"
 
 #: ../clutter/clutter-stage.c:1722
 msgid "Offscreen"
-msgstr ""
+msgstr "Ārpus ekrāna"
 
 #: ../clutter/clutter-stage.c:1723
 msgid "Whether the main stage should be rendered offscreen"
-msgstr ""
+msgstr "Vai galvenajai skatuvei ir jābūt renderētai ārpus ekrāna"
 
-#: ../clutter/clutter-stage.c:1735
-#: ../clutter/clutter-text.c:3006
-#, fuzzy
+#: ../clutter/clutter-stage.c:1735 ../clutter/clutter-text.c:2961
 msgid "Cursor Visible"
-msgstr "Kursor Nampak"
+msgstr "Kursora redzamība"
 
 #: ../clutter/clutter-stage.c:1736
 msgid "Whether the mouse pointer is visible on the main stage"
-msgstr ""
+msgstr "Vai peles rādītājam ir jābūt redzamam galvenajā skatuvē"
 
 #: ../clutter/clutter-stage.c:1750
-#, fuzzy
 msgid "User Resizable"
-msgstr "Manual Pengg_una"
+msgstr "Lietotājs var mainīt izmēru"
 
 #: ../clutter/clutter-stage.c:1751
 msgid "Whether the stage is able to be resized via user interaction"
-msgstr ""
+msgstr "Vai lietotāja mijiedarbība var mainīt skatuves izmēru"
 
 #: ../clutter/clutter-stage.c:1764
-#, fuzzy
 msgid "The color of the stage"
-msgstr "Warna pinggiran:"
+msgstr "Skatuves krāsa"
 
 #: ../clutter/clutter-stage.c:1778
 msgid "Perspective"
-msgstr ""
+msgstr "Perspektīva"
 
 #: ../clutter/clutter-stage.c:1779
 msgid "Perspective projection parameters"
-msgstr ""
+msgstr "Perspektīvas projekcijas parametri"
 
 #: ../clutter/clutter-stage.c:1794
 msgid "Title"
-msgstr "Judul"
+msgstr "Nosaukums"
 
 #: ../clutter/clutter-stage.c:1795
-#, fuzzy
 msgid "Stage Title"
-msgstr "Judul Plugin:"
+msgstr "Skatuves nosaukums"
 
 #: ../clutter/clutter-stage.c:1810
 msgid "Use Fog"
-msgstr "Gunakan Kabut"
+msgstr "Lietot miglu"
 
 #: ../clutter/clutter-stage.c:1811
 msgid "Whether to enable depth cueing"
@@ -1708,7 +1584,7 @@ msgstr ""
 
 #: ../clutter/clutter-stage.c:1825
 msgid "Fog"
-msgstr "Kabut"
+msgstr "Migla"
 
 #: ../clutter/clutter-stage.c:1826
 msgid "Settings for the depth cueing"
@@ -1716,16 +1592,15 @@ msgstr ""
 
 #: ../clutter/clutter-stage.c:1842
 msgid "Use Alpha"
-msgstr "Gunakan Alfa"
+msgstr "Lietot alfa"
 
 #: ../clutter/clutter-stage.c:1843
 msgid "Whether to honour the alpha component of the stage color"
-msgstr ""
+msgstr "Vai ņemt vērā skatuves krāsas alfa komponenti"
 
 #: ../clutter/clutter-stage.c:1859
-#, fuzzy
 msgid "Key Focus"
-msgstr "Ambil Fokus"
+msgstr ""
 
 #: ../clutter/clutter-stage.c:1860
 msgid "The currently key focused actor"
@@ -1740,622 +1615,579 @@ msgid "Whether the stage should clear its contents"
 msgstr ""
 
 #: ../clutter/clutter-stage.c:1890
-#, fuzzy
 msgid "Accept Focus"
-msgstr "Terima fokus"
+msgstr "Pieņemt fokusu"
 
 #: ../clutter/clutter-stage.c:1891
 msgid "Whether the stage should accept focus on show"
-msgstr ""
+msgstr "Vai skatuvei šovā vajadzētu pieņemt fokusu"
 
 #: ../clutter/clutter-state.c:1472
-#, fuzzy
 msgid "State"
-msgstr "Keadaan"
+msgstr "Stāvoklis"
 
 #: ../clutter/clutter-state.c:1473
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
+"Pašlaik iestatītais stāvoklis, (pāreja uz šo stāvokli varētu nebūt pabeigta)"
 
 #: ../clutter/clutter-state.c:1487
 msgid "Default transition duration"
-msgstr ""
+msgstr "Noklusētais pārejas ilgums"
 
 #: ../clutter/clutter-table-layout.c:585
-#, fuzzy
 msgid "Column Number"
-msgstr "Nomor kolom %d tak dikenal"
+msgstr "Kolonnas numurs"
 
 #: ../clutter/clutter-table-layout.c:586
 msgid "The column the widget resides in"
-msgstr ""
+msgstr "Kolonna, kurā atrodas logdaļa"
 
 #: ../clutter/clutter-table-layout.c:593
-#, fuzzy
 msgid "Row Number"
-msgstr "Jumlah Jangkar/Anchor"
+msgstr "Rindas numurs"
 
 #: ../clutter/clutter-table-layout.c:594
 msgid "The row the widget resides in"
-msgstr ""
+msgstr "Rinda, kurā atrodas logdaļa"
 
 #: ../clutter/clutter-table-layout.c:601
-#, fuzzy
 msgid "Column Span"
-msgstr "Jarak kolom"
+msgstr "Kolonnu apvienojums"
 
 #: ../clutter/clutter-table-layout.c:602
 msgid "The number of columns the widget should span"
-msgstr ""
+msgstr "Kolonnu skaits, ko logdaļai apvienot"
 
 #: ../clutter/clutter-table-layout.c:609
-#, fuzzy
 msgid "Row Span"
-msgstr "Rentangan Baris:"
+msgstr "Rindu apvienojums"
 
 #: ../clutter/clutter-table-layout.c:610
 msgid "The number of rows the widget should span"
-msgstr ""
+msgstr "Rindu skaits, ko logdaļai apvienot"
 
 #: ../clutter/clutter-table-layout.c:617
-#, fuzzy
 msgid "Horizontal Expand"
-msgstr "Mengembang Horisontal"
+msgstr "Horizontāli izvērsts"
 
 #: ../clutter/clutter-table-layout.c:618
 msgid "Allocate extra space for the child in horizontal axis"
-msgstr ""
+msgstr "Bērnam piešķirt papildu vietu uz horizontālās ass"
 
 #: ../clutter/clutter-table-layout.c:624
-#, fuzzy
 msgid "Vertical Expand"
-msgstr "Mengembang Vertikal"
+msgstr "Vertikāli izvērsts"
 
 #: ../clutter/clutter-table-layout.c:625
 msgid "Allocate extra space for the child in vertical axis"
-msgstr ""
+msgstr "Bērnam piešķirt papildu vietu uz vertikālās ass"
 
 #: ../clutter/clutter-table-layout.c:1714
-#, fuzzy
 msgid "Spacing between columns"
-msgstr "Ruang antar cells"
+msgstr "Atstarpe starp kolonnām"
 
 #: ../clutter/clutter-table-layout.c:1728
-#, fuzzy
 msgid "Spacing between rows"
-msgstr "Ruang antar cells"
+msgstr "Atstarpe starp rindām"
 
-#: ../clutter/clutter-text.c:2894
+#: ../clutter/clutter-text.c:2849
 msgid "The font to be used by the text"
-msgstr ""
+msgstr "Fonts, kuru izmantot tekstam"
 
-#: ../clutter/clutter-text.c:2911
-#, fuzzy
+#: ../clutter/clutter-text.c:2866
 msgid "Font Description"
-msgstr "Keterangan Fonta"
+msgstr "Fonta apraksts"
 
-#: ../clutter/clutter-text.c:2912
-#, fuzzy
+#: ../clutter/clutter-text.c:2867
 msgid "The font description to be used"
-msgstr "Jenis huruf yang digunakan ketika mencetak"
+msgstr "Izmantojamais fonta apraksts"
 
-#: ../clutter/clutter-text.c:2928
+#: ../clutter/clutter-text.c:2883
 msgid "Text"
-msgstr "Teks"
+msgstr "Teksts"
+
+#: ../clutter/clutter-text.c:2884
+msgid "The text to render"
+msgstr "Teksts renderēšanai"
+
+#: ../clutter/clutter-text.c:2898
+msgid "Font Color"
+msgstr "Fonta krāsa"
+
+#: ../clutter/clutter-text.c:2899
+msgid "Color of the font used by the text"
+msgstr "Krāsa fontam, kuru izmantot tekstam"
+
+#: ../clutter/clutter-text.c:2913
+msgid "Editable"
+msgstr "Rediģējams"
+
+#: ../clutter/clutter-text.c:2914
+msgid "Whether the text is editable"
+msgstr "Vai teksts ir rediģējams"
 
 #: ../clutter/clutter-text.c:2929
-#, fuzzy
-msgid "The text to render"
-msgstr "Teks untuk dirender"
+msgid "Selectable"
+msgstr "Izvēlams"
 
-#: ../clutter/clutter-text.c:2943
-msgid "Font Color"
-msgstr "Warna Fonta"
+#: ../clutter/clutter-text.c:2930
+msgid "Whether the text is selectable"
+msgstr "Vai tekstu var izvēlēties"
 
 #: ../clutter/clutter-text.c:2944
-msgid "Color of the font used by the text"
-msgstr ""
-
-#: ../clutter/clutter-text.c:2958
-#, fuzzy
-msgid "Editable"
-msgstr "Dapat disunting"
-
-#: ../clutter/clutter-text.c:2959
-#, fuzzy
-msgid "Whether the text is editable"
-msgstr "Menentukan apakah teks ini disembunyikan"
-
-#: ../clutter/clutter-text.c:2974
-#, fuzzy
-msgid "Selectable"
-msgstr "Dapat dipilih"
-
-#: ../clutter/clutter-text.c:2975
-#, fuzzy
-msgid "Whether the text is selectable"
-msgstr "Menentukan apakah teks ini disembunyikan"
-
-#: ../clutter/clutter-text.c:2989
-#, fuzzy
 msgid "Activatable"
-msgstr "Dapat diaktifkan"
+msgstr "Aktivizējams"
 
-#: ../clutter/clutter-text.c:2990
+#: ../clutter/clutter-text.c:2945
 msgid "Whether pressing return causes the activate signal to be emitted"
-msgstr ""
+msgstr "Vai \"Enter\" piespiešana liek raidīt aktivizēšanas signālu"
+
+#: ../clutter/clutter-text.c:2962
+msgid "Whether the input cursor is visible"
+msgstr "Vai ir redzams ievades kursors"
+
+#: ../clutter/clutter-text.c:2976 ../clutter/clutter-text.c:2977
+msgid "Cursor Color"
+msgstr "Kursora krāsa"
+
+#: ../clutter/clutter-text.c:2991
+msgid "Cursor Color Set"
+msgstr "Kursora krāsa iestatīta"
+
+#: ../clutter/clutter-text.c:2992
+msgid "Whether the cursor color has been set"
+msgstr "Vai kursora krāsa ir iestatīta"
 
 #: ../clutter/clutter-text.c:3007
-msgid "Whether the input cursor is visible"
-msgstr ""
-
-#: ../clutter/clutter-text.c:3021
-#: ../clutter/clutter-text.c:3022
-msgid "Cursor Color"
-msgstr "Warna Kursor"
-
-#: ../clutter/clutter-text.c:3036
-#, fuzzy
-msgid "Cursor Color Set"
-msgstr "Tentukan Warna Depan"
-
-#: ../clutter/clutter-text.c:3037
-msgid "Whether the cursor color has been set"
-msgstr ""
-
-#: ../clutter/clutter-text.c:3052
 msgid "Cursor Size"
-msgstr "Ukuran Kursor"
+msgstr "Kursora izmērs"
 
-#: ../clutter/clutter-text.c:3053
-#, fuzzy
+#: ../clutter/clutter-text.c:3008
 msgid "The width of the cursor, in pixels"
-msgstr "Lebar cuplikan (piksel):"
+msgstr "Kursora platums, pikseļos"
 
-#: ../clutter/clutter-text.c:3067
-#, fuzzy
+#: ../clutter/clutter-text.c:3022
 msgid "Cursor Position"
-msgstr "Posisi kursor"
+msgstr "Kursora pozīcija"
 
-#: ../clutter/clutter-text.c:3068
-#, fuzzy
+#: ../clutter/clutter-text.c:3023
 msgid "The cursor position"
-msgstr "Posisi kursor"
+msgstr "Kursora novietojums"
 
-#: ../clutter/clutter-text.c:3083
-#, fuzzy
+#: ../clutter/clutter-text.c:3038
 msgid "Selection-bound"
-msgstr "Batas seleksi"
+msgstr "Izvēles ierobežojums"
 
-#: ../clutter/clutter-text.c:3084
+#: ../clutter/clutter-text.c:3039
 msgid "The cursor position of the other end of the selection"
-msgstr ""
+msgstr "Kursora pozīcija otrā izvēles galā"
 
-#: ../clutter/clutter-text.c:3099
-#: ../clutter/clutter-text.c:3100
+#: ../clutter/clutter-text.c:3054 ../clutter/clutter-text.c:3055
 msgid "Selection Color"
-msgstr "Warna Pilihan"
+msgstr "Izvēles krāsa"
 
-#: ../clutter/clutter-text.c:3114
+#: ../clutter/clutter-text.c:3069
 msgid "Selection Color Set"
-msgstr "Warna Pilihan Ditata"
+msgstr "Izvēles krāsa iestatīta"
 
-#: ../clutter/clutter-text.c:3115
+#: ../clutter/clutter-text.c:3070
 msgid "Whether the selection color has been set"
-msgstr "Apakah warna pilihan telah ditata"
+msgstr "Vai izvēles krāsa ir iestatīta"
 
-#: ../clutter/clutter-text.c:3130
+#: ../clutter/clutter-text.c:3085
 msgid "Attributes"
-msgstr "Atribut"
+msgstr "Atribūti"
 
-#: ../clutter/clutter-text.c:3131
+#: ../clutter/clutter-text.c:3086
 msgid "A list of style attributes to apply to the contents of the actor"
-msgstr ""
+msgstr "Stila atribūtu saraksts, kuru pielietot izpildītāja saturam"
 
-#: ../clutter/clutter-text.c:3153
-#, fuzzy
+#: ../clutter/clutter-text.c:3108
 msgid "Use markup"
-msgstr "Gunakan markup"
+msgstr "Lietot marķējumu"
 
-#: ../clutter/clutter-text.c:3154
+#: ../clutter/clutter-text.c:3109
 msgid "Whether or not the text includes Pango markup"
-msgstr ""
+msgstr "Vai tekstam jāiekļauj Pango marķējums"
 
-#: ../clutter/clutter-text.c:3170
-#, fuzzy
+#: ../clutter/clutter-text.c:3125
 msgid "Line wrap"
-msgstr "potong baris"
+msgstr "Rindiņu aplaušana"
 
-#: ../clutter/clutter-text.c:3171
-#, fuzzy
+#: ../clutter/clutter-text.c:3126
 msgid "If set, wrap the lines if the text becomes too wide"
-msgstr "Jika diset, baris akan dipotong bila terlalu lebar"
+msgstr "Ja iestatīts, aplauzt rindas, ja teksts kļūst pārāk plašs"
 
-#: ../clutter/clutter-text.c:3186
-#, fuzzy
+#: ../clutter/clutter-text.c:3141
 msgid "Line wrap mode"
-msgstr "Mode pembengkokan baris"
+msgstr "Rindiņu aplaušanas režīms"
 
-#: ../clutter/clutter-text.c:3187
+#: ../clutter/clutter-text.c:3142
 msgid "Control how line-wrapping is done"
-msgstr ""
+msgstr "Kontrolēt, kā notiek rindiņu aplaušana"
 
-#: ../clutter/clutter-text.c:3202
-#, fuzzy
+#: ../clutter/clutter-text.c:3157
 msgid "Ellipsize"
-msgstr "Elipsis"
+msgstr "Īsināt ar daudzpunkti"
 
-#: ../clutter/clutter-text.c:3203
+#: ../clutter/clutter-text.c:3158
 msgid "The preferred place to ellipsize the string"
-msgstr ""
+msgstr "Vēlamā vieta, kur virkni īsināt ar daudzpunkti"
 
-#: ../clutter/clutter-text.c:3219
+#: ../clutter/clutter-text.c:3174
 msgid "Line Alignment"
-msgstr "Perataan Baris"
+msgstr "Rindu līdzināšana"
 
-#: ../clutter/clutter-text.c:3220
+#: ../clutter/clutter-text.c:3175
 msgid "The preferred alignment for the string, for multi-line text"
-msgstr ""
+msgstr "Vēlamais virknes līdzinājums vairāku rindiņu tekstam"
 
-#: ../clutter/clutter-text.c:3236
+#: ../clutter/clutter-text.c:3191
 msgid "Justify"
-msgstr "Diratakan"
+msgstr "Izlīdzināt"
 
-#: ../clutter/clutter-text.c:3237
+#: ../clutter/clutter-text.c:3192
 msgid "Whether the text should be justified"
-msgstr ""
+msgstr "Vai teksts būtu jāizlīdzina"
 
-#: ../clutter/clutter-text.c:3252
+#: ../clutter/clutter-text.c:3207
 msgid "Password Character"
-msgstr "Karakter Sandi"
+msgstr "Paroles rakstzīme"
 
-#: ../clutter/clutter-text.c:3253
+#: ../clutter/clutter-text.c:3208
 msgid "If non-zero, use this character to display the actor's contents"
-msgstr ""
+msgstr "Ja nav nulle, lietot šo rakstzīmi, lai attēlotu izpildītāja saturu"
 
-#: ../clutter/clutter-text.c:3267
+#: ../clutter/clutter-text.c:3222
 msgid "Max Length"
-msgstr "Panjang Maks"
+msgstr "Maks. garums"
 
-#: ../clutter/clutter-text.c:3268
+#: ../clutter/clutter-text.c:3223
 msgid "Maximum length of the text inside the actor"
-msgstr ""
+msgstr "Maksimālais teksta garums izpildītājā"
 
-#: ../clutter/clutter-text.c:3291
-#, fuzzy
+#: ../clutter/clutter-text.c:3246
 msgid "Single Line Mode"
-msgstr "Moda Satu Baris"
+msgstr "Vienas rindas režīms"
 
-#: ../clutter/clutter-text.c:3292
+#: ../clutter/clutter-text.c:3247
 msgid "Whether the text should be a single line"
-msgstr ""
+msgstr "Vai tekstam jābūt vienā rindiņā"
 
-#: ../clutter/clutter-text.c:3306
-#: ../clutter/clutter-text.c:3307
-#, fuzzy
+#: ../clutter/clutter-text.c:3261 ../clutter/clutter-text.c:3262
 msgid "Selected Text Color"
-msgstr "Warna teks (tak berlaku lagi)"
+msgstr "Izvēlētā teksta krāsa"
 
-#: ../clutter/clutter-text.c:3321
-#, fuzzy
+#: ../clutter/clutter-text.c:3276
 msgid "Selected Text Color Set"
-msgstr "Warna Pilihan Ditata"
+msgstr "Izvēlētā teksta krāsa iestatīta"
 
-#: ../clutter/clutter-text.c:3322
-#, fuzzy
+#: ../clutter/clutter-text.c:3277
 msgid "Whether the selected text color has been set"
-msgstr "Apakah warna pilihan telah ditata"
+msgstr "Vai izvēlētā teksta krāsa ir iestatīta"
 
 #: ../clutter/clutter-texture.c:995
 msgid "Sync size of actor"
-msgstr ""
+msgstr "Izpildītājā sinhronizēšanas izmērs"
 
 #: ../clutter/clutter-texture.c:996
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
 msgstr ""
+"Automātiski sinhronizēt izpildītāja izmēru uz apakšējā pikseļu bufera "
+"dimensijām"
 
 #: ../clutter/clutter-texture.c:1003
-#, fuzzy
 msgid "Disable Slicing"
-msgstr "Metode Mengiris"
+msgstr "Deaktivēt sagriešanu"
 
 #: ../clutter/clutter-texture.c:1004
-msgid "Forces the underlying texture to be singular and not made of smaller space saving individual textures"
+msgid ""
+"Forces the underlying texture to be singular and not made of smaller space "
+"saving individual textures"
 msgstr ""
+"Piespiež apakšējo tekstūru būt viengabalainai un nevis veidotai no mazākām "
+"telpām, kas satur atsevišķas tekstūras"
 
 #: ../clutter/clutter-texture.c:1013
-#, fuzzy
 msgid "Tile Waste"
-msgstr "%s pada waste"
+msgstr "Flīžu zudumi"
 
 #: ../clutter/clutter-texture.c:1014
 msgid "Maximum waste area of a sliced texture"
-msgstr ""
+msgstr "Maksimālais izniekotais sagrieztas tekstūras laukums"
 
 #: ../clutter/clutter-texture.c:1022
-#, fuzzy
 msgid "Horizontal repeat"
-msgstr "Ulangi ala_rm"
+msgstr "Horizontālā atkārtošana"
 
 #: ../clutter/clutter-texture.c:1023
 msgid "Repeat the contents rather than scaling them horizontally"
-msgstr ""
+msgstr "Atkārtot saturu, nevis to horizontāli mērogot"
 
 #: ../clutter/clutter-texture.c:1030
-#, fuzzy
 msgid "Vertical repeat"
-msgstr "Ulangi ala_rm"
+msgstr "Vertikālā atkārtošana"
 
 #: ../clutter/clutter-texture.c:1031
 msgid "Repeat the contents rather than scaling them vertically"
-msgstr ""
+msgstr "Atkārtot saturu, nevis to vertikāli mērogot"
 
 #: ../clutter/clutter-texture.c:1038
-#, fuzzy
 msgid "Filter Quality"
-msgstr "Kualitas Kata Sandi:"
+msgstr "Filtra kvalitāte"
 
 #: ../clutter/clutter-texture.c:1039
 msgid "Rendering quality used when drawing the texture"
-msgstr ""
+msgstr "Renderēšanas kvalitāte, zīmējot tekstūru"
 
 #: ../clutter/clutter-texture.c:1047
-#, fuzzy
 msgid "Pixel Format"
-msgstr "Format video:"
+msgstr "Pikseļu formāts"
 
 #: ../clutter/clutter-texture.c:1048
 msgid "The Cogl pixel format to use"
-msgstr ""
+msgstr "Izmantojamais Cogl pikseļu formāts"
 
 #: ../clutter/clutter-texture.c:1056
-#, fuzzy
 msgid "Cogl Texture"
-msgstr "Latar belakang tekstur ubin"
+msgstr "Cogl tekstūra"
 
 #: ../clutter/clutter-texture.c:1057
 msgid "The underlying Cogl texture handle used to draw this actor"
-msgstr ""
+msgstr "Apakšējais Cogl tekstūras turis, ko izmanto šī izpildītāja zīmēšanai"
 
 #: ../clutter/clutter-texture.c:1064
-#, fuzzy
 msgid "Cogl Material"
-msgstr "Sebelumnya - Identitas"
+msgstr "Cogl materiāls"
 
 #: ../clutter/clutter-texture.c:1065
 msgid "The underlying Cogl material handle used to draw this actor"
-msgstr ""
+msgstr "Apakšējais Cogl materiāla turis, ko izmanto šī izpildītāja zīmēšanai"
 
 #: ../clutter/clutter-texture.c:1082
 msgid "The path of the file containing the image data"
-msgstr ""
+msgstr "Faila ceļš, kas satur attēla datus"
 
 #: ../clutter/clutter-texture.c:1089
-#, fuzzy
 msgid "Keep Aspect Ratio"
-msgstr "Jaga rasio aspek"
+msgstr "Paturēt izmēra attiecību"
 
 #: ../clutter/clutter-texture.c:1090
-msgid "Keep the aspect ratio of the texture when requesting the preferred width or height"
+msgid ""
+"Keep the aspect ratio of the texture when requesting the preferred width or "
+"height"
 msgstr ""
+"Paturēt tekstūras izmēra attiecību, kad pieprasa vēlamo platumu vai augstumu"
 
 #: ../clutter/clutter-texture.c:1116
-#, fuzzy
 msgid "Load asynchronously"
-msgstr "Tampi_lkan Gambar"
+msgstr "Ielādēt asinhroni"
 
 #: ../clutter/clutter-texture.c:1117
-msgid "Load files inside a thread to avoid blocking when loading images from disk"
+msgid ""
+"Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
+"Ielādēt failus pavedienā, lai izvairītos no bloķēšanas, kad ielādēt attēlus no "
+"diska"
 
 #: ../clutter/clutter-texture.c:1133
 msgid "Load data asynchronously"
-msgstr ""
+msgstr "Ielādēt datus asinhroni"
 
 #: ../clutter/clutter-texture.c:1134
-msgid "Decode image data files inside a thread to reduce blocking when loading images from disk"
+msgid ""
+"Decode image data files inside a thread to reduce blocking when loading "
+"images from disk"
 msgstr ""
+"Atšifrēt attēla datu failus pavedienā, lai samazinātu bloķēšanu, kad ielādēt "
+"attēlus no diska"
 
 #: ../clutter/clutter-texture.c:1158
-#, fuzzy
 msgid "Pick With Alpha"
-msgstr "Cairo PNG (dengan alpha)"
+msgstr "Paņemt ar alfa"
 
 #: ../clutter/clutter-texture.c:1159
 msgid "Shape actor with alpha channel when picking"
-msgstr ""
+msgstr "Formēt izpildītāju ar alfa kanālu, kad paņem"
 
-#: ../clutter/clutter-texture.c:1557
-#: ../clutter/clutter-texture.c:1967
-#: ../clutter/clutter-texture.c:2062
-#: ../clutter/clutter-texture.c:2343
-#, fuzzy, c-format
+#: ../clutter/clutter-texture.c:1557 ../clutter/clutter-texture.c:1967
+#: ../clutter/clutter-texture.c:2062 ../clutter/clutter-texture.c:2343
+#, c-format
 msgid "Failed to load the image data"
-msgstr "Gagal memuat data cookie\n"
+msgstr "Neizdevās ielādēt attēla datus"
 
 #: ../clutter/clutter-texture.c:1703
 #, c-format
 msgid "YUV textures are not supported"
-msgstr ""
+msgstr "YUV tekstūras nav atbalstītas"
 
 #: ../clutter/clutter-texture.c:1712
 #, c-format
 msgid "YUV2 textues are not supported"
-msgstr ""
+msgstr "YUV2 tekstūras nav atbalstītas"
 
 #: ../clutter/clutter-timeline.c:264
 msgid "Should the timeline automatically restart"
-msgstr ""
+msgstr "Vai automātiski jāpārstartē laika skalas"
 
 #: ../clutter/clutter-timeline.c:278
-#, fuzzy
 msgid "Delay"
-msgstr "Tunda"
+msgstr "Aizture"
 
 #: ../clutter/clutter-timeline.c:279
-#, fuzzy
 msgid "Delay before start"
-msgstr "%s %s sebelum pertemuan dimulai"
+msgstr "Aizture pirms sākt"
 
 #: ../clutter/clutter-timeline.c:295
-#, fuzzy
 msgid "Duration of the timeline in milliseconds"
-msgstr "Durasi lagu dalam detik."
+msgstr "Laika skalas ilgums milisekundēs"
 
 #: ../clutter/clutter-timeline.c:311
-#, fuzzy
 msgid "Direction of the timeline"
-msgstr "Alur-Waktu - Urutan 1"
+msgstr "Laika skalas virziens"
 
 #: ../clutter/clutter-timeline.c:326
-#, fuzzy
 msgid "Auto Reverse"
-msgstr "Balik U_rutan"
+msgstr "Autom. apgriezt"
 
 #: ../clutter/clutter-timeline.c:327
 msgid "Whether the direction should be reversed when reaching the end"
-msgstr ""
+msgstr "Vai virziens būtu jāapgriež, kas sasniedz beigas"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:147
-#, fuzzy
 msgid "sysfs Path"
-msgstr "Path Pertama:"
+msgstr "sysfs ceļš"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:148
-#, fuzzy
 msgid "Path of the device in sysfs"
-msgstr "Nama devais:"
+msgstr "sysfs ierīces ceļš"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:163
-#, fuzzy
 msgid "Device Path"
-msgstr "LOKASI PERANGKAT"
+msgstr "Ierīces ceļš"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:164
-#, fuzzy
 msgid "Path of the device node"
-msgstr "LOKASI KE PERANGKAT"
+msgstr "Ierīces mezgla ceļš"
 
 #: ../clutter/x11/clutter-backend-x11.c:483
-#, fuzzy
 msgid "X display to use"
-msgstr "Tampilan X yang akan dipakai"
+msgstr "Lietojamais X displejs"
 
 #: ../clutter/x11/clutter-backend-x11.c:489
-#, fuzzy
 msgid "X screen to use"
-msgstr "Layar X yang akan dipakai"
+msgstr "Izmantojamais X ekrāns"
 
 #: ../clutter/x11/clutter-backend-x11.c:494
-#, fuzzy
 msgid "Make X calls synchronous"
-msgstr "Buat panggilan X sinkronus"
+msgstr "Padarīt X izsaukumus sinhronus"
 
 #: ../clutter/x11/clutter-backend-x11.c:501
-#, fuzzy
 msgid "Enable XInput support"
-msgstr "Aktifkan dukungan IPv4"
+msgstr "Aktivēt XInput atbalstu"
 
 #: ../clutter/x11/clutter-keymap-x11.c:317
-#, fuzzy
 msgid "The Clutter backend"
-msgstr "Backend makefile"
+msgstr "Clutter aizmugure"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:545
 msgid "Pixmap"
-msgstr "Pixmap"
+msgstr "Pikseļu karte"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:546
 msgid "The X11 Pixmap to be bound"
-msgstr ""
+msgstr "X11 pikseļu karte, ko saistīt"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:554
 msgid "Pixmap width"
-msgstr "Lebar pixmap"
+msgstr "Pikseļu kartes platums"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:555
 msgid "The width of the pixmap bound to this texture"
-msgstr ""
+msgstr "Platums pikseļu kartei, kas saistīta uz šīs tekstūras"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:563
 msgid "Pixmap height"
-msgstr "Tinggi pixmap"
+msgstr "Pikseļu kartes augstums"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:564
 msgid "The height of the pixmap bound to this texture"
-msgstr ""
+msgstr "Augstums pikseļu kartei, kas saistīta uz šīs tekstūras"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:572
 msgid "Pixmap Depth"
-msgstr "Kedalaman Pixmap"
+msgstr "Pikseļu kartes dziļums"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:573
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
 msgstr ""
+"Dziļums (izteikts bitu skaitā) pikseļu kartei, kas saistīta uz šīs tekstūras"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:581
 msgid "Automatic Updates"
-msgstr "Pemutakhiran Otomatis"
+msgstr "Automātiska atjaunināšana"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:582
 msgid "If the texture should be kept in sync with any pixmap changes."
-msgstr ""
+msgstr "Ja tekstūru jāuztur sinhronu ar jebkādām pikseļu kartes izmaiņām."
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:590
 msgid "Window"
-msgstr "Jendela"
+msgstr "Logs"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:591
 msgid "The X11 Window to be bound"
-msgstr ""
+msgstr "X11 logs, ko saistīt"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:599
-#, fuzzy
 msgid "Window Redirect Automatic"
-msgstr "Perlihatkan window k&omentar otomatis"
+msgstr "Loga pārsūtīšana automātiska"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:600
 msgid "If composite window redirects are set to Automatic (or Manual if false)"
 msgstr ""
+"Vai kompozītloga pārsūtījumi ir iestatīti kā Automātiski (vai Manuāli, ja "
+"aplams)"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:610
-#, fuzzy
 msgid "Window Mapped"
-msgstr "Rekam _Jendela"
+msgstr "Loga kartējums"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:611
 msgid "If window is mapped"
-msgstr ""
+msgstr "Vai logs ir kartēts"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:620
 msgid "Destroyed"
-msgstr ""
+msgstr "Iznīcināts"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:621
 msgid "If window has been destroyed"
-msgstr ""
+msgstr "Vai logs tika iznīcināts"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:629
 msgid "Window X"
-msgstr "X Jendela"
+msgstr "Logs X"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:630
 msgid "X position of window on screen according to X11"
-msgstr ""
+msgstr "Loga X novietojums uz ekrāna, pēc X11"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:638
 msgid "Window Y"
-msgstr "Y Jendela"
+msgstr "Logs Y"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:639
 msgid "Y position of window on screen according to X11"
-msgstr ""
+msgstr "Loga Y novietojums uz ekrāna, pēc X11"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:646
 msgid "Window Override Redirect"
-msgstr ""
+msgstr "Loga pārrakstīšanas pārsūtīšana"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:647
 msgid "If this is an override-redirect window"
-msgstr ""
+msgstr "Vai šis ir pārrakstīšanas-pārsūtīšanas logs"
+
 
