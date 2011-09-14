@@ -327,7 +327,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 noinst_LTLIBRARIES += libclutter-cogl.la
 
-libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS)
+libclutter_cogl_la_LIBADD = -lm -ldl $(CLUTTER_LIBS)
 libclutter_cogl_la_SOURCES = $(cogl_sources_c)
 nodist_libclutter_cogl_la_SOURCES = $(BUILT_SOURCES)
 
