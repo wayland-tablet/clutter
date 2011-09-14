@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-06-14 14:19+0100\n"
+"POT-Creation-Date: 2011-09-14 10:51+0100\n"
 "PO-Revision-Date: 2011-03-22 15:07+0000\n"
 "Last-Translator: veeven <veeven@gmail.com>\n"
 "Language-Team: Telugu <te@li.org>\n"
@@ -443,7 +443,7 @@ msgstr ""
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr ""
 
-#: clutter/clutter-alpha.c:339 clutter/clutter-animation.c:523
+#: clutter/clutter-alpha.c:339 clutter/clutter-animation.c:528
 #: clutter/clutter-animator.c:1802
 msgid "Timeline"
 msgstr "కాలరేఖ"
@@ -460,7 +460,7 @@ msgstr ""
 msgid "Alpha value as computed by the alpha"
 msgstr ""
 
-#: clutter/clutter-alpha.c:376 clutter/clutter-animation.c:479
+#: clutter/clutter-alpha.c:376 clutter/clutter-animation.c:484
 msgid "Mode"
 msgstr ""
 
@@ -468,45 +468,45 @@ msgstr ""
 msgid "Progress mode"
 msgstr ""
 
-#: clutter/clutter-animation.c:463
+#: clutter/clutter-animation.c:468
 msgid "Object"
 msgstr ""
 
-#: clutter/clutter-animation.c:464
+#: clutter/clutter-animation.c:469
 msgid "Object to which the animation applies"
 msgstr ""
 
-#: clutter/clutter-animation.c:480
+#: clutter/clutter-animation.c:485
 msgid "The mode of the animation"
 msgstr ""
 
-#: clutter/clutter-animation.c:494 clutter/clutter-animator.c:1786
+#: clutter/clutter-animation.c:499 clutter/clutter-animator.c:1786
 #: clutter/clutter-media.c:194 clutter/clutter-state.c:1422
 #: clutter/clutter-timeline.c:294
 msgid "Duration"
 msgstr "నిడివి"
 
-#: clutter/clutter-animation.c:495
+#: clutter/clutter-animation.c:500
 msgid "Duration of the animation, in milliseconds"
 msgstr ""
 
-#: clutter/clutter-animation.c:509 clutter/clutter-timeline.c:263
+#: clutter/clutter-animation.c:514 clutter/clutter-timeline.c:263
 msgid "Loop"
 msgstr ""
 
-#: clutter/clutter-animation.c:510
+#: clutter/clutter-animation.c:515
 msgid "Whether the animation should loop"
 msgstr ""
 
-#: clutter/clutter-animation.c:524
+#: clutter/clutter-animation.c:529
 msgid "The timeline used by the animation"
 msgstr ""
 
-#: clutter/clutter-animation.c:537 clutter/clutter-behaviour.c:298
+#: clutter/clutter-animation.c:542 clutter/clutter-behaviour.c:298
 msgid "Alpha"
 msgstr ""
 
-#: clutter/clutter-animation.c:538
+#: clutter/clutter-animation.c:543
 msgid "The alpha used by the animation"
 msgstr ""
 
