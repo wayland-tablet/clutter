@@ -1,3 +1,47 @@
+Clutter 1.6.18                                                       2011-09-14
+===============================================================================
+
+  • List of changes since Clutter 1.6.16
+
+    - Fix the handling of the right edge in ClutterSnapConstraint.
+
+    - Plug leaks in CoglMaterial.
+
+    - Compilation fixes for the Sun C Compiler.
+
+    - Documentation fixes.
+
+    - Handle the destruction of actors correctly when using ClutterAnimation;
+      this fix allows to destroy an actor inside the ::completed signal
+      handler without idle sources or similar contortions.
+
+    - Fix the default value of ClutterText:editable in the property definition
+      and documentation.
+
+  • List of bugs fixed since Clutter 1.6.16
+
+    [bugzilla.gnome.org]
+
+    #652129 - Use "const" instead G_CONST_RETURN
+    #654024 - snap-constraint: Fix allocation for CLUTTER_SNAP_EDGE_RIGHT
+    #654718 - clutter 1.6.16 compile issues
+    #654726 - text: Fix the default value of "editable"
+    #654066 - ClutterTimeline new-frame signal not working correctly on some
+              platforms
+    #651717 - Enable evdev devices by default
+    #652034 - Crash in clutter_stage_queue_actor_redraw at clutter-stage.c
+              line 3311
+
+    [bugzilla.clutter-project.org]
+
+    #2621 - Clutter segfaults if you queue a redraw of an unmapped actor
+            inside the notify::mapped callback
+
+Many thanks to:
+
+  Javier Jardón, Damien Lespiau, Neil Roberts, Bastian Winkler,
+  Chris Lord, Lionel Landwerlin, Robert Bragg
+
 Clutter 1.6.16                                                       2011-06-14
 ===============================================================================
 
