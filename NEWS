@@ -1,3 +1,22 @@
+Clutter 1.6.20                                                       2011-09-15
+===============================================================================
+
+  • List of changes since Clutter 1.6.18
+
+    - Brown paper bag release after the mess with the 1.6.18 tarballs.
+
+    - Fix clipping of non intersecting rectangles.
+
+  • List of bugs fixed since Clutter 1.6.18
+
+    [bugzilla.gnome.org]
+
+    #659029 - Clipping problem
+
+Many thanks to:
+
+  Neil Roberts
+
 Clutter 1.6.18                                                       2011-09-14
 ===============================================================================
 
