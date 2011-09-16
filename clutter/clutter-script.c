@@ -293,7 +293,7 @@ clutter_script_real_get_type_from_name (ClutterScript *script,
   if (gtype != G_TYPE_INVALID)
     return gtype;
 
-  return _clutter_script_get_type_from_class (type_name);
+  return clutter_script_get_type_from_class (type_name);
 }
 
 void
@@ -660,7 +660,7 @@ clutter_script_get_objects_valist (ClutterScript *script,
  * clutter_script_get_objects:
  * @script: a #ClutterScript
  * @first_name: the name of the first object to retrieve
- * @...: return location for a #GObject, then additional names, ending
+ * @Varargs: return location for a #GObject, then additional names, ending
  *   with %NULL
  *
  * Retrieves a list of objects for the given names. After @script, object
@@ -1171,8 +1171,7 @@ clutter_script_error_quark (void)
 /**
  * clutter_script_add_search_paths:
  * @script: a #ClutterScript
- * @paths: (array length=n_paths): an array of strings containing
- *   different search paths
+ * @paths: an array of strings containing different search paths
  * @n_paths: the length of the passed array
  *
  * Adds @paths to the list of search paths held by @script.

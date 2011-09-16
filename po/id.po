@@ -1,2195 +1,2339 @@
 # Indonesian translation of clutter
 # Copyright (C) 2010 Intel Corporation
 # This file is distributed under the same license as the clutter package.
-# Andika Triwidada <andika@gmail.com>, 2010, 2011.
+# Andika Triwidada <andika@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: clutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-06 09:19+0000\n"
-"PO-Revision-Date: 2011-09-15 04:03+0700\n"
+"Project-Id-Version: clutter 1.3.14\n"
+"Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
+"product=clutter\n"
+"POT-Creation-Date: 2011-06-13 23:24+0100\n"
+"PO-Revision-Date: 2010-10-05 20:42+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Language: Indonesian\n"
 "X-Poedit-Country: Indonesia\n"
 
-#: ../clutter/clutter-actor.c:3851
+#: clutter/clutter-actor.c:3809
 msgid "X coordinate"
 msgstr "Koordinat X"
 
-#: ../clutter/clutter-actor.c:3852
+#: clutter/clutter-actor.c:3810
 msgid "X coordinate of the actor"
 msgstr "Koordinat X dari aktor"
 
-#: ../clutter/clutter-actor.c:3867
+#: clutter/clutter-actor.c:3825
 msgid "Y coordinate"
 msgstr "Koordinat Y"
 
-#: ../clutter/clutter-actor.c:3868
+#: clutter/clutter-actor.c:3826
 msgid "Y coordinate of the actor"
 msgstr "Koordinat Y dari aktor"
 
-#: ../clutter/clutter-actor.c:3883
-#: ../clutter/clutter-behaviour-ellipse.c:477
+#: clutter/clutter-actor.c:3841 clutter/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "Lebar"
 
-#: ../clutter/clutter-actor.c:3884
+#: clutter/clutter-actor.c:3842
 msgid "Width of the actor"
 msgstr "Lebar aktor"
 
-#: ../clutter/clutter-actor.c:3898
-#: ../clutter/clutter-behaviour-ellipse.c:493
+#: clutter/clutter-actor.c:3856 clutter/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "Tinggi"
 
-#: ../clutter/clutter-actor.c:3899
+#: clutter/clutter-actor.c:3857
 msgid "Height of the actor"
 msgstr "Tinggi aktor"
 
-#: ../clutter/clutter-actor.c:3917
+#: clutter/clutter-actor.c:3875
 msgid "Fixed X"
 msgstr "X Tetap"
 
-#: ../clutter/clutter-actor.c:3918
+#: clutter/clutter-actor.c:3876
 msgid "Forced X position of the actor"
 msgstr "Posisi X aktor yang dipaksakan"
 
-#: ../clutter/clutter-actor.c:3936
+#: clutter/clutter-actor.c:3894
 msgid "Fixed Y"
 msgstr "Y Tetap"
 
-#: ../clutter/clutter-actor.c:3937
+#: clutter/clutter-actor.c:3895
 msgid "Forced Y position of the actor"
 msgstr "Posisi Y aktor yang dipaksakan"
 
-#: ../clutter/clutter-actor.c:3953
+#: clutter/clutter-actor.c:3911
 msgid "Fixed position set"
 msgstr "Posisi yang ditetapkan ditata"
 
-#: ../clutter/clutter-actor.c:3954
+#: clutter/clutter-actor.c:3912
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Apakah memakai penempatan yang ditetapkan bagi aktor"
 
-#: ../clutter/clutter-actor.c:3976
+#: clutter/clutter-actor.c:3934
 msgid "Min Width"
 msgstr "Lebar Min"
 
-#: ../clutter/clutter-actor.c:3977
+#: clutter/clutter-actor.c:3935
 msgid "Forced minimum width request for the actor"
 msgstr "Permintaan lebar minimal yang dipaksakan bagi aktor"
 
-#: ../clutter/clutter-actor.c:3996
+#: clutter/clutter-actor.c:3954
 msgid "Min Height"
 msgstr "Tinggi Min"
 
-#: ../clutter/clutter-actor.c:3997
+#: clutter/clutter-actor.c:3955
 msgid "Forced minimum height request for the actor"
 msgstr "Permintaan tinggi minimal yang dipaksakan bagi aktor"
 
-#: ../clutter/clutter-actor.c:4016
+#: clutter/clutter-actor.c:3974
 msgid "Natural Width"
 msgstr "Lebar Alami"
 
-#: ../clutter/clutter-actor.c:4017
+#: clutter/clutter-actor.c:3975
 msgid "Forced natural width request for the actor"
 msgstr "Permintaan lebar alami yang dipaksakan bagi aktor"
 
-#: ../clutter/clutter-actor.c:4036
+#: clutter/clutter-actor.c:3994
 msgid "Natural Height"
 msgstr "Tinggi Alami"
 
-#: ../clutter/clutter-actor.c:4037
+#: clutter/clutter-actor.c:3995
 msgid "Forced natural height request for the actor"
 msgstr "Permintaan tinggi alami yang dipaksakan bagi aktor"
 
-#: ../clutter/clutter-actor.c:4053
+#: clutter/clutter-actor.c:4011
 msgid "Minimum width set"
 msgstr "Lebar minimal ditata"
 
-#: ../clutter/clutter-actor.c:4054
+#: clutter/clutter-actor.c:4012
 msgid "Whether to use the min-width property"
 msgstr "Apakah memakai properti min-width"
 
-#: ../clutter/clutter-actor.c:4069
+#: clutter/clutter-actor.c:4027
 msgid "Minimum height set"
 msgstr "Tinggi minimal ditata"
 
-#: ../clutter/clutter-actor.c:4070
+#: clutter/clutter-actor.c:4028
 msgid "Whether to use the min-height property"
 msgstr "Apakah memakai properti min-height"
 
-#: ../clutter/clutter-actor.c:4085
+#: clutter/clutter-actor.c:4043
 msgid "Natural width set"
 msgstr "Lebar alami ditata"
 
-#: ../clutter/clutter-actor.c:4086
+#: clutter/clutter-actor.c:4044
 msgid "Whether to use the natural-width property"
 msgstr "Apakah memakai properti natural-width"
 
-#: ../clutter/clutter-actor.c:4103
+#: clutter/clutter-actor.c:4061
 msgid "Natural height set"
 msgstr "Tinggi alami ditata"
 
-#: ../clutter/clutter-actor.c:4104
+#: clutter/clutter-actor.c:4062
 msgid "Whether to use the natural-height property"
 msgstr "Apakah memakai properti natural-height"
 
-#: ../clutter/clutter-actor.c:4123
+#: clutter/clutter-actor.c:4081
 msgid "Allocation"
 msgstr "Alokasi"
 
-#: ../clutter/clutter-actor.c:4124
+#: clutter/clutter-actor.c:4082
 msgid "The actor's allocation"
 msgstr "Alokasi aktor"
 
-#: ../clutter/clutter-actor.c:4180
+#: clutter/clutter-actor.c:4138
 msgid "Request Mode"
 msgstr "Moda Permintaan"
 
-#: ../clutter/clutter-actor.c:4181
+#: clutter/clutter-actor.c:4139
 msgid "The actor's request mode"
 msgstr "Moda permintaan aktor"
 
-#: ../clutter/clutter-actor.c:4196
+#: clutter/clutter-actor.c:4154
 msgid "Depth"
 msgstr "Kedalaman"
 
-#: ../clutter/clutter-actor.c:4197
+#: clutter/clutter-actor.c:4155
 msgid "Position on the Z axis"
 msgstr "Posisi pada sumbu Z"
 
-#: ../clutter/clutter-actor.c:4211
+#: clutter/clutter-actor.c:4169
+#, fuzzy
 msgid "Opacity"
-msgstr "Kelegapan"
+msgstr "Ketransparanan"
 
-#: ../clutter/clutter-actor.c:4212
+#: clutter/clutter-actor.c:4170
 msgid "Opacity of an actor"
-msgstr "Tingkat kelegapan aktor"
+msgstr "Tingkat transparansi aktor"
 
-#: ../clutter/clutter-actor.c:4231
+#: clutter/clutter-actor.c:4186
 msgid "Offscreen redirect"
-msgstr "Pengalihan luar layar"
+msgstr ""
 
-#: ../clutter/clutter-actor.c:4232
-msgid "Flags controlling when to flatten the actor into a single image"
-msgstr "Flag yang mengendalikan kapan untuk meratakan aktor ke gambar tunggal"
+#: clutter/clutter-actor.c:4187
+#, fuzzy
+msgid "Whether to flatten the actor into a single image"
+msgstr "Apakah aktor memuat penunjuk dari suatu perangkat masukan"
 
-#: ../clutter/clutter-actor.c:4250
+#: clutter/clutter-actor.c:4205
 msgid "Visible"
 msgstr "Tampak"
 
-#: ../clutter/clutter-actor.c:4251
+#: clutter/clutter-actor.c:4206
 msgid "Whether the actor is visible or not"
 msgstr "Apakah aktor nampak atau tidak"
 
-#: ../clutter/clutter-actor.c:4266
+#: clutter/clutter-actor.c:4221
 msgid "Mapped"
 msgstr "Dipetakan"
 
-#: ../clutter/clutter-actor.c:4267
+#: clutter/clutter-actor.c:4222
 msgid "Whether the actor will be painted"
 msgstr "Apakah aktor akan digambar"
 
-#: ../clutter/clutter-actor.c:4281
+#: clutter/clutter-actor.c:4236
 msgid "Realized"
 msgstr "Direalisasikan"
 
-#: ../clutter/clutter-actor.c:4282
+#: clutter/clutter-actor.c:4237
 msgid "Whether the actor has been realized"
 msgstr "Apakah aktor telah direalisasikan"
 
-#: ../clutter/clutter-actor.c:4298
+#: clutter/clutter-actor.c:4253
 msgid "Reactive"
 msgstr "Reaktif"
 
-#: ../clutter/clutter-actor.c:4299
+#: clutter/clutter-actor.c:4254
 msgid "Whether the actor is reactive to events"
 msgstr "Apakah aktor reaktif terhadap kejadian"
 
-#: ../clutter/clutter-actor.c:4311
+#: clutter/clutter-actor.c:4266
 msgid "Has Clip"
 msgstr "Punya Klip"
 
-#: ../clutter/clutter-actor.c:4312
+#: clutter/clutter-actor.c:4267
 msgid "Whether the actor has a clip set"
 msgstr "Apakah aktor telah ditata punya klip"
 
-#: ../clutter/clutter-actor.c:4327
+#: clutter/clutter-actor.c:4282
 msgid "Clip"
 msgstr "Klip"
 
-#: ../clutter/clutter-actor.c:4328
+#: clutter/clutter-actor.c:4283
 msgid "The clip region for the actor"
 msgstr "Wilayah klip bagi aktor"
 
-#: ../clutter/clutter-actor.c:4342
-#: ../clutter/clutter-actor-meta.c:207
-#: ../clutter/clutter-binding-pool.c:319
-#: ../clutter/clutter-input-device.c:236
+#: clutter/clutter-actor.c:4297 clutter/clutter-actor-meta.c:207
+#: clutter/clutter-binding-pool.c:319 clutter/clutter-input-device.c:236
 msgid "Name"
 msgstr "Nama"
 
-#: ../clutter/clutter-actor.c:4343
+#: clutter/clutter-actor.c:4298
 msgid "Name of the actor"
 msgstr "Nama aktor"
 
-#: ../clutter/clutter-actor.c:4357
+#: clutter/clutter-actor.c:4312
 msgid "Scale X"
 msgstr "Skala X"
 
-#: ../clutter/clutter-actor.c:4358
+#: clutter/clutter-actor.c:4313
 msgid "Scale factor on the X axis"
 msgstr "Faktor skala pada sumbu X"
 
-#: ../clutter/clutter-actor.c:4373
+#: clutter/clutter-actor.c:4328
 msgid "Scale Y"
 msgstr "Skala Y"
 
-#: ../clutter/clutter-actor.c:4374
+#: clutter/clutter-actor.c:4329
 msgid "Scale factor on the Y axis"
 msgstr "Faktor skala pada sumbu Y"
 
-#: ../clutter/clutter-actor.c:4389
+#: clutter/clutter-actor.c:4344
 msgid "Scale Center X"
 msgstr "Pusat Skala X"
 
-#: ../clutter/clutter-actor.c:4390
+#: clutter/clutter-actor.c:4345
 msgid "Horizontal scale center"
 msgstr "Pusat skala horisontal"
 
-#: ../clutter/clutter-actor.c:4405
+#: clutter/clutter-actor.c:4360
 msgid "Scale Center Y"
 msgstr "Pusat Skala Y"
 
-#: ../clutter/clutter-actor.c:4406
+#: clutter/clutter-actor.c:4361
 msgid "Vertical scale center"
 msgstr "Pusat skala vertikal"
 
-#: ../clutter/clutter-actor.c:4421
+#: clutter/clutter-actor.c:4376
 msgid "Scale Gravity"
 msgstr "Gravitasi Skala"
 
-#: ../clutter/clutter-actor.c:4422
+#: clutter/clutter-actor.c:4377
 msgid "The center of scaling"
 msgstr "Pusat penskalaan"
 
-#: ../clutter/clutter-actor.c:4439
+#: clutter/clutter-actor.c:4394
 msgid "Rotation Angle X"
 msgstr "Sudut Rotasi X"
 
-#: ../clutter/clutter-actor.c:4440
+#: clutter/clutter-actor.c:4395
 msgid "The rotation angle on the X axis"
 msgstr "Sudut rotasi dari sumbu X"
 
-#: ../clutter/clutter-actor.c:4455
+#: clutter/clutter-actor.c:4410
 msgid "Rotation Angle Y"
 msgstr "Sudut Rotasi Y"
 
-#: ../clutter/clutter-actor.c:4456
+#: clutter/clutter-actor.c:4411
 msgid "The rotation angle on the Y axis"
 msgstr "Sudut rotasi dari sumbu Y"
 
-#: ../clutter/clutter-actor.c:4471
+#: clutter/clutter-actor.c:4426
 msgid "Rotation Angle Z"
 msgstr "Sudut Rotasi Z"
 
-#: ../clutter/clutter-actor.c:4472
+#: clutter/clutter-actor.c:4427
 msgid "The rotation angle on the Z axis"
 msgstr "Sudut rotasi dari sumbu Z"
 
-#: ../clutter/clutter-actor.c:4487
+#: clutter/clutter-actor.c:4442
 msgid "Rotation Center X"
 msgstr "Pusat Rotasi X"
 
-#: ../clutter/clutter-actor.c:4488
+#: clutter/clutter-actor.c:4443
 msgid "The rotation center on the X axis"
 msgstr "Pusat rotasi pada sumbu X"
 
-#: ../clutter/clutter-actor.c:4504
+#: clutter/clutter-actor.c:4459
 msgid "Rotation Center Y"
 msgstr "Pusat Rotasi Y"
 
-#: ../clutter/clutter-actor.c:4505
+#: clutter/clutter-actor.c:4460
 msgid "The rotation center on the Y axis"
 msgstr "Pusat rotasi pada sumbu Y"
 
-#: ../clutter/clutter-actor.c:4521
+#: clutter/clutter-actor.c:4476
 msgid "Rotation Center Z"
 msgstr "Pusat Rotasi Z"
 
-#: ../clutter/clutter-actor.c:4522
+#: clutter/clutter-actor.c:4477
 msgid "The rotation center on the Z axis"
 msgstr "Pusat rotasi pada sumbu Z"
 
-#: ../clutter/clutter-actor.c:4538
+#: clutter/clutter-actor.c:4493
 msgid "Rotation Center Z Gravity"
 msgstr "Gravitasi Z Pusat Rotasi"
 
-#: ../clutter/clutter-actor.c:4539
+#: clutter/clutter-actor.c:4494
 msgid "Center point for rotation around the Z axis"
 msgstr "Titik pusat rotasi seputar sumbu Z"
 
-#: ../clutter/clutter-actor.c:4557
+#: clutter/clutter-actor.c:4512
 msgid "Anchor X"
 msgstr "Jangkar X"
 
-#: ../clutter/clutter-actor.c:4558
+#: clutter/clutter-actor.c:4513
 msgid "X coordinate of the anchor point"
 msgstr "Koordinat X titik jangkar"
 
-#: ../clutter/clutter-actor.c:4574
+#: clutter/clutter-actor.c:4529
 msgid "Anchor Y"
 msgstr "Jangkar Y"
 
-#: ../clutter/clutter-actor.c:4575
+#: clutter/clutter-actor.c:4530
 msgid "Y coordinate of the anchor point"
 msgstr "Koordinat Y titik jangkar"
 
-#: ../clutter/clutter-actor.c:4590
+#: clutter/clutter-actor.c:4545
 msgid "Anchor Gravity"
 msgstr "Gravitasi Jangkar"
 
-#: ../clutter/clutter-actor.c:4591
+#: clutter/clutter-actor.c:4546
 msgid "The anchor point as a ClutterGravity"
-msgstr "Titik jangkar sebagai ClutterGravity"
+msgstr ""
 
-#: ../clutter/clutter-actor.c:4610
+#: clutter/clutter-actor.c:4565
 msgid "Show on set parent"
-msgstr "Tampilkan saat jadi induk"
+msgstr ""
 
-#: ../clutter/clutter-actor.c:4611
+#: clutter/clutter-actor.c:4566
 msgid "Whether the actor is shown when parented"
-msgstr "Apakah aktor ditampilkan ketika dijadikan induk"
+msgstr ""
 
-#: ../clutter/clutter-actor.c:4631
+#: clutter/clutter-actor.c:4586
 msgid "Clip to Allocation"
-msgstr "Klip ke Alokasi"
+msgstr ""
 
-#: ../clutter/clutter-actor.c:4632
+#: clutter/clutter-actor.c:4587
 msgid "Sets the clip region to track the actor's allocation"
-msgstr "Tata wilayah pemotongan untuk melacak alokasi aktor"
+msgstr ""
 
-#: ../clutter/clutter-actor.c:4642
+#: clutter/clutter-actor.c:4597
 msgid "Text Direction"
 msgstr "Arah Teks"
 
-#: ../clutter/clutter-actor.c:4643
+#: clutter/clutter-actor.c:4598
 msgid "Direction of the text"
 msgstr "Arah teks"
 
-#: ../clutter/clutter-actor.c:4661
+#: clutter/clutter-actor.c:4616
 msgid "Has Pointer"
 msgstr "Punya Penunjuk"
 
-#: ../clutter/clutter-actor.c:4662
+#: clutter/clutter-actor.c:4617
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Apakah aktor memuat penunjuk dari suatu perangkat masukan"
 
-#: ../clutter/clutter-actor.c:4679
+#: clutter/clutter-actor.c:4634
 msgid "Actions"
 msgstr "Aksi"
 
-#: ../clutter/clutter-actor.c:4680
+#: clutter/clutter-actor.c:4635
 msgid "Adds an action to the actor"
 msgstr "Tambahkan aksi ke aktor"
 
-#: ../clutter/clutter-actor.c:4694
+#: clutter/clutter-actor.c:4649
 msgid "Constraints"
 msgstr "Kendala"
 
-#: ../clutter/clutter-actor.c:4695
+#: clutter/clutter-actor.c:4650
 msgid "Adds a constraint to the actor"
 msgstr "Tambahkan kendala ke aktor"
 
-#: ../clutter/clutter-actor-meta.c:193
-#: ../clutter/clutter-child-meta.c:142
+#: clutter/clutter-actor-meta.c:193 clutter/clutter-child-meta.c:142
 msgid "Actor"
 msgstr "Aktor"
 
-#: ../clutter/clutter-actor-meta.c:194
+#: clutter/clutter-actor-meta.c:194
 msgid "The actor attached to the meta"
-msgstr "Aktor yang dicantolkan ke meta"
+msgstr ""
 
-#: ../clutter/clutter-actor-meta.c:208
+#: clutter/clutter-actor-meta.c:208
+#, fuzzy
 msgid "The name of the meta"
-msgstr "Nama meta"
+msgstr "Perubah Meta"
 
-#: ../clutter/clutter-actor-meta.c:221
-#: ../clutter/clutter-input-device.c:315
-#: ../clutter/clutter-shader.c:307
+#: clutter/clutter-actor-meta.c:221 clutter/clutter-input-device.c:315
+#: clutter/clutter-shader.c:307
+#, fuzzy
 msgid "Enabled"
 msgstr "Diaktifkan"
 
-#: ../clutter/clutter-actor-meta.c:222
+#: clutter/clutter-actor-meta.c:222
+#, fuzzy
 msgid "Whether the meta is enabled"
-msgstr "Apakah meta diaktifkan"
+msgstr "Menentukan apkaah aksi diaktifkan"
 
-#: ../clutter/clutter-align-constraint.c:270
-#: ../clutter/clutter-bind-constraint.c:349
-#: ../clutter/clutter-clone.c:340
-#: ../clutter/clutter-snap-constraint.c:321
+#: clutter/clutter-align-constraint.c:252
+#: clutter/clutter-bind-constraint.c:316 clutter/clutter-clone.c:340
+#: clutter/clutter-snap-constraint.c:321
 msgid "Source"
 msgstr "Sumber"
 
-#: ../clutter/clutter-align-constraint.c:271
+#: clutter/clutter-align-constraint.c:253
 msgid "The source of the alignment"
 msgstr "Sumber perataan"
 
-#: ../clutter/clutter-align-constraint.c:284
+#: clutter/clutter-align-constraint.c:266
+#, fuzzy
 msgid "Align Axis"
-msgstr "Sumbu Perataan"
+msgstr "Rata kanan"
 
-#: ../clutter/clutter-align-constraint.c:285
+#: clutter/clutter-align-constraint.c:267
 msgid "The axis to align the position to"
-msgstr "Sumbu untuk meratakan posisi"
+msgstr ""
 
-#: ../clutter/clutter-align-constraint.c:304
-#: ../clutter/clutter-desaturate-effect.c:304
+#: clutter/clutter-align-constraint.c:286
+#: clutter/clutter-desaturate-effect.c:304
 msgid "Factor"
 msgstr "Faktor"
 
-#: ../clutter/clutter-align-constraint.c:305
+#: clutter/clutter-align-constraint.c:287
 msgid "The alignment factor, between 0.0 and 1.0"
-msgstr "Faktor perataan, antara 0.0 dan 1.0"
+msgstr ""
 
-#: ../clutter/clutter-alpha.c:345
-#: ../clutter/clutter-animation.c:537
-#: ../clutter/clutter-animator.c:1802
+#: clutter/clutter-alpha.c:339 clutter/clutter-animation.c:528
+#: clutter/clutter-animator.c:1802
 msgid "Timeline"
-msgstr "Alur waktu"
+msgstr ""
 
-#: ../clutter/clutter-alpha.c:346
+#: clutter/clutter-alpha.c:340
 msgid "Timeline used by the alpha"
-msgstr "Alur waktu (timeline) yang dipakai oleh alfa"
+msgstr ""
 
-#: ../clutter/clutter-alpha.c:361
+#: clutter/clutter-alpha.c:355
 msgid "Alpha value"
 msgstr "Nilai alfa"
 
-#: ../clutter/clutter-alpha.c:362
+#: clutter/clutter-alpha.c:356
 msgid "Alpha value as computed by the alpha"
-msgstr "Nilai alfa yang dihitung oleh alfa"
+msgstr ""
 
-#: ../clutter/clutter-alpha.c:382
-#: ../clutter/clutter-animation.c:493
+#: clutter/clutter-alpha.c:376 clutter/clutter-animation.c:484
+#, fuzzy
 msgid "Mode"
 msgstr "Mode"
 
-#: ../clutter/clutter-alpha.c:383
+#: clutter/clutter-alpha.c:377
+#, fuzzy
 msgid "Progress mode"
-msgstr "Moda kemajuan"
+msgstr "Moda Kolom..."
 
-#: ../clutter/clutter-animation.c:477
+#: clutter/clutter-animation.c:468
 msgid "Object"
 msgstr "Objek"
 
-#: ../clutter/clutter-animation.c:478
+#: clutter/clutter-animation.c:469
 msgid "Object to which the animation applies"
-msgstr "Objek yang menerapkan animasi"
+msgstr ""
 
-#: ../clutter/clutter-animation.c:494
+#: clutter/clutter-animation.c:485
+#, fuzzy
 msgid "The mode of the animation"
-msgstr "Mode animasi"
+msgstr "Mode animasi gambar"
 
-#: ../clutter/clutter-animation.c:508
-#: ../clutter/clutter-animator.c:1786
-#: ../clutter/clutter-media.c:194
-#: ../clutter/clutter-state.c:1486
-#: ../clutter/clutter-timeline.c:294
+#: clutter/clutter-animation.c:499 clutter/clutter-animator.c:1786
+#: clutter/clutter-media.c:194 clutter/clutter-state.c:1422
+#: clutter/clutter-timeline.c:294
 msgid "Duration"
 msgstr "Durasi"
 
-#: ../clutter/clutter-animation.c:509
+#: clutter/clutter-animation.c:500
 msgid "Duration of the animation, in milliseconds"
-msgstr "Durasi animasi, dalam milidetik"
+msgstr ""
 
-#: ../clutter/clutter-animation.c:523
-#: ../clutter/clutter-timeline.c:263
+#: clutter/clutter-animation.c:514 clutter/clutter-timeline.c:263
 msgid "Loop"
 msgstr "Pengulangan"
 
-#: ../clutter/clutter-animation.c:524
+#: clutter/clutter-animation.c:515
 msgid "Whether the animation should loop"
-msgstr "Apakah animasi mesti berulang"
+msgstr ""
 
-#: ../clutter/clutter-animation.c:538
+#: clutter/clutter-animation.c:529
 msgid "The timeline used by the animation"
-msgstr "Alur waktu yang dipakai oleh animasi"
+msgstr ""
 
-#: ../clutter/clutter-animation.c:551
-#: ../clutter/clutter-behaviour.c:304
+#: clutter/clutter-animation.c:542 clutter/clutter-behaviour.c:298
 msgid "Alpha"
 msgstr "Alfa"
 
-#: ../clutter/clutter-animation.c:552
+#: clutter/clutter-animation.c:543
 msgid "The alpha used by the animation"
-msgstr "Alfa yang dipakai oleh animasi"
+msgstr ""
 
-#: ../clutter/clutter-animator.c:1787
+#: clutter/clutter-animator.c:1787
+#, fuzzy
 msgid "The duration of the animation"
 msgstr "Durasi animasi"
 
-#: ../clutter/clutter-animator.c:1803
+#: clutter/clutter-animator.c:1803
+#, fuzzy
 msgid "The timeline of the animation"
-msgstr "Alur waktu animasi"
+msgstr "Pilih sebuah animasi"
 
-#: ../clutter/clutter-behaviour.c:305
+#: clutter/clutter-behaviour.c:299
 msgid "Alpha Object to drive the behaviour"
-msgstr "Objek Alfa untuk mendorong perilaku"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-depth.c:178
+#: clutter/clutter-behaviour-depth.c:174
+#, fuzzy
 msgid "Start Depth"
-msgstr "Kedalaman Awal"
+msgstr "_Kedalaman Warna:"
 
-#: ../clutter/clutter-behaviour-depth.c:179
+#: clutter/clutter-behaviour-depth.c:175
 msgid "Initial depth to apply"
-msgstr "Kedalaman awal untuk diterapkan"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-depth.c:194
+#: clutter/clutter-behaviour-depth.c:190
+#, fuzzy
 msgid "End Depth"
-msgstr "Kedalaman Akhir"
+msgstr "_Kedalaman Warna:"
 
-#: ../clutter/clutter-behaviour-depth.c:195
+#: clutter/clutter-behaviour-depth.c:191
 msgid "Final depth to apply"
-msgstr "Kedalaman akhir untuk diterapkan"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-ellipse.c:397
+#: clutter/clutter-behaviour-ellipse.c:394
+#, fuzzy
 msgid "Start Angle"
-msgstr "Sudut Awal"
+msgstr "Menu S_udut"
 
-#: ../clutter/clutter-behaviour-ellipse.c:398
-#: ../clutter/clutter-behaviour-rotate.c:280
+#: clutter/clutter-behaviour-ellipse.c:395
+#: clutter/clutter-behaviour-rotate.c:276
+#, fuzzy
 msgid "Initial angle"
-msgstr "Sudut awal"
+msgstr "Menu S_udut"
 
-#: ../clutter/clutter-behaviour-ellipse.c:413
+#: clutter/clutter-behaviour-ellipse.c:410
+#, fuzzy
 msgid "End Angle"
-msgstr "Sudut Akhir"
+msgstr "Menu S_udut"
 
-#: ../clutter/clutter-behaviour-ellipse.c:414
-#: ../clutter/clutter-behaviour-rotate.c:298
+#: clutter/clutter-behaviour-ellipse.c:411
+#: clutter/clutter-behaviour-rotate.c:294
+#, fuzzy
 msgid "Final angle"
-msgstr "Sudut akhir"
+msgstr "Menu S_udut"
 
-#: ../clutter/clutter-behaviour-ellipse.c:429
+#: clutter/clutter-behaviour-ellipse.c:426
+#, fuzzy
 msgid "Angle x tilt"
-msgstr "Sudut miring x"
+msgstr "Menu S_udut"
 
-#: ../clutter/clutter-behaviour-ellipse.c:430
+#: clutter/clutter-behaviour-ellipse.c:427
 msgid "Tilt of the ellipse around x axis"
-msgstr "Kemiringan elips terhadap sumbu x"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-ellipse.c:445
+#: clutter/clutter-behaviour-ellipse.c:442
+#, fuzzy
 msgid "Angle y tilt"
-msgstr "Sudut miring y"
+msgstr "Menu S_udut"
 
-#: ../clutter/clutter-behaviour-ellipse.c:446
+#: clutter/clutter-behaviour-ellipse.c:443
 msgid "Tilt of the ellipse around y axis"
-msgstr "Kemiringan elips terhadap sumbu y"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-ellipse.c:461
+#: clutter/clutter-behaviour-ellipse.c:458
+#, fuzzy
 msgid "Angle z tilt"
-msgstr "Sudut miring z"
+msgstr "Menu S_udut"
 
-#: ../clutter/clutter-behaviour-ellipse.c:462
+#: clutter/clutter-behaviour-ellipse.c:459
 msgid "Tilt of the ellipse around z axis"
-msgstr "Kemiringan elips terhadap sumbu z"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-ellipse.c:478
+#: clutter/clutter-behaviour-ellipse.c:475
+#, fuzzy
 msgid "Width of the ellipse"
-msgstr "Lebar elips"
+msgstr "_Lebar tetap:"
 
-#: ../clutter/clutter-behaviour-ellipse.c:494
+#: clutter/clutter-behaviour-ellipse.c:491
+#, fuzzy
 msgid "Height of ellipse"
-msgstr "Tinggi elips"
+msgstr "<b>Tinggi:</b> %d piksel\n"
 
-#: ../clutter/clutter-behaviour-ellipse.c:509
+#: clutter/clutter-behaviour-ellipse.c:506
+#, fuzzy
 msgid "Center"
-msgstr "Pusat"
+msgstr "Tengah"
 
-#: ../clutter/clutter-behaviour-ellipse.c:510
+#: clutter/clutter-behaviour-ellipse.c:507
+#, fuzzy
 msgid "Center of ellipse"
-msgstr "Pusat elips"
+msgstr "Pusat Pengaturan"
 
-#: ../clutter/clutter-behaviour-ellipse.c:524
-#: ../clutter/clutter-behaviour-rotate.c:333
-#: ../clutter/clutter-timeline.c:310
+#: clutter/clutter-behaviour-ellipse.c:521
+#: clutter/clutter-behaviour-rotate.c:329 clutter/clutter-timeline.c:310
 msgid "Direction"
 msgstr "Arah"
 
-#: ../clutter/clutter-behaviour-ellipse.c:525
-#: ../clutter/clutter-behaviour-rotate.c:334
+#: clutter/clutter-behaviour-ellipse.c:522
+#: clutter/clutter-behaviour-rotate.c:330
+#, fuzzy
 msgid "Direction of rotation"
-msgstr "Arah rotasi"
+msgstr "Putaran Jarum Jam"
 
-#: ../clutter/clutter-behaviour-opacity.c:181
+#: clutter/clutter-behaviour-opacity.c:177
+#, fuzzy
 msgid "Opacity Start"
-msgstr "Kelegapan Awal"
+msgstr "Jalankan program"
 
-#: ../clutter/clutter-behaviour-opacity.c:182
+#: clutter/clutter-behaviour-opacity.c:178
 msgid "Initial opacity level"
-msgstr "Aras kelegapan awal"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-opacity.c:199
+#: clutter/clutter-behaviour-opacity.c:195
+#, fuzzy
 msgid "Opacity End"
-msgstr "Kelegapan Akhir"
+msgstr "KP_End"
 
-#: ../clutter/clutter-behaviour-opacity.c:200
+#: clutter/clutter-behaviour-opacity.c:196
 msgid "Final opacity level"
-msgstr "Aras kelegapan akhir"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-path.c:222
-#: ../clutter/clutter-path-constraint.c:212
+#: clutter/clutter-behaviour-path.c:219 clutter/clutter-path-constraint.c:212
 msgid "Path"
 msgstr "Path"
 
-#: ../clutter/clutter-behaviour-path.c:223
+#: clutter/clutter-behaviour-path.c:220
 msgid "The ClutterPath object representing the path to animate along"
-msgstr "Objek ClutterPath yang mewakili lintasan animasi"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-rotate.c:279
+#: clutter/clutter-behaviour-rotate.c:275
+#, fuzzy
 msgid "Angle Begin"
-msgstr "Awal Sudut"
+msgstr "KP_Begin"
 
-#: ../clutter/clutter-behaviour-rotate.c:297
+#: clutter/clutter-behaviour-rotate.c:293
+#, fuzzy
 msgid "Angle End"
-msgstr "Akhir Sudut"
+msgstr "KP_End"
 
-#: ../clutter/clutter-behaviour-rotate.c:315
+#: clutter/clutter-behaviour-rotate.c:311
+#, fuzzy
 msgid "Axis"
 msgstr "Sumbu"
 
-#: ../clutter/clutter-behaviour-rotate.c:316
+#: clutter/clutter-behaviour-rotate.c:312
+#, fuzzy
 msgid "Axis of rotation"
-msgstr "Sumbu rotasi"
+msgstr "Putaran Jarum Jam"
 
-#: ../clutter/clutter-behaviour-rotate.c:351
+#: clutter/clutter-behaviour-rotate.c:347
 msgid "Center X"
 msgstr "Pusat X"
 
-#: ../clutter/clutter-behaviour-rotate.c:352
+#: clutter/clutter-behaviour-rotate.c:348
 msgid "X coordinate of the center of rotation"
-msgstr "Koordinat X dari pusat rotasi"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-rotate.c:369
+#: clutter/clutter-behaviour-rotate.c:365
 msgid "Center Y"
 msgstr "Pusat Y"
 
-#: ../clutter/clutter-behaviour-rotate.c:370
+#: clutter/clutter-behaviour-rotate.c:366
 msgid "Y coordinate of the center of rotation"
-msgstr "Koordinat Y dari pusat rotasi"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-rotate.c:387
+#: clutter/clutter-behaviour-rotate.c:383
 msgid "Center Z"
 msgstr "Pusat Z"
 
-#: ../clutter/clutter-behaviour-rotate.c:388
+#: clutter/clutter-behaviour-rotate.c:384
 msgid "Z coordinate of the center of rotation"
-msgstr "Koordinat Z dari pusat rotasi"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-scale.c:222
+#: clutter/clutter-behaviour-scale.c:218
+#, fuzzy
 msgid "X Start Scale"
-msgstr "Skala Awal X"
+msgstr "Skala Beaufort"
 
-#: ../clutter/clutter-behaviour-scale.c:223
+#: clutter/clutter-behaviour-scale.c:219
 msgid "Initial scale on the X axis"
-msgstr "Skala awal pada sumbu X"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-scale.c:241
+#: clutter/clutter-behaviour-scale.c:237
+#, fuzzy
 msgid "X End Scale"
-msgstr "Skala Akhir X"
+msgstr "Skala Beaufort"
 
-#: ../clutter/clutter-behaviour-scale.c:242
+#: clutter/clutter-behaviour-scale.c:238
 msgid "Final scale on the X axis"
-msgstr "Skala akhir pada sumbu X"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-scale.c:260
+#: clutter/clutter-behaviour-scale.c:256
+#, fuzzy
 msgid "Y Start Scale"
-msgstr "Skala Awal Y"
+msgstr "Skala Beaufort"
 
-#: ../clutter/clutter-behaviour-scale.c:261
+#: clutter/clutter-behaviour-scale.c:257
 msgid "Initial scale on the Y axis"
-msgstr "Skala awal pada sumbu Y"
+msgstr ""
 
-#: ../clutter/clutter-behaviour-scale.c:279
+#: clutter/clutter-behaviour-scale.c:275
+#, fuzzy
 msgid "Y End Scale"
-msgstr "Skala Akhir Y"
+msgstr "Skala Beaufort"
 
-#: ../clutter/clutter-behaviour-scale.c:280
+#: clutter/clutter-behaviour-scale.c:276
 msgid "Final scale on the Y axis"
-msgstr "Skala akhir pada sumbu Y"
+msgstr ""
 
-#: ../clutter/clutter-bind-constraint.c:350
+#: clutter/clutter-bind-constraint.c:317
+#, fuzzy
 msgid "The source of the binding"
-msgstr "Sumber pengikatan"
+msgstr "Asal IP"
 
-#: ../clutter/clutter-bind-constraint.c:363
+#: clutter/clutter-bind-constraint.c:330
+#, fuzzy
 msgid "Coordinate"
-msgstr "Koordinat"
+msgstr "Koordinat X"
 
-#: ../clutter/clutter-bind-constraint.c:364
+#: clutter/clutter-bind-constraint.c:331
+#, fuzzy
 msgid "The coordinate to bind"
-msgstr "Koordinat ikatan"
+msgstr "Koordinat X dari kotak untuk merekam"
 
-#: ../clutter/clutter-bind-constraint.c:378
-#: ../clutter/clutter-path-constraint.c:226
-#: ../clutter/clutter-snap-constraint.c:366
+#: clutter/clutter-bind-constraint.c:345 clutter/clutter-path-constraint.c:226
+#: clutter/clutter-snap-constraint.c:366
 msgid "Offset"
 msgstr "Ofset"
 
-#: ../clutter/clutter-bind-constraint.c:379
+#: clutter/clutter-bind-constraint.c:346
 msgid "The offset in pixels to apply to the binding"
-msgstr "Ofset dalam piksel untuk menerapkan pengikatan"
+msgstr ""
 
-#: ../clutter/clutter-binding-pool.c:320
+#: clutter/clutter-binding-pool.c:320
 msgid "The unique name of the binding pool"
-msgstr "Nama unik dari pul pengikatan"
+msgstr ""
 
-#: ../clutter/clutter-bin-layout.c:261
-#: ../clutter/clutter-bin-layout.c:585
-#: ../clutter/clutter-box-layout.c:395
-#: ../clutter/clutter-table-layout.c:652
+#: clutter/clutter-bin-layout.c:261 clutter/clutter-bin-layout.c:580
+#: clutter/clutter-box-layout.c:395 clutter/clutter-table-layout.c:652
+#, fuzzy
 msgid "Horizontal Alignment"
 msgstr "Perataan Horisontal"
 
-#: ../clutter/clutter-bin-layout.c:262
+#: clutter/clutter-bin-layout.c:262
 msgid "Horizontal alignment for the actor inside the layout manager"
-msgstr "Perataan horisontal bagi aktor di dalam manajer tata letak"
+msgstr ""
 
-#: ../clutter/clutter-bin-layout.c:270
-#: ../clutter/clutter-bin-layout.c:602
-#: ../clutter/clutter-box-layout.c:404
-#: ../clutter/clutter-table-layout.c:667
+#: clutter/clutter-bin-layout.c:270 clutter/clutter-bin-layout.c:597
+#: clutter/clutter-box-layout.c:404 clutter/clutter-table-layout.c:667
+#, fuzzy
 msgid "Vertical Alignment"
 msgstr "Perataan Vertikal"
 
-#: ../clutter/clutter-bin-layout.c:271
+#: clutter/clutter-bin-layout.c:271
 msgid "Vertical alignment for the actor inside the layout manager"
-msgstr "Perataan vertikal bagi aktor di dalam manajer tata letak"
+msgstr ""
 
-#: ../clutter/clutter-bin-layout.c:586
+#: clutter/clutter-bin-layout.c:581
 msgid "Default horizontal alignment for the actors inside the layout manager"
-msgstr "Perataan horisontal baku bagi aktor di dalam manajer tata letak"
+msgstr ""
 
-#: ../clutter/clutter-bin-layout.c:603
+#: clutter/clutter-bin-layout.c:598
 msgid "Default vertical alignment for the actors inside the layout manager"
-msgstr "Perataan vertikal baku bagi aktor di dalam manajer tata letak"
+msgstr ""
 
-#: ../clutter/clutter-box.c:544
+#: clutter/clutter-box.c:537
 msgid "Layout Manager"
 msgstr "Manajer Tata Letak"
 
-#: ../clutter/clutter-box.c:545
+#: clutter/clutter-box.c:538
 msgid "The layout manager used by the box"
-msgstr "Manajer tata letak yang dipakai oleh kotak"
+msgstr ""
 
-#: ../clutter/clutter-box.c:564
-#: ../clutter/clutter-rectangle.c:267
-#: ../clutter/clutter-stage.c:1763
+#: clutter/clutter-box.c:557 clutter/clutter-rectangle.c:267
+#: clutter/clutter-stage.c:1718
 msgid "Color"
 msgstr "Warna"
 
-#: ../clutter/clutter-box.c:565
+#: clutter/clutter-box.c:558
+#, fuzzy
 msgid "The background color of the box"
-msgstr "Warna latar belakang kotak"
+msgstr "Warna Kotak Pilihan"
 
-#: ../clutter/clutter-box.c:579
+#: clutter/clutter-box.c:572
+#, fuzzy
 msgid "Color Set"
-msgstr "Warna Ditata"
+msgstr "Warna latar belakang sudah diset"
 
-#: ../clutter/clutter-box.c:580
+#: clutter/clutter-box.c:573
+#, fuzzy
 msgid "Whether the background color is set"
 msgstr "Apakah warna latar belakang ditata"
 
-#: ../clutter/clutter-box-layout.c:370
+#: clutter/clutter-box-layout.c:370
+#, fuzzy
 msgid "Expand"
-msgstr "Kembangkan"
+msgstr "Ekspansi"
 
-#: ../clutter/clutter-box-layout.c:371
+#: clutter/clutter-box-layout.c:371
 msgid "Allocate extra space for the child"
-msgstr "Alokasikan ruang ekstra bagi anak"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:377
-#: ../clutter/clutter-table-layout.c:631
+#: clutter/clutter-box-layout.c:377 clutter/clutter-table-layout.c:631
+#, fuzzy
 msgid "Horizontal Fill"
-msgstr "Penuhi Horisontal"
+msgstr "Isi warna"
 
-#: ../clutter/clutter-box-layout.c:378
-#: ../clutter/clutter-table-layout.c:632
-msgid "Whether the child should receive priority when the container is allocating spare space on the horizontal axis"
-msgstr "Apakah anak mesti menerima prioritas ketika wadah sedang mengalokasikan ruang cadangan pada sumbu horisontal"
+#: clutter/clutter-box-layout.c:378 clutter/clutter-table-layout.c:632
+msgid ""
+"Whether the child should receive priority when the container is allocating "
+"spare space on the horizontal axis"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:386
-#: ../clutter/clutter-table-layout.c:638
+#: clutter/clutter-box-layout.c:386 clutter/clutter-table-layout.c:638
+#, fuzzy
 msgid "Vertical Fill"
-msgstr "Penuhi Vertikal"
+msgstr "Isi warna"
 
-#: ../clutter/clutter-box-layout.c:387
-#: ../clutter/clutter-table-layout.c:639
-msgid "Whether the child should receive priority when the container is allocating spare space on the vertical axis"
-msgstr "Apakah anak mesti menerima prioritas ketika wadah sedang mengalokasikan ruang cadangan pada sumbu vertikal"
+#: clutter/clutter-box-layout.c:387 clutter/clutter-table-layout.c:639
+msgid ""
+"Whether the child should receive priority when the container is allocating "
+"spare space on the vertical axis"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:396
-#: ../clutter/clutter-table-layout.c:653
+#: clutter/clutter-box-layout.c:396 clutter/clutter-table-layout.c:653
 msgid "Horizontal alignment of the actor within the cell"
-msgstr "Perataan horisontal dari aktor dalam sel"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:405
-#: ../clutter/clutter-table-layout.c:668
+#: clutter/clutter-box-layout.c:405 clutter/clutter-table-layout.c:668
 msgid "Vertical alignment of the actor within the cell"
-msgstr "Perataan vertikal dari aktor dalam sel"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:1305
+#: clutter/clutter-box-layout.c:1305
 msgid "Vertical"
 msgstr "Vertikal"
 
-#: ../clutter/clutter-box-layout.c:1306
+#: clutter/clutter-box-layout.c:1306
 msgid "Whether the layout should be vertical, rather than horizontal"
-msgstr "Apakah tata letak mesti vertikal daripada horisontal"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:1321
-#: ../clutter/clutter-flow-layout.c:901
+#: clutter/clutter-box-layout.c:1321 clutter/clutter-flow-layout.c:898
+#, fuzzy
 msgid "Homogeneous"
 msgstr "Homogen"
 
-#: ../clutter/clutter-box-layout.c:1322
-msgid "Whether the layout should be homogeneous, i.e. all childs get the same size"
-msgstr "Apakah tata letak mesti homogen, yaitu semua anak mendapat ukuran yang sama"
+#: clutter/clutter-box-layout.c:1322
+msgid ""
+"Whether the layout should be homogeneous, i.e. all childs get the same size"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:1337
+#: clutter/clutter-box-layout.c:1337
+#, fuzzy
 msgid "Pack Start"
-msgstr "Pak Awal"
+msgstr "Jalankan program"
 
-#: ../clutter/clutter-box-layout.c:1338
+#: clutter/clutter-box-layout.c:1338
 msgid "Whether to pack items at the start of the box"
-msgstr "Apakah mengepak butir-butir di awal kotak"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:1351
+#: clutter/clutter-box-layout.c:1351
+#, fuzzy
 msgid "Spacing"
-msgstr "Sela"
+msgstr "Rongga"
 
-#: ../clutter/clutter-box-layout.c:1352
+#: clutter/clutter-box-layout.c:1352
+#, fuzzy
 msgid "Spacing between children"
-msgstr "Sela antar anak"
+msgstr "Ruang antar cells"
 
-#: ../clutter/clutter-box-layout.c:1366
-#: ../clutter/clutter-table-layout.c:1742
+#: clutter/clutter-box-layout.c:1366 clutter/clutter-table-layout.c:1740
+#, fuzzy
 msgid "Use Animations"
-msgstr "Gunakan Animasi"
+msgstr "Aktifkan animasi"
 
-#: ../clutter/clutter-box-layout.c:1367
-#: ../clutter/clutter-table-layout.c:1743
+#: clutter/clutter-box-layout.c:1367 clutter/clutter-table-layout.c:1741
 msgid "Whether layout changes should be animated"
-msgstr "Apakah perubahan tata letak mesti dianimasi"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:1388
-#: ../clutter/clutter-table-layout.c:1764
+#: clutter/clutter-box-layout.c:1388 clutter/clutter-table-layout.c:1762
+#, fuzzy
 msgid "Easing Mode"
-msgstr "Moda Perpindahan"
+msgstr "Moda Kolom..."
 
-#: ../clutter/clutter-box-layout.c:1389
-#: ../clutter/clutter-table-layout.c:1765
+#: clutter/clutter-box-layout.c:1389 clutter/clutter-table-layout.c:1763
 msgid "The easing mode of the animations"
-msgstr "Mode perpindahan dari animasi"
+msgstr ""
 
-#: ../clutter/clutter-box-layout.c:1406
-#: ../clutter/clutter-table-layout.c:1782
+#: clutter/clutter-box-layout.c:1406 clutter/clutter-table-layout.c:1780
+#, fuzzy
 msgid "Easing Duration"
-msgstr "Durasi perpindahan"
-
-#: ../clutter/clutter-box-layout.c:1407
-#: ../clutter/clutter-table-layout.c:1783
-msgid "The duration of the animations"
 msgstr "Durasi animasi"
 
-#: ../clutter/clutter-cairo-texture.c:582
+#: clutter/clutter-box-layout.c:1407 clutter/clutter-table-layout.c:1781
+#, fuzzy
+msgid "The duration of the animations"
+msgstr "Aktifkan animasi"
+
+#: clutter/clutter-cairo-texture.c:404
+#, fuzzy
 msgid "Surface Width"
-msgstr "Lebar Permukaan"
+msgstr "_Lebar tetap:"
 
-#: ../clutter/clutter-cairo-texture.c:583
+#: clutter/clutter-cairo-texture.c:405
 msgid "The width of the Cairo surface"
-msgstr "Lebar permukaan Cairo"
+msgstr ""
 
-#: ../clutter/clutter-cairo-texture.c:597
+#: clutter/clutter-cairo-texture.c:419
+#, fuzzy
 msgid "Surface Height"
-msgstr "Tinggi permukaan"
+msgstr "<b>Tinggi:</b> %d piksel\n"
 
-#: ../clutter/clutter-cairo-texture.c:598
+#: clutter/clutter-cairo-texture.c:420
 msgid "The height of the Cairo surface"
-msgstr "Tinggi permukaan Cairo"
+msgstr ""
 
-#: ../clutter/clutter-cairo-texture.c:615
-msgid "Auto Resize"
-msgstr "Otomatis Ubah Ukuran"
-
-#: ../clutter/clutter-cairo-texture.c:616
-msgid "Whether the surface should match the allocation"
-msgstr "Apakah permukaan mesti cocok dengan alokasi"
-
-#: ../clutter/clutter-child-meta.c:127
+#: clutter/clutter-child-meta.c:127
+#, fuzzy
 msgid "Container"
 msgstr "Kontainer"
 
-#: ../clutter/clutter-child-meta.c:128
+#: clutter/clutter-child-meta.c:128
 msgid "The container that created this data"
-msgstr "Kontainer yang membuat data ini"
+msgstr ""
 
-#: ../clutter/clutter-child-meta.c:143
+#: clutter/clutter-child-meta.c:143
 msgid "The actor wrapped by this data"
-msgstr "Aktor yang dibungkus oleh data ini"
+msgstr ""
 
-#: ../clutter/clutter-click-action.c:542
+#: clutter/clutter-click-action.c:542
+#, fuzzy
 msgid "Pressed"
-msgstr "Ditekan"
+msgstr "ditekan"
 
-#: ../clutter/clutter-click-action.c:543
+#: clutter/clutter-click-action.c:543
 msgid "Whether the clickable should be in pressed state"
-msgstr "Apakah yang-dapat-diklik mesti dalam keadaan ditekan"
+msgstr ""
 
-#: ../clutter/clutter-click-action.c:556
+#: clutter/clutter-click-action.c:556
 msgid "Held"
-msgstr "Ditahan"
+msgstr ""
 
-#: ../clutter/clutter-click-action.c:557
+#: clutter/clutter-click-action.c:557
 msgid "Whether the clickable has a grab"
-msgstr "Apakah yang-dapat-diklik memiliki penyeret"
+msgstr ""
 
-#: ../clutter/clutter-click-action.c:574
-#: ../clutter/clutter-settings.c:573
+#: clutter/clutter-click-action.c:574 clutter/clutter-settings.c:521
+#, fuzzy
 msgid "Long Press Duration"
-msgstr "Durasi Tekan Lama"
+msgstr "Durasi animasi"
 
-#: ../clutter/clutter-click-action.c:575
+#: clutter/clutter-click-action.c:575
 msgid "The minimum duration of a long press to recognize the gesture"
-msgstr "Durasi minimum dari penakanan panjang untuk mengenali gestur"
+msgstr ""
 
-#: ../clutter/clutter-click-action.c:593
+#: clutter/clutter-click-action.c:593
 msgid "Long Press Threshold"
-msgstr "Ambang Tekan Lama"
+msgstr ""
 
-#: ../clutter/clutter-click-action.c:594
+#: clutter/clutter-click-action.c:594
 msgid "The maximum threshold before a long press is cancelled"
-msgstr "Ambang maksimum sebelum penekanan panjang dibatalkan"
+msgstr ""
 
-#: ../clutter/clutter-clone.c:341
+#: clutter/clutter-clone.c:341
 msgid "Specifies the actor to be cloned"
-msgstr "Nyatakan aktor yang akan digandakan"
+msgstr ""
 
-#: ../clutter/clutter-colorize-effect.c:307
+#: clutter/clutter-colorize-effect.c:307
 msgid "Tint"
-msgstr "Pewarnaan"
+msgstr ""
 
-#: ../clutter/clutter-colorize-effect.c:308
+#: clutter/clutter-colorize-effect.c:308
+#, fuzzy
 msgid "The tint to apply"
-msgstr "Pewarnaan yang akan diterapkan"
+msgstr "Stash yang akan Diterapkan"
 
-#: ../clutter/clutter-deform-effect.c:527
+#: clutter/clutter-deform-effect.c:527
+#, fuzzy
 msgid "Horizontal Tiles"
-msgstr "Ubin Horisontal"
+msgstr "kartu Mahjong"
 
-#: ../clutter/clutter-deform-effect.c:528
+#: clutter/clutter-deform-effect.c:528
 msgid "The number of horizontal tiles"
-msgstr "Cacah ubin horisontal"
+msgstr ""
 
-#: ../clutter/clutter-deform-effect.c:543
+#: clutter/clutter-deform-effect.c:543
+#, fuzzy
 msgid "Vertical Tiles"
-msgstr "Ubin Vertikal"
+msgstr "kartu Mahjong"
 
-#: ../clutter/clutter-deform-effect.c:544
+#: clutter/clutter-deform-effect.c:544
 msgid "The number of vertical tiles"
-msgstr "Cacah ubin vertikal"
+msgstr ""
 
-#: ../clutter/clutter-deform-effect.c:561
+#: clutter/clutter-deform-effect.c:561
+#, fuzzy
 msgid "Back Material"
-msgstr "Material Belakang"
+msgstr "Riwayat sebelumnya"
 
-#: ../clutter/clutter-deform-effect.c:562
+#: clutter/clutter-deform-effect.c:562
 msgid "The material to be used when painting the back of the actor"
-msgstr "Material yang dipakai ketika mengecat belakang aktor"
+msgstr ""
 
-#: ../clutter/clutter-desaturate-effect.c:305
+#: clutter/clutter-desaturate-effect.c:305
+#, fuzzy
 msgid "The desaturation factor"
-msgstr "Faktor desaturasi"
+msgstr "Faktor koreksi"
 
-#: ../clutter/clutter-device-manager.c:131
-#: ../clutter/clutter-input-device.c:344
-#: ../clutter/x11/clutter-keymap-x11.c:316
+#: clutter/clutter-device-manager.c:131 clutter/clutter-input-device.c:344
+#: clutter/x11/clutter-keymap-x11.c:316
+#, fuzzy
 msgid "Backend"
 msgstr "Backend"
 
-#: ../clutter/clutter-device-manager.c:132
+#: clutter/clutter-device-manager.c:132
+#, fuzzy
 msgid "The ClutterBackend of the device manager"
-msgstr "ClutterBackend dari manajer perangkat"
+msgstr "Peran perangkat di dalam manajer"
 
-#: ../clutter/clutter-drag-action.c:596
+#: clutter/clutter-drag-action.c:547
 msgid "Horizontal Drag Threshold"
-msgstr "Ambang Penyeretan Horisontal"
+msgstr ""
 
-#: ../clutter/clutter-drag-action.c:597
+#: clutter/clutter-drag-action.c:548
 msgid "The horizontal amount of pixels required to start dragging"
-msgstr "Banyaknya piksel horisontal yang diperlukan untuk memulai penyeretan"
+msgstr ""
 
-#: ../clutter/clutter-drag-action.c:624
+#: clutter/clutter-drag-action.c:575
 msgid "Vertical Drag Threshold"
-msgstr "Ambang Penyeretan Vertikal"
+msgstr ""
 
-#: ../clutter/clutter-drag-action.c:625
+#: clutter/clutter-drag-action.c:576
 msgid "The vertical amount of pixels required to start dragging"
-msgstr "Banyaknya piksel vertikal yang diperlukan untuk memulai penyeretan"
+msgstr ""
 
-#: ../clutter/clutter-drag-action.c:646
+#: clutter/clutter-drag-action.c:597
+#, fuzzy
 msgid "Drag Handle"
-msgstr "Handel Penyeretan"
+msgstr "Tampilkan handle"
 
-#: ../clutter/clutter-drag-action.c:647
+#: clutter/clutter-drag-action.c:598
 msgid "The actor that is being dragged"
-msgstr "Aktor yang sedang diseret"
+msgstr ""
 
-#: ../clutter/clutter-drag-action.c:660
+#: clutter/clutter-drag-action.c:611
+#, fuzzy
 msgid "Drag Axis"
-msgstr "Sumbu Seret"
+msgstr " _Drag"
 
-#: ../clutter/clutter-drag-action.c:661
+#: clutter/clutter-drag-action.c:612
 msgid "Constraints the dragging to an axis"
-msgstr "Batasi penyeretan ke suatu sumbu"
+msgstr ""
 
-#: ../clutter/clutter-flow-layout.c:885
+#: clutter/clutter-flow-layout.c:882
+#, fuzzy
 msgid "Orientation"
 msgstr "Orientasi"
 
-#: ../clutter/clutter-flow-layout.c:886
+#: clutter/clutter-flow-layout.c:883
+#, fuzzy
 msgid "The orientation of the layout"
-msgstr "Orientasi tata letak"
+msgstr "Choose a Layout"
 
-#: ../clutter/clutter-flow-layout.c:902
+#: clutter/clutter-flow-layout.c:899
 msgid "Whether each item should receive the same allocation"
-msgstr "Apakah setiap butir mesti menerima alokasi yang sama"
+msgstr ""
 
-#: ../clutter/clutter-flow-layout.c:917
-#: ../clutter/clutter-table-layout.c:1713
+#: clutter/clutter-flow-layout.c:914 clutter/clutter-table-layout.c:1711
+#, fuzzy
 msgid "Column Spacing"
-msgstr "Sela Kolom"
+msgstr "Jarak Antar Kolom"
 
-#: ../clutter/clutter-flow-layout.c:918
+#: clutter/clutter-flow-layout.c:915
+#, fuzzy
 msgid "The spacing between columns"
-msgstr "Jarak sela antar kolom"
+msgstr "Ruang antar cells"
 
-#: ../clutter/clutter-flow-layout.c:934
-#: ../clutter/clutter-table-layout.c:1727
+#: clutter/clutter-flow-layout.c:931 clutter/clutter-table-layout.c:1725
+#, fuzzy
 msgid "Row Spacing"
-msgstr "Sela Baris"
+msgstr "Jarak Antar Baris"
 
-#: ../clutter/clutter-flow-layout.c:935
+#: clutter/clutter-flow-layout.c:932
+#, fuzzy
 msgid "The spacing between rows"
-msgstr "Jarak sela antar baris"
+msgstr "Ruang antar cells"
 
-#: ../clutter/clutter-flow-layout.c:949
+#: clutter/clutter-flow-layout.c:946
+#, fuzzy
 msgid "Minimum Column Width"
-msgstr "Lebar Kolom Minimum"
+msgstr "Lebar minimal kolom yang diizinkan"
 
-#: ../clutter/clutter-flow-layout.c:950
+#: clutter/clutter-flow-layout.c:947
 msgid "Minimum width for each column"
-msgstr "Lebar minimum bagi setiap kolom"
+msgstr ""
 
-#: ../clutter/clutter-flow-layout.c:965
+#: clutter/clutter-flow-layout.c:962
+#, fuzzy
 msgid "Maximum Column Width"
-msgstr "Lebar Kolom Maksimum"
+msgstr "Lebar maksimal kolom yang diizinkan"
 
-#: ../clutter/clutter-flow-layout.c:966
+#: clutter/clutter-flow-layout.c:963
 msgid "Maximum width for each column"
-msgstr "Lebar maksimum bagi setiap kolom"
+msgstr ""
 
-#: ../clutter/clutter-flow-layout.c:980
+#: clutter/clutter-flow-layout.c:977
+#, fuzzy
 msgid "Minimum Row Height"
-msgstr "Tinggi Baris Minimum"
+msgstr "Tinggi baris seragam"
 
-#: ../clutter/clutter-flow-layout.c:981
+#: clutter/clutter-flow-layout.c:978
 msgid "Minimum height for each row"
-msgstr "Tinggi minimum bagi setiap baris"
+msgstr ""
 
-#: ../clutter/clutter-flow-layout.c:996
+#: clutter/clutter-flow-layout.c:993
+#, fuzzy
 msgid "Maximum Row Height"
-msgstr "Tinggi Baris Maksimum"
+msgstr "Tinggi baris seragam"
 
-#: ../clutter/clutter-flow-layout.c:997
+#: clutter/clutter-flow-layout.c:994
 msgid "Maximum height for each row"
-msgstr "Tinggi maksimum bagi setiap baris"
+msgstr ""
 
-#: ../clutter/clutter-input-device.c:220
+#: clutter/clutter-input-device.c:220
 msgid "Id"
 msgstr "Id"
 
-#: ../clutter/clutter-input-device.c:221
+#: clutter/clutter-input-device.c:221
 msgid "Unique identifier of the device"
-msgstr "Identifier unik dari perangkat"
+msgstr ""
 
-#: ../clutter/clutter-input-device.c:237
+#: clutter/clutter-input-device.c:237
+#, fuzzy
 msgid "The name of the device"
 msgstr "Nama perangkat"
 
-#: ../clutter/clutter-input-device.c:251
+#: clutter/clutter-input-device.c:251
+#, fuzzy
 msgid "Device Type"
-msgstr "Jenis Perangkat"
+msgstr "_Tipe perangkat:"
 
-#: ../clutter/clutter-input-device.c:252
+#: clutter/clutter-input-device.c:252
+#, fuzzy
 msgid "The type of the device"
-msgstr "Jenis perangkat"
+msgstr "_Tipe perangkat:"
 
-#: ../clutter/clutter-input-device.c:267
+#: clutter/clutter-input-device.c:267
+#, fuzzy
 msgid "Device Manager"
-msgstr "Manajer Perangkat"
+msgstr "Manajer"
 
-#: ../clutter/clutter-input-device.c:268
+#: clutter/clutter-input-device.c:268
 msgid "The device manager instance"
-msgstr "Instansi manajer perangkat"
+msgstr ""
 
-#: ../clutter/clutter-input-device.c:281
+#: clutter/clutter-input-device.c:281
+#, fuzzy
 msgid "Device Mode"
-msgstr "Moda Perangkat"
+msgstr "_Tipe perangkat:"
 
-#: ../clutter/clutter-input-device.c:282
+#: clutter/clutter-input-device.c:282
+#, fuzzy
 msgid "The mode of the device"
-msgstr "Mode dari perangkat"
+msgstr "Nama perangkat"
 
-#: ../clutter/clutter-input-device.c:296
+#: clutter/clutter-input-device.c:296
+#, fuzzy
 msgid "Has Cursor"
-msgstr "Punya Kursor"
+msgstr "Bingkai Jendela"
 
-#: ../clutter/clutter-input-device.c:297
+#: clutter/clutter-input-device.c:297
+#, fuzzy
 msgid "Whether the device has a cursor"
-msgstr "Apakah perangkat memiliki kursor"
+msgstr "Apakah aktor telah ditata punya klip"
 
-#: ../clutter/clutter-input-device.c:316
+#: clutter/clutter-input-device.c:316
+#, fuzzy
 msgid "Whether the device is enabled"
-msgstr "Apakah perangkat diaktifkan"
+msgstr "Menentukan apkaah aksi diaktifkan"
 
-#: ../clutter/clutter-input-device.c:329
+#: clutter/clutter-input-device.c:329
 msgid "Number of Axes"
-msgstr "Cacah Sumbu"
+msgstr ""
 
-#: ../clutter/clutter-input-device.c:330
+#: clutter/clutter-input-device.c:330
+#, fuzzy
 msgid "The number of axes on the device"
-msgstr "Cacah sumbu pada perangkat"
+msgstr "Nama perangkat"
 
-#: ../clutter/clutter-input-device.c:345
+#: clutter/clutter-input-device.c:345
 msgid "The backend instance"
-msgstr "Instansi backend"
+msgstr ""
 
-#: ../clutter/clutter-interval.c:397
+#: clutter/clutter-interval.c:397
+#, fuzzy
 msgid "Value Type"
-msgstr "Jenis Nilai"
+msgstr "Tipe Latar"
 
-#: ../clutter/clutter-interval.c:398
+#: clutter/clutter-interval.c:398
 msgid "The type of the values in the interval"
-msgstr "Jenis nilai dalam interval"
+msgstr ""
 
-#: ../clutter/clutter-layout-meta.c:117
+#: clutter/clutter-layout-meta.c:117
 msgid "Manager"
 msgstr "Manajer"
 
-#: ../clutter/clutter-layout-meta.c:118
+#: clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
-msgstr "Manajer yang membuat data ini"
+msgstr ""
 
-#. Translate to default:RTL if you want your widgets
-#. * to be RTL, otherwise translate to default:LTR.
-#. *
-#. * Do *not* translate it to "predefinito:LTR": if it
-#. * it isn't default:LTR or default:RTL it will not work
-#.
-#: ../clutter/clutter-main.c:490
+#: clutter/clutter-main.c:486
+#, fuzzy
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1321
+#: clutter/clutter-main.c:1282
 msgid "Show frames per second"
-msgstr "Tampilkan frame per detik"
+msgstr ""
 
-#: ../clutter/clutter-main.c:1323
+#: clutter/clutter-main.c:1284
 msgid "Default frame rate"
-msgstr "Laju frame baku"
+msgstr ""
 
-#: ../clutter/clutter-main.c:1325
+#: clutter/clutter-main.c:1286
+#, fuzzy
 msgid "Make all warnings fatal"
-msgstr "Jadikan semua peringatan dianggap fatal"
+msgstr "Buat semua peringatan menjadi pesan fatal"
 
-#: ../clutter/clutter-main.c:1328
+#: clutter/clutter-main.c:1289
+#, fuzzy
 msgid "Direction for the text"
-msgstr "Arah teks"
+msgstr "Fonta untuk teks"
 
-#: ../clutter/clutter-main.c:1331
+#: clutter/clutter-main.c:1292
 msgid "Disable mipmapping on text"
-msgstr "Matikan mipmap pada teks"
+msgstr ""
 
-#: ../clutter/clutter-main.c:1334
+#: clutter/clutter-main.c:1295
 msgid "Use 'fuzzy' picking"
-msgstr "Gunakan pemetikan fuzzy"
+msgstr ""
 
-#: ../clutter/clutter-main.c:1337
+#: clutter/clutter-main.c:1298
+#, fuzzy
 msgid "Clutter debugging flags to set"
-msgstr "Flag pengawakutuan Clutter yang akan ditata"
+msgstr "Bendera debug Gdk yang hendak dipasang"
 
-#: ../clutter/clutter-main.c:1339
+#: clutter/clutter-main.c:1300
+#, fuzzy
 msgid "Clutter debugging flags to unset"
-msgstr "Flag pengawakutuan yang akan dibebaskan"
+msgstr "Bendera debug Gdk yang hendak dilepas"
 
-#: ../clutter/clutter-main.c:1343
+#: clutter/clutter-main.c:1304
 msgid "Clutter profiling flags to set"
-msgstr "Flag pemrofilan Clutter yang akan ditata"
+msgstr ""
 
-#: ../clutter/clutter-main.c:1345
+#: clutter/clutter-main.c:1306
 msgid "Clutter profiling flags to unset"
-msgstr "Flag pemrofilan Clutter yang akan dibebaskan"
+msgstr ""
 
-#: ../clutter/clutter-main.c:1348
+#: clutter/clutter-main.c:1309
+#, fuzzy
 msgid "Enable accessibility"
-msgstr "Aktifkan aksesibilitas"
+msgstr "Aktifkan Aksesibilitas"
 
-#: ../clutter/clutter-main.c:1530
+#: clutter/clutter-main.c:1491
+#, fuzzy
 msgid "Clutter Options"
-msgstr "Opsi Clutter"
+msgstr "Pilihan GTK+"
 
-#: ../clutter/clutter-main.c:1531
+#: clutter/clutter-main.c:1492
+#, fuzzy
 msgid "Show Clutter Options"
-msgstr "Tampilkan Opsi Clutter"
+msgstr "Tampilkan opsi pengawa-kutuan"
 
-#: ../clutter/clutter-media.c:77
+#: clutter/clutter-media.c:77
 msgid "URI"
 msgstr "URI"
 
-#: ../clutter/clutter-media.c:78
+#: clutter/clutter-media.c:78
+#, fuzzy
 msgid "URI of a media file"
-msgstr "URI dari suatu berkas media"
+msgstr "URI berkas audio"
 
-#: ../clutter/clutter-media.c:91
+#: clutter/clutter-media.c:91
+#, fuzzy
 msgid "Playing"
-msgstr "Memutar"
+msgstr "Sedang memutar"
 
-#: ../clutter/clutter-media.c:92
+#: clutter/clutter-media.c:92
+#, fuzzy
 msgid "Whether the actor is playing"
-msgstr "Apakah aktor sedang diputar"
+msgstr "Apakah aktor akan digambar"
 
-#: ../clutter/clutter-media.c:106
+#: clutter/clutter-media.c:106
+#, fuzzy
 msgid "Progress"
 msgstr "Kemajuan"
 
-#: ../clutter/clutter-media.c:107
+#: clutter/clutter-media.c:107
+#, fuzzy
 msgid "Current progress of the playback"
-msgstr "Kemajuan pemutaran saat ini"
+msgstr "Menyatakan tingkat kemajuan pengunduhan"
 
-#: ../clutter/clutter-media.c:120
+#: clutter/clutter-media.c:120
+#, fuzzy
 msgid "Subtitle URI"
-msgstr "URI subtitel"
+msgstr "URI asal"
 
-#: ../clutter/clutter-media.c:121
+#: clutter/clutter-media.c:121
+#, fuzzy
 msgid "URI of a subtitle file"
-msgstr "URI dari berkas subtitel"
+msgstr "URI berkas audio"
 
-#: ../clutter/clutter-media.c:136
+#: clutter/clutter-media.c:136
+#, fuzzy
 msgid "Subtitle Font Name"
-msgstr "Nama Fonta Subtitel"
+msgstr "Nama fonta yang dipilih"
 
-#: ../clutter/clutter-media.c:137
+#: clutter/clutter-media.c:137
+#, fuzzy
 msgid "The font used to display subtitles"
-msgstr "Fonta yang digunakan untuk menampilkan subtitel"
+msgstr "Ukuran huruf yang digunakan untuk menampilkan log"
 
-#: ../clutter/clutter-media.c:151
+#: clutter/clutter-media.c:151
+#, fuzzy
 msgid "Audio Volume"
-msgstr "Volume Suara"
+msgstr "Volume audio"
 
-#: ../clutter/clutter-media.c:152
+#: clutter/clutter-media.c:152
+#, fuzzy
 msgid "The volume of the audio"
-msgstr "Kerasnya suara"
+msgstr "Volume audio"
 
-#: ../clutter/clutter-media.c:165
+#: clutter/clutter-media.c:165
+#, fuzzy
 msgid "Can Seek"
-msgstr "Bisa Seek"
+msgstr "Cari Ke Depan"
 
-#: ../clutter/clutter-media.c:166
+#: clutter/clutter-media.c:166
 msgid "Whether the current stream is seekable"
-msgstr "Apakah stream ini dapat di-seek"
+msgstr ""
 
-#: ../clutter/clutter-media.c:180
+#: clutter/clutter-media.c:180
+#, fuzzy
 msgid "Buffer Fill"
-msgstr "Pengisian Penyangga"
+msgstr "Isi warna"
 
-#: ../clutter/clutter-media.c:181
+#: clutter/clutter-media.c:181
+#, fuzzy
 msgid "The fill level of the buffer"
-msgstr "Tingkat pengisian penyangga"
+msgstr "Tampilkan Tingkat Pengisian"
 
-#: ../clutter/clutter-media.c:195
+#: clutter/clutter-media.c:195
+#, fuzzy
 msgid "The duration of the stream, in seconds"
-msgstr "Durasi stream, dalam detik"
+msgstr "Durasi lagu dalam detik."
 
-#: ../clutter/clutter-path-constraint.c:213
+#: clutter/clutter-path-constraint.c:213
 msgid "The path used to constrain an actor"
-msgstr "Path yang dipakai untuk membatasi aktor"
+msgstr ""
 
-#: ../clutter/clutter-path-constraint.c:227
+#: clutter/clutter-path-constraint.c:227
 msgid "The offset along the path, between -1.0 and 2.0"
-msgstr "Ofset sepanjang path, antara -1.0 dan 2.0"
+msgstr ""
 
-#: ../clutter/clutter-rectangle.c:268
+#: clutter/clutter-rectangle.c:268
+#, fuzzy
 msgid "The color of the rectangle"
-msgstr "Warna persegi panjang"
+msgstr "Kotak pilihan"
 
-#: ../clutter/clutter-rectangle.c:281
+#: clutter/clutter-rectangle.c:281
+#, fuzzy
 msgid "Border Color"
-msgstr "Warna Batas"
+msgstr "Warna garis"
 
-#: ../clutter/clutter-rectangle.c:282
+#: clutter/clutter-rectangle.c:282
+#, fuzzy
 msgid "The color of the border of the rectangle"
-msgstr "Warna pinggir persegi panjang"
+msgstr "Warna pinggir sorotan"
 
-#: ../clutter/clutter-rectangle.c:297
+#: clutter/clutter-rectangle.c:297
+#, fuzzy
 msgid "Border Width"
-msgstr "Lebar Batas"
+msgstr "Lebar batas"
 
-#: ../clutter/clutter-rectangle.c:298
+#: clutter/clutter-rectangle.c:298
+#, fuzzy
 msgid "The width of the border of the rectangle"
-msgstr "Lebar tepi persegi panjang"
+msgstr "Lebar kotak rekaman"
 
-#: ../clutter/clutter-rectangle.c:312
+#: clutter/clutter-rectangle.c:312
+#, fuzzy
 msgid "Has Border"
-msgstr "Punya Tepi"
+msgstr "Bingkai Jendela"
 
-#: ../clutter/clutter-rectangle.c:313
+#: clutter/clutter-rectangle.c:313
 msgid "Whether the rectangle should have a border"
-msgstr "Apakah persegi panjang mesti memiliki tepi"
+msgstr ""
 
-#: ../clutter/clutter-script.c:434
+#: clutter/clutter-script.c:434
+#, fuzzy
 msgid "Filename Set"
-msgstr "Nama Berkas Ditata"
+msgstr "Tetapkan nama file"
 
-#: ../clutter/clutter-script.c:435
+#: clutter/clutter-script.c:435
 msgid "Whether the :filename property is set"
-msgstr "Apakah properti :filename ditata"
+msgstr ""
 
-#: ../clutter/clutter-script.c:449
-#: ../clutter/clutter-texture.c:1081
+#: clutter/clutter-script.c:449 clutter/clutter-texture.c:1089
 msgid "Filename"
 msgstr "Nama Berkas"
 
-#: ../clutter/clutter-script.c:450
+#: clutter/clutter-script.c:450
 msgid "The path of the currently parsed file"
-msgstr "Path dari berkas yang sedang diurai"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:414
+#: clutter/clutter-settings.c:362
 msgid "Double Click Time"
-msgstr "Waktu Klik Ganda"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:415
+#: clutter/clutter-settings.c:363
 msgid "The time between clicks necessary to detect a multiple click"
-msgstr "Waktu antar klik yang diperlukan untuk mendeteksi klik berganda"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:430
+#: clutter/clutter-settings.c:378
 msgid "Double Click Distance"
-msgstr "Jarak Klik Ganda"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:431
+#: clutter/clutter-settings.c:379
 msgid "The distance between clicks necessary to detect a multiple click"
-msgstr "Jarak antar klik yang diperlukan untuk mendeteksi klik berganda"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:446
+#: clutter/clutter-settings.c:394
 msgid "Drag Threshold"
-msgstr "Ambang Penyeretan"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:447
+#: clutter/clutter-settings.c:395
 msgid "The distance the cursor should travel before starting to drag"
-msgstr "Jarak yang mesti ditempuh kursor sebelum memulai penyeretan"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:462
-#: ../clutter/clutter-text.c:2893
+#: clutter/clutter-settings.c:410 clutter/clutter-text.c:2799
 msgid "Font Name"
 msgstr "Nama Fonta"
 
-#: ../clutter/clutter-settings.c:463
-msgid "The description of the default font, as one that could be parsed by Pango"
-msgstr "Keterangan atas fonta baku, dalam bentuk yang dapat diurai oleh Pango"
+#: clutter/clutter-settings.c:411
+msgid ""
+"The description of the default font, as one that could be parsed by Pango"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:478
+#: clutter/clutter-settings.c:426
 msgid "Font Antialias"
-msgstr "Antialias Fonta"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:479
-msgid "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the default)"
-msgstr "Apakah memakai antialias (1 untuk aktifkan, 0 untuk matikan, dan -1 untuk memakai nilai baku)"
+#: clutter/clutter-settings.c:427
+msgid ""
+"Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
+"default)"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:495
+#: clutter/clutter-settings.c:443
 msgid "Font DPI"
-msgstr "DPI Fonta"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:496
-msgid "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
-msgstr "Resolusi fonta, dalam 1024 * dot/inci, atau -1 untuk memakai nilai baku"
+#: clutter/clutter-settings.c:444
+msgid ""
+"The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:512
+#: clutter/clutter-settings.c:460
+#, fuzzy
 msgid "Font Hinting"
-msgstr "Hint Fonta"
+msgstr "Deskripsi fonta"
 
-#: ../clutter/clutter-settings.c:513
-msgid "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
-msgstr "Apakah memakai hint (1 untuk mengaktifkan, 0 untuk mematikan, dan -1 untuk memakai nilai baku)"
+#: clutter/clutter-settings.c:461
+msgid ""
+"Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:534
+#: clutter/clutter-settings.c:482
 msgid "Font Hint Style"
-msgstr "Gaya Hint Fonta"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:535
+#: clutter/clutter-settings.c:483
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
-msgstr "Gaya hint (hintnone, hintslight, hintmedium, hintfull)"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:556
+#: clutter/clutter-settings.c:504
 msgid "Font Subpixel Order"
-msgstr "Urutan Subpiksel Fonta"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:557
+#: clutter/clutter-settings.c:505
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
-msgstr "Jenis antialias subpiksel (none, rgb, bgt, vrgb, vbgr)"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:574
+#: clutter/clutter-settings.c:522
 msgid "The minimum duration for a long press gesture to be recognized"
-msgstr "Durasi minimum bagi gestur penekanan panjang untuk dikenali"
+msgstr ""
 
-#: ../clutter/clutter-settings.c:581
-msgid "Fontconfig configuration timestamp"
-msgstr "Penanda waktu konfigurasi fontconfig"
-
-#: ../clutter/clutter-settings.c:582
-msgid "Timestamp of the current fontconfig configuration"
-msgstr "Penanda waktu dari konfigurasi fontconfig kini"
-
-#: ../clutter/clutter-shader.c:255
+#: clutter/clutter-shader.c:255
+#, fuzzy
 msgid "Vertex Source"
-msgstr "Sumber Verteks"
+msgstr "Asal IP"
 
-#: ../clutter/clutter-shader.c:256
+#: clutter/clutter-shader.c:256
 msgid "Source of vertex shader"
-msgstr "Sumber dari shader verteks"
+msgstr ""
 
-#: ../clutter/clutter-shader.c:272
+#: clutter/clutter-shader.c:272
+#, fuzzy
 msgid "Fragment Source"
-msgstr "Sumber Pecahan"
+msgstr "Asal IP"
 
-#: ../clutter/clutter-shader.c:273
+#: clutter/clutter-shader.c:273
 msgid "Source of fragment shader"
-msgstr "Sumber dari shader fragmen"
+msgstr ""
 
-#: ../clutter/clutter-shader.c:290
+#: clutter/clutter-shader.c:290
 msgid "Compiled"
-msgstr "Dikompilasi"
+msgstr ""
 
-#: ../clutter/clutter-shader.c:291
+#: clutter/clutter-shader.c:291
 msgid "Whether the shader is compiled and linked"
-msgstr "Apakah shader dikompail dan di-link"
+msgstr ""
 
-#: ../clutter/clutter-shader.c:308
+#: clutter/clutter-shader.c:308
+#, fuzzy
 msgid "Whether the shader is enabled"
-msgstr "Apakah shader diaktifkan"
+msgstr "Menentukan apkaah aksi diaktifkan"
 
-#: ../clutter/clutter-shader.c:519
-#, c-format
+#: clutter/clutter-shader.c:519
+#, fuzzy, c-format
 msgid "%s compilation failed: %s"
-msgstr "kompilasi %s gagal: %s"
+msgstr "Pemasangan Gagal"
 
-#: ../clutter/clutter-shader.c:520
+#: clutter/clutter-shader.c:520
+#, fuzzy
 msgid "Vertex shader"
-msgstr "Shader verteks"
+msgstr "Bahasa CG Shader"
 
-#: ../clutter/clutter-shader.c:521
+#: clutter/clutter-shader.c:521
+#, fuzzy
 msgid "Fragment shader"
-msgstr "Shader fragmen"
+msgstr "Bahasa CG Shader"
 
-#: ../clutter/clutter-shader-effect.c:415
+#: clutter/clutter-shader-effect.c:415
+#, fuzzy
 msgid "Shader Type"
-msgstr "Jenis Shader"
+msgstr "Tipe Latar"
 
-#: ../clutter/clutter-shader-effect.c:416
+#: clutter/clutter-shader-effect.c:416
+#, fuzzy
 msgid "The type of shader used"
-msgstr "Jenis shader yang digunakan"
+msgstr "Jenis arsip terakhir yang digunakan"
 
-#: ../clutter/clutter-snap-constraint.c:322
+#: clutter/clutter-snap-constraint.c:322
+#, fuzzy
 msgid "The source of the constraint"
-msgstr "Sumber kendala"
+msgstr "Sumber perataan"
 
-#: ../clutter/clutter-snap-constraint.c:335
+#: clutter/clutter-snap-constraint.c:335
 msgid "From Edge"
-msgstr "Dari Tepi"
+msgstr ""
 
-#: ../clutter/clutter-snap-constraint.c:336
+#: clutter/clutter-snap-constraint.c:336
+#, fuzzy
 msgid "The edge of the actor that should be snapped"
-msgstr "Tepi aktor yang mesti ditempelkan"
+msgstr "Apakah aktor telah direalisasikan"
 
-#: ../clutter/clutter-snap-constraint.c:350
+#: clutter/clutter-snap-constraint.c:350
 msgid "To Edge"
-msgstr "Ke Tepi"
+msgstr ""
 
-#: ../clutter/clutter-snap-constraint.c:351
+#: clutter/clutter-snap-constraint.c:351
 msgid "The edge of the source that should be snapped"
-msgstr "Tepi sumber yang mesti ditempelkan"
+msgstr ""
 
-#: ../clutter/clutter-snap-constraint.c:367
+#: clutter/clutter-snap-constraint.c:367
 msgid "The offset in pixels to apply to the constraint"
-msgstr "Ofset dalam piksel untuk diterapkan pada kendala"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1705
+#: clutter/clutter-stage.c:1660
+#, fuzzy
 msgid "Fullscreen Set"
-msgstr "Ditata Layar Penuh"
+msgstr "<small>Tata...</small>"
 
-#: ../clutter/clutter-stage.c:1706
+#: clutter/clutter-stage.c:1661
 msgid "Whether the main stage is fullscreen"
-msgstr "Apakah pentas utama diluar layar"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1722
+#: clutter/clutter-stage.c:1677
 msgid "Offscreen"
-msgstr "Diluar Layar"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1723
+#: clutter/clutter-stage.c:1678
 msgid "Whether the main stage should be rendered offscreen"
-msgstr "Apakah pentas utama mesti dirender diluar layar"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1735
-#: ../clutter/clutter-text.c:3006
+#: clutter/clutter-stage.c:1690 clutter/clutter-text.c:2912
+#, fuzzy
 msgid "Cursor Visible"
 msgstr "Kursor Nampak"
 
-#: ../clutter/clutter-stage.c:1736
+#: clutter/clutter-stage.c:1691
 msgid "Whether the mouse pointer is visible on the main stage"
-msgstr "Apakah penunjuk tetikus nampak pada pentas utama"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1750
+#: clutter/clutter-stage.c:1705
+#, fuzzy
 msgid "User Resizable"
-msgstr "Pengguna Dapat Mengubah Ukuran"
+msgstr "_Ganti Pengguna"
 
-#: ../clutter/clutter-stage.c:1751
+#: clutter/clutter-stage.c:1706
 msgid "Whether the stage is able to be resized via user interaction"
-msgstr "Apakah pentas dapat diubah ukurannya melalui interaksi pengguna"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1764
+#: clutter/clutter-stage.c:1719
+#, fuzzy
 msgid "The color of the stage"
-msgstr "Warna pentas"
+msgstr "Pilih warna"
 
-#: ../clutter/clutter-stage.c:1778
+#: clutter/clutter-stage.c:1733
 msgid "Perspective"
-msgstr "Perspektif"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1779
+#: clutter/clutter-stage.c:1734
 msgid "Perspective projection parameters"
-msgstr "Parameter projeksi perspektif"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1794
+#: clutter/clutter-stage.c:1749
 msgid "Title"
 msgstr "Judul"
 
-#: ../clutter/clutter-stage.c:1795
+#: clutter/clutter-stage.c:1750
+#, fuzzy
 msgid "Stage Title"
-msgstr "Judul Pentas"
+msgstr "Jabatan"
 
-#: ../clutter/clutter-stage.c:1810
+#: clutter/clutter-stage.c:1765
 msgid "Use Fog"
 msgstr "Gunakan Kabut"
 
-#: ../clutter/clutter-stage.c:1811
+#: clutter/clutter-stage.c:1766
 msgid "Whether to enable depth cueing"
-msgstr "Apakah mengaktifkan depth cueing"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1825
+#: clutter/clutter-stage.c:1780
 msgid "Fog"
 msgstr "Kabut"
 
-#: ../clutter/clutter-stage.c:1826
+#: clutter/clutter-stage.c:1781
 msgid "Settings for the depth cueing"
-msgstr "Pengaturan bagi depth cueing"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1842
+#: clutter/clutter-stage.c:1797
 msgid "Use Alpha"
 msgstr "Gunakan Alfa"
 
-#: ../clutter/clutter-stage.c:1843
+#: clutter/clutter-stage.c:1798
 msgid "Whether to honour the alpha component of the stage color"
-msgstr "Apakah menghormati komponen alfa dari warna pentas"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1859
+#: clutter/clutter-stage.c:1814
+#, fuzzy
 msgid "Key Focus"
-msgstr "Fokus Tombol"
+msgstr "Ambil Fokus"
 
-#: ../clutter/clutter-stage.c:1860
+#: clutter/clutter-stage.c:1815
 msgid "The currently key focused actor"
-msgstr "Aktur yang kini mendapat fokus tombol"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1876
+#: clutter/clutter-stage.c:1831
 msgid "No Clear Hint"
-msgstr "Tanpa Hint Pembersihan"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1877
+#: clutter/clutter-stage.c:1832
 msgid "Whether the stage should clear its contents"
-msgstr "Apakah pentas mesti membersihkan isinya"
+msgstr ""
 
-#: ../clutter/clutter-stage.c:1890
+#: clutter/clutter-stage.c:1845
+#, fuzzy
 msgid "Accept Focus"
-msgstr "Terima Fokus"
+msgstr "Ambil Fokus"
 
-#: ../clutter/clutter-stage.c:1891
+#: clutter/clutter-stage.c:1846
 msgid "Whether the stage should accept focus on show"
-msgstr "Apakah pentas mesti menerima fokus saat ditampilkan"
+msgstr ""
 
-#: ../clutter/clutter-state.c:1472
+#: clutter/clutter-state.c:1408
+#, fuzzy
 msgid "State"
-msgstr "Keadaan"
+msgstr "Kondisi"
 
-#: ../clutter/clutter-state.c:1473
+#: clutter/clutter-state.c:1409
 msgid "Currently set state, (transition to this state might not be complete)"
-msgstr "Keadaan sekarang, (transisi ke keadaan ini mungkin tak lengkap)"
+msgstr ""
 
-#: ../clutter/clutter-state.c:1487
+#: clutter/clutter-state.c:1423
 msgid "Default transition duration"
-msgstr "Durasi transisi baku"
+msgstr ""
 
-#: ../clutter/clutter-table-layout.c:585
+#: clutter/clutter-table-layout.c:585
 msgid "Column Number"
-msgstr "Nomor Kolom"
+msgstr ""
 
-#: ../clutter/clutter-table-layout.c:586
+#: clutter/clutter-table-layout.c:586
 msgid "The column the widget resides in"
-msgstr "Nomor kolom tempat widget berada"
+msgstr ""
 
-#: ../clutter/clutter-table-layout.c:593
+#: clutter/clutter-table-layout.c:593
 msgid "Row Number"
-msgstr "Nomor Baris"
+msgstr ""
 
-#: ../clutter/clutter-table-layout.c:594
+#: clutter/clutter-table-layout.c:594
 msgid "The row the widget resides in"
-msgstr "Nomor baris tempat widget berada"
+msgstr ""
 
-#: ../clutter/clutter-table-layout.c:601
+#: clutter/clutter-table-layout.c:601
+#, fuzzy
 msgid "Column Span"
-msgstr "Rentang Kolom"
+msgstr "Jarak Antar Kolom"
 
-#: ../clutter/clutter-table-layout.c:602
+#: clutter/clutter-table-layout.c:602
+#, fuzzy
 msgid "The number of columns the widget should span"
-msgstr "Cacah kolom yang mesti dicakup widget"
+msgstr "Nama perangkat"
 
-#: ../clutter/clutter-table-layout.c:609
+#: clutter/clutter-table-layout.c:609
+#, fuzzy
 msgid "Row Span"
-msgstr "Rentang Baris"
+msgstr "Jarak Antar Baris"
 
-#: ../clutter/clutter-table-layout.c:610
+#: clutter/clutter-table-layout.c:610
+#, fuzzy
 msgid "The number of rows the widget should span"
-msgstr "Cacah baris yang mesti dicakup widget"
+msgstr "Nama perangkat"
 
-#: ../clutter/clutter-table-layout.c:617
+#: clutter/clutter-table-layout.c:617
+#, fuzzy
 msgid "Horizontal Expand"
-msgstr "Mengembang Horisontal"
+msgstr "Tombol Pengulangan"
 
-#: ../clutter/clutter-table-layout.c:618
+#: clutter/clutter-table-layout.c:618
 msgid "Allocate extra space for the child in horizontal axis"
-msgstr "Alokasikan ruang ekstra bagi anak di sumbu horisontal"
+msgstr ""
 
-#: ../clutter/clutter-table-layout.c:624
+#: clutter/clutter-table-layout.c:624
+#, fuzzy
 msgid "Vertical Expand"
-msgstr "Mengembang Vertikal"
+msgstr "Tombol Pengulangan"
 
-#: ../clutter/clutter-table-layout.c:625
+#: clutter/clutter-table-layout.c:625
 msgid "Allocate extra space for the child in vertical axis"
-msgstr "Alokasikan ruang ekstra bagi anak di sumbu vertikal"
+msgstr ""
 
-#: ../clutter/clutter-table-layout.c:1714
+#: clutter/clutter-table-layout.c:1712
+#, fuzzy
 msgid "Spacing between columns"
-msgstr "Ruang sela antar kolom"
+msgstr "Ruang antar cells"
 
-#: ../clutter/clutter-table-layout.c:1728
+#: clutter/clutter-table-layout.c:1726
+#, fuzzy
 msgid "Spacing between rows"
-msgstr "Ruang sela antar baris"
+msgstr "Ruang antar cells"
 
-#: ../clutter/clutter-text.c:2894
+#: clutter/clutter-text.c:2800
 msgid "The font to be used by the text"
-msgstr "Fonta yang akan dipakai oleh teks"
+msgstr ""
 
-#: ../clutter/clutter-text.c:2911
+#: clutter/clutter-text.c:2817
+#, fuzzy
 msgid "Font Description"
-msgstr "Keterangan Fonta"
+msgstr "Deskripsi fonta"
 
-#: ../clutter/clutter-text.c:2912
+#: clutter/clutter-text.c:2818
+#, fuzzy
 msgid "The font description to be used"
-msgstr "Keterangan fonta untuk dipakai"
+msgstr "Jenis huruf yang digunakan ketika mencetak"
 
-#: ../clutter/clutter-text.c:2928
+#: clutter/clutter-text.c:2834
 msgid "Text"
 msgstr "Teks"
 
-#: ../clutter/clutter-text.c:2929
+#: clutter/clutter-text.c:2835
+#, fuzzy
 msgid "The text to render"
-msgstr "Teks untuk dirender"
+msgstr "Teks yang hendak ditulis"
 
-#: ../clutter/clutter-text.c:2943
+#: clutter/clutter-text.c:2849
 msgid "Font Color"
 msgstr "Warna Fonta"
 
-#: ../clutter/clutter-text.c:2944
+#: clutter/clutter-text.c:2850
 msgid "Color of the font used by the text"
-msgstr "Warna fonta yang akan dipakai oleh teks"
+msgstr ""
 
-#: ../clutter/clutter-text.c:2958
+#: clutter/clutter-text.c:2864
+#, fuzzy
 msgid "Editable"
-msgstr "Dapat disunting"
+msgstr "Dapat diedit"
 
-#: ../clutter/clutter-text.c:2959
+#: clutter/clutter-text.c:2865
+#, fuzzy
 msgid "Whether the text is editable"
-msgstr "Apakah teks dapat disunting"
+msgstr "Apakah entri ini dapat diterjemahkan"
 
-#: ../clutter/clutter-text.c:2974
+#: clutter/clutter-text.c:2880
+#, fuzzy
 msgid "Selectable"
 msgstr "Dapat dipilih"
 
-#: ../clutter/clutter-text.c:2975
+#: clutter/clutter-text.c:2881
+#, fuzzy
 msgid "Whether the text is selectable"
-msgstr "Apakah teks dapat dipilih"
+msgstr "Menentukan apakah teks ini disembunyikan"
 
-#: ../clutter/clutter-text.c:2989
+#: clutter/clutter-text.c:2895
+#, fuzzy
 msgid "Activatable"
 msgstr "Dapat diaktifkan"
 
-#: ../clutter/clutter-text.c:2990
+#: clutter/clutter-text.c:2896
 msgid "Whether pressing return causes the activate signal to be emitted"
-msgstr "Apakah menekan return menyebabkan sinyal aktifkan dipancarkan"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3007
+#: clutter/clutter-text.c:2913
 msgid "Whether the input cursor is visible"
-msgstr "Apakah kursor masukan nampak"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3021
-#: ../clutter/clutter-text.c:3022
+#: clutter/clutter-text.c:2927 clutter/clutter-text.c:2928
 msgid "Cursor Color"
 msgstr "Warna Kursor"
 
-#: ../clutter/clutter-text.c:3036
+#: clutter/clutter-text.c:2942
+#, fuzzy
 msgid "Cursor Color Set"
-msgstr "Warna Kursor Ditata"
+msgstr "Warna latar belakang sudah diset"
 
-#: ../clutter/clutter-text.c:3037
+#: clutter/clutter-text.c:2943
 msgid "Whether the cursor color has been set"
-msgstr "Apakah warna kursor telah ditata"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3052
+#: clutter/clutter-text.c:2958
 msgid "Cursor Size"
 msgstr "Ukuran Kursor"
 
-#: ../clutter/clutter-text.c:3053
+#: clutter/clutter-text.c:2959
+#, fuzzy
 msgid "The width of the cursor, in pixels"
-msgstr "Lebar kursor, dalam piksel"
+msgstr "Lebar cuplikan layar (dalam piksel):"
 
-#: ../clutter/clutter-text.c:3067
+#: clutter/clutter-text.c:2973
+#, fuzzy
 msgid "Cursor Position"
 msgstr "Posisi Kursor"
 
-#: ../clutter/clutter-text.c:3068
+#: clutter/clutter-text.c:2974
+#, fuzzy
 msgid "The cursor position"
-msgstr "Posisi kursor"
+msgstr "Posisi Kursor"
 
-#: ../clutter/clutter-text.c:3083
+#: clutter/clutter-text.c:2989
+#, fuzzy
 msgid "Selection-bound"
+msgstr "Batas Seleksi"
+
+#: clutter/clutter-text.c:2990
+msgid "The cursor position of the other end of the selection"
 msgstr ""
 
-#: ../clutter/clutter-text.c:3084
-msgid "The cursor position of the other end of the selection"
-msgstr "Posisi kursor dari ujung lain seleksi"
-
-#: ../clutter/clutter-text.c:3099
-#: ../clutter/clutter-text.c:3100
+#: clutter/clutter-text.c:3005 clutter/clutter-text.c:3006
 msgid "Selection Color"
 msgstr "Warna Pilihan"
 
-#: ../clutter/clutter-text.c:3114
+#: clutter/clutter-text.c:3020
 msgid "Selection Color Set"
 msgstr "Warna Pilihan Ditata"
 
-#: ../clutter/clutter-text.c:3115
+#: clutter/clutter-text.c:3021
 msgid "Whether the selection color has been set"
 msgstr "Apakah warna pilihan telah ditata"
 
-#: ../clutter/clutter-text.c:3130
+#: clutter/clutter-text.c:3036
 msgid "Attributes"
 msgstr "Atribut"
 
-#: ../clutter/clutter-text.c:3131
+#: clutter/clutter-text.c:3037
 msgid "A list of style attributes to apply to the contents of the actor"
-msgstr "Daftar atribut gaya untuk diterapkan pada isi aktor"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3153
+#: clutter/clutter-text.c:3059
+#, fuzzy
 msgid "Use markup"
 msgstr "Gunakan markup"
 
-#: ../clutter/clutter-text.c:3154
+#: clutter/clutter-text.c:3060
 msgid "Whether or not the text includes Pango markup"
-msgstr "Apakah teks termasuk markup Pango"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3170
+#: clutter/clutter-text.c:3076
+#, fuzzy
 msgid "Line wrap"
-msgstr "Lipat baris"
+msgstr "Potong baris"
 
-#: ../clutter/clutter-text.c:3171
+#: clutter/clutter-text.c:3077
+#, fuzzy
 msgid "If set, wrap the lines if the text becomes too wide"
-msgstr "Jika diset, teks akan dipotong dan diteruskan pada baris berikutnya bila terlalu lebar"
+msgstr "Jika ini diset, baris akan dipotong bila terlalu lebar."
 
-#: ../clutter/clutter-text.c:3186
+#: clutter/clutter-text.c:3092
+#, fuzzy
 msgid "Line wrap mode"
 msgstr "Mode pelipatan baris"
 
-#: ../clutter/clutter-text.c:3187
+#: clutter/clutter-text.c:3093
 msgid "Control how line-wrapping is done"
-msgstr "Mengendalikan bagaimana pelipatan baris dilakukan"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3202
+#: clutter/clutter-text.c:3108
+#, fuzzy
 msgid "Ellipsize"
-msgstr "Singkatkan"
+msgstr "Elipsis"
 
-#: ../clutter/clutter-text.c:3203
+#: clutter/clutter-text.c:3109
 msgid "The preferred place to ellipsize the string"
-msgstr "Tempat yang disukai untuk menyingkat kalimat"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3219
+#: clutter/clutter-text.c:3125
 msgid "Line Alignment"
 msgstr "Perataan Baris"
 
-#: ../clutter/clutter-text.c:3220
+#: clutter/clutter-text.c:3126
 msgid "The preferred alignment for the string, for multi-line text"
-msgstr "Perataan yang disukai bagi kalimat, bagi teks multi baris"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3236
+#: clutter/clutter-text.c:3142
 msgid "Justify"
 msgstr "Diratakan"
 
-#: ../clutter/clutter-text.c:3237
+#: clutter/clutter-text.c:3143
 msgid "Whether the text should be justified"
-msgstr "Apakah teks mesti diratakan"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3252
+#: clutter/clutter-text.c:3158
 msgid "Password Character"
 msgstr "Karakter Sandi"
 
-#: ../clutter/clutter-text.c:3253
+#: clutter/clutter-text.c:3159
 msgid "If non-zero, use this character to display the actor's contents"
-msgstr "Bila bukan nol, gunakan karakter ini untuk menampilkan isi aktor"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3267
+#: clutter/clutter-text.c:3173
 msgid "Max Length"
 msgstr "Panjang Maks"
 
-#: ../clutter/clutter-text.c:3268
+#: clutter/clutter-text.c:3174
 msgid "Maximum length of the text inside the actor"
-msgstr "Panjang maksimum teks di dalam aktor"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3291
+#: clutter/clutter-text.c:3197
+#, fuzzy
 msgid "Single Line Mode"
 msgstr "Moda Satu Baris"
 
-#: ../clutter/clutter-text.c:3292
+#: clutter/clutter-text.c:3198
 msgid "Whether the text should be a single line"
-msgstr "Apakah teks mesti hanya sebaris"
+msgstr ""
 
-#: ../clutter/clutter-text.c:3306
-#: ../clutter/clutter-text.c:3307
+#: clutter/clutter-text.c:3212 clutter/clutter-text.c:3213
+#, fuzzy
 msgid "Selected Text Color"
-msgstr "Warna Teks Yang Dipilih"
+msgstr "Warna Pilihan"
 
-#: ../clutter/clutter-text.c:3321
+#: clutter/clutter-text.c:3227
+#, fuzzy
 msgid "Selected Text Color Set"
-msgstr "Warna Teks Terpilih Ditata"
+msgstr "Warna Pilihan Ditata"
 
-#: ../clutter/clutter-text.c:3322
+#: clutter/clutter-text.c:3228
+#, fuzzy
 msgid "Whether the selected text color has been set"
-msgstr "Apakah warna teks yang dipilih telah ditata"
+msgstr "Apakah warna pilihan telah ditata"
 
-#: ../clutter/clutter-texture.c:995
+#: clutter/clutter-texture.c:1003
 msgid "Sync size of actor"
-msgstr "Ukuran penyelarasan aktor"
+msgstr ""
 
-#: ../clutter/clutter-texture.c:996
+#: clutter/clutter-texture.c:1004
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
-msgstr "Ukuran penyelarasn otomatis dari aktor ke dimensi pixbuf yang mendasarinya"
+msgstr ""
 
-#: ../clutter/clutter-texture.c:1003
+#: clutter/clutter-texture.c:1011
+#, fuzzy
 msgid "Disable Slicing"
+msgstr "Metode mengiris"
+
+#: clutter/clutter-texture.c:1012
+msgid ""
+"Forces the underlying texture to be singular and not made of smaller space "
+"saving individual textures"
 msgstr ""
 
-#: ../clutter/clutter-texture.c:1004
-msgid "Forces the underlying texture to be singular and not made of smaller space saving individual textures"
-msgstr ""
-
-#: ../clutter/clutter-texture.c:1013
+#: clutter/clutter-texture.c:1021
+#, fuzzy
 msgid "Tile Waste"
-msgstr ""
+msgstr "%s pada waste"
 
-#: ../clutter/clutter-texture.c:1014
+#: clutter/clutter-texture.c:1022
 msgid "Maximum waste area of a sliced texture"
 msgstr ""
 
-#: ../clutter/clutter-texture.c:1022
+#: clutter/clutter-texture.c:1030
+#, fuzzy
 msgid "Horizontal repeat"
-msgstr "Pengulangan horisontal"
+msgstr "Tombol Pengulangan"
 
-#: ../clutter/clutter-texture.c:1023
+#: clutter/clutter-texture.c:1031
 msgid "Repeat the contents rather than scaling them horizontally"
-msgstr "Ulangi isi, bukan diskalakan secara horisontal"
+msgstr ""
 
-#: ../clutter/clutter-texture.c:1030
+#: clutter/clutter-texture.c:1038
+#, fuzzy
 msgid "Vertical repeat"
-msgstr "Pengulangan vertikal"
+msgstr "Tombol Pengulangan"
 
-#: ../clutter/clutter-texture.c:1031
+#: clutter/clutter-texture.c:1039
 msgid "Repeat the contents rather than scaling them vertically"
-msgstr "Ulangi isi, bukan diskalakan secara vertikal"
+msgstr ""
 
-#: ../clutter/clutter-texture.c:1038
+#: clutter/clutter-texture.c:1046
+#, fuzzy
 msgid "Filter Quality"
-msgstr "Kualitas Penyaring"
+msgstr "Kualitas Gambar"
 
-#: ../clutter/clutter-texture.c:1039
+#: clutter/clutter-texture.c:1047
 msgid "Rendering quality used when drawing the texture"
-msgstr "Kualitas perenderan yang dipakai ketika menggambar tekstur"
+msgstr ""
 
-#: ../clutter/clutter-texture.c:1047
+#: clutter/clutter-texture.c:1055
+#, fuzzy
 msgid "Pixel Format"
-msgstr "Format Piksel"
+msgstr "Bentuk bebas"
 
-#: ../clutter/clutter-texture.c:1048
+#: clutter/clutter-texture.c:1056
 msgid "The Cogl pixel format to use"
-msgstr "Format piksel Cogl yang akan dipakai"
+msgstr ""
 
-#: ../clutter/clutter-texture.c:1056
+#: clutter/clutter-texture.c:1064
+#, fuzzy
 msgid "Cogl Texture"
-msgstr "Tekstur Cogl"
+msgstr "Latar belakang tekstur ubin"
 
-#: ../clutter/clutter-texture.c:1057
+#: clutter/clutter-texture.c:1065
 msgid "The underlying Cogl texture handle used to draw this actor"
 msgstr ""
 
-#: ../clutter/clutter-texture.c:1064
+#: clutter/clutter-texture.c:1072
+#, fuzzy
 msgid "Cogl Material"
-msgstr "Material Cogl"
+msgstr "Riwayat sebelumnya"
 
-#: ../clutter/clutter-texture.c:1065
+#: clutter/clutter-texture.c:1073
 msgid "The underlying Cogl material handle used to draw this actor"
 msgstr ""
 
-#: ../clutter/clutter-texture.c:1082
+#: clutter/clutter-texture.c:1090
 msgid "The path of the file containing the image data"
-msgstr "Path berkas yang memuat data gambar"
-
-#: ../clutter/clutter-texture.c:1089
-msgid "Keep Aspect Ratio"
-msgstr "Jaga Rasio Aspek"
-
-#: ../clutter/clutter-texture.c:1090
-msgid "Keep the aspect ratio of the texture when requesting the preferred width or height"
-msgstr "Pertahankan rasio aspek dari tekstur ketika meminta lebar atau tinggi yang disukai"
-
-#: ../clutter/clutter-texture.c:1116
-msgid "Load asynchronously"
-msgstr "Muat secara asinkron"
-
-#: ../clutter/clutter-texture.c:1117
-msgid "Load files inside a thread to avoid blocking when loading images from disk"
-msgstr "Muat berkas di dalam suatu thread untuk menghindari pemblokiran ketika memuat gambar dari disk"
-
-#: ../clutter/clutter-texture.c:1133
-msgid "Load data asynchronously"
-msgstr "Muat data secara asinkron"
-
-#: ../clutter/clutter-texture.c:1134
-msgid "Decode image data files inside a thread to reduce blocking when loading images from disk"
 msgstr ""
 
-#: ../clutter/clutter-texture.c:1158
+#: clutter/clutter-texture.c:1097
+#, fuzzy
+msgid "Keep Aspect Ratio"
+msgstr "_Pakai aspek rasio"
+
+#: clutter/clutter-texture.c:1098
+msgid ""
+"Keep the aspect ratio of the texture when requesting the preferred width or "
+"height"
+msgstr ""
+
+#: clutter/clutter-texture.c:1124
+#, fuzzy
+msgid "Load asynchronously"
+msgstr "Beban Rata-rata"
+
+#: clutter/clutter-texture.c:1125
+msgid ""
+"Load files inside a thread to avoid blocking when loading images from disk"
+msgstr ""
+
+#: clutter/clutter-texture.c:1141
+msgid "Load data asynchronously"
+msgstr ""
+
+#: clutter/clutter-texture.c:1142
+msgid ""
+"Decode image data files inside a thread to reduce blocking when loading "
+"images from disk"
+msgstr ""
+
+#: clutter/clutter-texture.c:1166
 msgid "Pick With Alpha"
 msgstr ""
 
-#: ../clutter/clutter-texture.c:1159
+#: clutter/clutter-texture.c:1167
 msgid "Shape actor with alpha channel when picking"
 msgstr ""
 
-#: ../clutter/clutter-texture.c:1557
-#: ../clutter/clutter-texture.c:1967
-#: ../clutter/clutter-texture.c:2062
-#: ../clutter/clutter-texture.c:2343
-#, c-format
-msgid "Failed to load the image data"
-msgstr "Gagal memuat data gambar"
-
-#: ../clutter/clutter-texture.c:1703
-#, c-format
-msgid "YUV textures are not supported"
-msgstr "Tekstur YUV tak didukung"
-
-#: ../clutter/clutter-texture.c:1712
-#, c-format
-msgid "YUV2 textues are not supported"
-msgstr "Tekstur YUV2 tak didukung"
-
-#: ../clutter/clutter-timeline.c:264
+#: clutter/clutter-timeline.c:264
 msgid "Should the timeline automatically restart"
 msgstr ""
 
-#: ../clutter/clutter-timeline.c:278
+#: clutter/clutter-timeline.c:278
 msgid "Delay"
-msgstr "Tunda"
+msgstr ""
 
-#: ../clutter/clutter-timeline.c:279
+#: clutter/clutter-timeline.c:279
 msgid "Delay before start"
-msgstr "Tundaan sebelum mulai"
+msgstr ""
 
-#: ../clutter/clutter-timeline.c:295
+#: clutter/clutter-timeline.c:295
+#, fuzzy
 msgid "Duration of the timeline in milliseconds"
-msgstr "Durasi garis waktu dalam mili detik"
+msgstr "Durasi lagu dalam detik."
 
-#: ../clutter/clutter-timeline.c:311
+#: clutter/clutter-timeline.c:311
+#, fuzzy
 msgid "Direction of the timeline"
-msgstr "Arah garis waktu"
+msgstr "Arah teks"
 
-#: ../clutter/clutter-timeline.c:326
+#: clutter/clutter-timeline.c:326
 msgid "Auto Reverse"
-msgstr "Membalik Otomatis"
+msgstr ""
 
-#: ../clutter/clutter-timeline.c:327
+#: clutter/clutter-timeline.c:327
 msgid "Whether the direction should be reversed when reaching the end"
-msgstr "Apakah arah mesti dibalik ketika mencapai akhir"
+msgstr ""
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:147
+#: clutter/evdev/clutter-input-device-evdev.c:147
 msgid "sysfs Path"
-msgstr "Path sysfs"
+msgstr ""
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:148
+#: clutter/evdev/clutter-input-device-evdev.c:148
+#, fuzzy
 msgid "Path of the device in sysfs"
-msgstr "Path perangkat di sysfs"
+msgstr "Nama perangkat"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:163
+#: clutter/evdev/clutter-input-device-evdev.c:163
+#, fuzzy
 msgid "Device Path"
-msgstr "Path Perangkat"
+msgstr "Manajer"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:164
+#: clutter/evdev/clutter-input-device-evdev.c:164
+#, fuzzy
 msgid "Path of the device node"
-msgstr "Path dari node perangkat"
+msgstr "Nama perangkat"
 
-#: ../clutter/x11/clutter-backend-x11.c:483
+#: clutter/glx/clutter-backend-glx.c:107
+msgid "Set to 'none' or '0' to disable throttling framerate to vblank"
+msgstr ""
+
+#: clutter/x11/clutter-backend-x11.c:483
+#, fuzzy
 msgid "X display to use"
-msgstr "Tampilan X yang akan dipakai"
+msgstr "Tampilan X yang digunakan"
 
-#: ../clutter/x11/clutter-backend-x11.c:489
+#: clutter/x11/clutter-backend-x11.c:489
+#, fuzzy
 msgid "X screen to use"
-msgstr "Layar X yang akan dipakai"
+msgstr "Layar X yang digunakan"
 
-#: ../clutter/x11/clutter-backend-x11.c:494
+#: clutter/x11/clutter-backend-x11.c:494
+#, fuzzy
 msgid "Make X calls synchronous"
-msgstr "Jadikan panggilan X sinkron"
+msgstr "Buat panggilan X sinkronus"
 
-#: ../clutter/x11/clutter-backend-x11.c:501
+#: clutter/x11/clutter-backend-x11.c:501
+#, fuzzy
 msgid "Enable XInput support"
-msgstr "Aktifkan dukungan XInput"
+msgstr "Aktifkan dukungan IPv4"
 
-#: ../clutter/x11/clutter-keymap-x11.c:317
+#: clutter/x11/clutter-keymap-x11.c:317
 msgid "The Clutter backend"
-msgstr "Backend Clutter"
+msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:545
+#: clutter/x11/clutter-x11-texture-pixmap.c:545
 msgid "Pixmap"
 msgstr "Pixmap"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:546
+#: clutter/x11/clutter-x11-texture-pixmap.c:546
 msgid "The X11 Pixmap to be bound"
 msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:554
+#: clutter/x11/clutter-x11-texture-pixmap.c:554
 msgid "Pixmap width"
 msgstr "Lebar pixmap"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:555
+#: clutter/x11/clutter-x11-texture-pixmap.c:555
 msgid "The width of the pixmap bound to this texture"
 msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:563
+#: clutter/x11/clutter-x11-texture-pixmap.c:563
 msgid "Pixmap height"
 msgstr "Tinggi pixmap"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:564
+#: clutter/x11/clutter-x11-texture-pixmap.c:564
 msgid "The height of the pixmap bound to this texture"
 msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:572
+#: clutter/x11/clutter-x11-texture-pixmap.c:572
 msgid "Pixmap Depth"
 msgstr "Kedalaman Pixmap"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:573
+#: clutter/x11/clutter-x11-texture-pixmap.c:573
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
 msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:581
+#: clutter/x11/clutter-x11-texture-pixmap.c:581
 msgid "Automatic Updates"
 msgstr "Pemutakhiran Otomatis"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:582
+#: clutter/x11/clutter-x11-texture-pixmap.c:582
 msgid "If the texture should be kept in sync with any pixmap changes."
-msgstr "Bila tekstur mesti dipertahankan selaras dengan sebarang perubahan pixmap."
+msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:590
+#: clutter/x11/clutter-x11-texture-pixmap.c:590
 msgid "Window"
 msgstr "Jendela"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:591
+#: clutter/x11/clutter-x11-texture-pixmap.c:591
 msgid "The X11 Window to be bound"
 msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:599
+#: clutter/x11/clutter-x11-texture-pixmap.c:599
+#, fuzzy
 msgid "Window Redirect Automatic"
-msgstr ""
+msgstr "Perlihatkan Window K&omentar Otomatis"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:600
+#: clutter/x11/clutter-x11-texture-pixmap.c:600
 msgid "If composite window redirects are set to Automatic (or Manual if false)"
 msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:610
+#: clutter/x11/clutter-x11-texture-pixmap.c:610
+#, fuzzy
 msgid "Window Mapped"
-msgstr "Jendela Dipetakan"
+msgstr "Daftar Jendela Program"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:611
+#: clutter/x11/clutter-x11-texture-pixmap.c:611
 msgid "If window is mapped"
-msgstr "Bila jendela dipetakan"
+msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:620
+#: clutter/x11/clutter-x11-texture-pixmap.c:620
 msgid "Destroyed"
-msgstr "Dihancurkan"
+msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:621
+#: clutter/x11/clutter-x11-texture-pixmap.c:621
 msgid "If window has been destroyed"
-msgstr "Bila jendela telah dihancurkan"
+msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:629
+#: clutter/x11/clutter-x11-texture-pixmap.c:629
 msgid "Window X"
 msgstr "X Jendela"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:630
+#: clutter/x11/clutter-x11-texture-pixmap.c:630
 msgid "X position of window on screen according to X11"
-msgstr "Posisi X dari jendela pada layar menurut X11"
+msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:638
+#: clutter/x11/clutter-x11-texture-pixmap.c:638
 msgid "Window Y"
 msgstr "Y Jendela"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:639
+#: clutter/x11/clutter-x11-texture-pixmap.c:639
 msgid "Y position of window on screen according to X11"
-msgstr "Posisi Y dari jendela pada layar menurut X11"
+msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:646
+#: clutter/x11/clutter-x11-texture-pixmap.c:646
 msgid "Window Override Redirect"
 msgstr ""
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:647
+#: clutter/x11/clutter-x11-texture-pixmap.c:647
 msgid "If this is an override-redirect window"
 msgstr ""
 
+#, fuzzy
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Bendera debug Gdk yang hendak dipasang"
+
+#, fuzzy
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Bendera debug Gdk yang hendak dilepas"
+
+#, fuzzy
+#~ msgid "Cogl Options"
+#~ msgstr "Pilihan GTK+"
+
+#, fuzzy
+#~ msgid "Show Cogl options"
+#~ msgstr "Tampilkan opsi pengawa-kutuan"
+
+#~ msgid "Position"
+#~ msgstr "Posisi"

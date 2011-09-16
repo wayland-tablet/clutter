@@ -81,7 +81,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>pango-1.0.lib;cairo.lib;atk-1.0.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pango-1.0.lib;cairo.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -101,7 +101,7 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>pango-1.0.lib;cairo.lib;atk-1.0.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pango-1.0.lib;cairo.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -123,7 +123,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>pango-1.0.lib;cairo.lib;atk-1.0.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pango-1.0.lib;cairo.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -142,7 +142,7 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>pango-1.0.lib;cairo.lib;atk-1.0.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pango-1.0.lib;cairo.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

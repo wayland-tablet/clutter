@@ -9,13 +9,8 @@
 # - increase clutter_micro_version to the next odd number
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
-<<<<<<< HEAD
-m4_define([clutter_minor_version], [7])
-m4_define([clutter_micro_version], [91])
-=======
 m4_define([clutter_minor_version], [99])
 m4_define([clutter_micro_version], [1])
->>>>>>> msvc-support-2.0
 
 # • for stable releases: increase the interface age by 1 for each release;
 #   if the API changes, set to 0. interface_age and binary_age are used to
@@ -120,9 +115,9 @@ AC_HEADER_STDC
 
 # required versions for dependencies
 m4_define([glib_req_version],           [2.26.0])
-m4_define([cogl_req_version],           [1.7.6])
+m4_define([cogl_req_version],           [1.7.3])
 m4_define([json_glib_req_version],      [0.12.0])
-m4_define([atk_req_version],            [2.1.5])
+m4_define([atk_req_version],            [1.17])
 m4_define([cairo_req_version],          [1.10])
 m4_define([pango_req_version],          [1.20])
 m4_define([gi_req_version],             [0.9.5])
@@ -392,20 +387,9 @@ AS_CASE([$CLUTTER_FLAVOUR],
           CLUTTER_SONAME_INFIX=win32
         ],
 
-        [AC_MSG_ERROR([Invalid backend for Clutter])]
+        [AC_MSG_ERROR([Invalid backend for Clutter: use glx, osx,
+                      win32, eglx or eglnative])]
 )
-
-AS_IF([test "x$SUPPORT_X11" = "x1"],
-      [
-        # we use fontconfig API and pango-fc when the fontconfig
-        # configuration changes
-        PKG_CHECK_EXISTS([pangoft2],
-                         [
-                           AC_DEFINE([HAVE_PANGO_FT2], [1], [Supports PangoFt2])
-                           BACKEND_PC_FILES="$BACKEND_PC_FILES pangoft2"
-                         ],
-                         [])
-      ])
 
 AS_IF([test "x$SUPPORT_GLX" = "x1"],
       [
@@ -608,23 +592,6 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
               ],
               [AC_MSG_ERROR([not found])]
         )
-
-        # X Generic Extensions (optional)
-        clutter_save_CPPFLAGS="$CPPFLAGS"
-        CPPFLAGS="$CPPFLAGS $X11_CFLAGS"
-
-        clutter_save_LIBS="$LIBS"
-        LIBS="$LIBS $X11_LIBS"
-
-        have_xge=no
-        AC_CHECK_FUNC([XGetEventData],
-                      [
-                        AC_DEFINE([HAVE_XGE], [1], [Define to 1 if X Generic Extensions is available])
-                        have_xge=yes
-                      ])
-
-        CPPFLAGS="$clutter_save_CPPFLAGS"
-        LIBS="$clutter_save_LIBS"
 
         # XI (optional)
         AC_ARG_ENABLE([xinput],
@@ -1001,6 +968,8 @@ AC_CONFIG_FILES([
 	doc/reference/cally/Makefile
 	doc/reference/cally/cally-docs.xml
 	doc/common/Makefile
+	doc/manual/Makefile
+	doc/manual/clutter-manual.xml
 	doc/cookbook/Makefile
 	doc/cookbook/clutter-cookbook.xml
 	doc/cookbook/examples/Makefile
@@ -1056,7 +1025,6 @@ fi
 if test "x$SUPPORT_XLIB" = "x1"; then
 echo "        Enable XComposite: ${have_xcomposite}"
 echo "        Enable XInput: ${have_xinput}"
-echo "        Enable Xge: ${have_xge}"
 echo "        Enable XI2: ${have_xinput2}"
 echo "        Enable XKB: ${have_xkb}"
 echo "        Enable X11 tests: ${x11_tests}"

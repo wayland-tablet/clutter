@@ -29,10 +29,10 @@
  * #ClutterAnimatable is an interface that allows a #GObject class
  * to control how a #ClutterAnimation will animate a property.
  *
- * Each #ClutterAnimatable should implement the
- * <function>animate_property</function> virtual function of the interface
- * to compute the animation state between two values of an interval depending
- * on a progress factor, expressed as a floating point value.
+ * Each #ClutterAnimatable should implement the animate_property()
+ * virtual function of the interface to compute the animation state
+ * between two values of an interval depending on a progress factor,
+ * expressed as a floating point value.
  *
  * If a #ClutterAnimatable is animated by a #ClutterAnimation
  * instance, the #ClutterAnimation will call
@@ -84,9 +84,6 @@ clutter_animatable_default_init (ClutterAnimatableInterface *iface)
  *   be applied to the #ClutterAnimatable, and %FALSE otherwise
  *
  * Since: 1.0
- *
- * Deprecated: 1.8: Use clutter_animatable_interpolate_value()
- *   instead
  */
 gboolean
 clutter_animatable_animate_property (ClutterAnimatable *animatable,
@@ -97,7 +94,6 @@ clutter_animatable_animate_property (ClutterAnimatable *animatable,
                                      gdouble            progress,
                                      GValue            *value)
 {
-  ClutterAnimatableIface *iface;
   gboolean res;
 
   g_return_val_if_fail (CLUTTER_IS_ANIMATABLE (animatable), FALSE);
@@ -111,26 +107,14 @@ clutter_animatable_animate_property (ClutterAnimatable *animatable,
                         G_VALUE_TYPE (value) == G_VALUE_TYPE (final_value),
                         FALSE);
 
-  iface = CLUTTER_ANIMATABLE_GET_IFACE (animatable);
-  if (iface->animate_property == NULL)
-    {
-      ClutterInterval *interval;
-
-      interval = clutter_animation_get_interval (animation, property_name);
-      if (interval == NULL)
-        return FALSE;
-
-      res = clutter_animatable_interpolate_value (animatable, property_name,
-                                                  interval,
-                                                  progress,
-                                                  value);
-    }
-  else
-    res = iface->animate_property (animatable, animation,
-                                   property_name,
-                                   initial_value, final_value,
-                                   progress,
-                                   value);
+  res =
+    CLUTTER_ANIMATABLE_GET_IFACE (animatable)->animate_property (animatable,
+                                                                 animation,
+                                                                 property_name,
+                                                                 initial_value,
+                                                                 final_value,
+                                                                 progress,
+                                                                 value);
 
   return res;
 }
@@ -222,59 +206,4 @@ clutter_animatable_set_final_state (ClutterAnimatable *animatable,
     iface->set_final_state (animatable, property_name, value);
   else
     g_object_set_property (G_OBJECT (animatable), property_name, value);
-}
-
-/**
- * clutter_animatable_interpolate_value:
- * @animatable: a #ClutterAnimatable
- * @property_name: the name of the property to interpolate
- * @interval: a #ClutterInterval with the animation range
- * @progress: the progress to use to interpolate between the
- *   initial and final values of the @interval
- * @value: (out): return location for an initialized #GValue
- *   using the same type of the @interval
- *
- * Asks a #ClutterAnimatable implementation to interpolate a
- * a named property between the initial and final values of
- * a #ClutterInterval, using @progress as the interpolation
- * value, and store the result inside @value.
- *
- * This function should be used for every property animation
- * involving #ClutterAnimatable<!-- -->s.
- *
- * This function replaces clutter_animatable_animate_property().
- *
- * Return value: %TRUE if the interpolation was successful,
- *   and %FALSE otherwise
- *
- * Since: 1.8
- */
-gboolean
-clutter_animatable_interpolate_value (ClutterAnimatable *animatable,
-                                      const gchar       *property_name,
-                                      ClutterInterval   *interval,
-                                      gdouble            progress,
-                                      GValue            *value)
-{
-  ClutterAnimatableIface *iface;
-
-  g_return_val_if_fail (CLUTTER_IS_ANIMATABLE (animatable), FALSE);
-  g_return_val_if_fail (property_name != NULL, FALSE);
-  g_return_val_if_fail (CLUTTER_IS_INTERVAL (interval), FALSE);
-  g_return_val_if_fail (value != NULL, FALSE);
-
-  CLUTTER_NOTE (ANIMATION, "Interpolating '%s' (progress: %.3f)",
-                property_name,
-                progress);
-
-  iface = CLUTTER_ANIMATABLE_GET_IFACE (animatable);
-  if (iface->interpolate_value != NULL)
-    {
-      return iface->interpolate_value (animatable, property_name,
-                                       interval,
-                                       progress,
-                                       value);
-    }
-  else
-    return clutter_interval_compute_value (interval, progress, value);
 }

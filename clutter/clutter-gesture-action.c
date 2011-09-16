@@ -31,8 +31,8 @@
  * #ClutterGestureAction is a sub-class of #ClutterAction that implements
  * the logic for recognizing gesture gestures. It listens for low level events
  * such as #ClutterButtonEvent and #ClutterMotionEvent on the stage to raise
- * the #ClutterGestureAction::gesture-begin, #ClutterGestureAction::gesture-progress,
- * and * #ClutterGestureAction::gesture-end signals.
+ * the signals #ClutterGestureAction::gesture-begin, #ClutterGestureAction::gesture-motion and
+ * #ClutterGestureAction::gesture-end.
  *
  * To use #ClutterGestureAction you just need to apply it to a #ClutterActor
  * using clutter_actor_add_action() and connect to the signals:
@@ -43,7 +43,7 @@
  *   clutter_actor_add_action (actor, action);
  *
  *   g_signal_connect (action, "gesture-begin", G_CALLBACK (on_gesture_begin), NULL);
- *   g_signal_connect (action, "gesture-progress", G_CALLBACK (on_gesture_progress), NULL);
+ *   g_signal_connect (action, "gesture-motion", G_CALLBACK (on_gesture_motion), NULL);
  *   g_signal_connect (action, "gesture-end", G_CALLBACK (on_gesture_end), NULL);
  * ]|
  *
@@ -133,18 +133,6 @@ stage_captured_event_cb (ClutterActor       *stage,
     {
     case CLUTTER_MOTION:
       {
-        ClutterModifierType mods = clutter_event_get_state (event);
-
-        /* we might miss a button-release event in case of grabs,
-         * so we need to check whether the button is still down
-         * during a motion event
-         */
-        if (!(mods & CLUTTER_BUTTON1_MASK))
-          {
-            cancel_gesture (action);
-            return FALSE;
-          }
-
         clutter_event_get_coords (event, &priv->last_motion_x,
                                          &priv->last_motion_y);
 
@@ -171,10 +159,7 @@ stage_captured_event_cb (ClutterActor       *stage,
                 g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
                                &return_value);
                 if (!return_value)
-                  {
-                    cancel_gesture (action);
-                    return FALSE;
-                  }
+                  cancel_gesture (action);
               }
             else
               return FALSE;
@@ -183,10 +168,7 @@ stage_captured_event_cb (ClutterActor       *stage,
           g_signal_emit (action, gesture_signals[GESTURE_PROGRESS], 0, actor,
                          &return_value);
           if (!return_value)
-            {
-              cancel_gesture (action);
-              return FALSE;
-            }
+            cancel_gesture (action);
       }
       break;
 
@@ -272,13 +254,6 @@ clutter_gesture_action_set_actor (ClutterActorMeta *meta,
   meta_class->set_actor (meta, actor);
 }
 
-static gboolean
-default_event_handler (ClutterGestureAction *action,
-                       ClutterActor *actor)
-{
-  return TRUE;
-}
-
 static void
 clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
 {
@@ -287,9 +262,6 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
   g_type_class_add_private (klass, sizeof (ClutterGestureActionPrivate));
 
   meta_class->set_actor = clutter_gesture_action_set_actor;
-
-  klass->gesture_begin = default_event_handler;
-  klass->gesture_progress = default_event_handler;
 
   /**
    * ClutterGestureAction::gesture-begin:

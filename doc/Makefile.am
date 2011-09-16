@@ -8,7 +8,7 @@ if ENABLE_DOCS
 SUBDIRS += common cookbook
 endif
 
-DIST_SUBDIRS = reference common cookbook
+DIST_SUBDIRS = reference common cookbook manual
 
 EXTRA_DIST = \
 	CODING_STYLE \

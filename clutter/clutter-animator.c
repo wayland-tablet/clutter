@@ -1161,7 +1161,7 @@ clutter_animator_get_duration  (ClutterAnimator *animator)
  * @first_mode: the id of the alpha function to use
  * @first_progress: at which stage of the animation this value applies; the
  *   range is a normalized floating point value between 0 and 1
- * @...: the value first_property_name should have for first_object
+ * @Varargs: the value first_property_name should have for first_object
  *   at first_progress, followed by more (object, property_name, mode,
  *   progress, value) tuples, followed by %NULL
  *
@@ -1513,9 +1513,9 @@ resolve_interpolation (JsonNode *node)
       gboolean res;
       gint enum_value;
 
-      res = _clutter_script_enum_from_string (CLUTTER_TYPE_INTERPOLATION,
-                                              str,
-                                              &enum_value);
+      res = clutter_script_enum_from_string (CLUTTER_TYPE_INTERPOLATION,
+                                             str,
+                                             &enum_value);
       if (res)
         return enum_value;
     }
@@ -1620,7 +1620,7 @@ parse_animator_property (JsonArray *array,
       gboolean res;
 
       progress = json_array_get_double_element (key, 0);
-      mode = _clutter_script_resolve_animation_mode (json_array_get_element (key, 1));
+      mode = clutter_script_resolve_animation_mode (json_array_get_element (key, 1));
 
       animator_key = clutter_animator_key_new (clos->animator,
                                                gobject,
@@ -1628,11 +1628,11 @@ parse_animator_property (JsonArray *array,
                                                progress,
                                                mode);
 
-      res = _clutter_script_parse_node (clos->script,
-                                        &(animator_key->value),
-                                        pname,
-                                        json_array_get_element (key, 2),
-                                        pspec);
+      res = clutter_script_parse_node (clos->script,
+                                       &(animator_key->value),
+                                       pname,
+                                       json_array_get_element (key, 2),
+                                       pspec);
       if (!res)
         {
           g_warning ("Unable to parse the key value for the "

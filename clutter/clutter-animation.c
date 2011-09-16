@@ -60,9 +60,8 @@
  * #ClutterAnimation<!-- -->s are distinguished from #ClutterBehaviour<!-- -->s
  * because the former can only control #GObject properties of a single
  * #GObject instance, while the latter can control multiple properties
- * using accessor functions inside the #ClutterBehaviour
- * <function>alpha_notify</function> virtual function, and can control
- * multiple #ClutterActor<!-- -->s as well.
+ * using accessor functions inside the #ClutterBehaviour::alpha_notify
+ * virtual function, and can control multiple #ClutterActor<!-- -->s as well.
  *
  * For convenience, it is possible to use the clutter_actor_animate()
  * function call which will take care of setting up and tearing down
@@ -129,15 +128,6 @@
  *     </varlistentry>
  *   </variablelist>
  * </refsect2>
- *
- * <example id="example-clutter-animation">
- *   <title>Tweening using clutter_actor_animate()</title>
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-easing.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- * </example>
  *
  * #ClutterAnimation is available since Clutter 1.0
  */
@@ -432,7 +422,7 @@ clutter_animation_parse_custom_node (ClutterScriptable *scriptable,
     {
       gulong mode;
 
-      mode = _clutter_script_resolve_animation_mode (node);
+      mode = clutter_script_resolve_animation_mode (node);
 
       g_value_init (value, G_TYPE_ULONG);
       g_value_set_ulong (value, mode);
@@ -736,7 +726,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
  * about animations, see clutter_actor_animate().
  *
  * If you need to update the interval instance use
- * clutter_animation_update_interval() instead.
+ * clutter_animation_update_property() instead.
  *
  * Return value: (transfer none): The animation itself.
  * Since: 1.0
@@ -1114,10 +1104,16 @@ on_alpha_notify (GObject          *gobject,
 
       if (is_animatable)
         {
-          apply = clutter_animatable_interpolate_value (animatable, p_name,
-                                                        interval,
-                                                        alpha_value,
-                                                        &value);
+          const GValue *initial, *final;
+
+          initial = clutter_interval_peek_initial_value (interval);
+          final   = clutter_interval_peek_final_value (interval);
+
+          apply = clutter_animatable_animate_property (animatable, animation,
+                                                       p_name,
+                                                       initial, final,
+                                                       alpha_value,
+                                                       &value);
         }
       else
         {
@@ -2011,7 +2007,7 @@ animation_create_for_actor (ClutterActor *actor)
  * @actor: a #ClutterActor
  * @alpha: a #ClutterAlpha
  * @first_property_name: the name of a property
- * @...: a %NULL terminated list of property names and
+ * @Varargs: a %NULL terminated list of property names and
  *   property values
  *
  * Animates the given list of properties of @actor between the current
@@ -2068,7 +2064,7 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
  * @mode: an animation mode logical id
  * @timeline: a #ClutterTimeline
  * @first_property_name: the name of a property
- * @...: a %NULL terminated list of property names and
+ * @Varargs: a %NULL terminated list of property names and
  *   property values
  *
  * Animates the given list of properties of @actor between the current
@@ -2119,7 +2115,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * @mode: an animation mode logical id
  * @duration: duration of the animation, in milliseconds
  * @first_property_name: the name of a property
- * @...: a %NULL terminated list of property names and
+ * @Varargs: a %NULL terminated list of property names and
  *   property values
  *
  * Animates the given list of properties of @actor between the current

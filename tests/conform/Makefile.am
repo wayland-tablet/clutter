@@ -84,11 +84,6 @@ units_sources += \
 	test-script-parser.c		\
         $(NULL)
 
-# cally tests
-units_sources += \
-	test-cally-text.c		\
-	$(NULL)
-
 test_conformance_SOURCES = $(common_sources) $(units_sources)
 
 if OS_WIN32
@@ -127,11 +122,11 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 		( echo "#!/bin/sh" ; echo "$(abs_builddir)/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(SHEXT) ; \
 		( echo "#!/bin/sh" ; echo "exec $(abs_builddir)/test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(SHEXT) ; \
 		( echo "test-conformance$(EXEEXT) -p $$i" ) > $$unit.bat ; \
-		( echo "test-conformance$(EXEEXT) -p $$i" ) >> test-conformance.bat ; \
 		chmod +x $$unit$(SHEXT); \
 		chmod +x wrappers/$$unit$(SHEXT); \
 		echo "/$$unit$(SHEXT)" >> .gitignore; \
 	done \
+	&& ls *.bat > test-conformance.bat	\
 	&& cp *.bat $(top_srcdir)/build/win32/	\
 	&& echo timestamp > $(@F)
 

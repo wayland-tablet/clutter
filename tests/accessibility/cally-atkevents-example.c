@@ -31,7 +31,6 @@
  */
 #include <atk/atk.h>
 #include <clutter/clutter.h>
-#include <cally/cally.h>
 
 #include "cally-examples-util.h"
 
@@ -164,10 +163,10 @@ main (int argc, char *argv[])
   atk_remove_key_event_listener (id_2);
 
   /* event listeners */
-  atk_add_global_event_listener (window_event_listener, "Atk:AtkWindow:create");
-  atk_add_global_event_listener (window_event_listener, "Atk:AtkWindow:destroy");
-  atk_add_global_event_listener (window_event_listener, "Atk:AtkWindow:activate");
-  atk_add_global_event_listener (window_event_listener, "Atk:AtkWindow:deactivate");
+  atk_add_global_event_listener (window_event_listener, "window:create");
+  atk_add_global_event_listener (window_event_listener, "window:destroy");
+  atk_add_global_event_listener (window_event_listener, "window:activate");
+  atk_add_global_event_listener (window_event_listener, "window:deactivate");
 
   stage = clutter_stage_get_default ();
   make_ui (stage);

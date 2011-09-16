@@ -162,7 +162,6 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/text", text_get_chars);
   TEST_CONFORM_SIMPLE ("/text", text_cache);
   TEST_CONFORM_SIMPLE ("/text", text_password_char);
-  TEST_CONFORM_SIMPLE ("/text", idempotent_use_markup);
 
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_size);
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_color);
@@ -179,7 +178,6 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/model", test_list_model_iterate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_filter);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_from_script);
-  TEST_CONFORM_SIMPLE ("/model", test_list_model_row_changed);
 
   TEST_CONFORM_SIMPLE ("/color", test_color_from_string);
   TEST_CONFORM_SIMPLE ("/color", test_color_to_string);
@@ -209,14 +207,6 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/score", test_score);
 
-<<<<<<< HEAD
-  TEST_CONFORM_SIMPLE ("/behaviours", test_behaviours);
-
-  /* FIXME - see bug https://bugzilla.gnome.org/show_bug.cgi?id=655588 */
-  TEST_CONFORM_TODO ("/cally", cally_text);
-
-=======
->>>>>>> msvc-support-2.0
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_object);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_backface_culling);

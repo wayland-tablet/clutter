@@ -2,7 +2,6 @@
  * Pretty cairo flower hack.
  */
 
-#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 #ifndef _MSC_VER

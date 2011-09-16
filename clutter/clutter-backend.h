@@ -31,9 +31,6 @@
 #include <cairo.h>
 #include <glib-object.h>
 #include <pango/pango.h>
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#include <cogl/cogl.h>
-#endif
 
 #include <clutter/clutter-actor.h>
 #include <clutter/clutter-device-manager.h>
@@ -68,10 +65,6 @@ gdouble                     clutter_backend_get_resolution            (ClutterBa
 void                        clutter_backend_set_font_options          (ClutterBackend             *backend,
                                                                        const cairo_font_options_t *options);
 const cairo_font_options_t *clutter_backend_get_font_options          (ClutterBackend             *backend);
-
-#if defined (COGL_ENABLE_EXPERIMENTAL_2_0_API) && defined (CLUTTER_ENABLE_EXPERIMENTAL_API)
-CoglContext                *clutter_backend_get_cogl_context          (ClutterBackend             *backend);
-#endif
 
 G_END_DECLS
 

@@ -1260,8 +1260,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   guchar pixel[4] = { 0xff, 0xff, 0xff, 0xff };
   CoglColor stage_pick_id;
   guint32 id_;
-  gboolean dither_enabled_save;
-  CoglFramebuffer *fb;
+  GLboolean dither_was_on;
   ClutterActor *actor;
   gboolean is_clipped;
   CLUTTER_STATIC_COUNTER (do_pick_counter,
@@ -1369,9 +1368,9 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_clear);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
-  fb = cogl_get_draw_framebuffer ();
-  dither_enabled_save = cogl_framebuffer_get_dither_enabled (fb);
-  cogl_framebuffer_set_dither_enabled (fb, FALSE);
+  dither_was_on = glIsEnabled (GL_DITHER);
+  if (dither_was_on)
+    glDisable (GL_DITHER);
 
   /* Render the entire scence in pick mode - just single colored silhouette's
    * are drawn offscreen (as we never swap buffers)
@@ -1422,7 +1421,8 @@ _clutter_stage_do_pick (ClutterStage   *stage,
     }
 
   /* Restore whether GL_DITHER was enabled */
-  cogl_framebuffer_set_dither_enabled (fb, dither_enabled_save);
+  if (dither_was_on)
+    glEnable (GL_DITHER);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     {
@@ -1630,9 +1630,7 @@ clutter_stage_dispose (GObject *object)
     {
       CLUTTER_NOTE (BACKEND, "Disposing of the stage implementation");
 
-      if (CLUTTER_ACTOR_IS_REALIZED (object))
-        _clutter_stage_window_unrealize (priv->impl);
-
+      _clutter_stage_window_unrealize (priv->impl);
       g_object_unref (priv->impl);
       priv->impl = NULL;
     }
@@ -2107,9 +2105,8 @@ clutter_stage_init (ClutterStage *self)
  *
  * Clutter guarantess the existence of the default stage.
  *
- * Return value: (transfer none) (type Clutter.Stage): the main
- *   #ClutterStage.  You should never destroy or unref the returned
- *   actor.
+ * Return value: (transfer none): the main #ClutterStage.  You should never
+ *   destroy or unref the returned actor.
  */
 ClutterActor *
 clutter_stage_get_default (void)
@@ -3037,7 +3034,7 @@ clutter_stage_set_fog (ClutterStage *stage,
 /**
  * clutter_stage_get_fog:
  * @stage: the #ClutterStage
- * @fog: (out): return location for a #ClutterFog structure
+ * @fog: return location for a #ClutterFog structure
  *
  * Retrieves the current depth cueing settings from the stage.
  *

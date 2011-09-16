@@ -550,10 +550,8 @@ emit_frame_signal (ClutterTimeline *timeline)
 {
   ClutterTimelinePrivate *priv = timeline->priv;
 
-  /* see bug https://bugzilla.gnome.org/show_bug.cgi?id=654066 */
-  gint elapsed = (gint) priv->elapsed_time;
-
-  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0, elapsed);
+  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
+                 priv->elapsed_time);
 }
 
 static gboolean
@@ -1378,7 +1376,7 @@ collect_markers (const gchar *key,
  * @msecs: the time to check, or -1
  * @n_markers: the number of markers returned
  *
- * Retrieves the list of markers at time @msecs. If @msecs is a
+ * Retrieves the list of markers at time @msecs. If @frame_num is a
  * negative integer, all the markers attached to @timeline will be
  * returned.
  *
@@ -1555,7 +1553,7 @@ clutter_timeline_has_marker (ClutterTimeline *timeline,
  * Sets whether @timeline should reverse the direction after the
  * emission of the #ClutterTimeline::completed signal.
  *
- * Setting the #ClutterTimeline:auto-reverse property to %TRUE is the
+ * Setting the #ClutterTimeline:reverse property to %TRUE is the
  * equivalent of connecting a callback to the #ClutterTimeline::completed
  * signal and changing the direction of the timeline from that callback;
  * for instance, this code:

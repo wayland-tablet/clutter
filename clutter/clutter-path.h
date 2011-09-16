@@ -83,7 +83,7 @@ typedef struct _ClutterPathNode    ClutterPathNode;
 /**
  * ClutterPathCallback:
  * @node: the node
- * @data: (closure): optional data passed to the function
+ * @data: optional data passed to the function
  *
  * This function is passed to clutter_path_foreach() and will be
  * called for each node contained in the path.

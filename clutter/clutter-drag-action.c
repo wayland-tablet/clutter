@@ -54,20 +54,6 @@
  * parented and exist between the emission of #ClutterDragAction::drag-begin
  * and #ClutterDragAction::drag-end.
  *
- * <example id="drag-action-example">
- *   <title>A simple draggable actor</title>
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-drag.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- *   <para>The example program above allows dragging the rectangle around
- *   the stage using a #ClutterDragAction. When pressing the
- *   <keycap>Shift</keycap> key the actor that is going to be dragged is a
- *   separate rectangle, and when the drag ends, the original rectangle will
- *   be animated to the final coordinates.</para>
- * </example>
- *
  * #ClutterDragAction is available since Clutter 1.4
  */
 
@@ -102,8 +88,6 @@ struct _ClutterDragActionPrivate
 
   gfloat last_motion_x;
   gfloat last_motion_y;
-  ClutterModifierType last_motion_state;
-  ClutterInputDevice *last_motion_device;
 
   gfloat transformed_press_x;
   gfloat transformed_press_y;
@@ -207,8 +191,6 @@ emit_drag_motion (ClutterDragAction *action,
   gfloat motion_x, motion_y;
 
   clutter_event_get_coords (event, &priv->last_motion_x, &priv->last_motion_y);
-  priv->last_motion_state = clutter_event_get_state (event);
-  priv->last_motion_device = clutter_event_get_device (event);
 
   if (priv->drag_handle != NULL && !priv->emit_delayed_press)
     drag_handle = priv->drag_handle;
@@ -272,23 +254,14 @@ emit_drag_end (ClutterDragAction *action,
 {
   ClutterDragActionPrivate *priv = action->priv;
 
-  /* if we have an event, update our own state, otherwise we'll
-   * just use the currently stored state when emitting the ::drag-end
-   * signal
-   */
-  if (event != NULL)
-    {
-      clutter_event_get_coords (event, &priv->last_motion_x, &priv->last_motion_y);
-      priv->last_motion_state = clutter_event_get_state (event);
-      priv->last_motion_device = clutter_event_get_device (event);
-    }
+  clutter_event_get_coords (event, &priv->last_motion_x, &priv->last_motion_y);
 
   /* we might not have emitted ::drag-begin yet */
   if (!priv->emit_delayed_press)
     g_signal_emit (action, drag_signals[DRAG_END], 0,
                    actor,
                    priv->last_motion_x, priv->last_motion_y,
-                   priv->last_motion_state);
+                   clutter_event_get_state (event));
 
   /* disconnect the capture */
   if (priv->capture_id != 0)
@@ -299,9 +272,8 @@ emit_drag_end (ClutterDragAction *action,
 
   clutter_stage_set_motion_events_enabled (priv->stage,
                                            priv->motion_events_enabled);
-
-  if (priv->last_motion_device != NULL)
-    _clutter_stage_remove_drag_actor (priv->stage, priv->last_motion_device);
+  _clutter_stage_remove_drag_actor (priv->stage,
+                                    clutter_event_get_device (event));
 
   priv->in_drag = FALSE;
 }
@@ -416,19 +388,15 @@ clutter_drag_action_set_actor (ClutterActorMeta *meta,
       old_actor = clutter_actor_meta_get_actor (meta);
 
       g_signal_handler_disconnect (old_actor, priv->button_press_id);
-      priv->button_press_id = 0;
-    }
 
-  if (priv->capture_id != 0 && priv->stage != NULL)
-    {
-      g_signal_handler_disconnect (priv->stage, priv->capture_id);
+      if (priv->capture_id != 0)
+        g_signal_handler_disconnect (old_actor, priv->capture_id);
+
+      priv->button_press_id = 0;
       priv->capture_id = 0;
+
       priv->stage = NULL;
     }
-
-  clutter_drag_action_set_drag_handle (CLUTTER_DRAG_ACTION (meta), NULL);
-
-  priv->in_drag = FALSE;
 
   if (actor != NULL)
     priv->button_press_id = g_signal_connect (actor, "button-press-event",
@@ -881,13 +849,7 @@ static void
 on_drag_handle_destroy (ClutterActor      *actor,
                         ClutterDragAction *action)
 {
-  ClutterDragActionPrivate *priv = action->priv;
-
-  /* make sure we reset the state */
-  if (priv->in_drag)
-    emit_drag_end (action, actor, NULL);
-
-  priv->drag_handle = NULL;
+  action->priv->drag_handle = NULL;
 }
 
 /**

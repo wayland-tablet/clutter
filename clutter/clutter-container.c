@@ -180,7 +180,7 @@ clutter_container_default_init (ClutterContainerInterface *iface)
  * clutter_container_add: (skip)
  * @container: a #ClutterContainer
  * @first_actor: the first #ClutterActor to add
- * @...: %NULL terminated list of actors to add
+ * @Varargs: %NULL terminated list of actors to add
  *
  * Adds a list of #ClutterActor<!-- -->s to @container. Each time and
  * actor is added, the "actor-added" signal is emitted. Each actor should
@@ -284,7 +284,7 @@ clutter_container_add_valist (ClutterContainer *container,
  * clutter_container_remove: (skip)
  * @container: a #ClutterContainer
  * @first_actor: first #ClutterActor to remove
- * @...: a %NULL-terminated list of actors to remove
+ * @Varargs: a %NULL-terminated list of actors to remove
  *
  * Removes a %NULL terminated list of #ClutterActor<!-- -->s from
  * @container. Each actor should be unparented, so if you want to keep it
@@ -490,8 +490,7 @@ clutter_container_foreach_with_internals (ClutterContainer *container,
  * clutter_container_raise_child:
  * @container: a #ClutterContainer
  * @actor: the actor to raise
- * @sibling: (allow-none): the sibling to raise to, or %NULL to raise
- *   to the top
+ * @sibling: the sibling to raise to, or %NULL to raise to the top
  *
  * Raises @actor to @sibling level, in the depth ordering.
  *
@@ -546,8 +545,7 @@ clutter_container_raise_child (ClutterContainer *container,
  * clutter_container_lower_child:
  * @container: a #ClutterContainer
  * @actor: the actor to raise
- * @sibling: (allow-none): the sibling to lower to, or %NULL to lower
- *   to the bottom
+ * @sibling: the sibling to lower to, or %NULL to lower to the bottom
  *
  * Lowers @actor to @sibling level, in the depth ordering.
  *

@@ -33,7 +33,6 @@ UNIT_TESTS = \
         test-binding-pool.c \
         test-text.c \
         test-text-field.c \
-	test-cairo-clock.c \
 	test-cairo-flowers.c \
 	test-cogl-vertex-buffer.c \
 	test-bin-layout.c \
@@ -93,8 +92,8 @@ stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 			;; \
 		esac; \
 		( echo "test-interactive $$test_bin" ) > $$test_bin.bat ; \
-		( echo "test-interactive $$test_bin" ) >> test-interactive.bat ; \
 	done \
+	&& ls *.bat > test-interactive.bat	\
 	&& cp *.bat $(top_srcdir)/build/win32/
 
 clean-wrappers:
@@ -129,7 +128,7 @@ test_interactive_CPPFLAGS = \
 	-DCOGL_DISABLE_DEPRECATED \
 	-DCLUTTER_DISABLE_DEPRECATED
 test_interactive_LDFLAGS = -export-dynamic
-test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd) -lm
+test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd)
 
 EXTRA_DIST = wrapper.sh.in
 DISTCLEANFILES = wrapper.sh .gitignore

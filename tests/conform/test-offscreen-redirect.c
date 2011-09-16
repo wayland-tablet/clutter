@@ -32,8 +32,6 @@ GType foo_actor_get_type (void) G_GNUC_CONST;
 
 G_DEFINE_TYPE (FooActor, foo_actor, CLUTTER_TYPE_ACTOR);
 
-static gboolean group_has_overlaps;
-
 static void
 foo_actor_paint (ClutterActor *actor)
 {
@@ -102,7 +100,7 @@ G_DEFINE_TYPE (FooGroup, foo_group, CLUTTER_TYPE_GROUP);
 static gboolean
 foo_group_has_overlaps (ClutterActor *actor)
 {
-  return group_has_overlaps;
+  return FALSE;
 }
 
 static void
@@ -179,8 +177,6 @@ timeout_cb (gpointer user_data)
 {
   Data *data = user_data;
 
-  group_has_overlaps = FALSE;
-
   /* By default the actor shouldn't be redirected so the redraw should
      cause the actor to be painted */
   verify_results (data,
@@ -195,30 +191,12 @@ timeout_cb (gpointer user_data)
                   1,
                   127);
 
-  /* With automatic redirect for opacity it shouldn't redirect if
-   * has_overlaps returns FALSE; */
+  /* Enable offscreen for opacity so it should now paint through the
+     fbo. The first paint will still cause the actor to draw because
+     it needs to fill the cache first. It should be painted with full
+     opacity */
   clutter_actor_set_offscreen_redirect
-    (data->container, CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY);
-  verify_results (data,
-                  255, 127, 127,
-                  1,
-                  127);
-
-  /* We do a double check here to verify that the actor wasn't cached
-   * during the last check. If it was cached then this check wouldn't
-   * result in any foo-actor re-paint. */
-  verify_results (data,
-                  255, 127, 127,
-                  1,
-                  127);
-
-  /* With automatic redirect for opacity it should redirect if
-   * has_overlaps returns TRUE.
-   * The first paint will still cause the actor to draw because
-   * it needs to fill the cache first. It should be painted with full
-   * opacity */
-  group_has_overlaps = TRUE;
-
+    (data->container, CLUTTER_OFFSCREEN_REDIRECT_ALWAYS_FOR_OPACITY);
   verify_results (data,
                   255, 127, 127,
                   1,

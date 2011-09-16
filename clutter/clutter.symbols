@@ -219,15 +219,10 @@ clutter_alpha_set_closure
 clutter_alpha_set_func
 clutter_alpha_set_mode
 clutter_alpha_set_timeline
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_animatable_animate_property
-#endif
-
 clutter_animatable_find_property
 clutter_animatable_get_initial_state
 clutter_animatable_get_type
-clutter_animatable_interpolate_value
 clutter_animatable_set_final_state
 clutter_animation_bind
 clutter_animation_bind_interval
@@ -276,19 +271,6 @@ clutter_animator_set_duration
 clutter_animator_set_timeline
 clutter_animator_start
 
-<<<<<<< HEAD
-#ifdef CLUTTER_ENABLE_EXPERIMENTAL_API
-clutter_backend_get_cogl_context
-#endif
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_backend_get_double_click_distance
-clutter_backend_get_double_click_time
-clutter_backend_get_font_name
-#endif
-
-=======
->>>>>>> msvc-support-2.0
 clutter_backend_get_font_options 
 clutter_backend_get_resolution
 clutter_backend_get_type
@@ -364,19 +346,11 @@ clutter_box_pack_at
 clutter_box_pack_before
 clutter_cairo_set_source_color
 clutter_cairo_texture_clear
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_cairo_texture_create
 clutter_cairo_texture_create_region
-#endif
-
-clutter_cairo_texture_get_auto_resize 
 clutter_cairo_texture_get_surface_size
 clutter_cairo_texture_get_type
-clutter_cairo_texture_invalidate
-clutter_cairo_texture_invalidate_rectangle
 clutter_cairo_texture_new
-clutter_cairo_texture_set_auto_resize
 clutter_cairo_texture_set_surface_size
 clutter_check_version
 clutter_child_meta_get_actor
@@ -472,6 +446,7 @@ clutter_drag_axis_get_type
 clutter_drop_action_get_type
 clutter_drop_action_new
 clutter_effect_get_type
+clutter_effect_queue_rerun
 clutter_events_pending
 clutter_event_copy
 clutter_event_flags_get_type
@@ -857,10 +832,6 @@ clutter_set_font_flags
 clutter_set_motion_events_enabled
 #endif
 
-<<<<<<< HEAD
-clutter_shader_compile
-=======
->>>>>>> msvc-support-2.0
 clutter_shader_effect_get_program
 clutter_shader_effect_get_shader
 clutter_shader_effect_get_type
@@ -895,7 +866,6 @@ clutter_stage_get_fog
 clutter_stage_get_fullscreen
 clutter_stage_get_key_focus
 clutter_stage_get_minimum_size
-clutter_stage_get_motion_events_enabled
 clutter_stage_get_no_clear_hint
 clutter_stage_get_perspective
 clutter_stage_get_redraw_clip_bounds
@@ -950,7 +920,6 @@ clutter_stage_window_get_type
 clutter_state_get_animator
 clutter_state_get_duration
 clutter_state_get_keys
-clutter_stage_get_redraw_clip_bounds 
 clutter_state_get_state
 clutter_state_get_states
 clutter_state_get_timeline

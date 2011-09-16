@@ -1,16 +1,5 @@
 Note that all this is rather experimental.
 
-<<<<<<< HEAD
-A more detailed description on using Visual C++ to compile Clutter with
-its dependencies can be found on the following GNOME Live! page:
-
-https://live.gnome.org/GTK%2B/Win32/MSVCCompilationOfGTKStack
-
-Please do not attempt to compile Clutter in a path that contains spaces
-to avoid potential problems during compilation, linking or usage.
-
-=======
->>>>>>> msvc-support-2.0
 This VS9 solution and the projects it includes are intented to be used
 in a Clutter source tree unpacked from a tarball. In a git checkout you
 first need to use some Unix-like environment or manual work to expand

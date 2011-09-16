@@ -115,7 +115,6 @@
 
 /* main context */
 static ClutterMainContext *ClutterCntx       = NULL;
-G_LOCK_DEFINE_STATIC (ClutterCntx);
 
 /* main lock and locking/unlocking functions */
 static GMutex *clutter_threads_mutex         = NULL;
@@ -1003,18 +1002,6 @@ clutter_get_debug_enabled (void)
 #endif
 }
 
-void
-_clutter_context_lock (void)
-{
-  G_LOCK (ClutterCntx);
-}
-
-void
-_clutter_context_unlock (void)
-{
-  G_UNLOCK (ClutterCntx);
-}
-
 gboolean
 _clutter_context_is_initialized (void)
 {
@@ -1024,8 +1011,8 @@ _clutter_context_is_initialized (void)
   return ClutterCntx->is_initialized;
 }
 
-static inline ClutterMainContext *
-clutter_context_get_default_unlocked (void)
+ClutterMainContext *
+_clutter_context_get_default (void)
 {
   if (G_UNLIKELY (ClutterCntx == NULL))
     {
@@ -1042,25 +1029,9 @@ clutter_context_get_default_unlocked (void)
       ctx->timer = g_timer_new ();
       g_timer_start (ctx->timer);
 #endif
-
-      ctx->last_repaint_id = 1;
     }
 
   return ClutterCntx;
-}
-
-ClutterMainContext *
-_clutter_context_get_default (void)
-{
-  ClutterMainContext *retval;
-
-  _clutter_context_lock ();
-
-  retval = clutter_context_get_default_unlocked ();
-
-  _clutter_context_unlock ();
-
-  return retval;
 }
 
 /**
@@ -1078,14 +1049,10 @@ clutter_get_timestamp (void)
   ClutterMainContext *ctx;
   gdouble seconds;
 
-  _clutter_context_lock ();
-
-  ctx = clutter_context_get_default_unlocked ();
+  ctx = _clutter_context_get_default ();
 
   /* FIXME: may need a custom timer for embedded setups */
   seconds = g_timer_elapsed (ctx->timer, NULL);
-
-  _clutter_context_unlock ();
 
   return (gulong)(seconds / 1.0e-6);
 #else
@@ -2783,9 +2750,7 @@ clutter_threads_remove_repaint_func (guint handle_id)
 
   g_return_if_fail (handle_id > 0);
 
-  _clutter_context_lock ();
-
-  context = clutter_context_get_default_unlocked ();
+  context = _clutter_context_get_default ();
   l = context->repaint_funcs;
   while (l != NULL)
     {
@@ -2803,13 +2768,11 @@ clutter_threads_remove_repaint_func (guint handle_id)
 
           g_slice_free (ClutterRepaintFunction, repaint_func);
 
-          break;
+          return;
         }
 
       l = l->next;
     }
-
-  _clutter_context_unlock ();
 }
 
 /**
@@ -2845,18 +2808,19 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
                                   gpointer       data,
                                   GDestroyNotify notify)
 {
+  static guint repaint_id = 1;
   ClutterMainContext *context;
   ClutterRepaintFunction *repaint_func;
 
   g_return_val_if_fail (func != NULL, 0);
 
-  _clutter_context_lock ();
+  context = _clutter_context_get_default ();
 
-  context = clutter_context_get_default_unlocked ();
+  /* XXX lock the context */
 
   repaint_func = g_slice_new (ClutterRepaintFunction);
 
-  repaint_func->id = context->last_repaint_id++;
+  repaint_func->id = repaint_id++;
   repaint_func->func = func;
   repaint_func->data = data;
   repaint_func->notify = notify;
@@ -2864,7 +2828,7 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
   context->repaint_funcs = g_list_prepend (context->repaint_funcs,
                                            repaint_func);
 
-  _clutter_context_unlock ();
+  /* XXX unlock the context */
 
   return repaint_func->id;
 }
@@ -2883,26 +2847,23 @@ _clutter_run_repaint_functions (void)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
   ClutterRepaintFunction *repaint_func;
-  GList *invoke_list, *reinvoke_list, *l;
+  GList *reinvoke_list, *l;
 
   if (context->repaint_funcs == NULL)
     return;
 
-  /* steal the list */
-  invoke_list = context->repaint_funcs;
-  context->repaint_funcs = NULL;
-
   reinvoke_list = NULL;
 
   /* consume the whole list while we execute the functions */
-  while (invoke_list != NULL)
+  while (context->repaint_funcs)
     {
       gboolean res = FALSE;
 
-      repaint_func = invoke_list->data;
+      repaint_func = context->repaint_funcs->data;
 
-      l = invoke_list;
-      invoke_list = g_list_remove_link (invoke_list, invoke_list);
+      l = context->repaint_funcs;
+      context->repaint_funcs =
+        g_list_remove_link (context->repaint_funcs, context->repaint_funcs);
 
       g_list_free (l);
 
@@ -2912,20 +2873,15 @@ _clutter_run_repaint_functions (void)
         reinvoke_list = g_list_prepend (reinvoke_list, repaint_func);
       else
         {
-          if (repaint_func->notify != NULL)
+          if (repaint_func->notify)
             repaint_func->notify (repaint_func->data);
 
           g_slice_free (ClutterRepaintFunction, repaint_func);
         }
     }
 
-  if (context->repaint_funcs != NULL)
-    {
-      context->repaint_funcs = g_list_concat (context->repaint_funcs,
-                                              g_list_reverse (reinvoke_list));
-    }
-  else
-    context->repaint_funcs = g_list_reverse (reinvoke_list);
+  if (reinvoke_list)
+    context->repaint_funcs = reinvoke_list;
 }
 
 /**
@@ -2962,11 +2918,11 @@ clutter_check_version (guint major,
  * clutter_get_default_text_direction:
  *
  * Retrieves the default direction for the text. The text direction is
- * determined by the locale and/or by the <varname>CLUTTER_TEXT_DIRECTION</varname>
- * environment variable.
+ * determined by the locale and/or by the %CLUTTER_TEXT_DIRECTION environment
+ * variable
  *
  * The default text direction can be overridden on a per-actor basis by using
- * clutter_actor_set_text_direction().
+ * clutter_actor_set_text_direction()
  *
  * Return value: the default text direction
  *
@@ -3011,7 +2967,7 @@ _clutter_context_release_id (guint32 id_)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
-  _clutter_id_pool_remove (context->id_pool, id_);
+  return _clutter_id_pool_remove (context->id_pool, id_);
 }
 
 void

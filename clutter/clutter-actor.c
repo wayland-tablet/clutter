@@ -390,6 +390,34 @@ struct _ClutterActorPrivate
   ClutterActorBox allocation;
   ClutterAllocationFlags allocation_flags;
 
+  guint position_set                : 1;
+  guint min_width_set               : 1;
+  guint min_height_set              : 1;
+  guint natural_width_set           : 1;
+  guint natural_height_set          : 1;
+  /* cached request is invalid (implies allocation is too) */
+  guint needs_width_request         : 1;
+  /* cached request is invalid (implies allocation is too) */
+  guint needs_height_request        : 1;
+  /* cached allocation is invalid (request has changed, probably) */
+  guint needs_allocation            : 1;
+  guint show_on_set_parent          : 1;
+  guint has_clip                    : 1;
+  guint clip_to_allocation          : 1;
+  guint enable_model_view_transform : 1;
+  guint enable_paint_unmapped       : 1;
+  guint has_pointer                 : 1;
+  guint propagated_one_redraw       : 1;
+  guint paint_volume_valid          : 1;
+  guint last_paint_volume_valid     : 1;
+  guint in_clone_paint              : 1;
+  guint transform_valid             : 1;
+  /* This is TRUE if anything has queued a redraw since we were last
+     painted. In this case effect_to_redraw will point to an effect
+     the redraw was queued from or it will be NULL if the redraw was
+     queued without an effect. */
+  guint is_dirty                    : 1;
+
   gfloat clip[4];
 
   /* Rotation angles */
@@ -477,35 +505,6 @@ struct _ClutterActorPrivate
   ClutterPaintVolume last_paint_volume;
 
   ClutterStageQueueRedrawEntry *queue_redraw_entry;
-
-  /* bitfields */
-  guint position_set                : 1;
-  guint min_width_set               : 1;
-  guint min_height_set              : 1;
-  guint natural_width_set           : 1;
-  guint natural_height_set          : 1;
-  /* cached request is invalid (implies allocation is too) */
-  guint needs_width_request         : 1;
-  /* cached request is invalid (implies allocation is too) */
-  guint needs_height_request        : 1;
-  /* cached allocation is invalid (request has changed, probably) */
-  guint needs_allocation            : 1;
-  guint show_on_set_parent          : 1;
-  guint has_clip                    : 1;
-  guint clip_to_allocation          : 1;
-  guint enable_model_view_transform : 1;
-  guint enable_paint_unmapped       : 1;
-  guint has_pointer                 : 1;
-  guint propagated_one_redraw       : 1;
-  guint paint_volume_valid          : 1;
-  guint last_paint_volume_valid     : 1;
-  guint in_clone_paint              : 1;
-  guint transform_valid             : 1;
-  /* This is TRUE if anything has queued a redraw since we were last
-     painted. In this case effect_to_redraw will point to an effect
-     the redraw was queued from or it will be NULL if the redraw was
-     queued without an effect. */
-  guint is_dirty                    : 1;
 };
 
 enum
@@ -1982,7 +1981,7 @@ clutter_actor_real_queue_relayout (ClutterActor *self)
  * @ancestor: (allow-none): A #ClutterActor ancestor, or %NULL to use the
  *   default #ClutterStage
  * @point: A point as #ClutterVertex
- * @vertex: (out caller-allocates): The translated #ClutterVertex
+ * @vertex: The translated #ClutterVertex
  *
  * Transforms @point in coordinates relative to the actor into
  * ancestor-relative coordinates using the relevant transform
@@ -2072,7 +2071,7 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
  * clutter_actor_apply_transform_to_point:
  * @self: A #ClutterActor
  * @point: A point as #ClutterVertex
- * @vertex: (out caller-allocates): The translated #ClutterVertex
+ * @vertex: The translated #ClutterVertex
  *
  * Transforms @point in coordinates relative to the actor
  * into screen-relative coordinates with the current actor
@@ -2111,10 +2110,10 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
  * using cogl_set_modelview_matrix() for example then you would want a matrix
  * that transforms into eye coordinates.
  *
- * <note><para>This function explicitly initializes the given @matrix. If you just
+ * <note>This function explicitly initializes the given @matrix. If you just
  * want clutter to multiply a relative transformation with an existing matrix
- * you can use clutter_actor_apply_relative_transformation_matrix()
- * instead.</para></note>
+ * you can use clutter_actor_apply_relative_transformation_matrix() instead.
+ * </note>
  *
  */
 /* XXX: We should consider caching the stage relative modelview along with
@@ -2716,16 +2715,20 @@ needs_flatten_effect (ClutterActor *self)
                   CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT))
     return FALSE;
 
-  if (priv->offscreen_redirect & CLUTTER_OFFSCREEN_REDIRECT_ALWAYS)
-    return TRUE;
-  else if (priv->offscreen_redirect & CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY)
+  switch (priv->offscreen_redirect)
     {
-      if (clutter_actor_get_paint_opacity (self) < 255 &&
-          clutter_actor_has_overlaps (self))
-        return TRUE;
+    case CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY:
+      if (!clutter_actor_has_overlaps (self))
+        return FALSE;
+      /* flow through */
+    case CLUTTER_OFFSCREEN_REDIRECT_ALWAYS_FOR_OPACITY:
+      return clutter_actor_get_paint_opacity (self) < 255;
+
+    case CLUTTER_OFFSCREEN_REDIRECT_ALWAYS:
+      return TRUE;
     }
 
-  return FALSE;
+  g_assert_not_reached ();
 }
 
 static void
@@ -2898,19 +2901,8 @@ clutter_actor_paint (ClutterActor *self)
    * XXX: We are starting to do a lot of vertex transforms on
    * the CPU in a typical paint, so at some point we should
    * audit these and consider caching some things.
-   *
-   * NB: We don't perform culling while picking at this point because
-   * clutter-stage.c doesn't setup the clipping planes appropriately.
-   *
-   * NB: We don't want to update the last-paint-volume during picking
-   * because the last-paint-volume is used to determine the old screen
-   * space location of an actor that has moved so we can know the
-   * minimal region to redraw to clear an old view of the actor. If we
-   * update this during picking then by the time we come around to
-   * paint then the last-paint-volume would likely represent the new
-   * actor position not the old.
    */
-  if (!in_clone_paint () && pick_mode == CLUTTER_PICK_NONE)
+  if (!in_clone_paint ())
     {
       gboolean success;
       /* annoyingly gcc warns if uninitialized even though
@@ -2926,7 +2918,8 @@ clutter_actor_paint (ClutterActor *self)
 
       success = cull_actor (self, &result);
 
-      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS))
+      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
+                      pick_mode == CLUTTER_PICK_NONE))
         _clutter_actor_paint_cull_result (self, success, result);
       else if (result == CLUTTER_CULL_RESULT_OUT && success)
         goto done;
@@ -3796,9 +3789,11 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
 static gboolean
 clutter_actor_real_has_overlaps (ClutterActor *self)
 {
-  /* By default we'll assume that all actors need an offscreen redirect to get
-   * the correct opacity. Actors such as ClutterTexture that would never need
-   * an offscreen redirect can override this to return FALSE. */
+  /* By default we'll assume that all actors need an offscreen
+     redirect to get the correct opacity. This effectively favours
+     accuracy over efficiency. Actors such as ClutterTexture that
+     would never need an offscreen redirect can override this to
+     return FALSE. */
   return TRUE;
 }
 
@@ -4194,21 +4189,18 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:offscreen-redirect:
    *
-   * Determines the conditions in which the actor will be redirected
-   * to an offscreen framebuffer while being painted. For example this
-   * can be used to cache an actor in a framebuffer or for improved
-   * handling of transparent actors. See
+   * Whether to flatten the actor into a single image. See
    * clutter_actor_set_offscreen_redirect() for details.
    *
    * Since: 1.8
    */
-  pspec = g_param_spec_flags ("offscreen-redirect",
-                              P_("Offscreen redirect"),
-                              P_("Flags controlling when to flatten the "
-                                 "actor into a single image"),
-                              CLUTTER_TYPE_OFFSCREEN_REDIRECT,
-                              0,
-                              CLUTTER_PARAM_READWRITE);
+  pspec = g_param_spec_enum ("offscreen-redirect",
+                             P_("Offscreen redirect"),
+                             P_("Whether to flatten the actor into a "
+                                "single image"),
+                             CLUTTER_TYPE_OFFSCREEN_REDIRECT,
+                             CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY,
+                             CLUTTER_PARAM_READWRITE);
   obj_props[PROP_OFFSCREEN_REDIRECT] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_OFFSCREEN_REDIRECT,
@@ -5260,6 +5252,7 @@ clutter_actor_init (ClutterActor *self)
   priv->parent_actor = NULL;
   priv->has_clip = FALSE;
   priv->opacity = 0xff;
+  priv->offscreen_redirect = CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY;
   priv->id = _clutter_context_acquire_id (self);
   priv->pick_id = -1;
   priv->scale_x = 1.0;
@@ -6103,10 +6096,10 @@ clutter_actor_get_allocation_geometry (ClutterActor    *self,
 
   clutter_actor_get_allocation_box (self, &box);
 
-  geom->x = CLUTTER_NEARBYINT (clutter_actor_box_get_x (&box));
-  geom->y = CLUTTER_NEARBYINT (clutter_actor_box_get_y (&box));
-  geom->width = CLUTTER_NEARBYINT (clutter_actor_box_get_width (&box));
-  geom->height = CLUTTER_NEARBYINT (clutter_actor_box_get_height (&box));
+  geom->x = clutter_actor_box_get_x (&box);
+  geom->y = clutter_actor_box_get_y (&box);
+  geom->width = clutter_actor_box_get_width (&box);
+  geom->height = clutter_actor_box_get_height (&box);
 }
 
 /**
@@ -6135,7 +6128,7 @@ clutter_actor_allocate (ClutterActor           *self,
   ClutterActorPrivate *priv;
   ClutterActorClass *klass;
   ClutterActorBox alloc;
-  gboolean origin_changed, child_moved, size_changed;
+  gboolean child_moved;
   gboolean stage_allocation_changed;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
@@ -6166,15 +6159,13 @@ clutter_actor_allocate (ClutterActor           *self,
         }
     }
 
-  origin_changed = (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED);
-
   child_moved = (alloc.x1 != priv->allocation.x1 ||
                  alloc.y1 != priv->allocation.y1);
 
-  size_changed = (alloc.x2 != priv->allocation.x2 ||
-                  alloc.y2 != priv->allocation.y2);
-
-  if (origin_changed || child_moved || size_changed)
+  if (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED ||
+      child_moved ||
+      alloc.x2 != priv->allocation.x2 ||
+      alloc.y2 != priv->allocation.y2)
     stage_allocation_changed = TRUE;
   else
     stage_allocation_changed = FALSE;
@@ -7569,16 +7560,15 @@ clutter_actor_get_opacity (ClutterActor *self)
 /**
  * clutter_actor_set_offscreen_redirect:
  * @self: A #ClutterActor
- * @redirect: New offscreen redirect flags for the actor.
+ * @redirect: New offscreen redirect value for the actor.
  *
- * Defines the circumstances where the actor should be redirected into
- * an offscreen image. The offscreen image is used to flatten the
- * actor into a single image while painting for two main reasons.
- * Firstly, when the actor is painted a second time without any of its
- * contents changing it can simply repaint the cached image without
- * descending further down the actor hierarchy. Secondly, it will make
- * the opacity look correct even if there are overlapping primitives
- * in the actor.
+ * Sets whether to redirect the actor into an offscreen image. The
+ * offscreen image is used to flatten the actor into a single image
+ * while painting for two main reasons. Firstly, when the actor is
+ * painted a second time without any of its contents changing it can
+ * simply repaint the cached image without descending further down the
+ * actor hierarchy. Secondly, it will make the opacity look correct
+ * even if there are overlapping primitives in the actor.
  *
  * Caching the actor could in some cases be a performance win and in
  * some cases be a performance lose so it is important to determine
@@ -7615,15 +7605,13 @@ clutter_actor_get_opacity (ClutterActor *self)
  *   <graphic fileref="offscreen-redirect.png" format="PNG"/>
  * </figure>
  *
- * The default value for this property is 0, so we effectively will
- * never redirect an actor offscreen by default. This means that there
- * are times that transparent actors may look glassy as described
- * above. The reason this is the default is because there is a
- * performance trade off between quality and performance here. In many
- * cases the default form of glassy opacity looks good enough, but if
- * it's not you will need to set the
- * %CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY flag to enable
- * redirection for opacity.
+ * The default behaviour is
+ * %CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY. This will end up
+ * redirecting actors whenever they are semi-transparent unless their
+ * has_overlaps() virtual returns %FALSE. This should mean that
+ * generally all actors will be rendered with the correct opacity and
+ * certain actors that don't need the offscreen redirect (such as
+ * #ClutterTexture) will paint directly for efficiency.
  *
  * Custom actors that don't contain any overlapping primitives are
  * recommended to override the has_overlaps() virtual to return %FALSE
@@ -8283,17 +8271,7 @@ clutter_actor_unparent (ClutterActor *self)
 
    /* We take this opportunity to invalidate any queue redraw entry
     * associated with the actor and descendants since we won't be able to
-    * determine the appropriate stage after this.
-    *
-    * we do this after we updated the mapped state because actors might
-    * end up queueing redraws inside their mapped/unmapped virtual
-    * functions, and if we invalidate the redraw entry we could end up
-    * with an inconsistent state and weird memory corruption. see
-    * bugs:
-    *
-    *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2621
-    *   https://bugzilla.gnome.org/show_bug.cgi?id=652036
-    */
+    * determine the appropriate stage after this. */
   _clutter_actor_traverse (self,
                            0,
                            invalidate_queue_redraw_entry,
@@ -9401,6 +9379,8 @@ clutter_actor_find_property (ClutterAnimatable *animatable,
       klass = G_OBJECT_GET_CLASS (meta);
 
       pspec = g_object_class_find_property (klass, p_name);
+
+      g_free (p_name);
     }
   else
     {
@@ -9408,8 +9388,6 @@ clutter_actor_find_property (ClutterAnimatable *animatable,
 
       pspec = g_object_class_find_property (klass, property_name);
     }
-
-  g_free (p_name);
 
   return pspec;
 }
@@ -9453,9 +9431,26 @@ clutter_actor_set_final_state (ClutterAnimatable *animatable,
   g_free (p_name);
 }
 
+static gboolean
+clutter_actor_animate_property (ClutterAnimatable *animatable,
+                                ClutterAnimation  *animation,
+                                const gchar       *property_name,
+                                const GValue      *initial,
+                                const GValue      *final,
+                                gdouble            progress,
+                                GValue            *new_value)
+{
+  ClutterInterval *interval;
+
+  interval = clutter_animation_get_interval (animation, property_name);
+
+  return clutter_interval_compute_value (interval, progress, new_value);
+}
+
 static void
 clutter_animatable_iface_init (ClutterAnimatableIface *iface)
 {
+  iface->animate_property = clutter_actor_animate_property;
   iface->find_property = clutter_actor_find_property;
   iface->get_initial_state = clutter_actor_get_initial_state;
   iface->set_final_state = clutter_actor_set_final_state;
@@ -9929,8 +9924,7 @@ _clutter_actor_get_stage_internal (ClutterActor *actor)
  *
  * Retrieves the #ClutterStage where @actor is contained.
  *
- * Return value: (transfer none) (type Clutter.Actor): the stage
- *   containing the actor, or %NULL
+ * Return value: (transfer none): the stage containing the actor, or %NULL
  *
  * Since: 0.8
  */
@@ -10726,7 +10720,7 @@ clutter_actor_unset_flags (ClutterActor      *self,
 /**
  * clutter_actor_get_transformation_matrix:
  * @self: a #ClutterActor
- * @matrix: (out caller-allocates): the return location for a #CoglMatrix
+ * @matrix: (out): the return location for a #CoglMatrix
  *
  * Retrieves the transformations applied to @self relative to its
  * parent.
@@ -11998,9 +11992,8 @@ clutter_actor_get_paint_box (ClutterActor    *self,
  * Asks the actor's implementation whether it may contain overlapping
  * primitives.
  *
- * For example; Clutter may use this to determine whether the painting
- * should be redirected to an offscreen buffer to correctly implement
- * the opacity property.
+ * Clutter uses this to determine whether the painting should be redirected
+ * to an offscreen buffer to correctly implement the opacity property.
  *
  * Custom actors can override the default response by implementing the
  * #ClutterActor <function>has_overlaps</function> virtual function. See

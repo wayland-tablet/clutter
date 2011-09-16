@@ -84,13 +84,6 @@ typedef struct _ClutterMainContext      ClutterMainContext;
 #define P_(String) (String)
 #endif
 
-/* This is a replacement for the nearbyint function which always rounds to the
- * nearest integer. nearbyint is apparently a C99 function so it might not
- * always be available but also it seems in glibc it is defined as a function
- * call so this macro could end up faster anyway. We can't just add 0.5f
- * because it will break for negative numbers. */
-#define CLUTTER_NEARBYINT(x) ((int) ((x) < 0.0f ? (x) - 0.5f : (x) + 0.5f))
-
 typedef enum {
   CLUTTER_ACTOR_UNUSED_FLAG = 0,
 
@@ -163,7 +156,6 @@ struct _ClutterMainContext
    * clutter_threads_add_repaint_func()
    */
   GList *repaint_funcs;
-  guint last_repaint_id;
 
   /* main settings singleton */
   ClutterSettings *settings;
@@ -186,8 +178,6 @@ gboolean _clutter_threads_dispatch      (gpointer data);
 void     _clutter_threads_dispatch_free (gpointer data);
 
 ClutterMainContext *    _clutter_context_get_default                    (void);
-void                    _clutter_context_lock                           (void);
-void                    _clutter_context_unlock                         (void);
 gboolean                _clutter_context_is_initialized                 (void);
 PangoContext *          _clutter_context_create_pango_context           (void);
 PangoContext *          _clutter_context_get_pango_context              (void);

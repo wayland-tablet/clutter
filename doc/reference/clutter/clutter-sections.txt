@@ -913,7 +913,6 @@ clutter_backend_set_font_options
 clutter_backend_get_font_options
 clutter_backend_set_font_name
 clutter_backend_get_font_name
-clutter_backend_get_cogl_context
 <SUBSECTION Standard>
 CLUTTER_BACKEND
 CLUTTER_IS_BACKEND
@@ -1675,16 +1674,10 @@ ClutterCairoTextureClass
 clutter_cairo_texture_new
 clutter_cairo_texture_set_surface_size
 clutter_cairo_texture_get_surface_size
-clutter_cairo_texture_set_auto_resize
-clutter_cairo_texture_get_auto_resize
 
 <SUBSECTION>
 clutter_cairo_texture_create
 clutter_cairo_texture_create_region
-
-<SUBSECTION>
-clutter_cairo_texture_invalidate_rectangle
-clutter_cairo_texture_invalidate
 clutter_cairo_texture_clear
 
 <SUBSECTION>
@@ -1802,7 +1795,6 @@ clutter_animatable_animate_property
 clutter_animatable_find_property
 clutter_animatable_get_initial_state
 clutter_animatable_set_final_state
-clutter_animatable_interpolate_value
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_ANIMATABLE

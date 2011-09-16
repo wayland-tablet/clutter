@@ -6,12 +6,12 @@
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
     <BaseWinBuildDef>_WIN32_WINNT=0x0500</BaseWinBuildDef>
     <BaseBuildDef>$(BaseWinBuildDef);CLUTTER_DISABLE_DEPRECATED;COGL_DISABLE_DEPRECATED</BaseBuildDef>
-    <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT;CLUTTER_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
+    <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT</LibBuildDefines>
     <DebugLibBuildDefines>$(LibBuildDefines);_DEBUG;CLUTTER_ENABLE_DEBUG</DebugLibBuildDefines>
     <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
     <ClutterBuildDefines>$(BaseBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_PREFIX="../";CLUTTER_LIBDIR="../lib";CLUTTER_DATADIR="../share";CLUTTER_LOCALEDIR="../share/locale"</ClutterBuildDefines>
     <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir"</CallyTestDefs>
-    <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../share/clutter-$(ClutterApiVersion)/data"</TestProgDef>
+    <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../tests/data"</TestProgDef>
     <PreBuildCmd>
 if exist ..\..\..\config.h goto DONE_CONFIG_H
 
@@ -38,11 +38,7 @@ if exist ..\..\..\clutter\clutter-enum-types.h goto DONE_CLUTTER_ENUM_H
 
 cd ..\..\..\clutter
 
-<<<<<<< HEAD
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.h.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-behaviour.h ./clutter-behaviour-depth.h ./clutter-behaviour-ellipse.h ./clutter-behaviour-opacity.h ./clutter-behaviour-path.h ./clutter-behaviour-rotate.h ./clutter-behaviour-scale.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-deprecated.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-drop-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-frame-source.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-keysyms-compat.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-swipe-action.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-timeout-pool.h ./clutter-types.h ./clutter-units.h ./clutter-util.h ./win32/clutter-win32.h &gt; clutter-enum-types.h
-=======
 perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.h.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-drop-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-types.h ./clutter-units.h ./win32/clutter-win32.h &gt; clutter-enum-types.h
->>>>>>> msvc-support-2.0
 
 cd ..\build\win32\vs10
 
@@ -53,11 +49,7 @@ if exist ..\..\..\clutter\clutter-enum-types.c goto DONE_CLUTTER_ENUM_C
 
 cd ..\..\..\clutter
 
-<<<<<<< HEAD
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.c.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-behaviour.h ./clutter-behaviour-depth.h ./clutter-behaviour-ellipse.h ./clutter-behaviour-opacity.h ./clutter-behaviour-path.h ./clutter-behaviour-rotate.h ./clutter-behaviour-scale.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-deprecated.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-drop-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-frame-source.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-keysyms-compat.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-swipe-action.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-timeout-pool.h ./clutter-types.h ./clutter-units.h ./clutter-util.h ./win32/clutter-win32.h &gt; clutter-enum-types.c
-=======
 perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.c.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-drop-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-types.h ./clutter-units.h ./win32/clutter-win32.h &gt; clutter-enum-types.c
->>>>>>> msvc-support-2.0
 
 cd ..\build\win32\vs10
 
@@ -93,7 +85,7 @@ mkdir $(CopyDir)
 
 mkdir $(CopyDir)\bin
 
-mkdir $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
+mkdir $(CopyDir)\tests\data
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
 
@@ -102,11 +94,11 @@ copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.exe $(CopyDir)\bin
 
 copy ..\*.bat $(CopyDir)\bin
 
-copy ..\..\..\tests\data\*.png $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
+copy ..\..\..\tests\data\*.png $(CopyDir)\tests\data
 
-copy ..\..\..\tests\data\clutter-1.0.suppressions $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
+copy ..\..\..\tests\data\clutter-1.0.suppressions $(CopyDir)\tests\data
 
-copy ..\..\..\tests\data\*.json $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
+copy ..\..\..\tests\data\*.json $(CopyDir)\tests\data
 
 
 mkdir $(CopyDir)\lib
@@ -295,21 +287,11 @@ copy ..\..\..\clutter\cally\cally-texture.h $(CopyDir)\include\clutter-$(Clutter
 copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
 
 
-mkdir $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
-
-copy ..\..\..\doc\cookbook\examples\*.c $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
-
-copy ..\..\..\doc\cookbook\examples\*.h $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
-
-copy ..\..\..\doc\cookbook\examples\*.json $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
-
-copy ..\..\..\doc\cookbook\examples\*.png $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
-
 </ClutterDoInstall>
     <GenerateClutterDef>
          echo EXPORTS &gt; ..\..\..\clutter\clutter.def
 
-         cl -EP -DHAVE_CAIRO -DHAVE_CLUTTER_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def
+         cl -EP -DHAVE_CAIRO -DHAVE_CLUTTER_WIN32 ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def
 
      </GenerateClutterDef>
     <ClutterLibtoolCompatibleDllPrefix>lib</ClutterLibtoolCompatibleDllPrefix>

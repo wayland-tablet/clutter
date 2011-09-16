@@ -359,8 +359,6 @@ clutter_bin_layout_get_preferred_width (ClutterLayoutManager *manager,
 
   if (nat_width_p)
     *nat_width_p = nat_width;
-
-  g_list_free (children);
 }
 
 static void
@@ -394,8 +392,6 @@ clutter_bin_layout_get_preferred_height (ClutterLayoutManager *manager,
 
   if (nat_height_p)
     *nat_height_p = nat_height;
-
-  g_list_free (children);
 }
 
 static gdouble
@@ -428,11 +424,10 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
 {
   GList *children = clutter_container_get_children (container);
   GList *l;
-  gfloat allocation_x, allocation_y;
   gfloat available_w, available_h;
 
-  clutter_actor_box_get_origin (allocation, &allocation_x, &allocation_y);
-  clutter_actor_box_get_size (allocation, &available_w, &available_h);
+  available_w = clutter_actor_box_get_width (allocation);
+  available_h = clutter_actor_box_get_height (allocation);
 
   for (l = children; l != NULL; l = l->next)
     {
@@ -451,12 +446,12 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       if (layer->x_align == CLUTTER_BIN_ALIGNMENT_FIXED)
         child_alloc.x1 = clutter_actor_get_x (child);
       else
-        child_alloc.x1 = allocation_x;
+        child_alloc.x1 = 0.0f;
 
       if (layer->y_align == CLUTTER_BIN_ALIGNMENT_FIXED)
         child_alloc.y1 = clutter_actor_get_y (child);
       else
-        child_alloc.y1 = allocation_y;
+        child_alloc.y1 = 0.0f;
 
       child_alloc.x2 = available_w;
       child_alloc.y2 = available_h;

@@ -556,7 +556,6 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
 {
   ClutterFlowLayoutPrivate *priv = CLUTTER_FLOW_LAYOUT (manager)->priv;
   GList *l, *children = clutter_container_get_children (container);
-  gfloat x_off, y_off;
   gfloat avail_width, avail_height;
   gfloat item_x, item_y;
   gint line_item_count;
@@ -566,7 +565,6 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
   if (children == NULL)
     return;
 
-  clutter_actor_box_get_origin (allocation, &x_off, &y_off);
   clutter_actor_box_get_size (allocation, &avail_width, &avail_height);
 
   /* blow the cached preferred size and re-compute with the given
@@ -587,8 +585,7 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
   items_per_line = compute_lines (CLUTTER_FLOW_LAYOUT (manager),
                                   avail_width, avail_height);
 
-  item_x = x_off;
-  item_y = y_off;
+  item_x = item_y = 0;
 
   line_item_count = 0;
   line_index = 0;
@@ -619,10 +616,10 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
               line_item_count = 0;
               line_index += 1;
 
-              item_x = x_off;
+              item_x = 0;
             }
 
-          new_x = x_off + ((line_item_count + 1) * (avail_width + priv->col_spacing))
+          new_x = ((line_item_count + 1) * (avail_width + priv->col_spacing))
                 / items_per_line;
           item_width = new_x - item_x - priv->col_spacing;
           item_height = g_array_index (priv->line_natural,
@@ -658,10 +655,10 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
               line_item_count = 0;
               line_index += 1;
 
-              item_y = y_off;
+              item_y = 0;
             }
 
-          new_y = y_off + ((line_item_count + 1) * (avail_height + priv->row_spacing))
+          new_y = ((line_item_count + 1) * (avail_height + priv->row_spacing))
                 / items_per_line;
           item_height = new_y - item_y - priv->row_spacing;
           item_width = g_array_index (priv->line_natural,
