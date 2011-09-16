@@ -194,7 +194,6 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/script", test_script_single);
   TEST_CONFORM_SIMPLE ("/script", test_script_child);
-  TEST_CONFORM_SIMPLE ("/script", test_script_implicit_alpha);
   TEST_CONFORM_SIMPLE ("/script", test_script_object_property);
   TEST_CONFORM_SIMPLE ("/script", test_script_animation);
   TEST_CONFORM_SIMPLE ("/script", test_script_named_object);
@@ -210,11 +209,14 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/score", test_score);
 
+<<<<<<< HEAD
   TEST_CONFORM_SIMPLE ("/behaviours", test_behaviours);
 
   /* FIXME - see bug https://bugzilla.gnome.org/show_bug.cgi?id=655588 */
   TEST_CONFORM_TODO ("/cally", cally_text);
 
+=======
+>>>>>>> msvc-support-2.0
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_object);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_backface_culling);

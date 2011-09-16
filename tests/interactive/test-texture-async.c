@@ -52,9 +52,6 @@ size_change_cb (ClutterTexture *texture,
 static
 gboolean task (gpointer user_data)
 {
-  ClutterTimeline  *timeline;
-  ClutterAlpha     *alpha;
-  ClutterBehaviour *depth_behavior;
   ClutterActor     *image[4];
   ClutterActor     *clone[4];
   ClutterActor     *stage;
@@ -107,11 +104,10 @@ gboolean task (gpointer user_data)
 
   for (i = 0; i < 3; i++)
     {
-      timeline = clutter_timeline_new (5000);
-      alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
-      depth_behavior = clutter_behaviour_depth_new (alpha, -2500, 0);
-      clutter_behaviour_apply (depth_behavior, image[i]);
-      clutter_timeline_start (timeline);
+      clutter_actor_animate (image[i], CLUTTER_LINEAR,
+                             5000,
+                             "depth", -2500.0,
+                             NULL);
     }
 
   return FALSE;
@@ -122,15 +118,13 @@ G_MODULE_EXPORT gint
 test_texture_async_main (int argc, char *argv[])
 {
   ClutterActor *stage;
-  ClutterColor  stage_color = { 0x12, 0x34, 0x56, 0xff };
-  gchar        *path;
+  gchar *path;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  g_thread_init (NULL);
-  stage = clutter_stage_get_default ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  stage = clutter_stage_new ();
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_LightSkyBlue);
 
   clutter_actor_show (stage);
   g_signal_connect (stage,
@@ -146,9 +140,6 @@ test_texture_async_main (int argc, char *argv[])
   clutter_main ();
 
   g_free (path);
-
-  /*g_object_unref (depth_behavior);
-  g_object_unref (timeline);*/
 
   return EXIT_SUCCESS;
 }

@@ -186,23 +186,6 @@ clutter_stage_manager_get_default (void)
   return stage_manager;
 }
 
-/**
- * clutter_stage_manager_set_default_stage:
- * @stage_manager: a #ClutterStageManager
- * @stage: a #ClutterStage
- *
- * Sets @stage as the default stage.
- *
- * Since: 0.8
- *
- * Deprecated: 1.2: Calling this function has no effect
- */
-void
-clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
-                                         ClutterStage        *stage)
-{
-}
-
 /*
  * _clutter_stage_manager_set_default_stage:
  * @stage_manager: a #ClutterStageManager

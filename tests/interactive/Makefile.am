@@ -5,18 +5,11 @@ UNIT_TESTS = \
 	test-texture-async.c \
 	test-texture-material.c \
 	test-events.c \
-	test-scale.c \
-        test-actors.c \
-        test-actor-clone.c \
-	test-behave.c \
 	test-shader-effects.c \
-	test-depth.c \
-	test-threads.c \
 	test-script.c \
 	test-model.c \
 	test-grab.c \
 	test-fullscreen.c \
-	test-shader.c \
 	test-cogl-shader-arbfp.c \
 	test-cogl-shader-glsl.c \
 	test-animator.c \
@@ -24,7 +17,6 @@ UNIT_TESTS = \
 	test-state-animator.c \
 	test-unproject.c \
 	test-fbo.c \
-	test-multistage.c \
 	test-cogl-primitives.c \
 	test-cogl-tex-tile.c \
 	test-cogl-tex-convert.c \
@@ -35,8 +27,6 @@ UNIT_TESTS = \
 	test-cogl-multitexture.c \
 	test-stage-read-pixels.c \
 	test-clip.c \
-	test-paint-wrapper.c \
-	test-texture-quality.c \
 	test-layout.c \
         test-animation.c \
         test-easing.c \
@@ -62,7 +52,7 @@ UNIT_TESTS = \
 	test-drop.c
 
 if X11_TESTS
-UNIT_TESTS += test-pixmap.c test-devices.c
+UNIT_TESTS += test-devices.c
 endif
 
 if OS_WIN32

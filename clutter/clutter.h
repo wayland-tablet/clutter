@@ -28,8 +28,6 @@
 
 #define __CLUTTER_H_INSIDE__
 
-#include "clutter-deprecated.h"
-
 #include "clutter-config.h"
 
 #include "clutter-action.h"
@@ -41,13 +39,6 @@
 #include "clutter-animation.h"
 #include "clutter-animator.h"
 #include "clutter-backend.h"
-#include "clutter-behaviour-depth.h"
-#include "clutter-behaviour-ellipse.h"
-#include "clutter-behaviour.h"
-#include "clutter-behaviour-opacity.h"
-#include "clutter-behaviour-path.h"
-#include "clutter-behaviour-rotate.h"
-#include "clutter-behaviour-scale.h"
 #include "clutter-bind-constraint.h"
 #include "clutter-binding-pool.h"
 #include "clutter-bin-layout.h"
@@ -73,7 +64,6 @@
 #include "clutter-feature.h"
 #include "clutter-fixed-layout.h"
 #include "clutter-flow-layout.h"
-#include "clutter-frame-source.h"
 #include "clutter-gesture-action.h"
 #include "clutter-group.h"
 #include "clutter-input-device.h"
@@ -94,7 +84,6 @@
 #include "clutter-scriptable.h"
 #include "clutter-script.h"
 #include "clutter-settings.h"
-#include "clutter-shader.h"
 #include "clutter-shader-effect.h"
 #include "clutter-shader-types.h"
 #include "clutter-swipe-action.h"
@@ -107,10 +96,8 @@
 #include "clutter-texture.h"
 #include "clutter-text.h"
 #include "clutter-timeline.h"
-#include "clutter-timeout-pool.h"
 #include "clutter-types.h"
 #include "clutter-units.h"
-#include "clutter-util.h"
 #include "clutter-version.h"
 
 #include "clutter-enum-types.h"

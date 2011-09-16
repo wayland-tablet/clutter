@@ -1304,30 +1304,6 @@ ClutterX11TexturePixmapPrivate
 </SECTION>
 
 <SECTION>
-<FILE>clutter-glx-texture-pixmap</FILE>
-ClutterGLXTexturePixmap
-ClutterGLXTexturePixmapClass
-clutter_glx_texture_pixmap_new
-clutter_glx_texture_pixmap_new_with_pixmap
-clutter_glx_texture_pixmap_new_with_window
-
-<SUBSECTION>
-clutter_glx_texture_pixmap_using_extension
-
-<SUBSECTION Standard>
-CLUTTER_GLX_TYPE_TEXTURE_PIXMAP
-CLUTTER_GLX_TEXTURE_PIXMAP
-CLUTTER_GLX_IS_TEXTURE_PIXMAP
-CLUTTER_GLX_TEXTURE_PIXMAP_CLASS
-CLUTTER_GLX_IS_TEXTURE_PIXMAP_CLASS
-CLUTTER_GLX_TEXTURE_PIXMAP_GET_CLASS
-
-<SUBSECTION Private>
-ClutterGLXTexturePixmapPrivate
-clutter_glx_texture_pixmap_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-win32</FILE>
 <TITLE>Win32 Specific Support</TITLE>
 clutter_win32_disable_event_retrieval
@@ -1595,64 +1571,6 @@ CLUTTER_TYPE_SCORE
 <SUBSECTION Private>
 ClutterScorePrivate
 clutter_score_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-shader</FILE>
-<TITLE>Shaders</TITLE>
-ClutterShaderError
-ClutterShader
-ClutterShaderClass
-clutter_shader_new
-clutter_shader_set_vertex_source
-clutter_shader_get_vertex_source
-clutter_shader_set_fragment_source
-clutter_shader_get_fragment_source
-clutter_shader_compile
-clutter_shader_release
-clutter_shader_is_compiled
-clutter_shader_set_is_enabled
-clutter_shader_get_is_enabled
-
-<SUBSECTION>
-clutter_shader_set_uniform
-clutter_shader_get_cogl_program
-clutter_shader_get_cogl_fragment_shader
-clutter_shader_get_cogl_vertex_shader
-
-<SUBSECTION>
-CLUTTER_VALUE_HOLDS_SHADER_FLOAT
-clutter_value_set_shader_float
-clutter_value_get_shader_float
-CLUTTER_VALUE_HOLDS_SHADER_INT
-clutter_value_set_shader_int
-clutter_value_get_shader_int
-CLUTTER_VALUE_HOLDS_SHADER_MATRIX
-clutter_value_set_shader_matrix
-clutter_value_get_shader_matrix
-
-<SUBSECTION Standard>
-CLUTTER_IS_SHADER
-CLUTTER_IS_SHADER_CLASS
-CLUTTER_SHADER
-CLUTTER_SHADER_CLASS
-CLUTTER_SHADER_ERROR
-CLUTTER_SHADER_GET_CLASS
-CLUTTER_TYPE_SHADER
-CLUTTER_TYPE_SHADER_FLOAT
-CLUTTER_TYPE_SHADER_INT
-CLUTTER_TYPE_SHADER_MATRIX
-
-<SUBSECTION Private>
-ClutterShaderPrivate
-clutter_shader_get_type
-ClutterShaderFloat
-clutter_shader_float_get_type
-ClutterShaderInt
-clutter_shader_int_get_type
-ClutterShaderMatrix
-clutter_shader_matrix_get_type
-clutter_shader_error_quark
 </SECTION>
 
 <SECTION>
@@ -2537,10 +2455,23 @@ ClutterShaderEffectClass
 clutter_shader_effect_new
 clutter_shader_effect_set_uniform
 clutter_shader_effect_set_uniform_value
+
 <SUBSECTION>
 clutter_shader_effect_set_shader_source
 clutter_shader_effect_get_program
 clutter_shader_effect_get_shader
+
+<SUBSECTION>
+CLUTTER_VALUE_HOLDS_SHADER_FLOAT
+clutter_value_set_shader_float
+clutter_value_get_shader_float
+CLUTTER_VALUE_HOLDS_SHADER_INT
+clutter_value_set_shader_int
+clutter_value_get_shader_int
+CLUTTER_VALUE_HOLDS_SHADER_MATRIX
+clutter_value_set_shader_matrix
+clutter_value_get_shader_matrix
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_SHADER_EFFECT
 CLUTTER_SHADER_EFFECT
@@ -2548,9 +2479,20 @@ CLUTTER_SHADER_EFFECT_CLASS
 CLUTTER_IS_SHADER_EFFECT
 CLUTTER_IS_SHADER_EFFECT_CLASS
 CLUTTER_SHADER_EFFECT_GET_CLASS
+CLUTTER_TYPE_SHADER
+CLUTTER_TYPE_SHADER_FLOAT
+CLUTTER_TYPE_SHADER_INT
+CLUTTER_TYPE_SHADER_MATRIX
+
 <SUBSECTION Private>
 ClutterShaderEffectPrivate
 clutter_shader_effect_get_type
+ClutterShaderFloat
+clutter_shader_float_get_type
+ClutterShaderInt
+clutter_shader_int_get_type
+ClutterShaderMatrix
+clutter_shader_matrix_get_type
 </SECTION>
 
 <SECTION>

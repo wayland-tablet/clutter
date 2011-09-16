@@ -127,26 +127,10 @@ guint            clutter_threads_add_timeout_full      (gint           priority,
                                                         gpointer       data,
                                                         GDestroyNotify notify);
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-guint            clutter_threads_add_frame_source      (guint          fps,
-						        GSourceFunc    func,
-						        gpointer       data);
-guint            clutter_threads_add_frame_source_full (gint           priority,
-						        guint          fps,
-						        GSourceFunc    func,
-						        gpointer       data,
-						        GDestroyNotify notify);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
 guint            clutter_threads_add_repaint_func      (GSourceFunc    func,
                                                         gpointer       data,
                                                         GDestroyNotify notify);
 void             clutter_threads_remove_repaint_func   (guint          handle_id);
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-void             clutter_set_motion_events_enabled   (gboolean enable);
-gboolean         clutter_get_motion_events_enabled   (void);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 void             clutter_set_default_frame_rate      (guint    frames_per_sec);
 guint            clutter_get_default_frame_rate      (void);

@@ -91,10 +91,6 @@ clutter_actor_get_fixed_position_set
 clutter_actor_get_flags
 clutter_actor_get_geometry
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_actor_get_gid
-#endif
-
 clutter_actor_get_height
 clutter_actor_get_name
 clutter_actor_get_offscreen_redirect
@@ -115,7 +111,6 @@ clutter_actor_get_rotation
 clutter_actor_get_scale
 clutter_actor_get_scale_center
 clutter_actor_get_scale_gravity
-clutter_actor_get_shader
 clutter_actor_get_size
 clutter_actor_get_stage
 clutter_actor_get_text_direction
@@ -187,10 +182,6 @@ clutter_actor_set_rotation
 clutter_actor_set_scale
 clutter_actor_set_scale_full
 clutter_actor_set_scale_with_gravity
-clutter_actor_set_shader
-clutter_actor_set_shader_param
-clutter_actor_set_shader_param_float
-clutter_actor_set_shader_param_int
 clutter_actor_set_size
 clutter_actor_set_text_direction
 clutter_actor_set_width
@@ -285,6 +276,7 @@ clutter_animator_set_duration
 clutter_animator_set_timeline
 clutter_animator_start
 
+<<<<<<< HEAD
 #ifdef CLUTTER_ENABLE_EXPERIMENTAL_API
 clutter_backend_get_cogl_context
 #endif
@@ -295,92 +287,16 @@ clutter_backend_get_double_click_time
 clutter_backend_get_font_name
 #endif
 
+=======
+>>>>>>> msvc-support-2.0
 clutter_backend_get_font_options 
 clutter_backend_get_resolution
 clutter_backend_get_type
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_backend_set_double_click_distance
-clutter_backend_set_double_click_time
-clutter_backend_set_font_name
-#endif
-
 clutter_backend_set_font_options
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_backend_set_resolution
-#endif
-
 clutter_base_init
-clutter_behaviour_actors_foreach
-clutter_behaviour_apply
-clutter_behaviour_depth_get_bounds
-clutter_behaviour_depth_get_type
-clutter_behaviour_depth_new
-clutter_behaviour_depth_set_bounds
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_behaviour_ellipse_get_angle_end
-clutter_behaviour_ellipse_get_angle_start
-clutter_behaviour_ellipse_get_angle_tilt
-clutter_behaviour_ellipse_get_center
-clutter_behaviour_ellipse_get_direction
-clutter_behaviour_ellipse_get_height
-clutter_behaviour_ellipse_get_tilt
-clutter_behaviour_ellipse_get_type
-clutter_behaviour_ellipse_get_width
-clutter_behaviour_ellipse_new
-clutter_behaviour_ellipse_set_angle_end
-clutter_behaviour_ellipse_set_angle_start
-clutter_behaviour_ellipse_set_angle_tilt
-clutter_behaviour_ellipse_set_center
-clutter_behaviour_ellipse_set_direction
-clutter_behaviour_ellipse_set_height
-clutter_behaviour_ellipse_set_tilt
-clutter_behaviour_ellipse_set_width
-#endif
-
-clutter_behaviour_get_actors
-clutter_behaviour_get_alpha
-clutter_behaviour_get_nth_actor
-clutter_behaviour_get_n_actors
-clutter_behaviour_get_type
-clutter_behaviour_is_applied
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_behaviour_opacity_get_bounds
-clutter_behaviour_opacity_get_type
-clutter_behaviour_opacity_new
-clutter_behaviour_opacity_set_bounds
-clutter_behaviour_path_get_path
-clutter_behaviour_path_get_type
-clutter_behaviour_path_new
-clutter_behaviour_path_new_with_description
-clutter_behaviour_path_new_with_knots
-clutter_behaviour_path_set_path
-#endif
-
-clutter_behaviour_remove
-clutter_behaviour_remove_all
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_behaviour_rotate_get_axis
-clutter_behaviour_rotate_get_bounds
-clutter_behaviour_rotate_get_center
-clutter_behaviour_rotate_get_direction
-clutter_behaviour_rotate_get_type
-clutter_behaviour_rotate_new
-clutter_behaviour_rotate_set_axis
-clutter_behaviour_rotate_set_bounds
-clutter_behaviour_rotate_set_center
-clutter_behaviour_rotate_set_direction
-clutter_behaviour_scale_get_bounds
-clutter_behaviour_scale_get_type
-clutter_behaviour_scale_new
-clutter_behaviour_scale_set_bounds
-#endif
-
-clutter_behaviour_set_alpha
 clutter_binding_pool_activate
 clutter_binding_pool_block_action
 clutter_binding_pool_find
@@ -622,11 +538,6 @@ clutter_flow_orientation_get_type
 clutter_fog_get_type
 clutter_font_flags_get_type
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_frame_source_add
-clutter_frame_source_add_full
-#endif
-
 clutter_geometry_get_type
 clutter_geometry_intersects
 clutter_geometry_union
@@ -638,10 +549,6 @@ clutter_gesture_action_get_type
 clutter_gesture_action_new
 
 clutter_get_accessibility_enabled
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_get_actor_by_gid
-#endif
 
 clutter_get_current_event
 clutter_get_current_event_time
@@ -950,7 +857,10 @@ clutter_set_font_flags
 clutter_set_motion_events_enabled
 #endif
 
+<<<<<<< HEAD
 clutter_shader_compile
+=======
+>>>>>>> msvc-support-2.0
 clutter_shader_effect_get_program
 clutter_shader_effect_get_shader
 clutter_shader_effect_get_type
@@ -961,22 +871,8 @@ clutter_shader_effect_set_uniform_value
 clutter_shader_error_get_type
 clutter_shader_error_quark
 clutter_shader_float_get_type
-clutter_shader_get_cogl_fragment_shader
-clutter_shader_get_cogl_program
-clutter_shader_get_cogl_vertex_shader
-clutter_shader_get_fragment_source
-clutter_shader_get_is_enabled
-clutter_shader_get_type
-clutter_shader_get_vertex_source
 clutter_shader_int_get_type
-clutter_shader_is_compiled
 clutter_shader_matrix_get_type
-clutter_shader_new
-clutter_shader_release
-clutter_shader_set_fragment_source
-clutter_shader_set_is_enabled
-clutter_shader_set_uniform
-clutter_shader_set_vertex_source
 clutter_shader_type_get_type
 clutter_snap_constraint_get_edge
 clutter_snap_constraint_get_offset
@@ -1002,6 +898,7 @@ clutter_stage_get_minimum_size
 clutter_stage_get_motion_events_enabled
 clutter_stage_get_no_clear_hint
 clutter_stage_get_perspective
+clutter_stage_get_redraw_clip_bounds
 clutter_stage_get_throttle_motion_events
 clutter_stage_get_title
 clutter_stage_get_type
@@ -1016,10 +913,6 @@ clutter_stage_manager_get_type
 clutter_stage_manager_list_stages
 clutter_stage_manager_peek_stages
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_stage_manager_set_default_stage
-#endif
-
 #ifdef HAVE_CLUTTER_EGL
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
@@ -1033,6 +926,7 @@ clutter_egl_display
 clutter_egl_get_egl_display
 #endif
 
+clutter_stage_get_motion_events_enabled
 clutter_stage_new
 clutter_stage_queue_redraw
 clutter_stage_read_pixels
@@ -1211,11 +1105,6 @@ clutter_text_set_single_line_mode
 clutter_text_set_text
 clutter_text_set_use_markup
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_threads_add_frame_source
-clutter_threads_add_frame_source_full
-#endif
-
 clutter_threads_add_idle
 clutter_threads_add_idle_full
 clutter_threads_add_repaint_func
@@ -1256,9 +1145,6 @@ clutter_timeline_set_loop
 clutter_timeline_skip
 clutter_timeline_start
 clutter_timeline_stop
-clutter_timeout_pool_add
-clutter_timeout_pool_new
-clutter_timeout_pool_remove
 clutter_ungrab_keyboard
 clutter_ungrab_pointer
 clutter_ungrab_pointer_for_device
@@ -1277,10 +1163,6 @@ clutter_units_get_unit_value
 clutter_units_to_pixels
 clutter_units_to_string
 clutter_unit_type_get_type
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_util_next_p2
-#endif
 
 clutter_value_get_color
 clutter_value_get_fixed
@@ -1321,16 +1203,8 @@ clutter_x11_get_current_event_time
 clutter_x11_get_default_display
 clutter_x11_get_default_screen
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_x11_get_input_devices
-#endif
-
 clutter_x11_get_root_window
 clutter_x11_get_stage_from_window
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-clutter_x11_get_stage_visual
-#endif
 
 clutter_x11_get_stage_window
 clutter_x11_get_use_argb_visual
@@ -1363,7 +1237,6 @@ _clutter_events_osx_uninit
 #endif
 
 #ifndef CLUTTER_NO_UNDERSCORE
-_clutter_shader_release_all
 _clutter_stage_window_add_redraw_clip
 _clutter_stage_window_get_active_framebuffer
 _clutter_stage_window_get_geometry

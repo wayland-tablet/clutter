@@ -26,7 +26,6 @@
 
 #include "clutter-backend-osx.h"
 #include "clutter-device-manager-osx.h"
-#include "clutter-shader.h"
 #include "clutter-stage-osx.h"
 
 #include "clutter-debug.h"
@@ -227,8 +226,6 @@ static void
 clutter_backend_osx_dispose (GObject *object)
 {
   ClutterBackendOSX *self = CLUTTER_BACKEND_OSX (object);
-
-  _clutter_shader_release_all ();
 
   [self->context release];
   self->context = NULL;

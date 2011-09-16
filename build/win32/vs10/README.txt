@@ -1,5 +1,6 @@
 Note that all this is rather experimental.
 
+<<<<<<< HEAD
 A more detailed description on using Visual C++ to compile Clutter with
 its dependencies can be found on the following GNOME Live! page:
 
@@ -8,12 +9,18 @@ https://live.gnome.org/GTK%2B/Win32/MSVCCompilationOfGTKStack
 Please do not attempt to compile Clutter in a path that contains spaces
 to avoid potential problems during compilation, linking or usage.
 
+=======
+>>>>>>> msvc-support-2.0
 This VS10 solution and the projects it includes are intented to be used
 in a Clutter source tree unpacked from a tarball. In a git checkout you
 first need to use some Unix-like environment or manual work to expand
 the files needed, like config.h.win32.in into config.h.win32 and the
+<<<<<<< HEAD
 .vcprojxin and .vcxproj.filtersin files here into corresponding actual
 .vcxproj and .vcxproj.filters files.
+=======
+.vcprojin files here into corresponding actual .vcproj files.
+>>>>>>> msvc-support-2.0
 
 You will need the parts from GNOME: Cogl, JSON-GLib, GDK-Pixbuf,
 Pango*, atk and GLib. External dependencies are at least zlib, libpng,
