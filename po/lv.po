@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-09-12 13:51+0100\n"
+"POT-Creation-Date: 2011-09-19 20:12+0100\n"
 "PO-Revision-Date: 2011-09-06 00:26+0300\n"
 "Last-Translator: Rūdofls Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
@@ -20,388 +20,388 @@ msgstr ""
 "2);\n"
 "X-Generator: Lokalize 1.1\n"
 
-#: clutter/clutter-actor.c:3852
+#: clutter/clutter-actor.c:3875
 msgid "X coordinate"
 msgstr "X koordināta"
 
-#: clutter/clutter-actor.c:3853
+#: clutter/clutter-actor.c:3876
 msgid "X coordinate of the actor"
 msgstr "Izpildītāja X koordināta"
 
-#: clutter/clutter-actor.c:3868
+#: clutter/clutter-actor.c:3891
 msgid "Y coordinate"
 msgstr "Y koordināta"
 
-#: clutter/clutter-actor.c:3869
+#: clutter/clutter-actor.c:3892
 msgid "Y coordinate of the actor"
 msgstr "Izpildītāja Y koordināta"
 
-#: clutter/clutter-actor.c:3884 clutter/clutter-behaviour-ellipse.c:477
+#: clutter/clutter-actor.c:3907 clutter/clutter-behaviour-ellipse.c:477
 msgid "Width"
 msgstr "Platums"
 
-#: clutter/clutter-actor.c:3885
+#: clutter/clutter-actor.c:3908
 msgid "Width of the actor"
 msgstr "Izpildītāja platums"
 
-#: clutter/clutter-actor.c:3899 clutter/clutter-behaviour-ellipse.c:493
+#: clutter/clutter-actor.c:3922 clutter/clutter-behaviour-ellipse.c:493
 msgid "Height"
 msgstr "Augstums"
 
-#: clutter/clutter-actor.c:3900
+#: clutter/clutter-actor.c:3923
 msgid "Height of the actor"
 msgstr "Izpildītāja augstums"
 
-#: clutter/clutter-actor.c:3918
+#: clutter/clutter-actor.c:3941
 msgid "Fixed X"
 msgstr "Fiksēts X"
 
-#: clutter/clutter-actor.c:3919
+#: clutter/clutter-actor.c:3942
 msgid "Forced X position of the actor"
 msgstr "Fiksēta izpildītāja X pozīcija"
 
-#: clutter/clutter-actor.c:3937
+#: clutter/clutter-actor.c:3960
 msgid "Fixed Y"
 msgstr "Fiksēts Y"
 
-#: clutter/clutter-actor.c:3938
+#: clutter/clutter-actor.c:3961
 msgid "Forced Y position of the actor"
 msgstr "Fiksēta izpildītāja Y pozīcija"
 
-#: clutter/clutter-actor.c:3954
+#: clutter/clutter-actor.c:3977
 msgid "Fixed position set"
 msgstr "Fiksēta pozīcija iestatīta"
 
-#: clutter/clutter-actor.c:3955
+#: clutter/clutter-actor.c:3978
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Vai izpildītājam izmantot fiksētu pozicionēšanu"
 
-#: clutter/clutter-actor.c:3977
+#: clutter/clutter-actor.c:4000
 msgid "Min Width"
 msgstr "Min. platums"
 
-#: clutter/clutter-actor.c:3978
+#: clutter/clutter-actor.c:4001
 msgid "Forced minimum width request for the actor"
 msgstr "Aktiem forsēts minimālā platuma pieprasījums"
 
-#: clutter/clutter-actor.c:3997
+#: clutter/clutter-actor.c:4020
 msgid "Min Height"
 msgstr "Min. augstums"
 
-#: clutter/clutter-actor.c:3998
+#: clutter/clutter-actor.c:4021
 msgid "Forced minimum height request for the actor"
 msgstr "Aktiem forsēts minimālā augstuma pieprasījums"
 
-#: clutter/clutter-actor.c:4017
+#: clutter/clutter-actor.c:4040
 msgid "Natural Width"
 msgstr "Dabīgais platums"
 
-#: clutter/clutter-actor.c:4018
+#: clutter/clutter-actor.c:4041
 msgid "Forced natural width request for the actor"
 msgstr "Aktiem forsēts dabīgā platuma pieprasījums"
 
-#: clutter/clutter-actor.c:4037
+#: clutter/clutter-actor.c:4060
 msgid "Natural Height"
 msgstr "Dabīgais augstums"
 
-#: clutter/clutter-actor.c:4038
+#: clutter/clutter-actor.c:4061
 msgid "Forced natural height request for the actor"
 msgstr "Aktiem forsēts dabīgā augstuma pieprasījums"
 
-#: clutter/clutter-actor.c:4054
+#: clutter/clutter-actor.c:4077
 msgid "Minimum width set"
 msgstr "Minimālais platums iestatīts"
 
-#: clutter/clutter-actor.c:4055
+#: clutter/clutter-actor.c:4078
 msgid "Whether to use the min-width property"
 msgstr "Vai izmantot minimālā platuma īpašību"
 
-#: clutter/clutter-actor.c:4070
+#: clutter/clutter-actor.c:4093
 msgid "Minimum height set"
 msgstr "Minimālais augstums iestatīts"
 
-#: clutter/clutter-actor.c:4071
+#: clutter/clutter-actor.c:4094
 msgid "Whether to use the min-height property"
 msgstr "Vai izmantot minimālā augstuma īpašību"
 
-#: clutter/clutter-actor.c:4086
+#: clutter/clutter-actor.c:4109
 msgid "Natural width set"
 msgstr "Dabīgs platums iestatīts"
 
-#: clutter/clutter-actor.c:4087
+#: clutter/clutter-actor.c:4110
 msgid "Whether to use the natural-width property"
 msgstr "Vai izmantot dabīgā platuma īpašību"
 
-#: clutter/clutter-actor.c:4104
+#: clutter/clutter-actor.c:4127
 msgid "Natural height set"
 msgstr "Dabīgs augstums iestatīts"
 
-#: clutter/clutter-actor.c:4105
+#: clutter/clutter-actor.c:4128
 msgid "Whether to use the natural-height property"
 msgstr "Vai izmantot dabīgā augstuma īpašību"
 
-#: clutter/clutter-actor.c:4124
+#: clutter/clutter-actor.c:4147
 msgid "Allocation"
 msgstr "Piešķiršana"
 
-#: clutter/clutter-actor.c:4125
+#: clutter/clutter-actor.c:4148
 msgid "The actor's allocation"
 msgstr "Izpildītāja piešķiršana"
 
-#: clutter/clutter-actor.c:4181
+#: clutter/clutter-actor.c:4204
 msgid "Request Mode"
 msgstr "Pieprasīšanas režīms"
 
-#: clutter/clutter-actor.c:4182
+#: clutter/clutter-actor.c:4205
 msgid "The actor's request mode"
 msgstr "Izpildītāja pieprasīšanas režīms"
 
-#: clutter/clutter-actor.c:4197
+#: clutter/clutter-actor.c:4220
 msgid "Depth"
 msgstr "Dziļums"
 
-#: clutter/clutter-actor.c:4198
+#: clutter/clutter-actor.c:4221
 msgid "Position on the Z axis"
 msgstr "Z ass pozīcija"
 
-#: clutter/clutter-actor.c:4212
+#: clutter/clutter-actor.c:4235
 msgid "Opacity"
 msgstr "Necaurspīdīgums"
 
-#: clutter/clutter-actor.c:4213
+#: clutter/clutter-actor.c:4236
 msgid "Opacity of an actor"
 msgstr "Izpildītāja necaurspīdīgums"
 
-#: clutter/clutter-actor.c:4232
+#: clutter/clutter-actor.c:4255
 msgid "Offscreen redirect"
 msgstr "Ārpus ekrāna pārsūtīšana"
 
-#: clutter/clutter-actor.c:4233
+#: clutter/clutter-actor.c:4256
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "Atzīme, kas nosaka, kad saplacināt izpildītāju uz vienu attēlu"
 
-#: clutter/clutter-actor.c:4251
+#: clutter/clutter-actor.c:4274
 msgid "Visible"
 msgstr "Redzams"
 
-#: clutter/clutter-actor.c:4252
+#: clutter/clutter-actor.c:4275
 msgid "Whether the actor is visible or not"
 msgstr "Vai izpildītājs ir redzams vai neredzams"
 
-#: clutter/clutter-actor.c:4267
+#: clutter/clutter-actor.c:4290
 msgid "Mapped"
 msgstr "Kartēts"
 
-#: clutter/clutter-actor.c:4268
+#: clutter/clutter-actor.c:4291
 msgid "Whether the actor will be painted"
 msgstr "Vai izpildītājs tiks uzzīmēts"
 
-#: clutter/clutter-actor.c:4282
+#: clutter/clutter-actor.c:4305
 msgid "Realized"
 msgstr "Realizēts"
 
-#: clutter/clutter-actor.c:4283
+#: clutter/clutter-actor.c:4306
 msgid "Whether the actor has been realized"
 msgstr "Vai izpildītājs tika realizēts"
 
-#: clutter/clutter-actor.c:4299
+#: clutter/clutter-actor.c:4322
 msgid "Reactive"
 msgstr "Reaktīvs"
 
-#: clutter/clutter-actor.c:4300
+#: clutter/clutter-actor.c:4323
 msgid "Whether the actor is reactive to events"
 msgstr "Vai izpildītājs uz notikumiem ir reaktīvs"
 
-#: clutter/clutter-actor.c:4312
+#: clutter/clutter-actor.c:4335
 msgid "Has Clip"
 msgstr ""
 
-#: clutter/clutter-actor.c:4313
+#: clutter/clutter-actor.c:4336
 msgid "Whether the actor has a clip set"
 msgstr ""
 
-#: clutter/clutter-actor.c:4328
+#: clutter/clutter-actor.c:4351
 msgid "Clip"
 msgstr ""
 
-#: clutter/clutter-actor.c:4329
+#: clutter/clutter-actor.c:4352
 msgid "The clip region for the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:4343 clutter/clutter-actor-meta.c:207
+#: clutter/clutter-actor.c:4366 clutter/clutter-actor-meta.c:207
 #: clutter/clutter-binding-pool.c:319 clutter/clutter-input-device.c:236
 msgid "Name"
 msgstr "Nosaukums"
 
-#: clutter/clutter-actor.c:4344
+#: clutter/clutter-actor.c:4367
 msgid "Name of the actor"
 msgstr "Nosaukums izpildītāja"
 
-#: clutter/clutter-actor.c:4358
+#: clutter/clutter-actor.c:4381
 msgid "Scale X"
 msgstr "Mērogs X"
 
-#: clutter/clutter-actor.c:4359
+#: clutter/clutter-actor.c:4382
 msgid "Scale factor on the X axis"
 msgstr "Mēroga koeficients uz X ass"
 
-#: clutter/clutter-actor.c:4374
+#: clutter/clutter-actor.c:4397
 msgid "Scale Y"
 msgstr "Mērogs Y"
 
-#: clutter/clutter-actor.c:4375
+#: clutter/clutter-actor.c:4398
 msgid "Scale factor on the Y axis"
 msgstr "Mēroga koeficients uz Y ass"
 
-#: clutter/clutter-actor.c:4390
+#: clutter/clutter-actor.c:4413
 msgid "Scale Center X"
 msgstr "Mēroga vidus X"
 
-#: clutter/clutter-actor.c:4391
+#: clutter/clutter-actor.c:4414
 msgid "Horizontal scale center"
 msgstr "Horizontālā mēroga vidus"
 
-#: clutter/clutter-actor.c:4406
+#: clutter/clutter-actor.c:4429
 msgid "Scale Center Y"
 msgstr "Mēroga vidus Y"
 
-#: clutter/clutter-actor.c:4407
+#: clutter/clutter-actor.c:4430
 msgid "Vertical scale center"
 msgstr "Vertikālā mēroga vidus"
 
-#: clutter/clutter-actor.c:4422
+#: clutter/clutter-actor.c:4445
 msgid "Scale Gravity"
 msgstr "Mēroga svars"
 
-#: clutter/clutter-actor.c:4423
+#: clutter/clutter-actor.c:4446
 msgid "The center of scaling"
 msgstr "Mērogošanas vidus"
 
-#: clutter/clutter-actor.c:4440
+#: clutter/clutter-actor.c:4463
 msgid "Rotation Angle X"
 msgstr "Rotācijas leņķis X"
 
-#: clutter/clutter-actor.c:4441
+#: clutter/clutter-actor.c:4464
 msgid "The rotation angle on the X axis"
 msgstr "X ass rotācijas leņķis"
 
-#: clutter/clutter-actor.c:4456
+#: clutter/clutter-actor.c:4479
 msgid "Rotation Angle Y"
 msgstr "Rotācijas leņķis Y"
 
-#: clutter/clutter-actor.c:4457
+#: clutter/clutter-actor.c:4480
 msgid "The rotation angle on the Y axis"
 msgstr "Y ass rotācijas leņķis"
 
-#: clutter/clutter-actor.c:4472
+#: clutter/clutter-actor.c:4495
 msgid "Rotation Angle Z"
 msgstr "Rotācijas leņķis Z"
 
-#: clutter/clutter-actor.c:4473
+#: clutter/clutter-actor.c:4496
 msgid "The rotation angle on the Z axis"
 msgstr "Z ass rotācijas leņķis"
 
-#: clutter/clutter-actor.c:4488
+#: clutter/clutter-actor.c:4511
 msgid "Rotation Center X"
 msgstr "Rotācijas centrs X"
 
-#: clutter/clutter-actor.c:4489
+#: clutter/clutter-actor.c:4512
 msgid "The rotation center on the X axis"
 msgstr "X ass rotācijas centrs"
 
-#: clutter/clutter-actor.c:4505
+#: clutter/clutter-actor.c:4528
 msgid "Rotation Center Y"
 msgstr "Rotācijas centrs Y"
 
-#: clutter/clutter-actor.c:4506
+#: clutter/clutter-actor.c:4529
 msgid "The rotation center on the Y axis"
 msgstr "Y ass rotācijas centrs"
 
-#: clutter/clutter-actor.c:4522
+#: clutter/clutter-actor.c:4545
 msgid "Rotation Center Z"
 msgstr "Rotācijas centrs Z"
 
-#: clutter/clutter-actor.c:4523
+#: clutter/clutter-actor.c:4546
 msgid "The rotation center on the Z axis"
 msgstr "Z ass rotācijas centrs"
 
-#: clutter/clutter-actor.c:4539
+#: clutter/clutter-actor.c:4562
 msgid "Rotation Center Z Gravity"
 msgstr "Rotācijas centra Z svars"
 
-#: clutter/clutter-actor.c:4540
+#: clutter/clutter-actor.c:4563
 msgid "Center point for rotation around the Z axis"
 msgstr "Viduspunkts rotācijai ap Z asi"
 
-#: clutter/clutter-actor.c:4558
+#: clutter/clutter-actor.c:4581
 msgid "Anchor X"
 msgstr "Enkurs X"
 
-#: clutter/clutter-actor.c:4559
+#: clutter/clutter-actor.c:4582
 msgid "X coordinate of the anchor point"
 msgstr "Enkura punkta X koordināta"
 
-#: clutter/clutter-actor.c:4575
+#: clutter/clutter-actor.c:4598
 msgid "Anchor Y"
 msgstr "Enkurs Y"
 
-#: clutter/clutter-actor.c:4576
+#: clutter/clutter-actor.c:4599
 msgid "Y coordinate of the anchor point"
 msgstr "Enkura punkta Y koordināta"
 
-#: clutter/clutter-actor.c:4591
+#: clutter/clutter-actor.c:4614
 msgid "Anchor Gravity"
 msgstr "Enkura svars"
 
-#: clutter/clutter-actor.c:4592
+#: clutter/clutter-actor.c:4615
 msgid "The anchor point as a ClutterGravity"
 msgstr "Enkura punkts kā ClutterGravity"
 
-#: clutter/clutter-actor.c:4611
+#: clutter/clutter-actor.c:4634
 msgid "Show on set parent"
 msgstr "Rādīt uz vecāka iestatīts"
 
-#: clutter/clutter-actor.c:4612
+#: clutter/clutter-actor.c:4635
 msgid "Whether the actor is shown when parented"
 msgstr "Vai izpildītājs ir redzams, kad ar vecāku"
 
-#: clutter/clutter-actor.c:4632
+#: clutter/clutter-actor.c:4655
 msgid "Clip to Allocation"
 msgstr ""
 
-#: clutter/clutter-actor.c:4633
+#: clutter/clutter-actor.c:4656
 msgid "Sets the clip region to track the actor's allocation"
 msgstr ""
 
-#: clutter/clutter-actor.c:4643
+#: clutter/clutter-actor.c:4666
 msgid "Text Direction"
 msgstr "Teksta virziens"
 
-#: clutter/clutter-actor.c:4644
+#: clutter/clutter-actor.c:4667
 msgid "Direction of the text"
 msgstr "Teksta virziens"
 
-#: clutter/clutter-actor.c:4662
+#: clutter/clutter-actor.c:4685
 msgid "Has Pointer"
 msgstr "Ir rādītājs"
 
-#: clutter/clutter-actor.c:4663
+#: clutter/clutter-actor.c:4686
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Vai izpildītājs satur ievades ierīces norādi"
 
-#: clutter/clutter-actor.c:4680
+#: clutter/clutter-actor.c:4703
 msgid "Actions"
 msgstr "Darbības"
 
-#: clutter/clutter-actor.c:4681
+#: clutter/clutter-actor.c:4704
 msgid "Adds an action to the actor"
 msgstr "Izpildītājam pievieno darbību"
 
-#: clutter/clutter-actor.c:4695
+#: clutter/clutter-actor.c:4718
 msgid "Constraints"
 msgstr "Ierobežojumi"
 
-#: clutter/clutter-actor.c:4696
+#: clutter/clutter-actor.c:4719
 msgid "Adds a constraint to the actor"
 msgstr "Izpildītājam pievieno ierobežojumu"
 
@@ -772,7 +772,7 @@ msgid "The layout manager used by the box"
 msgstr "Izkārtojuma pārvaldnieks, ko izmanto kaste"
 
 #: clutter/clutter-box.c:564 clutter/clutter-rectangle.c:267
-#: clutter/clutter-stage.c:1765
+#: clutter/clutter-stage.c:1778
 msgid "Color"
 msgstr "Krāsa"
 
@@ -1171,59 +1171,59 @@ msgstr "Pārvaldnieks"
 msgid "The manager that created this data"
 msgstr "Pārvaldnieks, kas ir izveidojis šos datus"
 
-#: clutter/clutter-main.c:490
+#: clutter/clutter-main.c:491
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: clutter/clutter-main.c:1321
+#: clutter/clutter-main.c:1322
 msgid "Show frames per second"
 msgstr "Rādīt kadrus sekundē"
 
-#: clutter/clutter-main.c:1323
+#: clutter/clutter-main.c:1324
 msgid "Default frame rate"
 msgstr "Noklusētais kadru ātrums"
 
-#: clutter/clutter-main.c:1325
+#: clutter/clutter-main.c:1326
 msgid "Make all warnings fatal"
 msgstr "Atzīmēt visus brīdinājumus kā fatālus"
 
-#: clutter/clutter-main.c:1328
+#: clutter/clutter-main.c:1329
 msgid "Direction for the text"
 msgstr "Teksta virziens"
 
-#: clutter/clutter-main.c:1331
+#: clutter/clutter-main.c:1332
 msgid "Disable mipmapping on text"
 msgstr "Deaktivēt mip-kartēšanu uz teksta"
 
-#: clutter/clutter-main.c:1334
+#: clutter/clutter-main.c:1335
 msgid "Use 'fuzzy' picking"
 msgstr "Lietot 'aptuveno' izvēli"
 
-#: clutter/clutter-main.c:1337
+#: clutter/clutter-main.c:1338
 msgid "Clutter debugging flags to set"
 msgstr "Iestatāmie Clutter atkļūdošanas karodziņi"
 
-#: clutter/clutter-main.c:1339
+#: clutter/clutter-main.c:1340
 msgid "Clutter debugging flags to unset"
 msgstr "Noņemamie Clutter atkļūdošanas karodziņi"
 
-#: clutter/clutter-main.c:1343
+#: clutter/clutter-main.c:1344
 msgid "Clutter profiling flags to set"
 msgstr "Iestatāmie Clutter profilēšanas karodziņi"
 
-#: clutter/clutter-main.c:1345
+#: clutter/clutter-main.c:1346
 msgid "Clutter profiling flags to unset"
 msgstr "Noņemamie Clutter profilēšanas karodziņi"
 
-#: clutter/clutter-main.c:1348
+#: clutter/clutter-main.c:1349
 msgid "Enable accessibility"
 msgstr "Ieslēgt pieejamību"
 
-#: clutter/clutter-main.c:1530
+#: clutter/clutter-main.c:1531
 msgid "Clutter Options"
 msgstr "Clutter opcijas"
 
-#: clutter/clutter-main.c:1531
+#: clutter/clutter-main.c:1532
 msgid "Show Clutter Options"
 msgstr "Rādīt Clutter opcijas"
 
@@ -1373,7 +1373,7 @@ msgstr "Vilkšanas slieksnis"
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Attālums, kas jāveic kursoram, pirms sākt vilkt"
 
-#: clutter/clutter-settings.c:462 clutter/clutter-text.c:2939
+#: clutter/clutter-settings.c:462 clutter/clutter-text.c:2936
 msgid "Font Name"
 msgstr "Fonta nosaukums"
 
@@ -1517,103 +1517,103 @@ msgstr "Avota mala, kas būtu jāpievelk"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Nobīde pikseļos, ko pielietot konstante"
 
-#: clutter/clutter-stage.c:1707
+#: clutter/clutter-stage.c:1720
 msgid "Fullscreen Set"
 msgstr "Pilnekrāna iestatījums"
 
-#: clutter/clutter-stage.c:1708
+#: clutter/clutter-stage.c:1721
 msgid "Whether the main stage is fullscreen"
 msgstr "Vai galvenajai skatuvei ir jābūt pilnekrāna"
 
-#: clutter/clutter-stage.c:1724
+#: clutter/clutter-stage.c:1737
 msgid "Offscreen"
 msgstr "Ārpus ekrāna"
 
-#: clutter/clutter-stage.c:1725
+#: clutter/clutter-stage.c:1738
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Vai galvenajai skatuvei ir jābūt renderētai ārpus ekrāna"
 
-#: clutter/clutter-stage.c:1737 clutter/clutter-text.c:3052
+#: clutter/clutter-stage.c:1750 clutter/clutter-text.c:3049
 msgid "Cursor Visible"
 msgstr "Kursora redzamība"
 
-#: clutter/clutter-stage.c:1738
+#: clutter/clutter-stage.c:1751
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Vai peles rādītājam ir jābūt redzamam galvenajā skatuvē"
 
-#: clutter/clutter-stage.c:1752
+#: clutter/clutter-stage.c:1765
 msgid "User Resizable"
 msgstr "Lietotājs var mainīt izmēru"
 
-#: clutter/clutter-stage.c:1753
+#: clutter/clutter-stage.c:1766
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Vai lietotāja mijiedarbība var mainīt skatuves izmēru"
 
-#: clutter/clutter-stage.c:1766
+#: clutter/clutter-stage.c:1779
 msgid "The color of the stage"
 msgstr "Skatuves krāsa"
 
-#: clutter/clutter-stage.c:1780
+#: clutter/clutter-stage.c:1793
 msgid "Perspective"
 msgstr "Perspektīva"
 
-#: clutter/clutter-stage.c:1781
+#: clutter/clutter-stage.c:1794
 msgid "Perspective projection parameters"
 msgstr "Perspektīvas projekcijas parametri"
 
-#: clutter/clutter-stage.c:1796
+#: clutter/clutter-stage.c:1809
 msgid "Title"
 msgstr "Nosaukums"
 
-#: clutter/clutter-stage.c:1797
+#: clutter/clutter-stage.c:1810
 msgid "Stage Title"
 msgstr "Skatuves nosaukums"
 
-#: clutter/clutter-stage.c:1812
+#: clutter/clutter-stage.c:1825
 msgid "Use Fog"
 msgstr "Lietot miglu"
 
-#: clutter/clutter-stage.c:1813
+#: clutter/clutter-stage.c:1826
 msgid "Whether to enable depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1827
+#: clutter/clutter-stage.c:1840
 msgid "Fog"
 msgstr "Migla"
 
-#: clutter/clutter-stage.c:1828
+#: clutter/clutter-stage.c:1841
 msgid "Settings for the depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1844
+#: clutter/clutter-stage.c:1857
 msgid "Use Alpha"
 msgstr "Lietot alfa"
 
-#: clutter/clutter-stage.c:1845
+#: clutter/clutter-stage.c:1858
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Vai ņemt vērā skatuves krāsas alfa komponenti"
 
-#: clutter/clutter-stage.c:1861
+#: clutter/clutter-stage.c:1874
 msgid "Key Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1862
+#: clutter/clutter-stage.c:1875
 msgid "The currently key focused actor"
 msgstr ""
 
-#: clutter/clutter-stage.c:1878
+#: clutter/clutter-stage.c:1891
 msgid "No Clear Hint"
 msgstr ""
 
-#: clutter/clutter-stage.c:1879
+#: clutter/clutter-stage.c:1892
 msgid "Whether the stage should clear its contents"
 msgstr ""
 
-#: clutter/clutter-stage.c:1892
+#: clutter/clutter-stage.c:1905
 msgid "Accept Focus"
 msgstr "Pieņemt fokusu"
 
-#: clutter/clutter-stage.c:1893
+#: clutter/clutter-stage.c:1906
 msgid "Whether the stage should accept focus on show"
 msgstr "Vai skatuvei šovā vajadzētu pieņemt fokusu"
 
@@ -1686,199 +1686,199 @@ msgstr "Atstarpe starp kolonnām"
 msgid "Spacing between rows"
 msgstr "Atstarpe starp rindām"
 
-#: clutter/clutter-text.c:2940
+#: clutter/clutter-text.c:2937
 msgid "The font to be used by the text"
 msgstr "Fonts, kuru izmantot tekstam"
 
-#: clutter/clutter-text.c:2957
+#: clutter/clutter-text.c:2954
 msgid "Font Description"
 msgstr "Fonta apraksts"
 
-#: clutter/clutter-text.c:2958
+#: clutter/clutter-text.c:2955
 msgid "The font description to be used"
 msgstr "Izmantojamais fonta apraksts"
 
-#: clutter/clutter-text.c:2974
+#: clutter/clutter-text.c:2971
 msgid "Text"
 msgstr "Teksts"
 
-#: clutter/clutter-text.c:2975
+#: clutter/clutter-text.c:2972
 msgid "The text to render"
 msgstr "Teksts renderēšanai"
 
-#: clutter/clutter-text.c:2989
+#: clutter/clutter-text.c:2986
 msgid "Font Color"
 msgstr "Fonta krāsa"
 
-#: clutter/clutter-text.c:2990
+#: clutter/clutter-text.c:2987
 msgid "Color of the font used by the text"
 msgstr "Krāsa fontam, kuru izmantot tekstam"
 
-#: clutter/clutter-text.c:3004
+#: clutter/clutter-text.c:3001
 msgid "Editable"
 msgstr "Rediģējams"
 
-#: clutter/clutter-text.c:3005
+#: clutter/clutter-text.c:3002
 msgid "Whether the text is editable"
 msgstr "Vai teksts ir rediģējams"
 
-#: clutter/clutter-text.c:3020
+#: clutter/clutter-text.c:3017
 msgid "Selectable"
 msgstr "Izvēlams"
 
-#: clutter/clutter-text.c:3021
+#: clutter/clutter-text.c:3018
 msgid "Whether the text is selectable"
 msgstr "Vai tekstu var izvēlēties"
 
-#: clutter/clutter-text.c:3035
+#: clutter/clutter-text.c:3032
 msgid "Activatable"
 msgstr "Aktivizējams"
 
-#: clutter/clutter-text.c:3036
+#: clutter/clutter-text.c:3033
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Vai \"Enter\" piespiešana liek raidīt aktivizēšanas signālu"
 
-#: clutter/clutter-text.c:3053
+#: clutter/clutter-text.c:3050
 msgid "Whether the input cursor is visible"
 msgstr "Vai ir redzams ievades kursors"
 
-#: clutter/clutter-text.c:3067 clutter/clutter-text.c:3068
+#: clutter/clutter-text.c:3064 clutter/clutter-text.c:3065
 msgid "Cursor Color"
 msgstr "Kursora krāsa"
 
-#: clutter/clutter-text.c:3082
+#: clutter/clutter-text.c:3079
 msgid "Cursor Color Set"
 msgstr "Kursora krāsa iestatīta"
 
-#: clutter/clutter-text.c:3083
+#: clutter/clutter-text.c:3080
 msgid "Whether the cursor color has been set"
 msgstr "Vai kursora krāsa ir iestatīta"
 
-#: clutter/clutter-text.c:3098
+#: clutter/clutter-text.c:3095
 msgid "Cursor Size"
 msgstr "Kursora izmērs"
 
-#: clutter/clutter-text.c:3099
+#: clutter/clutter-text.c:3096
 msgid "The width of the cursor, in pixels"
 msgstr "Kursora platums, pikseļos"
 
-#: clutter/clutter-text.c:3113
+#: clutter/clutter-text.c:3110
 msgid "Cursor Position"
 msgstr "Kursora pozīcija"
 
-#: clutter/clutter-text.c:3114
+#: clutter/clutter-text.c:3111
 msgid "The cursor position"
 msgstr "Kursora novietojums"
 
-#: clutter/clutter-text.c:3129
+#: clutter/clutter-text.c:3126
 msgid "Selection-bound"
 msgstr "Izvēles ierobežojums"
 
-#: clutter/clutter-text.c:3130
+#: clutter/clutter-text.c:3127
 msgid "The cursor position of the other end of the selection"
 msgstr "Kursora pozīcija otrā izvēles galā"
 
-#: clutter/clutter-text.c:3145 clutter/clutter-text.c:3146
+#: clutter/clutter-text.c:3142 clutter/clutter-text.c:3143
 msgid "Selection Color"
 msgstr "Izvēles krāsa"
 
-#: clutter/clutter-text.c:3160
+#: clutter/clutter-text.c:3157
 msgid "Selection Color Set"
 msgstr "Izvēles krāsa iestatīta"
 
-#: clutter/clutter-text.c:3161
+#: clutter/clutter-text.c:3158
 msgid "Whether the selection color has been set"
 msgstr "Vai izvēles krāsa ir iestatīta"
 
-#: clutter/clutter-text.c:3176
+#: clutter/clutter-text.c:3173
 msgid "Attributes"
 msgstr "Atribūti"
 
-#: clutter/clutter-text.c:3177
+#: clutter/clutter-text.c:3174
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "Stila atribūtu saraksts, kuru pielietot izpildītāja saturam"
 
-#: clutter/clutter-text.c:3199
+#: clutter/clutter-text.c:3196
 msgid "Use markup"
 msgstr "Lietot marķējumu"
 
-#: clutter/clutter-text.c:3200
+#: clutter/clutter-text.c:3197
 msgid "Whether or not the text includes Pango markup"
 msgstr "Vai tekstam jāiekļauj Pango marķējums"
 
-#: clutter/clutter-text.c:3216
+#: clutter/clutter-text.c:3213
 msgid "Line wrap"
 msgstr "Rindiņu aplaušana"
 
-#: clutter/clutter-text.c:3217
+#: clutter/clutter-text.c:3214
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Ja iestatīts, aplauzt rindas, ja teksts kļūst pārāk plašs"
 
-#: clutter/clutter-text.c:3232
+#: clutter/clutter-text.c:3229
 msgid "Line wrap mode"
 msgstr "Rindiņu aplaušanas režīms"
 
-#: clutter/clutter-text.c:3233
+#: clutter/clutter-text.c:3230
 msgid "Control how line-wrapping is done"
 msgstr "Kontrolēt, kā notiek rindiņu aplaušana"
 
-#: clutter/clutter-text.c:3248
+#: clutter/clutter-text.c:3245
 msgid "Ellipsize"
 msgstr "Īsināt ar daudzpunkti"
 
-#: clutter/clutter-text.c:3249
+#: clutter/clutter-text.c:3246
 msgid "The preferred place to ellipsize the string"
 msgstr "Vēlamā vieta, kur virkni īsināt ar daudzpunkti"
 
-#: clutter/clutter-text.c:3265
+#: clutter/clutter-text.c:3262
 msgid "Line Alignment"
 msgstr "Rindu līdzināšana"
 
-#: clutter/clutter-text.c:3266
+#: clutter/clutter-text.c:3263
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "Vēlamais virknes līdzinājums vairāku rindiņu tekstam"
 
-#: clutter/clutter-text.c:3282
+#: clutter/clutter-text.c:3279
 msgid "Justify"
 msgstr "Izlīdzināt"
 
-#: clutter/clutter-text.c:3283
+#: clutter/clutter-text.c:3280
 msgid "Whether the text should be justified"
 msgstr "Vai teksts būtu jāizlīdzina"
 
-#: clutter/clutter-text.c:3298
+#: clutter/clutter-text.c:3295
 msgid "Password Character"
 msgstr "Paroles rakstzīme"
 
-#: clutter/clutter-text.c:3299
+#: clutter/clutter-text.c:3296
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr "Ja nav nulle, lietot šo rakstzīmi, lai attēlotu izpildītāja saturu"
 
-#: clutter/clutter-text.c:3313
+#: clutter/clutter-text.c:3310
 msgid "Max Length"
 msgstr "Maks. garums"
 
-#: clutter/clutter-text.c:3314
+#: clutter/clutter-text.c:3311
 msgid "Maximum length of the text inside the actor"
 msgstr "Maksimālais teksta garums izpildītājā"
 
-#: clutter/clutter-text.c:3337
+#: clutter/clutter-text.c:3334
 msgid "Single Line Mode"
 msgstr "Vienas rindas režīms"
 
-#: clutter/clutter-text.c:3338
+#: clutter/clutter-text.c:3335
 msgid "Whether the text should be a single line"
 msgstr "Vai tekstam jābūt vienā rindiņā"
 
-#: clutter/clutter-text.c:3352 clutter/clutter-text.c:3353
+#: clutter/clutter-text.c:3349 clutter/clutter-text.c:3350
 msgid "Selected Text Color"
 msgstr "Izvēlētā teksta krāsa"
 
-#: clutter/clutter-text.c:3367
+#: clutter/clutter-text.c:3364
 msgid "Selected Text Color Set"
 msgstr "Izvēlētā teksta krāsa iestatīta"
 
-#: clutter/clutter-text.c:3368
+#: clutter/clutter-text.c:3365
 msgid "Whether the selected text color has been set"
 msgstr "Vai izvēlētā teksta krāsa ir iestatīta"
 
