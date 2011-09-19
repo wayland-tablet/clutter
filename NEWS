@@ -1,3 +1,50 @@
+Clutter 1.8.0                                                        2011-09-19
+===============================================================================
+
+  • List of changes since Clutter 1.7.90
+
+    - Add debug options to catch out-of-band transformations
+    Transformations performed outside of the ::apply_transform() virtual
+    function are problematic for Clutter, as they might break paint volume,
+    culling, and event handling. The "oob-transform" debug mode will add a
+    check and a warning if the expected modelview matrix as computed by
+    Clutter is not the current modelview matrix set when painting an actor.
+    This debug mode should help when debugging some hard to pinpoint redraw
+    issue.
+
+    - Implicitly clip to the stage viewport
+    This should avoid degenerate clip regions.
+
+    - Paint editable Text actors even when empty
+    If the cursor is visible we need to actually paint it.
+
+    - Do not fall back to the text color for the selection color
+    This avoids invisible text in case the selected-text-color property
+    is not set in ClutterText.
+
+    - Add a fall back to wildcard source durations in ClutterState
+    This allows having wildcard sources to provide a duration for
+    other transitions.
+
+    - Translations updates
+    Indonesia, Lithuanian, Catalan, Tamil, Slovenian, Hindi,  Kannada.
+
+  • List of bugs fixed since Clutter 1.7.90
+
+    [bugzilla.gnome.org]
+
+    #659069 - text: Take out a nonsense fallback
+    #659116 - text: We still have to paint the actor if the cursor is visible
+    #659200 - [PATCH] Use correct duration on ClutterState transitions with
+              wildcard source
+    #659501 - Queue a redraw when removing an effect by name
+
+Many thanks to:
+
+  Robert Bragg, Shankar Prasad, Andika Triwidada, Aurimas Černius,
+  Gil Forcada, I Felix, Jasper St. Pierre, Martin Srebotnjak,
+  Matej Urbančič, Rajesh Ranjan, Rui Matos
+
 Clutter 1.7.90                                                       2011-09-12
 ===============================================================================
 
