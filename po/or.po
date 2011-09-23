@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
-"product=clutter\n"
+"Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug."
+"cgi?product=clutter\n"
 "POT-Creation-Date: 2011-09-19 20:12+0100\n"
-"PO-Revision-Date: 2011-09-09 10:53+0530\n"
+"PO-Revision-Date: 2011-09-23 12:40+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <or@li.org>\n"
 "Language: or\n"
@@ -1167,7 +1167,7 @@ msgstr ""
 
 #: clutter/clutter-main.c:491
 msgid "default:LTR"
-msgstr "ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ:LTR"
+msgstr "default:LTR"
 
 #: clutter/clutter-main.c:1322
 msgid "Show frames per second"
@@ -2154,3 +2154,4 @@ msgstr ""
 #: clutter/x11/clutter-x11-texture-pixmap.c:647
 msgid "If this is an override-redirect window"
 msgstr ""
+
