@@ -1171,7 +1171,7 @@ msgstr "இந்த தரவை உருவாக்கிய நிர்வ
 
 #: clutter/clutter-main.c:491
 msgid "default:LTR"
-msgstr "முன்னிருப்பு :LTR"
+msgstr "default:LTR"
 
 #: clutter/clutter-main.c:1322
 msgid "Show frames per second"
