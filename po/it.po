@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-09-19 20:12+0100\n"
+"POT-Creation-Date: 2011-10-17 12:08+0100\n"
 "PO-Revision-Date: 2010-08-20 16:59+0200\n"
 "Last-Translator: Luca Ferretti\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -831,62 +831,62 @@ msgstr "Allineamento orizzontale dell'attore all'interno della cella"
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Allineamento verticale dell'attore all'interno della cella"
 
-#: clutter/clutter-box-layout.c:1305
+#: clutter/clutter-box-layout.c:1303
 msgid "Vertical"
 msgstr "Verticale"
 
-#: clutter/clutter-box-layout.c:1306
+#: clutter/clutter-box-layout.c:1304
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Se il layout dovrebbe essere verticale, invece che orizzontale"
 
-#: clutter/clutter-box-layout.c:1321 clutter/clutter-flow-layout.c:901
+#: clutter/clutter-box-layout.c:1319 clutter/clutter-flow-layout.c:901
 msgid "Homogeneous"
 msgstr "Omogeneo"
 
-#: clutter/clutter-box-layout.c:1322
+#: clutter/clutter-box-layout.c:1320
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Se il layout dovrebbe essere omogeneo, per esempoi tutti i figli alla stessa "
 "dimensione"
 
-#: clutter/clutter-box-layout.c:1337
+#: clutter/clutter-box-layout.c:1335
 msgid "Pack Start"
 msgstr "Raggruppamento iniziale"
 
-#: clutter/clutter-box-layout.c:1338
+#: clutter/clutter-box-layout.c:1336
 msgid "Whether to pack items at the start of the box"
 msgstr "Se raggruppare gli elementi all'inizio del box"
 
-#: clutter/clutter-box-layout.c:1351
+#: clutter/clutter-box-layout.c:1349
 msgid "Spacing"
 msgstr "Spaziatura"
 
-#: clutter/clutter-box-layout.c:1352
+#: clutter/clutter-box-layout.c:1350
 msgid "Spacing between children"
 msgstr "Spaziatura tra i figli"
 
-#: clutter/clutter-box-layout.c:1366 clutter/clutter-table-layout.c:1742
+#: clutter/clutter-box-layout.c:1364 clutter/clutter-table-layout.c:1742
 msgid "Use Animations"
 msgstr "Usa animazioni"
 
-#: clutter/clutter-box-layout.c:1367 clutter/clutter-table-layout.c:1743
+#: clutter/clutter-box-layout.c:1365 clutter/clutter-table-layout.c:1743
 msgid "Whether layout changes should be animated"
 msgstr "Se i cambiamenti al layout dovrebbero essere animati"
 
-#: clutter/clutter-box-layout.c:1388 clutter/clutter-table-layout.c:1764
+#: clutter/clutter-box-layout.c:1386 clutter/clutter-table-layout.c:1764
 msgid "Easing Mode"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1389 clutter/clutter-table-layout.c:1765
+#: clutter/clutter-box-layout.c:1387 clutter/clutter-table-layout.c:1765
 msgid "The easing mode of the animations"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1406 clutter/clutter-table-layout.c:1782
+#: clutter/clutter-box-layout.c:1404 clutter/clutter-table-layout.c:1782
 msgid "Easing Duration"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1407 clutter/clutter-table-layout.c:1783
+#: clutter/clutter-box-layout.c:1405 clutter/clutter-table-layout.c:1783
 msgid "The duration of the animations"
 msgstr "La durata delle animazioni"
 
@@ -1184,59 +1184,59 @@ msgstr "Gestore"
 msgid "The manager that created this data"
 msgstr "Il gestore che ha creato questo dato"
 
-#: clutter/clutter-main.c:491
+#: clutter/clutter-main.c:492
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: clutter/clutter-main.c:1322
+#: clutter/clutter-main.c:1323
 msgid "Show frames per second"
 msgstr "Mostra i fotogrammi per secondo"
 
-#: clutter/clutter-main.c:1324
+#: clutter/clutter-main.c:1325
 msgid "Default frame rate"
 msgstr "Framerate predefinito"
 
-#: clutter/clutter-main.c:1326
+#: clutter/clutter-main.c:1327
 msgid "Make all warnings fatal"
 msgstr "Rende tutti i warning critici"
 
-#: clutter/clutter-main.c:1329
+#: clutter/clutter-main.c:1330
 msgid "Direction for the text"
 msgstr "Direzione del testo"
 
-#: clutter/clutter-main.c:1332
+#: clutter/clutter-main.c:1333
 msgid "Disable mipmapping on text"
 msgstr "Disabilita il mipmapping sul testo"
 
-#: clutter/clutter-main.c:1335
+#: clutter/clutter-main.c:1336
 msgid "Use 'fuzzy' picking"
 msgstr "Usa il picking \"fuzzy\""
 
-#: clutter/clutter-main.c:1338
+#: clutter/clutter-main.c:1339
 msgid "Clutter debugging flags to set"
 msgstr "Flag per il debug di Clutter da attivare"
 
-#: clutter/clutter-main.c:1340
+#: clutter/clutter-main.c:1341
 msgid "Clutter debugging flags to unset"
 msgstr "Flag per il debug di Clutter da disattivare"
 
-#: clutter/clutter-main.c:1344
+#: clutter/clutter-main.c:1345
 msgid "Clutter profiling flags to set"
 msgstr "Flag per il profiling di Clutter da attivare"
 
-#: clutter/clutter-main.c:1346
+#: clutter/clutter-main.c:1347
 msgid "Clutter profiling flags to unset"
 msgstr "Flag per il profiling di Clutter da disattivare"
 
-#: clutter/clutter-main.c:1349
+#: clutter/clutter-main.c:1350
 msgid "Enable accessibility"
 msgstr "Attiva l'accessibilità"
 
-#: clutter/clutter-main.c:1531
+#: clutter/clutter-main.c:1532
 msgid "Clutter Options"
 msgstr "Opzioni di Clutter"
 
-#: clutter/clutter-main.c:1532
+#: clutter/clutter-main.c:1533
 msgid "Show Clutter Options"
 msgstr "Mostra le opzioni di Clutter"
 

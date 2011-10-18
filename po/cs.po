@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-09-19 20:12+0100\n"
+"POT-Creation-Date: 2011-10-17 12:08+0100\n"
 "PO-Revision-Date: 2011-09-04 19:33+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
@@ -826,62 +826,62 @@ msgstr "Vodorovné zarovnání účastníka v rámci buňky"
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Svislé zarovnání účastníka v rámci buňky"
 
-#: clutter/clutter-box-layout.c:1305
+#: clutter/clutter-box-layout.c:1303
 msgid "Vertical"
 msgstr "Svisle"
 
-#: clutter/clutter-box-layout.c:1306
+#: clutter/clutter-box-layout.c:1304
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Zda by rozvržení mělo být raději svisle než vodorovně"
 
-#: clutter/clutter-box-layout.c:1321 clutter/clutter-flow-layout.c:901
+#: clutter/clutter-box-layout.c:1319 clutter/clutter-flow-layout.c:901
 msgid "Homogeneous"
 msgstr "Homogenní"
 
-#: clutter/clutter-box-layout.c:1322
+#: clutter/clutter-box-layout.c:1320
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Zda by rozvržení mělo být homogenní, tj. aby všichni potomci měli stejnou "
 "velikost"
 
-#: clutter/clutter-box-layout.c:1337
+#: clutter/clutter-box-layout.c:1335
 msgid "Pack Start"
 msgstr "Začátek balení"
 
-#: clutter/clutter-box-layout.c:1338
+#: clutter/clutter-box-layout.c:1336
 msgid "Whether to pack items at the start of the box"
 msgstr "Zda balit položky při spuštění boxu"
 
-#: clutter/clutter-box-layout.c:1351
+#: clutter/clutter-box-layout.c:1349
 msgid "Spacing"
 msgstr "Rozestupy"
 
-#: clutter/clutter-box-layout.c:1352
+#: clutter/clutter-box-layout.c:1350
 msgid "Spacing between children"
 msgstr "Rozestupy mezi potomky"
 
-#: clutter/clutter-box-layout.c:1366 clutter/clutter-table-layout.c:1742
+#: clutter/clutter-box-layout.c:1364 clutter/clutter-table-layout.c:1742
 msgid "Use Animations"
 msgstr "Použít animace"
 
-#: clutter/clutter-box-layout.c:1367 clutter/clutter-table-layout.c:1743
+#: clutter/clutter-box-layout.c:1365 clutter/clutter-table-layout.c:1743
 msgid "Whether layout changes should be animated"
 msgstr "Zda mají být změny rozložení animovány"
 
-#: clutter/clutter-box-layout.c:1388 clutter/clutter-table-layout.c:1764
+#: clutter/clutter-box-layout.c:1386 clutter/clutter-table-layout.c:1764
 msgid "Easing Mode"
 msgstr "Zjednodušující režim"
 
-#: clutter/clutter-box-layout.c:1389 clutter/clutter-table-layout.c:1765
+#: clutter/clutter-box-layout.c:1387 clutter/clutter-table-layout.c:1765
 msgid "The easing mode of the animations"
 msgstr "Zjednodušující režim animace"
 
-#: clutter/clutter-box-layout.c:1406 clutter/clutter-table-layout.c:1782
+#: clutter/clutter-box-layout.c:1404 clutter/clutter-table-layout.c:1782
 msgid "Easing Duration"
 msgstr "Doba trvání zjednodušené"
 
-#: clutter/clutter-box-layout.c:1407 clutter/clutter-table-layout.c:1783
+#: clutter/clutter-box-layout.c:1405 clutter/clutter-table-layout.c:1783
 msgid "The duration of the animations"
 msgstr "Doba trvání animace"
 
@@ -1172,59 +1172,59 @@ msgstr "Správce"
 msgid "The manager that created this data"
 msgstr "Správce, který vytvořil tato data"
 
-#: clutter/clutter-main.c:491
+#: clutter/clutter-main.c:492
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: clutter/clutter-main.c:1322
+#: clutter/clutter-main.c:1323
 msgid "Show frames per second"
 msgstr "Zobrazit počet snímků za sekundu"
 
-#: clutter/clutter-main.c:1324
+#: clutter/clutter-main.c:1325
 msgid "Default frame rate"
 msgstr "Výchozí snímková rychlost"
 
-#: clutter/clutter-main.c:1326
+#: clutter/clutter-main.c:1327
 msgid "Make all warnings fatal"
 msgstr "Učinit všechna varování jako kritická"
 
-#: clutter/clutter-main.c:1329
+#: clutter/clutter-main.c:1330
 msgid "Direction for the text"
 msgstr "Směr textu"
 
-#: clutter/clutter-main.c:1332
+#: clutter/clutter-main.c:1333
 msgid "Disable mipmapping on text"
 msgstr "Vypnout mipmapping u textů"
 
-#: clutter/clutter-main.c:1335
+#: clutter/clutter-main.c:1336
 msgid "Use 'fuzzy' picking"
 msgstr "Použít přibližné („fuzzy“) vybírání"
 
-#: clutter/clutter-main.c:1338
+#: clutter/clutter-main.c:1339
 msgid "Clutter debugging flags to set"
 msgstr "Příznaky ladění pro Clutter, které se mají zapnout"
 
-#: clutter/clutter-main.c:1340
+#: clutter/clutter-main.c:1341
 msgid "Clutter debugging flags to unset"
 msgstr "Příznaky ladění pro Clutter, které se mají vypnout"
 
-#: clutter/clutter-main.c:1344
+#: clutter/clutter-main.c:1345
 msgid "Clutter profiling flags to set"
 msgstr "Příznaky profilování pro Clutter, které se mají zapnout"
 
-#: clutter/clutter-main.c:1346
+#: clutter/clutter-main.c:1347
 msgid "Clutter profiling flags to unset"
 msgstr "Příznaky profilování pro Clutter, které se mají vypnout"
 
-#: clutter/clutter-main.c:1349
+#: clutter/clutter-main.c:1350
 msgid "Enable accessibility"
 msgstr "Zapnout zpřístupnění"
 
-#: clutter/clutter-main.c:1531
+#: clutter/clutter-main.c:1532
 msgid "Clutter Options"
 msgstr "Volby Clutter"
 
-#: clutter/clutter-main.c:1532
+#: clutter/clutter-main.c:1533
 msgid "Show Clutter Options"
 msgstr "Zobrazit volby Clutter"
 

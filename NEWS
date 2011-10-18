@@ -1,3 +1,49 @@
+Clutter 1.8.2                                                        2011-10-17
+===============================================================================
+
+  • List of changes since Clutter 1.8.0
+
+    - Plug memory leaks in ClutterBoxLayout
+    The list of children retrieved from the container was not being freed
+    in each size negotiation cycle.
+
+    - Fix the handling of out-of-stage actors in OffscreenEffect
+    The expansion of the viewport needed for out-of-stage actors when
+    computing the size and position of the offscreen buffer was failing
+    with nested effects.
+
+    - Do not complete a PaintVolume multiple times
+    A missing guard was causing the lazily computed vertices of the cube
+    to be trampled over; this caused visual artefacts as the stage-relative
+    bounding box became unstable, leading to the wrong clip region to be
+    used when painting.
+
+    - Update the MingW cross-compilation script
+
+    - Updated translations
+    Danish, Brazilian, Serbian, Punjabi, Telugu, Assamese, German, Oriya,
+    Esperanto, Tamil, Portuguese, Ukrainian, Traditional Chinese (Hong
+    Kong and Taiwan), Catalan, French.
+
+  • List of bugs fixed since Clutter 1.8.0
+
+    [bugzilla.gnome.org]
+
+    #659625 - mingw32: Update the build script to compile 1.8.0
+    #659893 - clutter-main: Reword translator comment for default:LTR
+    #659601 - offscreen effects on children of containers also with an
+              offscreen effect get a wrong viewport
+    #660985 - memory leak in clutter_box_layout.c
+    #661022 - Mark clutter_state_set_key() source_state_name as nullable
+
+Many thanks to:
+
+  Bruno Brouard, Neil Roberts, Carles Ferrando, Chao-Hsiung Liao,
+  Colin Walters, Damien Lespiau, Daniel Korostil, Duarte Loreto,
+  I Felix, Kristjan SCHMIDT, Manoj Kumar Giri, Marc-André Lureau,
+  Mario Blättermann, Nilamdyuti Goswami, Sunjin Yang, krishnababu k,
+  A S Alam, Мирослав Николић, Adorilson Bezerra, Ask H. Larsen.
+
 Clutter 1.8.0                                                        2011-09-19
 ===============================================================================
 

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-09-19 20:12+0100\n"
+"POT-Creation-Date: 2011-10-17 12:08+0100\n"
 "PO-Revision-Date: 2011-09-16 00:14+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -830,62 +830,62 @@ msgstr "L'alineació horitzontal de l'actor dins la cel·la"
 msgid "Vertical alignment of the actor within the cell"
 msgstr "L'alineació vertical de l'actor dins la cel·la"
 
-#: clutter/clutter-box-layout.c:1305
+#: clutter/clutter-box-layout.c:1303
 msgid "Vertical"
 msgstr "Vertical"
 
-#: clutter/clutter-box-layout.c:1306
+#: clutter/clutter-box-layout.c:1304
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Si la disposició hauria de ser vertical en comptes d'horitzontal"
 
-#: clutter/clutter-box-layout.c:1321 clutter/clutter-flow-layout.c:901
+#: clutter/clutter-box-layout.c:1319 clutter/clutter-flow-layout.c:901
 msgid "Homogeneous"
 msgstr "Homogeni"
 
-#: clutter/clutter-box-layout.c:1322
+#: clutter/clutter-box-layout.c:1320
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Si la disposició hauria de ser homogènia, és a dir, que tots els fills "
 "tinguin la mateixa mida"
 
-#: clutter/clutter-box-layout.c:1337
+#: clutter/clutter-box-layout.c:1335
 msgid "Pack Start"
 msgstr "Ajunta al principi"
 
-#: clutter/clutter-box-layout.c:1338
+#: clutter/clutter-box-layout.c:1336
 msgid "Whether to pack items at the start of the box"
 msgstr "Si s'ha d'ajuntar els elements a l'inici de la caixa"
 
-#: clutter/clutter-box-layout.c:1351
+#: clutter/clutter-box-layout.c:1349
 msgid "Spacing"
 msgstr "Espaiat"
 
-#: clutter/clutter-box-layout.c:1352
+#: clutter/clutter-box-layout.c:1350
 msgid "Spacing between children"
 msgstr "Espaiat entre fills"
 
-#: clutter/clutter-box-layout.c:1366 clutter/clutter-table-layout.c:1742
+#: clutter/clutter-box-layout.c:1364 clutter/clutter-table-layout.c:1742
 msgid "Use Animations"
 msgstr "Utilitza animacions"
 
-#: clutter/clutter-box-layout.c:1367 clutter/clutter-table-layout.c:1743
+#: clutter/clutter-box-layout.c:1365 clutter/clutter-table-layout.c:1743
 msgid "Whether layout changes should be animated"
 msgstr "Si s'han d'animar els canvis de disposició"
 
-#: clutter/clutter-box-layout.c:1388 clutter/clutter-table-layout.c:1764
+#: clutter/clutter-box-layout.c:1386 clutter/clutter-table-layout.c:1764
 msgid "Easing Mode"
 msgstr "Mode del camí"
 
-#: clutter/clutter-box-layout.c:1389 clutter/clutter-table-layout.c:1765
+#: clutter/clutter-box-layout.c:1387 clutter/clutter-table-layout.c:1765
 msgid "The easing mode of the animations"
 msgstr "El mode del camí de les animacions"
 
-#: clutter/clutter-box-layout.c:1406 clutter/clutter-table-layout.c:1782
+#: clutter/clutter-box-layout.c:1404 clutter/clutter-table-layout.c:1782
 msgid "Easing Duration"
 msgstr "Durada del camí"
 
-#: clutter/clutter-box-layout.c:1407 clutter/clutter-table-layout.c:1783
+#: clutter/clutter-box-layout.c:1405 clutter/clutter-table-layout.c:1783
 msgid "The duration of the animations"
 msgstr "La durada de les animacions"
 
@@ -1175,59 +1175,59 @@ msgstr "Gestor"
 msgid "The manager that created this data"
 msgstr "El gestor que ha creat aquesta dada"
 
-#: clutter/clutter-main.c:491
+#: clutter/clutter-main.c:492
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: clutter/clutter-main.c:1322
+#: clutter/clutter-main.c:1323
 msgid "Show frames per second"
 msgstr "Mostra els fotogrames per segon"
 
-#: clutter/clutter-main.c:1324
+#: clutter/clutter-main.c:1325
 msgid "Default frame rate"
 msgstr "Fotogrames per segon per defecte"
 
-#: clutter/clutter-main.c:1326
+#: clutter/clutter-main.c:1327
 msgid "Make all warnings fatal"
 msgstr "Fes que tots els avisos siguin fatals"
 
-#: clutter/clutter-main.c:1329
+#: clutter/clutter-main.c:1330
 msgid "Direction for the text"
 msgstr "Direcció del text"
 
-#: clutter/clutter-main.c:1332
+#: clutter/clutter-main.c:1333
 msgid "Disable mipmapping on text"
 msgstr "Inhabilita el mapatge MIP en el text"
 
-#: clutter/clutter-main.c:1335
+#: clutter/clutter-main.c:1336
 msgid "Use 'fuzzy' picking"
 msgstr "Utilitza una selecció «difusa»"
 
-#: clutter/clutter-main.c:1338
+#: clutter/clutter-main.c:1339
 msgid "Clutter debugging flags to set"
 msgstr "Senyaladors de depuració del Clutter a establir"
 
-#: clutter/clutter-main.c:1340
+#: clutter/clutter-main.c:1341
 msgid "Clutter debugging flags to unset"
 msgstr "Senyaladors de depuració del Clutter a inhabilitar"
 
-#: clutter/clutter-main.c:1344
+#: clutter/clutter-main.c:1345
 msgid "Clutter profiling flags to set"
 msgstr "Senyaladors de perfilació del Clutter a establir"
 
-#: clutter/clutter-main.c:1346
+#: clutter/clutter-main.c:1347
 msgid "Clutter profiling flags to unset"
 msgstr "Senyaladors de perfilació del Clutter a inhabilitar"
 
-#: clutter/clutter-main.c:1349
+#: clutter/clutter-main.c:1350
 msgid "Enable accessibility"
 msgstr "Habilita l'accessibilitat"
 
-#: clutter/clutter-main.c:1531
+#: clutter/clutter-main.c:1532
 msgid "Clutter Options"
 msgstr "Opcions del Clutter"
 
-#: clutter/clutter-main.c:1532
+#: clutter/clutter-main.c:1533
 msgid "Show Clutter Options"
 msgstr "Mostra les opcions del Clutter"
 

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: clutter-1.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-09-19 20:12+0100\n"
+"POT-Creation-Date: 2011-10-17 12:08+0100\n"
 "PO-Revision-Date: 2011-09-15 22:22+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
@@ -831,62 +831,62 @@ msgstr "Vodoravna poravnava predmeta znotraj celice"
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Navpična poravnava predmeta znotraj celice"
 
-#: clutter/clutter-box-layout.c:1305
+#: clutter/clutter-box-layout.c:1303
 msgid "Vertical"
 msgstr "Navpično"
 
-#: clutter/clutter-box-layout.c:1306
+#: clutter/clutter-box-layout.c:1304
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Ali naj bo osnutek raje navpičen kot vodoraven"
 
-#: clutter/clutter-box-layout.c:1321 clutter/clutter-flow-layout.c:901
+#: clutter/clutter-box-layout.c:1319 clutter/clutter-flow-layout.c:901
 msgid "Homogeneous"
 msgstr "Homogeno"
 
-#: clutter/clutter-box-layout.c:1322
+#: clutter/clutter-box-layout.c:1320
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Ali naj bo razporeditev enotna. To pomeni, da so vsi podrejeni predmeti "
 "enake velikosti."
 
-#: clutter/clutter-box-layout.c:1337
+#: clutter/clutter-box-layout.c:1335
 msgid "Pack Start"
 msgstr "Začni pakiranje"
 
-#: clutter/clutter-box-layout.c:1338
+#: clutter/clutter-box-layout.c:1336
 msgid "Whether to pack items at the start of the box"
 msgstr "Ali se zapakirajo predmeti na začetku polja"
 
-#: clutter/clutter-box-layout.c:1351
+#: clutter/clutter-box-layout.c:1349
 msgid "Spacing"
 msgstr "Razmik"
 
-#: clutter/clutter-box-layout.c:1352
+#: clutter/clutter-box-layout.c:1350
 msgid "Spacing between children"
 msgstr "Razmik med podrejenimi elementi"
 
-#: clutter/clutter-box-layout.c:1366 clutter/clutter-table-layout.c:1742
+#: clutter/clutter-box-layout.c:1364 clutter/clutter-table-layout.c:1742
 msgid "Use Animations"
 msgstr "Uporabi animacije"
 
-#: clutter/clutter-box-layout.c:1367 clutter/clutter-table-layout.c:1743
+#: clutter/clutter-box-layout.c:1365 clutter/clutter-table-layout.c:1743
 msgid "Whether layout changes should be animated"
 msgstr "Ali naj bodo spremembe v razporeditvi animirane"
 
-#: clutter/clutter-box-layout.c:1388 clutter/clutter-table-layout.c:1764
+#: clutter/clutter-box-layout.c:1386 clutter/clutter-table-layout.c:1764
 msgid "Easing Mode"
 msgstr "Način blaženja"
 
-#: clutter/clutter-box-layout.c:1389 clutter/clutter-table-layout.c:1765
+#: clutter/clutter-box-layout.c:1387 clutter/clutter-table-layout.c:1765
 msgid "The easing mode of the animations"
 msgstr "Način blaženja animacij"
 
-#: clutter/clutter-box-layout.c:1406 clutter/clutter-table-layout.c:1782
+#: clutter/clutter-box-layout.c:1404 clutter/clutter-table-layout.c:1782
 msgid "Easing Duration"
 msgstr "Trajanje blaženja"
 
-#: clutter/clutter-box-layout.c:1407 clutter/clutter-table-layout.c:1783
+#: clutter/clutter-box-layout.c:1405 clutter/clutter-table-layout.c:1783
 msgid "The duration of the animations"
 msgstr "Trajanje animacije"
 
@@ -1175,59 +1175,59 @@ msgstr "Upravljalnik"
 msgid "The manager that created this data"
 msgstr "Upravljalnik, ki je ustvaril te podatke"
 
-#: clutter/clutter-main.c:491
+#: clutter/clutter-main.c:492
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: clutter/clutter-main.c:1322
+#: clutter/clutter-main.c:1323
 msgid "Show frames per second"
 msgstr "Prikaži število sličic na sekundo (fps)"
 
-#: clutter/clutter-main.c:1324
+#: clutter/clutter-main.c:1325
 msgid "Default frame rate"
 msgstr "Privzeta hitrost sličic"
 
-#: clutter/clutter-main.c:1326
+#: clutter/clutter-main.c:1327
 msgid "Make all warnings fatal"
 msgstr "Vsa opozorila naj bodo usodna"
 
-#: clutter/clutter-main.c:1329
+#: clutter/clutter-main.c:1330
 msgid "Direction for the text"
 msgstr "Smer besedila"
 
-#: clutter/clutter-main.c:1332
+#: clutter/clutter-main.c:1333
 msgid "Disable mipmapping on text"
 msgstr "Pri besedilu izklopi mipmap"
 
-#: clutter/clutter-main.c:1335
+#: clutter/clutter-main.c:1336
 msgid "Use 'fuzzy' picking"
 msgstr "Uporabi 'mehko' izbiranje"
 
-#: clutter/clutter-main.c:1338
+#: clutter/clutter-main.c:1339
 msgid "Clutter debugging flags to set"
 msgstr "Clutterjeve razhroščevalne zastavice, ki naj bodo dvignjene"
 
-#: clutter/clutter-main.c:1340
+#: clutter/clutter-main.c:1341
 msgid "Clutter debugging flags to unset"
 msgstr "Cluttterjeve razhroščevalne zastavice, ki naj bodo spuščene"
 
-#: clutter/clutter-main.c:1344
+#: clutter/clutter-main.c:1345
 msgid "Clutter profiling flags to set"
 msgstr "Clutterjeve profilirne zastavice, ki naj bodo dvignjene"
 
-#: clutter/clutter-main.c:1346
+#: clutter/clutter-main.c:1347
 msgid "Clutter profiling flags to unset"
 msgstr "Clultterjeve profilirne zastavice, ki naj bodo spuščene"
 
-#: clutter/clutter-main.c:1349
+#: clutter/clutter-main.c:1350
 msgid "Enable accessibility"
 msgstr "Omogoči dostopnost"
 
-#: clutter/clutter-main.c:1531
+#: clutter/clutter-main.c:1532
 msgid "Clutter Options"
 msgstr "Možnosti Cluttra"
 
-#: clutter/clutter-main.c:1532
+#: clutter/clutter-main.c:1533
 msgid "Show Clutter Options"
 msgstr "Prikaže možnosti Cluttra"
 

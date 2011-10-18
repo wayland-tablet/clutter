@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-09-19 20:12+0100\n"
+"POT-Creation-Date: 2011-10-17 12:08+0100\n"
 "PO-Revision-Date: 2011-09-06 00:26+0300\n"
 "Last-Translator: Rūdofls Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
@@ -828,61 +828,61 @@ msgstr "Izpildītāja horizontālais līdzinājums šūnā"
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Izpildītāja vertikālais līdzinājums šūnā"
 
-#: clutter/clutter-box-layout.c:1305
+#: clutter/clutter-box-layout.c:1303
 msgid "Vertical"
 msgstr "Vertikāls"
 
-#: clutter/clutter-box-layout.c:1306
+#: clutter/clutter-box-layout.c:1304
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Vai izkārtojumam jābūt drīzāk vertikālam, nevis horizontālam"
 
-#: clutter/clutter-box-layout.c:1321 clutter/clutter-flow-layout.c:901
+#: clutter/clutter-box-layout.c:1319 clutter/clutter-flow-layout.c:901
 msgid "Homogeneous"
 msgstr "Viendabīgs"
 
-#: clutter/clutter-box-layout.c:1322
+#: clutter/clutter-box-layout.c:1320
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Vai izkārtojumam jābūt viendabīgam, tas ir, visiem bērniem ir vienāds izmērs"
 
-#: clutter/clutter-box-layout.c:1337
+#: clutter/clutter-box-layout.c:1335
 msgid "Pack Start"
 msgstr "Pakas sākums"
 
-#: clutter/clutter-box-layout.c:1338
+#: clutter/clutter-box-layout.c:1336
 msgid "Whether to pack items at the start of the box"
 msgstr "Vai pakot vienumus kastes sākumā"
 
-#: clutter/clutter-box-layout.c:1351
+#: clutter/clutter-box-layout.c:1349
 msgid "Spacing"
 msgstr "Atstatums"
 
-#: clutter/clutter-box-layout.c:1352
+#: clutter/clutter-box-layout.c:1350
 msgid "Spacing between children"
 msgstr "Atstarpes starp bērniem"
 
-#: clutter/clutter-box-layout.c:1366 clutter/clutter-table-layout.c:1742
+#: clutter/clutter-box-layout.c:1364 clutter/clutter-table-layout.c:1742
 msgid "Use Animations"
 msgstr "Lietot animācijas"
 
-#: clutter/clutter-box-layout.c:1367 clutter/clutter-table-layout.c:1743
+#: clutter/clutter-box-layout.c:1365 clutter/clutter-table-layout.c:1743
 msgid "Whether layout changes should be animated"
 msgstr "Vai vajadzētu animēt izkārtojuma izmaiņas"
 
-#: clutter/clutter-box-layout.c:1388 clutter/clutter-table-layout.c:1764
+#: clutter/clutter-box-layout.c:1386 clutter/clutter-table-layout.c:1764
 msgid "Easing Mode"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1389 clutter/clutter-table-layout.c:1765
+#: clutter/clutter-box-layout.c:1387 clutter/clutter-table-layout.c:1765
 msgid "The easing mode of the animations"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1406 clutter/clutter-table-layout.c:1782
+#: clutter/clutter-box-layout.c:1404 clutter/clutter-table-layout.c:1782
 msgid "Easing Duration"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1407 clutter/clutter-table-layout.c:1783
+#: clutter/clutter-box-layout.c:1405 clutter/clutter-table-layout.c:1783
 msgid "The duration of the animations"
 msgstr "Animāciju ilgums"
 
@@ -1171,59 +1171,59 @@ msgstr "Pārvaldnieks"
 msgid "The manager that created this data"
 msgstr "Pārvaldnieks, kas ir izveidojis šos datus"
 
-#: clutter/clutter-main.c:491
+#: clutter/clutter-main.c:492
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: clutter/clutter-main.c:1322
+#: clutter/clutter-main.c:1323
 msgid "Show frames per second"
 msgstr "Rādīt kadrus sekundē"
 
-#: clutter/clutter-main.c:1324
+#: clutter/clutter-main.c:1325
 msgid "Default frame rate"
 msgstr "Noklusētais kadru ātrums"
 
-#: clutter/clutter-main.c:1326
+#: clutter/clutter-main.c:1327
 msgid "Make all warnings fatal"
 msgstr "Atzīmēt visus brīdinājumus kā fatālus"
 
-#: clutter/clutter-main.c:1329
+#: clutter/clutter-main.c:1330
 msgid "Direction for the text"
 msgstr "Teksta virziens"
 
-#: clutter/clutter-main.c:1332
+#: clutter/clutter-main.c:1333
 msgid "Disable mipmapping on text"
 msgstr "Deaktivēt mip-kartēšanu uz teksta"
 
-#: clutter/clutter-main.c:1335
+#: clutter/clutter-main.c:1336
 msgid "Use 'fuzzy' picking"
 msgstr "Lietot 'aptuveno' izvēli"
 
-#: clutter/clutter-main.c:1338
+#: clutter/clutter-main.c:1339
 msgid "Clutter debugging flags to set"
 msgstr "Iestatāmie Clutter atkļūdošanas karodziņi"
 
-#: clutter/clutter-main.c:1340
+#: clutter/clutter-main.c:1341
 msgid "Clutter debugging flags to unset"
 msgstr "Noņemamie Clutter atkļūdošanas karodziņi"
 
-#: clutter/clutter-main.c:1344
+#: clutter/clutter-main.c:1345
 msgid "Clutter profiling flags to set"
 msgstr "Iestatāmie Clutter profilēšanas karodziņi"
 
-#: clutter/clutter-main.c:1346
+#: clutter/clutter-main.c:1347
 msgid "Clutter profiling flags to unset"
 msgstr "Noņemamie Clutter profilēšanas karodziņi"
 
-#: clutter/clutter-main.c:1349
+#: clutter/clutter-main.c:1350
 msgid "Enable accessibility"
 msgstr "Ieslēgt pieejamību"
 
-#: clutter/clutter-main.c:1531
+#: clutter/clutter-main.c:1532
 msgid "Clutter Options"
 msgstr "Clutter opcijas"
 
-#: clutter/clutter-main.c:1532
+#: clutter/clutter-main.c:1533
 msgid "Show Clutter Options"
 msgstr "Rādīt Clutter opcijas"
 
