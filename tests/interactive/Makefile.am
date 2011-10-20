@@ -102,8 +102,8 @@ stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 		*.c)	test_bin=$${i%*.c} \
 			;; \
 		esac; \
-		( echo "test-interactive $$test_bin" ) > $$test_bin.bat ; \
-		( echo "test-interactive $$test_bin" ) >> test-interactive.bat ; \
+		( echo "test-interactive-clutter $$test_bin" ) > $$test_bin.bat ; \
+		( echo "test-interactive-clutter $$test_bin" ) >> test-interactive.bat ; \
 	done \
 	&& cp *.bat $(top_srcdir)/build/win32/
 
