@@ -331,6 +331,22 @@ AC_ARG_ENABLE([wayland-compositor],
                      [enable_wayland_compositor=no])
               ])
 
+dnl The tests/interactive wayland compositor needs to refer to the xserver.xml
+dnl protocol extension that's currently part of the wayland demo compositor repo,
+dnl so we need this option to be told where that can be found.
+AC_ARG_WITH([wayland-protocols],
+            [AS_HELP_STRING([--with-wayland-protocols], [Location for wayland extension protocol specs])],
+            [
+              AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
+              AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
+                    AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
+              AC_SUBST([WAYLAND_SCANNER])
+              have_wayland_protocols_dir="yes"
+              AC_SUBST([WAYLAND_EXTENSION_PROTOCOLS_DIR],$withval)
+            ],
+            [])
+AM_CONDITIONAL(HAVE_WAYLAND_EXTENSION_PROTOCOLS_DIR, [test "x$have_wayland_protocols_dir" = "xyes"])
+
 AS_IF([test "x$enable_wayland_compositor" = "xyes"],
       [
         PKG_CHECK_EXISTS([wayland-server],
@@ -960,7 +976,6 @@ CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_PROFILE_CFLAGS $GL
 CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS $GLIB_LIBS"
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
-
 
 dnl === GObject-Introspection check ===========================================
 

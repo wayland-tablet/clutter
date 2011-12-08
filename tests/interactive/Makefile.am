@@ -65,7 +65,9 @@ UNIT_TESTS += test-pixmap.c
 endif
 
 if SUPPORT_WAYLAND_COMPOSITOR
+if HAVE_WAYLAND_EXTENSION_PROTOCOLS_DIR
 UNIT_TESTS += test-wayland-surface.c
+endif
 endif
 
 if OS_WIN32
@@ -153,7 +155,20 @@ common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
 noinst_PROGRAMS = test-interactive
 
-test_interactive_SOURCES = test-main.c test-unit-names.h $(UNIT_TESTS)
+test_interactive_SOURCES = \
+	test-main.c \
+	test-unit-names.h
+
+if SUPPORT_WAYLAND_COMPOSITOR
+if HAVE_WAYLAND_EXTENSION_PROTOCOLS_DIR
+test_interactive_SOURCES += \
+	xserver-protocol.c \
+	xserver-server-protocol.h
+endif
+endif
+
+test_interactive_SOURCES += $(UNIT_TESTS)
+
 test_interactive_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 test_interactive_CPPFLAGS = \
 	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
@@ -169,7 +184,16 @@ EXTRA_DIST = \
 
 DISTCLEANFILES = wrapper.sh .gitignore test-unit-names.h
 
-BUILT_SOURCES = test-unit-names.h wrappers
+BUILT_SOURCES = \
+	test-unit-names.h \
+	wrappers
+
+if SUPPORT_WAYLAND_COMPOSITOR
+if HAVE_WAYLAND_EXTENSION_PROTOCOLS_DIR
+BUILT_SOURCES += xserver-server-protocol.h xserver-protocol.c
+DISTCLEANFILES += xserver-server-protocol.h xserver-protocol.c
+endif
+endif
 
 dist-hook: $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
@@ -219,3 +243,11 @@ EXTRA_DIST += \
 	$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
 clean-local: clean-wrappers
+
+%-protocol.c : @WAYLAND_EXTENSION_PROTOCOLS_DIR@/%.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
+%-server-protocol.h : @WAYLAND_EXTENSION_PROTOCOLS_DIR@/%.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
+%-client-protocol.h : @WAYLAND_EXTENSION_PROTOCOLS_DIR@/%.xml'
+	$(AM_V_GEN)$(WAYLAND_SCANNER) client-header < $< > $@
+
