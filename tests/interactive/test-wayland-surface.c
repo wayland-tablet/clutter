@@ -739,8 +739,8 @@ start_xwayland (TWSCompositor *compositor)
           display_name = g_strdup_printf (":%d",
                                           compositor->xwayland_display_index);
 
-          if (execl ("/home/bob/local/xserver-xwayland/bin/X",
-                     "/home/bob/local/xserver-xwayland/bin/X",
+          if (execl ("/home/neil/local/xserver/bin/X",
+                     "/home/neil/local/xserver/bin/X",
                      display_name,
                      "-wayland",
                      "-rootless",
@@ -750,6 +750,11 @@ start_xwayland (TWSCompositor *compositor)
                      "-logfile", "/tmp/xwayland.log",
                      "-nolisten", "all",
                      "-terminate",
+                     "-modulepath",
+                     "/home/neil/local/xserver/lib/xorg/modules,"
+                     "/home/neil/local/xf86-video-intel/lib/xorg/modules",
+                     "-xkbdir",
+                     "/home/neil/local/xkeyboard-config/share/X11/xkb",
                      NULL) < 0)
             {
               char *msg = strerror (errno);
