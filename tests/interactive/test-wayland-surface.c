@@ -72,11 +72,6 @@ typedef struct
   struct wl_event_loop *loop;
 } WaylandEventSource;
 
-typedef struct
-{
-  struct wl_resource resource;
-} TWSFrameCallback;
-
 struct _TWSCompositor
 {
   struct wl_display *wayland_display;
@@ -86,7 +81,7 @@ struct _TWSCompositor
   GList *outputs;
   GSource *wayland_event_source;
   GList *surfaces;
-  GArray *frame_callbacks;
+  GQueue frame_callbacks;
 
   int xwayland_display_index;
   char *xwayland_lockfile;
@@ -96,6 +91,17 @@ struct _TWSCompositor
   struct wl_client *xwayland_client;
   struct wl_resource *xserver_resource;
 };
+
+typedef struct
+{
+  /* GList node used as an embedded list */
+  GList node;
+
+  /* Pointer back to the compositor */
+  TWSCompositor *compositor;
+
+  struct wl_resource resource;
+} TWSFrameCallback;
 
 static guint32
 get_time (void)
@@ -306,6 +312,8 @@ destroy_frame_callback (struct wl_resource *callback_resource)
 {
   TWSFrameCallback *callback = callback_resource->data;
 
+  g_queue_unlink (&callback->compositor->frame_callbacks,
+                  &callback->node);
   g_slice_free (TWSFrameCallback, callback);
 }
 
@@ -318,6 +326,8 @@ tws_surface_frame (struct wl_client *client,
   TWSSurface *surface = surface_resource->data;
 
   callback = g_slice_new0 (TWSFrameCallback);
+  callback->compositor = surface->compositor;
+  callback->node.data = callback;
   callback->resource.object.interface = &wl_callback_interface;
   callback->resource.object.id = callback_id;
   callback->resource.destroy = destroy_frame_callback;
@@ -325,7 +335,8 @@ tws_surface_frame (struct wl_client *client,
 
   wl_client_add_resource (client, &callback->resource);
 
-  g_array_append_val (surface->compositor->frame_callbacks, callback);
+  g_queue_push_tail_link (&surface->compositor->frame_callbacks,
+                          &callback->node);
 }
 
 const struct wl_surface_interface tws_surface_interface = {
@@ -447,18 +458,16 @@ static void
 paint_finished_cb (ClutterActor *self, void *user_data)
 {
   TWSCompositor *compositor = user_data;
-  int i;
 
-  for (i = 0; i < compositor->frame_callbacks->len; i++)
+  while (!g_queue_is_empty (&compositor->frame_callbacks))
     {
       TWSFrameCallback *callback =
-        g_array_index (compositor->frame_callbacks, TWSFrameCallback *, i);
+        g_queue_peek_head (&compositor->frame_callbacks);
 
       wl_resource_post_event (&callback->resource,
                               WL_CALLBACK_DONE, get_time ());
       wl_resource_destroy (&callback->resource, 0);
     }
-  g_array_set_size (compositor->frame_callbacks, 0);
 }
 
 static void
@@ -948,7 +957,7 @@ test_wayland_surface_main (int argc, char **argv)
   if (compositor.wayland_display == NULL)
     g_error ("failed to create wayland display");
 
-  compositor.frame_callbacks = g_array_new (FALSE, FALSE, sizeof (void *));
+  g_queue_init (&compositor.frame_callbacks);
 
   if (!wl_display_add_global (compositor.wayland_display,
                               &wl_compositor_interface,
