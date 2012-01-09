@@ -411,6 +411,9 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   ClutterBackendX11 *backend_x11 = stage_x11->backend;
   ClutterDeviceManager *device_manager;
   int event_flags;
+  gfloat width = stage_x11->xwin_width;
+  gfloat height = stage_x11->xwin_height;
+
 
   if (clutter_stages_by_xid == NULL)
     clutter_stages_by_xid = g_hash_table_new (NULL, NULL);
@@ -460,6 +463,10 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
                                                event_flags);
 
   /* no user resize.. */
+  clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper), &width, &height);
+  stage_x11->xwin_width = width;
+  stage_x11->xwin_height = height;
+
   clutter_stage_x11_fix_window_size (stage_x11,
                                      stage_x11->xwin_width,
                                      stage_x11->xwin_height);
