@@ -1,3 +1,39 @@
+Clutter 1.8.4                                                        2012-01-30
+===============================================================================
+
+  • List of changes since Clutter 1.8.2
+
+    - Restore support for non-ARGB visuals on X11
+    The changes in the Cogl API for creating onscreen framebuffers led to
+    a regression in the selection of visuals for the GLX context: Clutter
+    started requesting only ARGB visuals, even though it's not strictly
+    necessary. This regression has now been fixed.
+
+    - Ensure that the OffscreenEffect uses the right size for the FBO
+    Especially for subclasses that change the size of the target texture.
+
+    - Fix build for Clutter on X11 without XI2 support
+
+    - Introspection annotation fixes
+
+    - Return the correct default value for the font resolution
+    We should be returning 96.0 as the default value, not -1. This ensures
+    that the code using font resolution, like the em-to-pixels conversion,
+    always uses valid values.
+
+  • List of bugs fixed since Clutter 1.8.2
+
+    [bugzilla.gnome.org]
+    #665040 - The offscreen effect always recreates the texture if
+              create_texture() is overridden to change the size
+    #664996 - clutter_state_set_key (allow-none)
+    #664336 - path: Fix introspection annotations
+
+Many thanks to:
+
+  Alexander Shopov, Bastian Winkler, Bastien Nocera, Jeremy Moles,
+  Neil Roberts, Robert Bragg
+
 Clutter 1.8.2                                                        2011-10-17
 ===============================================================================
 
