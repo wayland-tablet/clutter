@@ -114,7 +114,8 @@ AC_HEADER_STDC
 
 # required versions for dependencies
 m4_define([glib_req_version],           [2.28.0])
-m4_define([cogl_req_version],           [1.8.0])
+m4_define([cogl_min_req_version],       [1.8.0])
+m4_define([cogl_max_req_version],       [1.9.2])
 m4_define([json_glib_req_version],      [0.12.0])
 m4_define([atk_req_version],            [2.1.5])
 m4_define([cairo_req_version],          [1.10])
@@ -126,7 +127,8 @@ m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
 
 AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])
-AC_SUBST([COGL_REQ_VERSION],       [cogl_req_version])
+AC_SUBST([COGL_MIN_REQ_VERSION],   [cogl_min_req_version])
+AC_SUBST([COGL_MAX_REQ_VERSION],   [cogl_max_req_version])
 AC_SUBST([JSON_GLIB_REQ_VERSION],  [json_glib_req_version])
 AC_SUBST([ATK_REQ_VERSION],        [atk_req_version])
 AC_SUBST([CAIRO_REQ_VERSION],      [cairo_req_version])
@@ -195,7 +197,7 @@ AC_ARG_WITH([gles],
             [glesversion=$with_gles])
 
 # base dependencies for core
-CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
+CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_MIN_REQ_VERSION cogl-1.0 <= $COGL_MAX_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
 
 # backend specific pkg-config files
 BACKEND_PC_FILES=""

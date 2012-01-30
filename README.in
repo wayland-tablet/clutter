@@ -10,7 +10,7 @@ REQUIREMENTS
 Clutter currently requires:
 
   • GLib ≥ @GLIB_REQ_VERSION@
-  • Cogl ≥ @COGL_REQ_VERSION@
+  • Cogl ≤ @COGL_MIN_REQ_VERSION@ ≥ @COGL_MAX_REQ_VERSION@
   • JSON-GLib ≥ @JSON_GLIB_REQ_VERSION@
   • Atk ≥ @ATK_REQ_VERSION@
   • Cairo ≥ @CAIRO_REQ_VERSION@
