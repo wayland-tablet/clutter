@@ -673,7 +673,7 @@ allocate_box_child (ClutterBoxLayout       *self,
           box_child->last_allocation = final_child_box;
           box_child->has_last_allocation = TRUE;
 
-          goto do_allocate;
+          return;
         }
 
       start = &box_child->last_allocation;
@@ -693,6 +693,8 @@ allocate_box_child (ClutterBoxLayout       *self,
                     final_child_box.x2, final_child_box.y2,
                     end.x1, end.y1,
                     end.x2, end.y2);
+
+      clutter_actor_allocate (child, &final_child_box, flags);
     }
   else
     {
@@ -700,9 +702,6 @@ allocate_box_child (ClutterBoxLayout       *self,
       box_child->last_allocation = final_child_box;
       box_child->has_last_allocation = TRUE;
     }
-
-do_allocate:
-  clutter_actor_allocate (child, &final_child_box, flags);
 }
 
 static void
@@ -929,6 +928,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 
   /* Retrieve desired size for visible children. */
   children = clutter_container_get_children (container);
+
   for (i = 0, l = children; l != NULL; l = l->next)
     {
       child = l->data;
@@ -972,7 +972,6 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 
       i++;
     }
-  g_list_free (children);
 
   if (priv->is_homogeneous)
     {
@@ -1017,27 +1016,24 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
   /* Allocate child positions. */
   if (priv->is_vertical)
     {
-      child_allocation.x1 = 0.0;
+      child_allocation.x1 = box->x1;
       child_allocation.x2 = MAX (1.0, box->x2 - box->x1);
       if (priv->is_pack_start)
-        y = 0.0;
-      else
         y = box->y2 - box->y1;
+      else
+        y = box->y1;
     }
   else
     {
-      child_allocation.y1 = 0.0;
+      child_allocation.y1 = box->y1;
       child_allocation.y2 = MAX (1.0, box->y2 - box->y1);
       if (priv->is_pack_start)
-        x = 0.0;
+        x = box->x2 - box->x1;
       else
-        x = 0.0 + box->x2 - box->x1;
+        x = box->x1;
     }
 
-  children = clutter_container_get_children (container);
-  for (i = g_list_length (children) - 1, l = g_list_last (children);
-       l != NULL;
-       l = l->prev, i--)
+  for (l = children, i = 0; l != NULL; l = l->next, i += 1)
     {
       ClutterLayoutMeta *meta;
       ClutterBoxChild *box_child;
@@ -1095,14 +1091,14 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 
           if (priv->is_pack_start)
             {
-              y += child_size + priv->spacing;
-            }
-          else
-            {
               y -= child_size + priv->spacing;
 
               child_allocation.y1 -= child_size;
               child_allocation.y2 -= child_size;
+            }
+          else
+            {
+              y += child_size + priv->spacing;
             }
         }
       else /* !priv->is_vertical */
@@ -1110,7 +1106,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
           if (box_child->x_fill)
             {
               child_allocation.x1 = x;
-              child_allocation.x2 = child_allocation.x1 + MAX (1, child_size);
+              child_allocation.x2 = child_allocation.x1 + MAX (1.0, child_size);
             }
           else
             {
@@ -1120,14 +1116,14 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 
           if (priv->is_pack_start)
             {
-              x += child_size + priv->spacing;
-            }
-          else
-            {
               x -= child_size + priv->spacing;
 
               child_allocation.x1 -= child_size;
               child_allocation.x2 -= child_size;
+            }
+          else
+            {
+              x += child_size + priv->spacing;
             }
 
           if (is_rtl)
@@ -1146,6 +1142,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
                             &child_allocation,
                             flags);
     }
+
   g_list_free (children);
 }
 
