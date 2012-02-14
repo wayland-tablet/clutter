@@ -2856,11 +2856,6 @@ clutter_stage_set_key_focus (ClutterStage *stage,
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
   g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
 
-  if (actor != NULL)
-    g_print ("[clutter-stage] set_key_focus %s\n", _clutter_actor_get_debug_name (actor));
-  else
-    g_print ("[clutter-stage] set_key_focus %s\n", "NULL");
-
   priv = stage->priv;
 
   if (priv->key_focused_actor == actor)
@@ -2901,16 +2896,10 @@ clutter_stage_set_key_focus (ClutterStage *stage,
       g_object_weak_ref (G_OBJECT (actor),
 			 on_key_focused_weak_notify,
 			 stage);
-
-      g_print ("[clutter-stage] actor!=NULL emitting key-focus-in for actor %s\n", _clutter_actor_get_debug_name (actor));
       g_signal_emit_by_name (priv->key_focused_actor, "key-focus-in");
-
     }
   else
-    {
-      g_print ("[clutter-stage] actor==NULL emitting key-focus-in\n");
-      g_signal_emit_by_name (stage, "key-focus-in");
-    }
+    g_signal_emit_by_name (stage, "key-focus-in");
 
   g_object_notify (G_OBJECT (stage), "key-focus");
 }

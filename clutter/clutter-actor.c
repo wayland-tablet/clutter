@@ -10689,8 +10689,6 @@ clutter_actor_grab_key_focus (ClutterActor *self)
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  g_print ("[clutter] grab_key_focus %s\n", _clutter_actor_get_debug_name (self));
-
   stage = _clutter_actor_get_stage_internal (self);
   if (stage != NULL)
     clutter_stage_set_key_focus (CLUTTER_STAGE (stage), self);

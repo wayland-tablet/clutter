@@ -102,7 +102,6 @@
 
 #include <glib.h>
 #include <clutter/clutter.h>
-#include "clutter-actor-private.h"
 
 #ifdef HAVE_CLUTTER_GLX
 #include <clutter/x11/clutter-x11.h>
@@ -1137,8 +1136,6 @@ cally_actor_focus_clutter (ClutterActor *actor,
   CallyActor      *cally_actor = NULL;
   CallyActorClass *klass       = NULL;
 
-  g_print ("[cally] focus change %s:%i\n", _clutter_actor_get_debug_name (actor), GPOINTER_TO_INT (data));
-
   cally_actor = CALLY_ACTOR (clutter_actor_get_accessible (actor));
   klass = CALLY_ACTOR_GET_CLASS (cally_actor);
   if (klass->focus_clutter)
@@ -1157,8 +1154,6 @@ cally_actor_real_focus_clutter (ClutterActor *actor,
 
   in = GPOINTER_TO_INT (data);
   cally_actor = CALLY_ACTOR (clutter_actor_get_accessible (actor));
-
-  g_print ("[cally] real focus change %s:%i\n", _clutter_actor_get_debug_name (actor), in);
 
   g_signal_emit_by_name (cally_actor, "focus_event", in, &return_val);
   atk_focus_tracker_notify (ATK_OBJECT (cally_actor));
