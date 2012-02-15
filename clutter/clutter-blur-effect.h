@@ -52,6 +52,10 @@ GType clutter_blur_effect_get_type (void) G_GNUC_CONST;
 
 ClutterEffect *clutter_blur_effect_new (void);
 
+void   clutter_blur_effect_set_sigma (ClutterBlurEffect *effect,
+                                      gfloat             sigma);
+gfloat clutter_blur_effect_get_sigma (ClutterBlurEffect *effect);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BLUR_EFFECT_H__ */
