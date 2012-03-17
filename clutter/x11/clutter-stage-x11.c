@@ -54,6 +54,8 @@
 static void clutter_stage_window_iface_init     (ClutterStageWindowIface     *iface);
 static void clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface);
 
+static ClutterStageX11 *clutter_x11_get_stage_window_from_window (Window win);
+
 static GHashTable *clutter_stages_by_xid = NULL;
 
 #define clutter_stage_x11_get_type      _clutter_stage_x11_get_type
@@ -868,16 +870,20 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                                    gpointer                native,
                                    ClutterEvent           *event)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (translator);
+  ClutterStageX11 *stage_x11;
   ClutterTranslateReturn res = CLUTTER_TRANSLATE_CONTINUE;
-  ClutterBackendX11 *backend_x11 = stage_x11->backend;
-  Window stage_xwindow = stage_x11->xwin;
+  ClutterBackendX11 *backend_x11;
+  Window stage_xwindow;
   XEvent *xevent = native;
   ClutterStage *stage;
 
-  stage = clutter_x11_get_stage_from_window (xevent->xany.window);
-  if (stage == NULL)
+  stage_x11 = clutter_x11_get_stage_window_from_window (xevent->xany.window);
+  if (stage_x11 == NULL)
     return CLUTTER_TRANSLATE_CONTINUE;
+
+  stage = stage_x11->wrapper;
+  backend_x11 = stage_x11->backend;
+  stage_xwindow = stage_x11->xwin;
 
   switch (xevent->type)
     {
@@ -1164,11 +1170,21 @@ clutter_x11_get_stage_window (ClutterStage *stage)
   return CLUTTER_STAGE_X11 (impl)->xwin;
 }
 
+static ClutterStageX11 *
+clutter_x11_get_stage_window_from_window (Window win)
+{
+  if (clutter_stages_by_xid == NULL)
+    return NULL;
+
+  return g_hash_table_lookup (clutter_stages_by_xid,
+                              GINT_TO_POINTER (win));
+}
+
 /**
  * clutter_x11_get_stage_from_window:
  * @win: an X Window ID
  *
- * Gets the stage for a particular X window.  
+ * Gets the stage for a particular X window.
  *
  * Return value: (transfer none): A #ClutterStage, or% NULL if a stage
  *   does not exist for the window
@@ -1180,11 +1196,7 @@ clutter_x11_get_stage_from_window (Window win)
 {
   ClutterStageX11 *stage_x11;
 
-  if (clutter_stages_by_xid == NULL)
-    return NULL;
-
-  stage_x11 = g_hash_table_lookup (clutter_stages_by_xid,
-                                   GINT_TO_POINTER (win));
+  stage_x11 = clutter_x11_get_stage_window_from_window (win);
 
   if (stage_x11 != NULL)
     return stage_x11->wrapper;
