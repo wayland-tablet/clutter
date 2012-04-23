@@ -108,6 +108,12 @@
 
 #include "clutter-deprecated.h"
 
+#ifdef CLUTTER_COGL2
+
+#include "clutter-cogl-material-compat.h"
+
+#endif /* CLUTTER_COGL2 */
+
 #undef __CLUTTER_H_INSIDE__
 
 #endif /* __CLUTTER_H__ */

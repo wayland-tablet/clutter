@@ -315,6 +315,10 @@ if USE_COGL2
 
 source_c +=							\
 	$(srcdir)/clutter-cogl-compat.c				\
+	$(srcdir)/clutter-cogl-material-compat.c		\
+	$(NULL)
+source_h +=							\
+	$(srcdir)/clutter-cogl-material-compat.h		\
 	$(NULL)
 
 else
@@ -846,7 +850,7 @@ libclutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LT_LDFLAGS) \
 	$(GCOV_LDFLAGS) \
 	-export-dynamic \
-	-export-symbols-regex "^(clutter|cally).*" \
+	-export-symbols-regex "^(clutter|cally|cogl_material).*" \
 	-rpath $(libdir) \
 	$(win32_resources_ldflag) \
 	$(NULL)
