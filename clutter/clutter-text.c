@@ -61,6 +61,7 @@
 #include "clutter-units.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-scriptable.h"
+#include "clutter-backend.h"
 
 /* cursor width in pixels */
 #define DEFAULT_CURSOR_SIZE     2
@@ -1588,8 +1589,18 @@ selection_paint (ClutterText *self)
         {
           /* Paint selection background first */
           PangoLayout *layout = clutter_text_get_layout (self);
-          CoglPath *selection_path = cogl_path_new ();
+          CoglPath *selection_path;
           CoglColor cogl_color = { 0, };
+#ifdef CLUTTER_COGL2
+          CoglContext *context =
+            clutter_backend_get_cogl_context (clutter_get_default_backend ());
+#endif
+
+#ifdef CLUTTER_COGL2
+          selection_path = cogl_path_new (context);
+#else /* CLUTTER_COGL2 */
+          selection_path = cogl_path_new ();
+#endif /* CLUTTER_COGL2 */
 
           /* Paint selection background */
           if (priv->selection_color_set)
@@ -1599,16 +1610,30 @@ selection_paint (ClutterText *self)
           else
             color = &priv->text_color;
 
+          clutter_text_foreach_selection_rectangle (self,
+                                                    add_selection_rectangle_to_path,
+                                                    selection_path);
+
+#ifdef CLUTTER_COGL2
+          {
+            CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
+            CoglPipeline *pipeline = cogl_pipeline_new (context);
+            cogl_pipeline_set_color4ub (pipeline,
+                                        color->red,
+                                        color->green,
+                                        color->blue,
+                                        255);
+            cogl_framebuffer_fill_path (fb, pipeline, selection_path);
+            cogl_object_unref (pipeline);
+          }
+#else
           cogl_set_source_color4ub (color->red,
                                     color->green,
                                     color->blue,
                                     paint_opacity * color->alpha / 255);
 
-          clutter_text_foreach_selection_rectangle (self,
-                                                    add_selection_rectangle_to_path,
-                                                    selection_path);
-
           cogl_path_fill (selection_path);
+#endif
 
           /* Paint selected text */
           cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (),

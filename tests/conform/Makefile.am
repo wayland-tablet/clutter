@@ -27,23 +27,29 @@ units_sources += \
 
 # cogl tests
 units_sources += \
-	test-cogl-fixed.c 			\
-	test-cogl-materials.c			\
 	test-cogl-viewport.c			\
-	test-cogl-multitexture.c        	\
 	test-cogl-npot-texture.c        	\
-	test-cogl-object.c			\
-	test-cogl-premult.c			\
 	test-cogl-readpixels.c			\
 	test-cogl-texture-get-set-data.c 	\
-	test-cogl-texture-mipmaps.c     	\
-	test-cogl-texture-pixmap-x11.c  	\
-	test-cogl-texture-rectangle.c   	\
 	test-cogl-atlas-migration.c		\
-	test-cogl-vertex-buffer-contiguous.c 	\
+	$(NULL)
+
+# These tests need some work to compile when --enable-cogl2 is enabled
+if !USE_COGL2
+units_sources += \
+	test-cogl-fixed.c			\
+	test-cogl-materials.c			\
+	test-cogl-multitexture.c        	\
+	test-cogl-object.c	        	\
+	test-cogl-premult.c			\
+	test-cogl-texture-mipmaps.c     	\
+	test-cogl-texture-rectangle.c   	\
+	test-cogl-texture-pixmap-x11.c  	\
 	test-cogl-vertex-buffer-interleved.c 	\
+	test-cogl-vertex-buffer-contiguous.c 	\
 	test-cogl-vertex-buffer-mutability.c 	\
 	$(NULL)
+endif
 
 # actors tests
 units_sources += \
@@ -55,19 +61,25 @@ units_sources += \
 	actor-layout.c			\
 	actor-offscreen-redirect.c	\
 	actor-paint-opacity.c 		\
-	actor-pick.c 			\
-	actor-shader-effect.c		\
+	actor-shader-effect.c 		\
 	actor-size.c			\
 	binding-pool.c			\
 	cairo-texture.c    		\
 	group.c				\
 	path.c 				\
 	rectangle.c 			\
-	texture-fbo.c			\
 	texture.c			\
         text-cache.c               	\
         text.c             		\
 	$(NULL)
+
+# These tests need some work to compile when --enable-cogl2 is enabled
+if !USE_COGL2
+units_sources += \
+	actor-pick.c 			\
+	texture-fbo.c			\
+	$(NULL)
+endif
 
 # objects tests
 units_sources += \
@@ -101,6 +113,7 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	@mkdir -p wrappers
 	@sed -n \
 		-e 's/^ \{1,\}TEST_CONFORM_SIMPLE *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
+		-e 's/^ \{1,\}TEST_CONFORM_COGL1 *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
 		-e 's/^ \{1,\}TEST_CONFORM_SKIP *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
 		-e 's/^ \{1,\}TEST_CONFORM_TODO *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
 	$(srcdir)/test-conform-main.c > unit-tests

@@ -262,7 +262,6 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-box.h			\
 	$(srcdir)/deprecated/clutter-cairo-texture.h		\
 	$(srcdir)/deprecated/clutter-container.h		\
-	$(srcdir)/deprecated/clutter-fixed.h			\
 	$(srcdir)/deprecated/clutter-frame-source.h		\
 	$(srcdir)/deprecated/clutter-group.h			\
 	$(srcdir)/deprecated/clutter-keysyms.h			\
@@ -270,7 +269,6 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-media.h			\
 	$(srcdir)/deprecated/clutter-rectangle.h		\
 	$(srcdir)/deprecated/clutter-score.h 			\
-	$(srcdir)/deprecated/clutter-shader.h 			\
 	$(srcdir)/deprecated/clutter-stage-manager.h		\
 	$(srcdir)/deprecated/clutter-stage.h			\
 	$(srcdir)/deprecated/clutter-state.h			\
@@ -282,7 +280,6 @@ deprecated_h = \
 
 # deprecated source code
 deprecated_c = \
-	$(srcdir)/deprecated/clutter-actor-deprecated.c		\
 	$(srcdir)/deprecated/clutter-alpha.c 			\
 	$(srcdir)/deprecated/clutter-animation.c		\
 	$(srcdir)/deprecated/clutter-animator.c			\
@@ -295,13 +292,11 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-behaviour-scale.c		\
 	$(srcdir)/deprecated/clutter-box.c			\
 	$(srcdir)/deprecated/clutter-cairo-texture.c		\
-	$(srcdir)/deprecated/clutter-fixed.c			\
 	$(srcdir)/deprecated/clutter-frame-source.c		\
 	$(srcdir)/deprecated/clutter-group.c 			\
 	$(srcdir)/deprecated/clutter-media.c			\
 	$(srcdir)/deprecated/clutter-rectangle.c 		\
 	$(srcdir)/deprecated/clutter-score.c 			\
-	$(srcdir)/deprecated/clutter-shader.c 			\
 	$(srcdir)/deprecated/clutter-state.c			\
 	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(NULL)
@@ -315,6 +310,26 @@ deprecated_h_priv = \
 deprecated_c_priv = \
 	$(srcdir)/deprecated/clutter-timeout-interval.c	\
 	$(NULL)
+
+if USE_COGL2
+
+source_c +=							\
+	$(srcdir)/clutter-cogl-compat.c				\
+	$(NULL)
+
+else
+
+deprecated_c +=							\
+	$(srcdir)/deprecated/clutter-actor-deprecated.c		\
+	$(srcdir)/deprecated/clutter-shader.c			\
+	$(srcdir)/deprecated/clutter-fixed.c			\
+	$(NULL)
+deprecated_h +=							\
+	$(srcdir)/deprecated/clutter-shader.h			\
+	$(srcdir)/deprecated/clutter-fixed.h			\
+	$(NULL)
+
+endif
 
 # built sources
 built_source_c = \
@@ -951,11 +966,16 @@ Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = \
 	$(deprecated_c) \
 	$(built_source_c)
 Clutter_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS)
-Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Cogl-1.0 CoglPango-1.0 Atk-1.0 Json-1.0
+Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Atk-1.0 Json-1.0
 Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='clutter/clutter.h' \
 	--pkg-export=clutter-@CLUTTER_API_VERSION@
+if USE_COGL2
+Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES += Cogl-2.0 CoglPango-2.0
+else
+Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES += Cogl-1.0 CoglPango-1.0
+endif
 
 INTROSPECTION_GIRS += Clutter-@CLUTTER_API_VERSION@.gir
 

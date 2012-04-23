@@ -106,8 +106,12 @@ void            clutter_shader_effect_set_uniform_value (ClutterShaderEffect *ef
                                                          const gchar         *name,
                                                          const GValue        *value);
 
+#ifndef CLUTTER_COGL2
+
 CoglHandle      clutter_shader_effect_get_shader        (ClutterShaderEffect *effect);
 CoglHandle      clutter_shader_effect_get_program       (ClutterShaderEffect *effect);
+
+#endif /* CLUTTER_COGL2 */
 
 G_END_DECLS
 

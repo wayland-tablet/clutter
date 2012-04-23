@@ -58,10 +58,13 @@
 #include <gobject/gvaluecollector.h>
 
 #include "clutter-color.h"
-#include "clutter-fixed.h"
 #include "clutter-interval.h"
 #include "clutter-private.h"
 #include "clutter-units.h"
+
+#ifndef CLUTTER_COGL2
+#include "clutter-fixed.h"
+#endif
 
 enum
 {
@@ -100,6 +103,7 @@ clutter_interval_real_validate (ClutterInterval *interval,
 {
   GType pspec_gtype = G_PARAM_SPEC_VALUE_TYPE (pspec);
 
+#ifndef CLUTTER_COGL2
   /* check the GTypes we provide first */
   if (pspec_gtype == COGL_TYPE_FIXED)
     {
@@ -114,6 +118,7 @@ clutter_interval_real_validate (ClutterInterval *interval,
       else
         return FALSE;
     }
+#endif /* CLUTTER_COGL2 */
 
   /* then check the fundamental types */
   switch (G_TYPE_FUNDAMENTAL (pspec_gtype))

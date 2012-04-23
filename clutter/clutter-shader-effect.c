@@ -146,6 +146,7 @@ struct _ClutterShaderEffectPrivate
    * happen if a uniform is set before setting the source */
   CoglSnippet *snippet;
 
+#ifndef CLUTTER_COGL2
   /* A CoglShader containing the same source as the snippet. This is
    * created on demand only if clutter_shader_effect_get_program is
    * called. */
@@ -153,6 +154,7 @@ struct _ClutterShaderEffectPrivate
   /* A CoglProgram containing the above shader. This is also only
    * created on demand */
   CoglHandle program;
+#endif /* CLUTTER_COGL2 */
 };
 
 typedef struct _ClutterShaderEffectClassPrivate
@@ -379,6 +381,7 @@ clutter_shader_effect_finalize (GObject *gobject)
       priv->snippet = NULL;
     }
 
+#ifndef CLUTTER_COGL2
   if (priv->shader != COGL_INVALID_HANDLE)
     {
       cogl_handle_unref (priv->shader);
@@ -392,6 +395,7 @@ clutter_shader_effect_finalize (GObject *gobject)
 
       priv->program = COGL_INVALID_HANDLE;
     }
+#endif /* CLUTTER_COGL2 */
 
   G_OBJECT_CLASS (clutter_shader_effect_parent_class)->finalize (gobject);
 }
@@ -466,6 +470,8 @@ clutter_shader_effect_new (ClutterShaderType shader_type)
                        "shader-type", shader_type,
                        NULL);
 }
+
+#ifndef CLUTTER_COGL2
 
 /**
  * clutter_shader_effect_get_shader:
@@ -577,6 +583,8 @@ clutter_shader_effect_get_program (ClutterShaderEffect *effect)
 
   return priv->program;
 }
+
+#endif /* CLUTTER_COGL2 */
 
 static void
 clutter_shader_effect_ensure_pipeline (ClutterShaderEffect *effect)

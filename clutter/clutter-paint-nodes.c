@@ -407,7 +407,14 @@ clutter_pipeline_node_draw (ClutterPaintNode *node)
           break;
 
         case PAINT_OP_PATH:
+#ifdef CLUTTER_COGL2
+          {
+            CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
+            cogl_framebuffer_fill_path (fb, pnode->pipeline, op->op.path);
+          }
+#else
           cogl_path_fill (op->op.path);
+#endif
           break;
 
         case PAINT_OP_PRIMITIVE:
@@ -1145,9 +1152,13 @@ clutter_layer_node_post_draw (ClutterPaintNode *node)
           break;
 
         case PAINT_OP_PATH:
+#ifdef CLUTTER_COGL2
+          cogl_framebuffer_fill_path (fb, lnode->state, op->op.path);
+#else
           cogl_push_source (lnode->state);
           cogl_path_fill (op->op.path);
           cogl_pop_source ();
+#endif
           break;
 
         case PAINT_OP_PRIMITIVE:

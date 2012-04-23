@@ -488,12 +488,15 @@ update_fbo (ClutterActor *self)
 {
   ClutterTexture        *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
+#ifndef CLUTTER_COGL2
   ClutterActor          *head;
   ClutterShader         *shader = NULL;
+#endif
   ClutterActor          *stage = NULL;
   CoglMatrix             projection;
   CoglColor              transparent_col;
 
+#ifndef CLUTTER_COGL2
   head = _clutter_context_peek_shader_stack ();
   if (head != NULL)
     shader = clutter_actor_get_shader (head);
@@ -503,6 +506,7 @@ update_fbo (ClutterActor *self)
    */
   if (shader != NULL)
     clutter_shader_set_is_enabled (shader, FALSE);
+#endif
 
   /* Redirect drawing to the fbo */
   cogl_push_framebuffer (priv->fbo_handle);
@@ -563,9 +567,11 @@ update_fbo (ClutterActor *self)
   /* Restore drawing to the previous framebuffer */
   cogl_pop_framebuffer ();
 
+#ifndef CLUTTER_COGL2
   /* If there is a shader on top of the shader stack, turn it back on. */
   if (shader != NULL)
     clutter_shader_set_is_enabled (shader, TRUE);
+#endif
 }
 
 static void

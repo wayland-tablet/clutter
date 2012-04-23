@@ -60,6 +60,15 @@ static TestConformSharedState *shared_state = NULL;
 	      FUNC,                                                     \
 	      test_conform_simple_fixture_teardown);    } G_STMT_END
 
+/* These tests require Cogl 1.x */
+#if CLUTTER_COGL2
+#define TEST_CONFORM_COGL1(NAMESPACE, FUNC) \
+  G_STMT_START { } G_STMT_END
+#else /* CLUTTER_COGL2 */
+#define TEST_CONFORM_COGL1(NAMESPACE, FUNC) \
+  TEST_CONFORM_SIMPLE(NAMESPACE, FUNC)
+#endif /* CLUTTER_COGL2 */
+
 /* this is a macro that conditionally executes a test if CONDITION
  * evaluates to TRUE; otherwise, it will put the test under the
  * "/skipped" namespace and execute a dummy function that will always
@@ -139,7 +148,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/actor", actor_container_signals);
   TEST_CONFORM_SIMPLE ("/actor", actor_destruction);
   TEST_CONFORM_SIMPLE ("/actor", actor_anchors);
-  TEST_CONFORM_SIMPLE ("/actor", actor_pick);
+  TEST_CONFORM_COGL1 ("/actor", actor_pick);
   TEST_CONFORM_SIMPLE ("/actor", actor_fixed_size);
   TEST_CONFORM_SIMPLE ("/actor", actor_preferred_size);
   TEST_CONFORM_SIMPLE ("/actor", actor_basic_layout);
@@ -185,7 +194,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/rectangle", rectangle_set_color);
 
   TEST_CONFORM_SIMPLE ("/texture", texture_pick_with_alpha);
-  TEST_CONFORM_SIMPLE ("/texture", texture_fbo);
+  TEST_CONFORM_COGL1 ("/texture", texture_fbo);
   TEST_CONFORM_SIMPLE ("/texture/cairo", texture_cairo);
 
   TEST_CONFORM_SIMPLE ("/path", path_base);
@@ -234,23 +243,23 @@ main (int argc, char **argv)
   /* FIXME - see bug https://bugzilla.gnome.org/show_bug.cgi?id=655588 */
   TEST_CONFORM_TODO ("/cally", cally_text);
 
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_object);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_materials);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_premult);
+  TEST_CONFORM_COGL1 ("/cogl", test_cogl_object);
+  TEST_CONFORM_COGL1 ("/cogl", test_cogl_fixed);
+  TEST_CONFORM_COGL1 ("/cogl", test_cogl_materials);
+  TEST_CONFORM_COGL1 ("/cogl", test_cogl_premult);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
 
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_npot_texture);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_multitexture);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_mipmaps);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_rectangle);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_pixmap_x11);
+  TEST_CONFORM_COGL1 ("/cogl/texture", test_cogl_multitexture);
+  TEST_CONFORM_COGL1 ("/cogl/texture", test_cogl_texture_mipmaps);
+  TEST_CONFORM_COGL1 ("/cogl/texture", test_cogl_texture_rectangle);
+  TEST_CONFORM_COGL1 ("/cogl/texture", test_cogl_texture_pixmap_x11);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_get_set_data);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_atlas_migration);
 
-  TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
-  TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);
-  TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_mutability);
+  TEST_CONFORM_COGL1 ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
+  TEST_CONFORM_COGL1 ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);
+  TEST_CONFORM_COGL1 ("/cogl/vertex-buffer", test_cogl_vertex_buffer_mutability);
 
   /* left to the end because they aren't currently very orthogonal and tend to
    * break subsequent tests! */

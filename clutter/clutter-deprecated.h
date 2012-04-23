@@ -20,7 +20,6 @@
 #include "deprecated/clutter-box.h"
 #include "deprecated/clutter-cairo-texture.h"
 #include "deprecated/clutter-container.h"
-#include "deprecated/clutter-fixed.h"
 #include "deprecated/clutter-frame-source.h"
 #include "deprecated/clutter-group.h"
 #include "deprecated/clutter-keysyms.h"
@@ -28,7 +27,6 @@
 #include "deprecated/clutter-media.h"
 #include "deprecated/clutter-rectangle.h"
 #include "deprecated/clutter-score.h"
-#include "deprecated/clutter-shader.h"
 #include "deprecated/clutter-stage-manager.h"
 #include "deprecated/clutter-stage.h"
 #include "deprecated/clutter-state.h"
@@ -36,6 +34,11 @@
 #include "deprecated/clutter-timeline.h"
 #include "deprecated/clutter-timeout-pool.h"
 #include "deprecated/clutter-util.h"
+
+#ifndef CLUTTER_COGL2
+#include "deprecated/clutter-shader.h"
+#include "deprecated/clutter-fixed.h"
+#endif /* CLUTTER_COGL2 */
 
 #undef __CLUTTER_DEPRECATED_H_INSIDE__
 

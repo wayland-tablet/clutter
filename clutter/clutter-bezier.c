@@ -25,6 +25,7 @@
 #include <string.h>
 #include "clutter-bezier.h"
 #include "clutter-debug.h"
+#include "clutter-cogl-compat.h"
 
 /*
  * We have some experimental code here to allow for constant velocity

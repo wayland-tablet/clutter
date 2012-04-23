@@ -137,6 +137,7 @@ AC_HEADER_STDC
 # required versions for dependencies
 m4_define([glib_req_version],           [2.31.19])
 m4_define([cogl_req_version],           [1.9.6])
+m4_define([cogl2_req_version],          [1.99.1])
 m4_define([json_glib_req_version],      [0.12.0])
 m4_define([atk_req_version],            [2.1.5])
 m4_define([cairo_req_version],          [1.10])
@@ -150,6 +151,7 @@ m4_define([gdk_req_version],            [3.3.18])
 
 AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])
 AC_SUBST([COGL_REQ_VERSION],       [cogl_req_version])
+AC_SUBST([COGL2_REQ_VERSION],      [cogl2_req_version])
 AC_SUBST([JSON_GLIB_REQ_VERSION],  [json_glib_req_version])
 AC_SUBST([ATK_REQ_VERSION],        [atk_req_version])
 AC_SUBST([CAIRO_REQ_VERSION],      [cairo_req_version])
@@ -204,8 +206,19 @@ CLUTTER_CONFIG_DEFINES=
 experimental_backend=no
 experimental_input_backend=no
 
+# Should Cogl 2.0 be used? This will break ABI/API
+AC_ARG_ENABLE([cogl2],
+              [AS_HELP_STRING([--enable-cogl2],
+                              [Use Cogl 2.0 instead of 1.0. This will effectively be an API break])],
+              [enable_cogl2=$enableval],
+              [enable_cogl2=no])
+
+AS_IF([test "x$enable_cogl2" = "xyes"],
+      [COGL_PC_FILE="cogl2 >= $COGL2_REQ_VERSION cogl-pango2"],
+      [COGL_PC_FILE="cogl-1.0 >= $COGL_REQ_VERSION cogl-pango-1.0"])
+
 # base dependencies for core
-CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
+CLUTTER_BASE_PC_FILES="$COGL_PC_FILE cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
 
 # private base dependencies
 CLUTTER_BASE_PC_FILES_PRIVATE=""
@@ -483,6 +496,7 @@ AM_CONDITIONAL(SUPPORT_CEX100,  [test "x$SUPPORT_CEX100" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
 
 AM_CONDITIONAL(USE_COGL,  [test "x$SUPPORT_COGL" = "x1"])
+AM_CONDITIONAL(USE_COGL2, [test "x$enable_cogl2" = "xyes"])
 AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
 AM_CONDITIONAL(USE_EVDEV, [test "x$have_evdev" = "xyes"])
 AM_CONDITIONAL(USE_GLD,   [test "x$have_gdl" = "xyes"])
@@ -549,6 +563,11 @@ AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
 # the 'null' input backend is special
 CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_INPUT_NULL \"null\""
+
+# whether to use Cogl 2.0
+AS_IF([test "x$enable_cogl2" = "xyes"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_COGL2 1"])
 
 AC_SUBST([CLUTTER_CONFIG_DEFINES])
 
@@ -1205,10 +1224,18 @@ echo ""
 echo "     - Wayland compositor support enabled (WARNING: Experimental)"
 fi
 
+if test "x$enable_cogl2" = "xyes"; then
+echo ""
+echo "     - Cogl 2.0 support enabled (WARNING: Experimental)"
+echo "       ***This will make the build API incompatible with other builds***"
+fi
+
 echo ""
 
 # General warning about experimental features
-if test "x$experimental_backend" = "xyes"; then
+if test "x$experimental_backend" = "xyes" -o \
+        "x$experimental_input_backend" = "xyes" -o \
+        "x$enable_cogl2" = "xyes"; then
 echo ""
 echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
 echo "*WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING*"

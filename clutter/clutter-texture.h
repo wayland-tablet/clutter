@@ -30,6 +30,7 @@
 
 #include <cogl/cogl.h>
 #include <clutter/clutter-actor.h>
+#include <clutter/clutter-cogl-compat.h>
 
 G_BEGIN_DECLS
 

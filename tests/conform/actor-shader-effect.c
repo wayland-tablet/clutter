@@ -190,6 +190,8 @@ foo_another_new_shader_effect_init (FooAnotherNewShaderEffect *self)
  clutter_shader_effect_get_program
  ****************************************************************/
 
+#ifndef CLUTTER_COGL2
+
 static const gchar
 foo_manual_shader_effect_source[] =
   "\n"
@@ -255,6 +257,8 @@ foo_manual_shader_effect_init (FooManualShaderEffect *self)
 {
 }
 
+#endif /* CLUTTER_COGL2 */
+
 /****************************************************************/
 
 static ClutterActor *
@@ -298,8 +302,11 @@ paint_cb (ClutterActor *stage)
   g_assert_cmpint (get_pixel (250, 50), ==, 0xff00ff);
   /* new shader effect */
   g_assert_cmpint (get_pixel (350, 50), ==, 0x00ffff);
+
+#ifndef CLUTTER_COGL2
   /* manual shader effect */
   g_assert_cmpint (get_pixel (450, 50), ==, 0x800000);
+#endif /* CLUTTER_COGL2 */
 
   clutter_main_quit ();
 }
@@ -331,9 +338,11 @@ actor_shader_effect (TestConformSimpleFixture *fixture,
   clutter_actor_set_x (rect, 300);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
+#ifndef CLUTTER_COGL2
   rect = make_actor (foo_manual_shader_effect_get_type ());
   clutter_actor_set_x (rect, 400);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
+#endif /* CLUTTER_COGL2 */
 
   clutter_actor_show (stage);
 

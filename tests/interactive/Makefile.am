@@ -12,23 +12,16 @@ UNIT_TESTS = \
 	test-threads.c \
 	test-script.c \
 	test-grab.c \
-	test-cogl-shader-arbfp.c \
-	test-cogl-shader-glsl.c \
 	test-animator.c \
 	test-state.c \
 	test-state-animator.c \
 	test-fbo.c \
 	test-multistage.c \
-	test-cogl-primitives.c \
 	test-cogl-tex-tile.c \
 	test-cogl-tex-convert.c \
 	test-cogl-tex-foreign.c \
 	test-cogl-tex-getset.c \
-	test-cogl-offscreen.c \
-	test-cogl-tex-polygon.c \
-	test-cogl-multitexture.c \
 	test-stage-read-pixels.c \
-	test-clip.c \
 	test-paint-wrapper.c \
 	test-texture-quality.c \
 	test-layout.c \
@@ -39,15 +32,12 @@ UNIT_TESTS = \
         test-text-field.c \
 	test-cairo-clock.c \
 	test-cairo-flowers.c \
-	test-cogl-vertex-buffer.c \
 	test-flow-layout.c \
 	test-box-layout.c \
 	test-stage-sizing.c \
 	test-drag.c \
-	test-constraints.c \
 	test-scrolling.c \
 	test-swipe-action.c \
-	test-cogl-point-sprites.c \
 	test-table-layout.c \
 	test-path-constraint.c \
 	test-snap-constraint.c \
@@ -60,6 +50,21 @@ UNIT_TESTS = \
 	test-canvas.c \
 	test-keyframe-transition.c \
 	test-scroll-actor.c
+
+# These tests need some work to compile when --enable-cogl2 is enabled
+if !USE_COGL2
+UNIT_TESTS += \
+	test-cogl-primitives.c \
+	test-cogl-shader-arbfp.c \
+	test-cogl-shader-glsl.c \
+	test-cogl-offscreen.c \
+	test-cogl-tex-polygon.c \
+	test-cogl-multitexture.c \
+	test-clip.c \
+	test-constraints.c \
+	test-cogl-vertex-buffer.c \
+	test-cogl-point-sprites.c
+endif
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
