@@ -344,15 +344,18 @@ clutter_offscreen_effect_real_paint_target (ClutterOffscreenEffect *effect)
 {
   ClutterOffscreenEffectPrivate *priv = effect->priv;
   guint8 paint_opacity;
+  CoglPipeline *target;
+
+  target = COGL_PIPELINE (clutter_offscreen_effect_get_target (effect));
 
   paint_opacity = clutter_actor_get_paint_opacity (priv->actor);
 
-  cogl_pipeline_set_color4ub (priv->target,
+  cogl_pipeline_set_color4ub (target,
                               paint_opacity,
                               paint_opacity,
                               paint_opacity,
                               paint_opacity);
-  cogl_set_source (priv->target);
+  cogl_set_source (target);
 
   /* At this point we are in stage coordinates translated so if
    * we draw our texture using a textured quad the size of the paint
