@@ -77,10 +77,12 @@ struct _ClutterOffscreenEffectClass
   ClutterEffectClass parent_class;
 
   /*< public >*/
-  CoglHandle (* create_texture) (ClutterOffscreenEffect *effect,
-                                 gfloat                  width,
-                                 gfloat                  height);
-  void       (* paint_target)   (ClutterOffscreenEffect *effect);
+  CoglHandle    (* create_texture) (ClutterOffscreenEffect *effect,
+                                    gfloat                  width,
+                                    gfloat                  height);
+  void          (* paint_target)   (ClutterOffscreenEffect *effect);
+
+  CoglMaterial *(* get_target)     (ClutterOffscreenEffect *effect);
 
   /*< private >*/
   void (* _clutter_offscreen1) (void);
@@ -89,7 +91,6 @@ struct _ClutterOffscreenEffectClass
   void (* _clutter_offscreen4) (void);
   void (* _clutter_offscreen5) (void);
   void (* _clutter_offscreen6) (void);
-  void (* _clutter_offscreen7) (void);
 };
 
 GType clutter_offscreen_effect_get_type (void) G_GNUC_CONST;

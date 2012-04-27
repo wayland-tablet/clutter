@@ -366,6 +366,12 @@ clutter_offscreen_effect_real_paint_target (ClutterOffscreenEffect *effect)
                                       1.0, 1.0);
 }
 
+static CoglMaterial *
+clutter_offscreen_effect_real_get_target (ClutterOffscreenEffect *effect)
+{
+  return (CoglMaterial *) effect->priv->target;
+}
+
 static void
 clutter_offscreen_effect_paint_texture (ClutterOffscreenEffect *effect)
 {
@@ -466,6 +472,7 @@ clutter_offscreen_effect_class_init (ClutterOffscreenEffectClass *klass)
 
   klass->create_texture = clutter_offscreen_effect_real_create_texture;
   klass->paint_target = clutter_offscreen_effect_real_paint_target;
+  klass->get_target = clutter_offscreen_effect_real_get_target;
 
   meta_class->set_actor = clutter_offscreen_effect_set_actor;
 
@@ -535,7 +542,7 @@ clutter_offscreen_effect_get_target (ClutterOffscreenEffect *effect)
   g_return_val_if_fail (CLUTTER_IS_OFFSCREEN_EFFECT (effect),
                         NULL);
 
-  return (CoglMaterial *)effect->priv->target;
+  return CLUTTER_OFFSCREEN_EFFECT_GET_CLASS (effect)->get_target (effect);
 }
 
 /**
