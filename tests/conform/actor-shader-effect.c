@@ -185,6 +185,76 @@ foo_another_new_shader_effect_init (FooAnotherNewShaderEffect *self)
 {
 }
 
+/****************************************************************
+ Shader effect with a manual paint function using
+ clutter_shader_effect_get_program
+ ****************************************************************/
+
+static const gchar
+foo_manual_shader_effect_source[] =
+  "\n"
+  "void\n"
+  "main ()\n"
+  "{\n"
+  "  cogl_color_out = cogl_color_in * vec4 (0.5, 0.5, 0.0, 1.0);\n"
+  "}";
+
+typedef struct _FooManualShaderEffectClass
+{
+  ClutterShaderEffectClass parent_class;
+} FooManualShaderEffectClass;
+
+typedef struct _FooManualShaderEffect
+{
+  ClutterShaderEffect parent;
+} FooManualShaderEffect;
+
+G_DEFINE_TYPE (FooManualShaderEffect,
+               foo_manual_shader_effect,
+               CLUTTER_TYPE_SHADER_EFFECT);
+
+static void
+foo_manual_shader_effect_paint_target (ClutterOffscreenEffect *effect)
+{
+  CoglHandle program;
+  CoglMaterial *material;
+  CoglTexture *texture;
+
+  clutter_shader_effect_set_shader_source (CLUTTER_SHADER_EFFECT (effect),
+                                           foo_manual_shader_effect_source);
+
+  program = clutter_shader_effect_get_program (CLUTTER_SHADER_EFFECT (effect));
+
+  material = cogl_material_new ();
+  cogl_material_set_color4ub (material, 255, 0, 255, 255);
+  cogl_material_set_user_program (material, program);
+
+  texture = clutter_offscreen_effect_get_texture (effect);
+
+  cogl_push_source (material);
+  cogl_rectangle (0.0f, 0.0f,
+                  cogl_texture_get_width (texture),
+                  cogl_texture_get_height (texture));
+  cogl_pop_source ();
+
+  cogl_object_unref (material);
+}
+
+static void
+foo_manual_shader_effect_class_init (FooManualShaderEffectClass *klass)
+{
+  ClutterOffscreenEffectClass *offscreen_effect_class =
+    CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
+
+  offscreen_effect_class->paint_target =
+    foo_manual_shader_effect_paint_target;
+}
+
+static void
+foo_manual_shader_effect_init (FooManualShaderEffect *self)
+{
+}
+
 /****************************************************************/
 
 static ClutterActor *
@@ -228,6 +298,8 @@ paint_cb (ClutterActor *stage)
   g_assert_cmpint (get_pixel (250, 50), ==, 0xff00ff);
   /* new shader effect */
   g_assert_cmpint (get_pixel (350, 50), ==, 0x00ffff);
+  /* manual shader effect */
+  g_assert_cmpint (get_pixel (450, 50), ==, 0x800000);
 
   clutter_main_quit ();
 }
@@ -257,6 +329,10 @@ actor_shader_effect (TestConformSimpleFixture *fixture,
 
   rect = make_actor (foo_new_shader_effect_get_type ());
   clutter_actor_set_x (rect, 300);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
+
+  rect = make_actor (foo_manual_shader_effect_get_type ());
+  clutter_actor_set_x (rect, 400);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
   clutter_actor_show (stage);
