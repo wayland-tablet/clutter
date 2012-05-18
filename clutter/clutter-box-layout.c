@@ -1033,7 +1033,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
         x = box->x1;
     }
 
-  for (l = children, i = 0; l != NULL; l = l->next, i += 1)
+  for (l = children, i = 0; l != NULL; l = l->next)
     {
       ClutterLayoutMeta *meta;
       ClutterBoxChild *box_child;
@@ -1141,6 +1141,8 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
                             child,
                             &child_allocation,
                             flags);
+
+        i++;
     }
 
   g_list_free (children);
