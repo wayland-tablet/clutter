@@ -1,3 +1,38 @@
+Clutter 1.10.6                                                       2012-05-28
+===============================================================================
+
+  • List of changes since Clutter 1.10.4
+
+    - Fix assertions and segfaults with touch events
+
+    - Drop usage of GL types in Clutter
+    C, GLib, and Cogl provide the same exact types, and we also get to drop
+    the dependency on the GL header.
+
+    - Update Visual Studio project files and build rules
+
+    - Fix assertion error in ClutterFlowLayout
+
+    - Re-allow passing NULL in clutter_text_set_text()
+    The switch to ClutterTextBuffer introduced a regression.
+
+    - Add missing annotations in ClutterText
+
+  • List of bugs fixed since Clutter 1.10.4
+
+    [bugzilla.gnome.org]
+    #675371 - Asserts when getting touch events
+    #676150 - Fix GDK backend build on Windows
+    #676068 - Setting size on ClutterFlowLayout container crashes
+    #675890 - Passing NULL buffer to clutter_text_set_text() will not reset
+              the buffer and segfault
+    #675396 - Possible bug in _clutter_paint_volume_axis_align
+
+Many thanks to:
+
+  Chun-wei Fan, Bastien Nocera, Bastian Winkler, Dominique Bureau,
+  Mike Ruprecht, Neil Roberts, Sasi Bhushan, Tristan Van Berkom.
+
 Clutter 1.10.4                                                       2012-05-01
 ===============================================================================
 
