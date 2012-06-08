@@ -43,7 +43,12 @@
 
 #define TOUCH_POINTS 10
 
-static ClutterPoint gesture_points[] = {
+typedef struct Point {
+  float x;
+  float y;
+} Point;
+
+static Point gesture_points[] = {
   { 100., 100. },
   { 110., 100. },
   { 120., 100. },
@@ -61,7 +66,7 @@ typedef struct _State State;
 struct _State
 {
   gboolean      pass;
-  ClutterPoint  gesture_points_to_check[TOUCH_POINTS];
+  Point         gesture_points_to_check[TOUCH_POINTS];
   int           gesture_points;
 };
 
