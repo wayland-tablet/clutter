@@ -718,6 +718,7 @@ static CoglPangoFontMap *
 clutter_context_get_pango_fontmap (void)
 {
   ClutterMainContext *self;
+  CoglContext *context;
   CoglPangoFontMap *font_map;
   gdouble resolution;
   gboolean use_mipmapping;
@@ -726,7 +727,8 @@ clutter_context_get_pango_fontmap (void)
   if (G_LIKELY (self->font_map != NULL))
     return self->font_map;
 
-  font_map = COGL_PANGO_FONT_MAP (cogl_pango_font_map_new ());
+  context = clutter_backend_get_cogl_context (self->backend);
+  font_map = COGL_PANGO_FONT_MAP (cogl_pango_font_map_new (context));
 
   resolution = clutter_backend_get_resolution (self->backend);
   cogl_pango_font_map_set_resolution (font_map, resolution);

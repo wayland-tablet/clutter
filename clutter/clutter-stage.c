@@ -1489,7 +1489,8 @@ _clutter_stage_do_pick (ClutterStage   *stage,
     {
       if (G_LIKELY (!(clutter_pick_debug_flags &
                       CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-        cogl_clip_push_window_rectangle (x, y, 1, 1);
+        cogl_framebuffer_push_scissor_clip (cogl_get_draw_framebuffer (),
+                                            x, y, 1, 1);
       is_clipped = TRUE;
     }
   else

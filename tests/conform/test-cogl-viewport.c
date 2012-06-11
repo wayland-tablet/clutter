@@ -154,7 +154,8 @@ on_paint (ClutterActor *actor, void *state)
                      400); /* height */
   /* clear everything... */
   cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
-  cogl_clip_push_window_rectangle (20, 10, 100, 200);
+  cogl_framebuffer_push_scissor_clip (cogl_get_draw_framebuffer (),
+                                      20, 10, 100, 200);
   /* fill the viewport with blue.. */
   cogl_set_source_color4ub (0x00, 0x00, 0xff, 0xff);
   cogl_rectangle (-1, 1, 1, -1);
@@ -282,7 +283,8 @@ on_paint (ClutterActor *actor, void *state)
                      400); /* height */
   /* clear everything... */
   cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
-  cogl_clip_push_window_rectangle (20, 10, 100, 200);
+  cogl_framebuffer_push_scissor_clip (cogl_get_draw_framebuffer (),
+                                      20, 10, 100, 200);
   /* fill the viewport with blue.. */
   cogl_set_source_color4ub (0x00, 0x00, 0xff, 0xff);
   cogl_rectangle (-1, 1, 1, -1);

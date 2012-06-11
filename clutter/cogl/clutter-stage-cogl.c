@@ -378,10 +378,12 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
       stage_cogl->using_clipped_redraw = TRUE;
 
-      cogl_clip_push_window_rectangle (stage_cogl->bounding_redraw_clip.x,
-                                       stage_cogl->bounding_redraw_clip.y,
-                                       stage_cogl->bounding_redraw_clip.width,
-                                       stage_cogl->bounding_redraw_clip.height);
+      cogl_framebuffer_push_scissor_clip (cogl_get_draw_framebuffer (),
+                                          stage_cogl->bounding_redraw_clip.x,
+                                          stage_cogl->bounding_redraw_clip.y,
+                                          stage_cogl->bounding_redraw_clip.width,
+                                          stage_cogl->bounding_redraw_clip.height);
+
       _clutter_stage_do_paint (CLUTTER_STAGE (wrapper),
                                &stage_cogl->bounding_redraw_clip);
       cogl_clip_pop ();
