@@ -604,10 +604,12 @@ _clutter_id_to_color (guint         id_,
 
   if (ctx->fb_g_mask == 0)
     {
+      CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
+
       /* Figure out framebuffer masks used for pick */
-      cogl_get_bitmasks (&ctx->fb_r_mask,
-			 &ctx->fb_g_mask,
-			 &ctx->fb_b_mask, NULL);
+      ctx->fb_r_mask = cogl_framebuffer_get_red_bits (framebuffer);
+      ctx->fb_g_mask = cogl_framebuffer_get_green_bits (framebuffer);
+      ctx->fb_b_mask = cogl_framebuffer_get_blue_bits (framebuffer);
 
       ctx->fb_r_mask_used = ctx->fb_r_mask;
       ctx->fb_g_mask_used = ctx->fb_g_mask;
