@@ -1,3 +1,26 @@
+Clutter 1.10.8                                                       2012-06-19
+===============================================================================
+
+  • List of changes since Clutter 1.10.6
+
+    - Fix touch event delivery and implementation
+    Touch events were not delivered to the correct actors; an interactive
+    test is now available to verify the implementation.
+
+    - Introspection fixes
+    Some additional annotations are n ecessary to generate the Vala bindings
+    from the introspection data.
+
+  • List of bugs fixed since Clutter 1.10.6
+
+    [bugzilla.gnome.org]
+    #677778 - Assorted introspection fixes from Vala 
+    #677921 - tests: link test-conformance against libm 
+
+Many thanks to:
+
+  Tomeu Vizoso, Evan Nemerson, Frédéric Péters, Rūdolfs Mazurs.
+
 Clutter 1.10.6                                                       2012-05-28
 ===============================================================================
 
