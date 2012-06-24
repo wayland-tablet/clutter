@@ -209,6 +209,7 @@ source_c = \
 
 # private headers; these should not be distributed or introspected
 source_h_priv = \
+	$(srcdir)/clutter-action-private.h		\
 	$(srcdir)/clutter-actor-meta-private.h		\
 	$(srcdir)/clutter-actor-private.h		\
 	$(srcdir)/clutter-backend-private.h		\

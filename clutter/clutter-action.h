@@ -69,6 +69,9 @@ struct _ClutterActionClass
   /*< private >*/
   ClutterActorMetaClass parent_class;
 
+  void (* handle_event) (ClutterAction      *action,
+                         const ClutterEvent *event);
+
   void (* _clutter_action1) (void);
   void (* _clutter_action2) (void);
   void (* _clutter_action3) (void);
@@ -76,27 +79,25 @@ struct _ClutterActionClass
   void (* _clutter_action5) (void);
   void (* _clutter_action6) (void);
   void (* _clutter_action7) (void);
-  void (* _clutter_action8) (void);
 };
 
 GType clutter_action_get_type (void) G_GNUC_CONST;
 
 /* ClutterActor API */
-void           clutter_actor_add_action            (ClutterActor  *self,
-                                                    ClutterAction *action);
-void           clutter_actor_add_action_with_name  (ClutterActor  *self,
-                                                    const gchar   *name,
-                                                    ClutterAction *action);
-void           clutter_actor_remove_action         (ClutterActor  *self,
-                                                    ClutterAction *action);
-void           clutter_actor_remove_action_by_name (ClutterActor  *self,
-                                                    const gchar   *name);
-ClutterAction *clutter_actor_get_action            (ClutterActor  *self,
-                                                    const gchar   *name);
-GList *        clutter_actor_get_actions           (ClutterActor  *self);
-void           clutter_actor_clear_actions         (ClutterActor  *self);
-
-gboolean        clutter_actor_has_actions          (ClutterActor  *self);
+void            clutter_actor_add_action                (ClutterActor  *self,
+                                                         ClutterAction *action);
+void            clutter_actor_add_action_with_name      (ClutterActor  *self,
+                                                         const gchar   *name,
+                                                         ClutterAction *action);
+void            clutter_actor_remove_action             (ClutterActor  *self,
+                                                         ClutterAction *action);
+void            clutter_actor_remove_action_by_name     (ClutterActor  *self,
+                                                         const gchar   *name);
+ClutterAction * clutter_actor_get_action                (ClutterActor  *self,
+                                                         const gchar   *name);
+GList *         clutter_actor_get_actions               (ClutterActor  *self);
+void            clutter_actor_clear_actions             (ClutterActor  *self);
+gboolean        clutter_actor_has_actions               (ClutterActor  *self);
 
 G_END_DECLS
 

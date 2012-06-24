@@ -45,7 +45,7 @@
 #include "config.h"
 #endif
 
-#include "clutter-action.h"
+#include "clutter-action-private.h"
 
 #include "clutter-debug.h"
 #include "clutter-private.h"
@@ -53,11 +53,25 @@
 G_DEFINE_ABSTRACT_TYPE (ClutterAction, clutter_action, CLUTTER_TYPE_ACTOR_META);
 
 static void
+clutter_action_real_handle_event (ClutterAction      *self,
+                                  const ClutterEvent *event)
+{
+}
+
+static void
 clutter_action_class_init (ClutterActionClass *klass)
 {
+  klass->handle_event = clutter_action_real_handle_event;
 }
 
 static void
 clutter_action_init (ClutterAction *self)
 {
+}
+
+void
+_clutter_action_handle_event (ClutterAction      *self,
+                              const ClutterEvent *event)
+{
+  CLUTTER_ACTION_GET_CLASS (self)->handle_event (self, event);
 }
