@@ -594,7 +594,7 @@
 
 #include "clutter-actor-private.h"
 
-#include "clutter-action.h"
+#include "clutter-action-private.h"
 #include "clutter-actor-meta-private.h"
 #include "clutter-animatable.h"
 #include "clutter-color-static.h"
@@ -18923,6 +18923,26 @@ _clutter_actor_handle_event (ClutterActor       *self,
         }
 
       iter = parent;
+    }
+
+  /* we run the actions attached to an actor before capture/bubble; this
+   * allows the actions to have control over the event emission chain
+   * without interfering with it, and without relying on implicit or
+   * undefined ordering.
+   */
+  if (self->priv->actions != NULL)
+    {
+      const GList *l;
+
+      for (l = _clutter_meta_group_peek_metas (self->priv->actions);
+           l != NULL;
+           l = l->next)
+        {
+          ClutterAction *action = l->data;
+
+          if (clutter_actor_meta_get_enabled (l->data))
+            _clutter_action_handle_event (action, event);
+        }
     }
 
   /* Capture: from top-level downwards */
