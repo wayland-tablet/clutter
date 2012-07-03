@@ -127,42 +127,42 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PostBuildEvent>
-      <Command>$(ClutterDoInstall)</Command>
+      <Command>$(ClutterDoInstallDebugBin) $(ClutterDoInstall)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">
     <PostBuildEvent>
-      <Command>$(ClutterDoInstall) $(ClutterDoInstallGDK)</Command>
+      <Command>$(ClutterDoInstallDebugBin) $(ClutterDoInstall) $(ClutterDoInstallGDK)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
-      <Command>$(ClutterDoInstall)</Command>
+      <Command>$(ClutterDoInstallDebugBin) $(ClutterDoInstall)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">
     <PreBuildEvent>
-      <Command>$(ClutterDoInstall) $(ClutterDoInstallGDK)</Command>
+      <Command>$(ClutterDoInstallDebugBin) $(ClutterDoInstall) $(ClutterDoInstallGDK)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PostBuildEvent>
-      <Command>$(ClutterDoInstall)</Command>
+      <Command>$(ClutterDoInstallReleaseBin) $(ClutterDoInstall)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">
     <PostBuildEvent>
-      <Command>$(ClutterDoInstall) $(ClutterDoInstallGDK)</Command>
+      <Command>$(ClutterDoInstallReleaseBin) $(ClutterDoInstall) $(ClutterDoInstallGDK)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
-      <Command>$(ClutterDoInstall)</Command>
+      <Command>$(ClutterDoInstallReleaseBin) $(ClutterDoInstall)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">
     <PreBuildEvent>
-      <Command>$(ClutterDoInstall) $(ClutterDoInstallGDK)</Command>
+      <Command>$(ClutterDoInstallReleaseBin) $(ClutterDoInstall) $(ClutterDoInstallGDK)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
