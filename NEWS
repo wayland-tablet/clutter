@@ -1,3 +1,32 @@
+Clutter 1.12.2                                                       2012-10-17
+===============================================================================
+
+  • List of changes since Clutter 1.12.0
+
+    - Updates for the Wayland backend
+    Bring the backend code up to the latest Wayland protocol and API.
+
+    - Build environment fixes for Visual Studio
+
+    - Ensure that the Clutter lock is acquired before releasing it
+    On some threading implementations, releasing a lock without acquiring it
+    results in a run-time error.
+
+    - Translations updated
+    Latvian, Japanese, Italian.
+
+  • List of bugs fixed since Clutter 1.12.0
+
+    #679439 - Single-threaded clutter programs fail on platforms which don't
+              permit unlocking an already unlocked mutex
+    #685554 - Assertion failure when trying to cancel an already started
+              gesture
+
+Many thanks to:
+
+  Daniel Stone, Rob Bradford, Chun-wei Fan, Emanuele Aina, Marek Černocký,
+  Milo Casagrande, Nishio Futoshi, Rūdolfs Mazurs, Tomeu Vizoso.
+
 Clutter 1.12.0                                                       2012-09-24
 ===============================================================================
 
