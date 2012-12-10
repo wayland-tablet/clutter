@@ -42,13 +42,6 @@
 /*
  * IMPLEMENTATION NOTES:
  *
- * * AtkText: There are still some methods not implemented yet:
- *     atk_text_get_default_attributes
- *     atk_text_get_character_extents
- *     atk_text_get_offset_at_point
- *
- *     See details on bug CB#1733
- *
  * * AtkEditableText: some methods will not be implemented
  *
  *     * atk_editable_text_set_run_attributes: ClutterText has some
