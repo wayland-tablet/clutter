@@ -8844,6 +8844,21 @@ _clutter_actor_queue_only_relayout (ClutterActor *self)
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
+  if (!CLUTTER_ACTOR_IS_MAPPED (self) &&
+      self->priv->in_cloned_branch == 0 &&
+      !clutter_actor_has_mapped_clones (self))
+    {
+      CLUTTER_NOTE (PAINT,
+                    "Skipping queue_relayout('%s'): mapped=%s, "
+                    "mapped_clones=%s, "
+                    "in_cloned_branch=%s\n",
+                    _clutter_actor_get_debug_name (self),
+                    CLUTTER_ACTOR_IS_MAPPED (self) ? "yes" : "no",
+                    clutter_actor_has_mapped_clones (self) ? "yes" : "no",
+                    self->priv->in_cloned_branch != 0 ? "yes" : "no");
+      return;
+    }
+
   _clutter_actor_queue_relayout_on_clones (self);
 
   g_signal_emit (self, actor_signals[QUEUE_RELAYOUT], 0);
