@@ -1,3 +1,24 @@
+Clutter 1.14.2                                                       2013-04-17
+===============================================================================
+
+  • List of changes since Clutter 1.14.0
+
+    - Ensure a redraw when making the stage visible under Wayland
+    This makes it possible to update the contents of the stage when toggling
+    its visibility.
+
+    - Fix build with debug messages enabled.
+
+    - Documentation fixes.
+
+  • List of bugs fixed since Clutter 1.14.0
+
+    #696791 - wayland: Queue a redraw after showing the stage
+
+Many thanks to:
+
+  Emanuele Aina, Neil Roberts.
+
 Clutter 1.14.0                                                       2013-03-25
 ===============================================================================
 
