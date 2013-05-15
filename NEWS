@@ -1,3 +1,34 @@
+Clutter 1.14.4                                                       2013-05-15
+===============================================================================
+
+  • List of changes since Clutter 1.14.2
+
+    - Fix GestureAction handling of multi-touch gestures
+
+    - Add a paint callback for Stage updates
+    This experimental API allows installing a notification function on
+    ClutterStage that is called when the stage has finished drawing, but
+    before the frame buffer is flushed. This function replaces the ::paint
+    signal on the ClutterStage in a way that does not disable paint volume
+    culling and optimizations.
+
+    - Improve scaling behaviour in ZoomAction
+    Instead of recomputing the scaling center, the action should use the
+    pivot-point of the ClutterActor.
+
+    - Documentation fixes
+
+  • List of bugs fixed since Clutter 1.14.2
+
+    #698668 - A few improvements to ClutterGestureAction
+    #698671 - Refactor event handling code in ClutterGestureAction
+    #698674 - Improve ClutterZoomAction behavior
+    #698783 - Add a paint callback for ClutterStage
+
+Many thanks to:
+
+  Lionel Landwerlin
+
 Clutter 1.14.2                                                       2013-04-17
 ===============================================================================
 

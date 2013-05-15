@@ -318,6 +318,14 @@ Release Notes for Clutter 1.14
   at all: gunichar is a typedef to guint32 already. The change will impact
   introspection consumers.
 
+• ClutterScrollActor now uses the :child-transform property to implement
+  scrolling its children. Any external update to the :child-transform
+  property has to take into account that the property will be modified
+  every time the scroll point is updated.
+
+• ClutterZoomAction now sets the :pivot-point property on the actor to
+  which it is applied.
+
 Release Notes for Clutter 1.12
 -------------------------------------------------------------------------------
 
