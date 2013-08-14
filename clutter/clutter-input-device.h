@@ -56,6 +56,7 @@ CLUTTER_AVAILABLE_IN_1_12
 gboolean                clutter_input_device_get_coords        (ClutterInputDevice   *device,
                                                                 ClutterEventSequence *sequence,
                                                                 ClutterPoint         *point);
+ClutterModifierType     clutter_input_device_get_modifier_state (ClutterInputDevice  *device);
 ClutterActor *          clutter_input_device_get_pointer_actor  (ClutterInputDevice  *device);
 ClutterStage *          clutter_input_device_get_pointer_stage  (ClutterInputDevice  *device);
 const gchar *           clutter_input_device_get_device_name    (ClutterInputDevice  *device);
