@@ -562,7 +562,7 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   GSource *source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
   ClutterEventSource *event_source = (ClutterEventSource *) source;
   const gchar *node_path;
-  gint fd;
+  gint fd, clkid;
   GError *error;
 
   /* grab the udev input device node and open it */
@@ -596,6 +596,10 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   event_source->device = input_device;
   event_source->event_poll_fd.fd = fd;
   event_source->event_poll_fd.events = G_IO_IN;
+
+  /* Tell evdev to use the monotonic clock for its timestamps */
+  clkid = CLOCK_MONOTONIC;
+  ioctl(fd, EVIOCSCLOCKID, &clkid);
 
   /* and finally configure and attach the GSource */
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
