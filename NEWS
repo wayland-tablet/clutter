@@ -1,3 +1,50 @@
+Clutter 1.16.2                                                       2013-11-18
+===============================================================================
+
+  • List of changes since Clutter 1.16.0
+
+    - Allow creating intervals and transitions from ClutterScript
+    ClutterInterval now implements ClutterScriptable.
+
+    - X11 backend improvements
+    Update the device coordinate handling; remove the dependency on
+    the XFixes extension.
+
+    - Wayland backend improvements
+    Implement the ClutterStage:cursor-visible property.
+
+    - Apply the correct opacity when painting ClutterImage
+
+    - Throttle touch update events
+
+    - Fix preferred size of TableLayout
+    Take account of the visibility of the children when computing the
+    preferred size of a ClutterActor using a ClutterTableLayout as its
+    layout manager.
+
+    - Documentation fixes
+
+    - Translation updates
+    Hungarian, Slovak, Greek, Catalan (Valencian) 
+
+  • List of bugs fixed since Clutter 1.16.0
+
+    #707071 - Remove use of XFixes for showing/hiding the cursor
+    #709762 - ClutterDragAction can mix pointer and touch events
+    #709590 - wayland: Implement support for 'cursor-visible' stage property
+    #709761 - Implement touch update event throttling
+    #709620 - ClutterEvent: Mention _get_source_device() in docs
+    #708922 - actor: Correct setting the offscreen-redirect property
+    #709434 - [REGRESSION] clutter_box_layout_allocate:
+              Process /usr/bin/gnome-shell was killed by signal 5 (SIGTRAP)
+    #708850 - DragAction warning when setting handle to null
+
+Many thanks to:
+
+  Jasper St. Pierre, Lionel Landwerlin, Bastian Winkler, Bastien Nocera,
+  Florian Müllner, Balázs Úr, Carles Ferrando, Efstathios Iosifidis, Jonas
+  Ådahl, Pavol Klačanský
+
 Clutter 1.16.0                                                       2013-09-23
 ===============================================================================
 
