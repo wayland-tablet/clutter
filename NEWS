@@ -1,3 +1,51 @@
+Clutter 1.14.6                                                       2013-11-20
+===============================================================================
+
+  • List of changes since Clutter 1.14.4
+
+    - Tons of cherry picking from the 1.16 stable branch
+
+    - Limit the size of offscreen effect buffers
+    Avoid creating huge buffers, when the size of the stage will do. This
+    prevents hitting the texture size limit and wasting memory.
+
+    - Avoid reference leaks when rearranging the children of an actor
+    A reference was leaked when changing the layout and paint ordering.
+
+    - Layout managers fixes
+    BoxLayout, BinLayout, and TableLayout have had minor adjustments to
+    improve the correctness of their layout policy, especially when used
+    by actors that already apply internal padding, as well as supporting
+    the actor expansion and alignment flags.
+
+  • List of bugs fixed since Clutter 1.14.4
+
+    #699675
+    #692706
+    #701974
+    #696813
+    #700980
+    #702016
+    #702610
+    #708922
+    #709762
+    #709434
+    #708850
+    #707033
+    #705779
+    #707774
+    #707808
+    #706450
+    #703809
+    #705739
+    #703882
+
+Many thanks to:
+
+  Florian Müllner, Lionel Landwerlin, Balázs Úr, Craig R. Hughes, Jasper St.
+  Pierre, Adel Gadllah, Bastien Nocera, Cosimo Cecchi, Ján Kyselica, Matthias
+  Clasen, Samuel Degrande, Sjoerd Simons
+
 Clutter 1.14.4                                                       2013-05-15
 ===============================================================================
 
