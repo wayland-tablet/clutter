@@ -1,3 +1,33 @@
+Clutter 1.16.4                                                       2014-01-24
+===============================================================================
+
+  • List of changes since Clutter 1.16.2
+
+    - Performance improvements
+    Avoid using hardware picking as much as possible; do not queue redraws
+    when not needed, and rely on clipped redraws more.
+
+    - Accessibility fixes
+
+  • List of bugs fixed since Clutter 1.16.2
+
+    #710227 - ClutterGestureAction memory corruption
+    #719747 - ClutterStage: Don't add empty actors to the stage clip
+    #712563 - Fixes for cogl journal usage when picking
+    #722220 - Incorrect string reported in accessible text-changed events
+              when text is removed
+    #722188 - atk_text_get_n_selections() should return 0 when no text is
+              selected
+    #719901 - ClutterStageCogl: Ignore a clip the size of the stage
+    #719563 - input-device: Guard against double free
+    #719367 - Bind constraints: Don't force redraws on source relayout
+    #719368 - Don't queue redraws when reallocating actor that haven't moved
+
+Many thanks to:
+
+  Owen W. Taylor, Alejandro Piñeiro, Jasper St. Pierre, Florian Müllner,
+  Lionel Landwerlin, Sphinx Jiang, Wylmer Wang.
+
 Clutter 1.16.2                                                       2013-11-18
 ===============================================================================
 
