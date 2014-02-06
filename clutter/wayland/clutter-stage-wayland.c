@@ -106,19 +106,25 @@ clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  ClutterBackend *backend = CLUTTER_BACKEND (stage_cogl->backend);
+  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
   struct wl_surface *wl_surface;
   struct wl_shell_surface *wl_shell_surface;
 
   clutter_stage_window_parent_iface->realize (stage_window);
 
-  wl_surface = cogl_wayland_onscreen_get_surface (stage_cogl->onscreen);
-  wl_surface_set_user_data (wl_surface, stage_wayland);
-  stage_wayland->wayland_surface = wl_surface;
-
-  if (!stage_wayland->foreign_wl_surface)
+  if (stage_wayland->foreign_wl_surface)
     {
-      wl_shell_surface =
-        cogl_wayland_onscreen_get_shell_surface (stage_cogl->onscreen);
+      wl_surface = cogl_wayland_onscreen_get_surface (stage_cogl->onscreen);
+    }
+  else
+    {
+      wl_surface = wl_compositor_create_surface (backend_wayland->wayland_compositor);
+      wl_surface_set_user_data (wl_surface, stage_wayland);
+      stage_wayland->wayland_surface = wl_surface;
+
+      wl_shell_surface = wl_shell_get_shell_surface (backend_wayland->wayland_shell,
+                                                     wl_surface);
       wl_shell_surface_add_listener (wl_shell_surface,
                                      &shell_surface_listener,
                                      stage_wayland);
