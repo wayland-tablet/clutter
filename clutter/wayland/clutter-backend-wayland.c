@@ -217,10 +217,18 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
                             &wayland_registry_listener,
                             backend_wayland);
 
-  /* Wait until we have been notified about the compositor and shell objects */
-  while (!(backend_wayland->wayland_compositor &&
-           backend_wayland->wayland_shell))
-    wl_display_roundtrip (backend_wayland->wayland_display);
+  /*
+   * Ensure that that we've received the messages setting up the
+   * compostor and shell object.
+   */
+  wl_display_roundtrip (backend_wayland->wayland_display);
+  if (!backend_wayland->wayland_compositor || !backend_wayland->wayland_shell)
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "Unable to find wl_compositor or wl_shell");
+      return FALSE;
+    }
 
   return TRUE;
 }
