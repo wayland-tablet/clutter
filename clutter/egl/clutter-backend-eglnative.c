@@ -57,6 +57,8 @@
 
 G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND);
 
+static int _kms_fd = -1;
+
 static void
 clutter_backend_egl_native_dispose (GObject *gobject)
 {
@@ -71,6 +73,18 @@ clutter_backend_egl_native_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_backend_egl_native_parent_class)->dispose (gobject);
 }
 
+static CoglRenderer *
+clutter_backend_egl_native_get_renderer (ClutterBackend  *backend,
+                                         GError         **error)
+{
+  CoglRenderer *renderer;
+
+  renderer = cogl_renderer_new ();
+  cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_EGL_KMS);
+  cogl_kms_renderer_set_kms_fd (renderer, _kms_fd);
+  return renderer;
+}
+
 static void
 clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
 {
@@ -80,6 +94,8 @@ clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
   gobject_class->dispose = clutter_backend_egl_native_dispose;
 
   backend_class->stage_window_type = CLUTTER_TYPE_STAGE_COGL;
+
+  backend_class->get_renderer = clutter_backend_egl_native_get_renderer;
 }
 
 static void
@@ -156,4 +172,19 @@ clutter_egl_get_egl_display (void)
 #else
   return 0;
 #endif
+}
+
+/**
+ * clutter_egl_native_set_kms_fd:
+ * @fd: The fd to talk to the kms driver with
+ *
+ * Sets the fd that Cogl should use to talk to the
+ * kms driver.
+ *
+ * Since: 1.18
+ */
+void
+clutter_egl_native_set_kms_fd (int fd)
+{
+  _kms_fd = fd;
 }
