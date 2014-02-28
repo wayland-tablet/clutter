@@ -143,6 +143,8 @@ ClutterTextDirection    clutter_get_default_text_direction      (void);
 
 guint                   clutter_get_default_frame_rate          (void);
 
+void                    clutter_set_paused                      (gboolean paused);
+
 G_END_DECLS
 
 #endif /* _CLUTTER_MAIN_H__ */

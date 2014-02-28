@@ -4041,3 +4041,27 @@ _clutter_diagnostic_message (const char *format, ...)
 
   g_free (fmt);
 }
+
+/**
+ * clutter_set_paused:
+ * @paused: Whether Clutter should be paused
+ *
+ * This allows clients to pause Clutter. Pausing Clutter effectively
+ * makes it stop processing events, redrawing, and other things until
+ * it's been unpaused. This is useful when using the EGLNative backend
+ * to ensure that Clutter doesn't do anything when VT switched away.
+ *
+ * It can also be helpful for debugging purposes.
+ *
+ * You can pause Clutter by passing %TRUE, and unpause Clutter by
+ * passing %FALSE.
+ *
+ * Since: 1.18
+ */
+void
+clutter_set_paused (gboolean paused)
+{
+  ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
+
+  _clutter_master_clock_set_paused (master_clock, paused);
+}
