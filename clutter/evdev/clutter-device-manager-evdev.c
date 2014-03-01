@@ -116,8 +116,9 @@ G_DEFINE_TYPE_WITH_PRIVATE (ClutterDeviceManagerEvdev,
                             clutter_device_manager_evdev,
                             CLUTTER_TYPE_DEVICE_MANAGER)
 
-static ClutterOpenDeviceCallback open_callback;
-static gpointer                  open_callback_data;
+static ClutterOpenDeviceCallback  open_callback;
+static ClutterCloseDeviceCallback close_callback;
+static gpointer                   open_callback_data;
 
 static const char *device_type_str[] = {
   "pointer",            /* CLUTTER_POINTER_DEVICE */
@@ -1143,7 +1144,10 @@ static void
 close_restricted (int fd,
                   void *user_data)
 {
-  close (fd);
+  if (close_callback)
+    close_callback (fd, open_callback_data);
+  else
+    close (fd);
 }
 
 static const struct libinput_interface libinput_interface = {
@@ -1456,7 +1460,8 @@ clutter_evdev_reclaim_devices (void)
 
 /**
  * clutter_evdev_set_open_callback: (skip)
- * @callback: the user replacement for open()
+ * @open_callback: the user replacement for open()
+ * @close_callback: the user replacement for close()
  * @user_data: user data for @callback
  *
  * Through this function, the application can set a custom callback
@@ -1472,10 +1477,12 @@ clutter_evdev_reclaim_devices (void)
  * Stability: unstable
  */
 void
-clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
-                                 gpointer                  user_data)
+clutter_evdev_set_open_callback (ClutterOpenDeviceCallback  open_callback_,
+                                 ClutterCloseDeviceCallback close_callback_,
+                                 gpointer                   user_data)
 {
-  open_callback = callback;
+  open_callback = open_callback_;
+  close_callback = close_callback_;
   open_callback_data = user_data;
 }
 
