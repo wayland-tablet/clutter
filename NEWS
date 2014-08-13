@@ -1,3 +1,44 @@
+Clutter 1.18.4                                                       2014-08-13
+===============================================================================
+
+  • List of changes since Clutter 1.18.2
+
+    - Improve touch events handling on X11
+
+    - Fix opacity issues with canvas contents
+    Actors using ClutterCanvas with content that is not fully opaque are now
+    rendering correctly.
+
+    - Documentation updates
+
+    - Translation updates
+    Basque, Indonesian, Slovenian, German, Catalan.
+
+  • List of bugs fixed since Clutter 1.18.2
+
+    #728521 - Profiling with uprof does not work when clutter_main() is
+              not used
+    #729144 - Unnecessary calls to glTexImage2D cause performance degradation
+    #730577 - Do not compress touch events so eagerly
+    #731268 - Events being clamped to the pre-fullscreen window size when
+              stage goes fullscreen
+    #732143 - ClutterDropAction "drop" signal not emitted
+    #732235 - clutter gesture actions may mistakenly handle enter/leave events
+    #732234 - Touch events may leave a stage-less device, or happen on one
+    #733385 - ClutterCanvas drawn too dark on low opacity values
+    #733560 - Touch events trigger enter events on press, but no leave events
+              on release
+    #733300 - ClutterAnimation: fix memory leak
+    #733062 - Evdev: set button state in input devices
+    #732907 - Allow for calling clutter_gesture_action_cancel() within the
+              ::gesture-end handler
+
+Many thanks to:
+
+  Carlos Garnacho, Emmanuele Bassi, Gustavo Noronha Silva, Chun-wei Fan, Matej
+  Urbančič, Carles Ferrando, Christian Kirbach, Dirgita, Giovanni Campagna,
+  Inaki Larranaga Murgoitio, Pau Iranzo, Tom Beckmann.
+
 Clutter 1.18.2                                                       2014-04-14
 ===============================================================================
 
