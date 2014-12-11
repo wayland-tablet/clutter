@@ -274,6 +274,10 @@ AC_ARG_ENABLE([egl-backend],
               [AS_HELP_STRING([--enable-egl-backend=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
               [enable_egl=$enableval],
               [enable_egl=no])
+AC_ARG_ENABLE([mir-backend],
+              [AS_HELP_STRING([--enable-mir-backend=@<:@yes/no@:>@], [Enable the Mir client backend (default=no)])],
+              [enable_mir=$enableval],
+              [enable_mir=no])
 AC_ARG_ENABLE([cex100-backend],
               [AS_HELP_STRING([--enable-cex100-backend=@<:@yes/no@:>@], [Enable the CEx100 backend (default=no)])],
               [enable_cex100=$enableval],
@@ -465,6 +469,21 @@ AS_IF([test "x$enable_win32" = "xyes"],
         SUPPORT_WIN32=1
       ])
 
+AS_IF([test "x$enable_mir" = "xyes"],
+      [
+        CLUTTER_BACKENDS="$CLUTTER_BACKENDS mir"
+        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS mir"
+
+        SUPPORT_MIR=1
+        SUPPORT_COGL=1
+
+        PKG_CHECK_EXISTS([mirclient],
+                         [BACKEND_PC_FILES="$BACKEND_PC_FILES mirclient"],
+                         [])
+
+        AC_DEFINE([HAVE_CLUTTER_MIR], [1], [Have the mir client backend])
+      ])
+
 AS_IF([test "x$CLUTTER_BACKENDS" = "x"],
       [
         AC_MSG_ERROR([No backend enabled. You need to enable at least one backend.])
@@ -519,6 +538,7 @@ AM_CONDITIONAL(SUPPORT_OSX,     [test "x$SUPPORT_OSX" = "x1"])
 AM_CONDITIONAL(SUPPORT_WIN32,   [test "x$SUPPORT_WIN32" = "x1"])
 AM_CONDITIONAL(SUPPORT_CEX100,  [test "x$SUPPORT_CEX100" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
+AM_CONDITIONAL(SUPPORT_MIR,     [test "x$SUPPORT_MIR" = "x1"])
 
 AM_CONDITIONAL(USE_COGL,  [test "x$SUPPORT_COGL" = "x1"])
 AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
@@ -563,6 +583,10 @@ AS_IF([test "x$SUPPORT_EGL" = "x1"],
 AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_WAYLAND \"wayland\""])
+AS_IF([test "x$SUPPORT_MIR" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_MIR \"mir\"
+#define CLUTTER_INPUT_MIR \"mir\""])
 AS_IF([test "x$SUPPORT_OSX" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_OSX \"osx\"
