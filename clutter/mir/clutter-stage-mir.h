@@ -47,6 +47,7 @@ struct _ClutterStageMir
 {
   ClutterStageCogl parent_instance;
 
+  MirSurface *surface;
   MirSurfaceState surface_state;
   MirMotionButton button_state;
 

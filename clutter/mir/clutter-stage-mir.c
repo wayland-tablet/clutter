@@ -55,7 +55,19 @@ on_stage_resized (CoglOnscreen *onscreen,
                   int height,
                   void *user_data)
 {
-  clutter_actor_set_size (CLUTTER_ACTOR (user_data), width, height);
+  ClutterStageWindow *stage_window = user_data;
+  ClutterStageMir *stage_mir = CLUTTER_STAGE_MIR (stage_window);
+  ClutterActor *actor = _clutter_stage_window_get_wrapper (stage_window);
+  MirSurface *surface = cogl_mir_onscreen_get_surface (onscreen);
+
+  if (stage_mir->surface != surface)
+    {
+      /* Mir surfaces could be recreated on resize, so we need to update our
+       * internal reference. */
+      stage_mir->surface = surface;
+    }
+
+  clutter_actor_set_size (actor, width, height);
 }
 
 static gboolean
@@ -77,10 +89,12 @@ clutter_stage_mir_realize (ClutterStageWindow *stage_window)
       return FALSE;
     }
 
+  stage_mir->surface = mir_surface;
+
   if (!stage_mir->foreign_mir_surface)
     {
       cogl_onscreen_add_resize_callback (stage_cogl->onscreen, on_stage_resized,
-                                         stage_cogl->wrapper, NULL);
+                                         stage_window, NULL);
     }
 
   if (stage_mir->surface_state == mir_surface_state_fullscreen)
@@ -123,16 +137,14 @@ clutter_stage_mir_set_cursor_visible (ClutterStageWindow *stage_window,
                                       gboolean            cursor_visible)
 {
   ClutterStageMir *stage_mir = CLUTTER_STAGE_MIR (stage_window);
-  ClutterActor *actor = _clutter_stage_window_get_wrapper (stage_window);
-  MirSurface *surface = clutter_mir_stage_get_mir_surface ((ClutterStage *) actor);
   MirCursorConfiguration *cursor_conf;
 
-  if (mir_surface_is_valid (surface))
+  if (mir_surface_is_valid (stage_mir->surface))
     {
       cursor_conf = mir_cursor_configuration_from_name (cursor_visible ?
                                                     mir_default_cursor_name :
                                                     mir_disabled_cursor_name);
-      mir_surface_configure_cursor (surface, cursor_conf);
+      mir_surface_configure_cursor (stage_mir->surface, cursor_conf);
       mir_cursor_configuration_destroy (cursor_conf);
     }
 
@@ -144,10 +156,8 @@ clutter_stage_mir_set_fullscreen (ClutterStageWindow *stage_window,
                                   gboolean            fullscreen)
 {
   ClutterStageMir *stage_mir = CLUTTER_STAGE_MIR (stage_window);
-  ClutterActor *actor = _clutter_stage_window_get_wrapper (stage_window);
-  MirSurface *surface = clutter_mir_stage_get_mir_surface ((ClutterStage *) actor);
 
-  if (!mir_surface_is_valid (surface))
+  if (!mir_surface_is_valid (stage_mir->surface))
     {
       stage_mir->surface_state = fullscreen ?
                                  mir_surface_state_fullscreen :
@@ -157,15 +167,15 @@ clutter_stage_mir_set_fullscreen (ClutterStageWindow *stage_window,
     {
       if (fullscreen)
         {
-          stage_mir->surface_state = mir_surface_get_state (surface);
+          stage_mir->surface_state = mir_surface_get_state (stage_mir->surface);
 
           if (stage_mir->surface_state != mir_surface_state_fullscreen)
-            mir_wait_for (mir_surface_set_state (surface,
+            mir_wait_for (mir_surface_set_state (stage_mir->surface,
                                                  mir_surface_state_fullscreen));
         }
-      else if (mir_surface_get_state (surface) == mir_surface_state_fullscreen)
+      else if (mir_surface_get_state (stage_mir->surface) == mir_surface_state_fullscreen)
         {
-          mir_wait_for (mir_surface_set_state (surface, stage_mir->surface_state));
+          mir_wait_for (mir_surface_set_state (stage_mir->surface, stage_mir->surface_state));
         }
     }
 }
@@ -235,8 +245,9 @@ clutter_mir_stage_get_mir_surface (ClutterStage *stage)
 {
   ClutterStageWindow *stage_window = _clutter_stage_get_window (stage);
   ClutterStageCogl *stage_cogl;
+  ClutterStageMir *stage_mir;
 
-  if (!CLUTTER_IS_STAGE_COGL (stage_window))
+  if (!CLUTTER_IS_STAGE_MIR (stage_window))
     return NULL;
 
   stage_cogl = CLUTTER_STAGE_COGL (stage_window);
@@ -244,7 +255,12 @@ clutter_mir_stage_get_mir_surface (ClutterStage *stage)
   if (!cogl_is_onscreen (stage_cogl->onscreen))
     return NULL;
 
-  return cogl_mir_onscreen_get_surface (stage_cogl->onscreen);
+  stage_mir = CLUTTER_STAGE_MIR (stage_window);
+
+  if (!mir_surface_is_valid (stage_mir->surface))
+    return NULL;
+
+  return stage_mir->surface;
 }
 
 /**
