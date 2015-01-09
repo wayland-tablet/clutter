@@ -1247,6 +1247,11 @@ clutter_input_device_sequence_get_grabbed_actor
 <SUBSECTION>
 clutter_input_device_update_from_event
 
+<SUBSECTION>
+ClutterInputDeviceToolType
+clutter_input_device_tool_get_serial
+clutter_input_device_tool_get_tool_type
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_INPUT_DEVICE
 CLUTTER_INPUT_DEVICE

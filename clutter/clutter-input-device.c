@@ -2011,3 +2011,122 @@ clutter_input_device_get_product_id (ClutterInputDevice *device)
 
   return device->product_id;
 }
+
+static ClutterInputDeviceTool *
+clutter_input_device_tool_copy (ClutterInputDeviceTool *tool)
+{
+  return tool;
+}
+
+static void
+clutter_input_device_tool_free (ClutterInputDeviceTool *tool)
+{
+  /* Nothing to free here, memory is owned by ClutterInputDevice */
+}
+
+G_DEFINE_BOXED_TYPE (ClutterInputDeviceTool, clutter_input_device_tool,
+                     clutter_input_device_tool_copy,
+                     clutter_input_device_tool_free);
+
+ClutterInputDeviceTool *
+_clutter_input_device_tool_new (guint                      serial,
+                                ClutterInputDeviceToolType type,
+                                gpointer                   data,
+                                GDestroyNotify             destroy_notify)
+{
+  ClutterInputDeviceTool *tool;
+
+  tool = g_new0 (ClutterInputDeviceTool, 1);
+  tool->serial = serial;
+  tool->type = type;
+  tool->data = data;
+  tool->notify = destroy_notify;
+
+  return tool;
+}
+
+static void
+_clutter_input_device_tool_free (ClutterInputDeviceTool *tool)
+{
+  if (tool->data && tool->notify)
+    tool->notify (tool->data);
+
+  g_slice_free (ClutterInputDeviceTool, tool);
+}
+
+void
+_clutter_input_device_add_tool (ClutterInputDevice     *device,
+                                ClutterInputDeviceTool *tool)
+{
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+  g_return_if_fail (clutter_input_device_get_device_mode (device) != CLUTTER_INPUT_MODE_MASTER);
+  g_return_if_fail (tool != NULL);
+
+  if (!device->tools)
+    device->tools = g_ptr_array_new_with_free_func ((GDestroyNotify) _clutter_input_device_tool_free);
+
+  g_ptr_array_add (device->tools, tool);
+}
+
+ClutterInputDeviceTool *
+_clutter_input_device_lookup_tool (ClutterInputDevice         *device,
+                                   guint                       serial,
+                                   ClutterInputDeviceToolType  type)
+{
+  ClutterInputDeviceTool *tool;
+  guint i;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+  g_return_val_if_fail (clutter_input_device_get_device_mode (device) != CLUTTER_INPUT_MODE_MASTER, NULL);
+
+  if (!device->tools)
+    return NULL;
+
+  for (i = 0; i < device->tools->len; i++)
+    {
+      tool = g_ptr_array_index (device->tools, i);
+
+      if (tool->serial == serial && tool->type == type)
+        return tool;
+    }
+
+  return NULL;
+}
+
+/**
+ * clutter_input_device_tool_get_serial:
+ * @tool: a #ClutterInputDeviceTool
+ *
+ * Gets the serial of this tool, this value can be used to identify a
+ * physical tool (eg. a tablet pen) across program executions.
+ *
+ * Returns: The serial ID for this tool
+ *
+ * Since: 1.22
+ **/
+guint
+clutter_input_device_tool_get_serial (ClutterInputDeviceTool *tool)
+{
+  g_return_val_if_fail (tool != NULL, 0);
+
+  return tool->serial;
+}
+
+
+/**
+ * clutter_input_device_tool_get_tool_type:
+ * @tool: a #ClutterInputDeviceTool
+ *
+ * Gets the tool type of this tool.
+ *
+ * Returns: The tool type of this tool
+ *
+ * Since: 1.22
+ **/
+ClutterInputDeviceToolType
+clutter_input_device_tool_get_tool_type (ClutterInputDeviceTool *tool)
+{
+  g_return_val_if_fail (tool != NULL, 0);
+
+  return tool->type;
+}
