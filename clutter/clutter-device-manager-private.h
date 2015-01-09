@@ -31,6 +31,14 @@
 
 G_BEGIN_DECLS
 
+struct _ClutterInputDeviceTool
+{
+  ClutterInputDeviceToolType type;
+  guint serial;
+  gpointer data;
+  GDestroyNotify notify;
+};
+
 typedef struct _ClutterAxisInfo
 {
   ClutterInputAxis axis;
@@ -131,6 +139,8 @@ struct _ClutterInputDevice
 
   gchar *vendor_id;
   gchar *product_id;
+
+  GPtrArray *tools;
 
   guint has_cursor : 1;
   guint is_enabled : 1;
@@ -234,6 +244,16 @@ gboolean        _clutter_input_device_get_scroll_delta          (ClutterInputDev
                                                                  gdouble               value,
                                                                  ClutterScrollDirection *direction_p,
                                                                  gdouble                *delta_p);
+
+ClutterInputDeviceTool * _clutter_input_device_tool_new         (guint                       serial,
+                                                                 ClutterInputDeviceToolType  type,
+                                                                 gpointer                    data,
+                                                                 GDestroyNotify              notify);
+ClutterInputDeviceTool * _clutter_input_device_lookup_tool      (ClutterInputDevice         *device,
+                                                                 guint                       serial,
+                                                                 ClutterInputDeviceToolType  type);
+void            _clutter_input_device_add_tool                  (ClutterInputDevice     *device,
+                                                                 ClutterInputDeviceTool *tool);
 
 G_END_DECLS
 

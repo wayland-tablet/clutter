@@ -33,6 +33,7 @@
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_INPUT_DEVICE               (clutter_input_device_get_type ())
+#define CLUTTER_TYPE_INPUT_DEVICE_TOOL          (clutter_input_device_tool_get_type ())
 #define CLUTTER_INPUT_DEVICE(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_INPUT_DEVICE, ClutterInputDevice))
 #define CLUTTER_IS_INPUT_DEVICE(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_INPUT_DEVICE))
 #define CLUTTER_INPUT_DEVICE_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_INPUT_DEVICE, ClutterInputDeviceClass))
@@ -49,6 +50,8 @@ typedef struct _ClutterInputDeviceClass ClutterInputDeviceClass;
 
 CLUTTER_AVAILABLE_IN_1_0
 GType clutter_input_device_get_type (void) G_GNUC_CONST;
+CLUTTER_AVAILABLE_IN_1_22
+GType clutter_input_device_tool_get_type (void) G_GNUC_CONST;
 
 CLUTTER_AVAILABLE_IN_1_0
 ClutterInputDeviceType  clutter_input_device_get_device_type    (ClutterInputDevice  *device);
@@ -134,6 +137,11 @@ CLUTTER_AVAILABLE_IN_1_10
 gboolean                clutter_input_device_keycode_to_evdev   (ClutterInputDevice *device,
                                                                  guint               hardware_keycode,
                                                                  guint              *evdev_keycode);
+CLUTTER_AVAILABLE_IN_1_22
+guint                   clutter_input_device_tool_get_serial    (ClutterInputDeviceTool *tool);
+
+CLUTTER_AVAILABLE_IN_1_22
+ClutterInputDeviceToolType clutter_input_device_tool_get_tool_type (ClutterInputDeviceTool *tool);
 
 CLUTTER_AVAILABLE_IN_1_22
 const gchar *           clutter_input_device_get_vendor_id      (ClutterInputDevice *device);
