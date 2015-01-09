@@ -134,7 +134,6 @@ CLUTTER_AVAILABLE_IN_1_10
 gboolean                clutter_input_device_keycode_to_evdev   (ClutterInputDevice *device,
                                                                  guint               hardware_keycode,
                                                                  guint              *evdev_keycode);
-
 CLUTTER_AVAILABLE_IN_1_22
 const gchar *           clutter_input_device_get_vendor_id      (ClutterInputDevice *device);
 CLUTTER_AVAILABLE_IN_1_22
