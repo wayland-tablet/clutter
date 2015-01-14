@@ -1106,6 +1106,7 @@ ClutterScrollEvent
 ClutterStageStateEvent
 ClutterCrossingEvent
 ClutterTouchEvent
+ClutterProximityEvent
 ClutterEventSequence
 ClutterTouchpadPinchEvent
 ClutterTouchpadSwipeEvent
