@@ -2130,3 +2130,17 @@ clutter_input_device_tool_get_tool_type (ClutterInputDeviceTool *tool)
 
   return tool->type;
 }
+
+void
+clutter_input_device_update_from_tool (ClutterInputDevice     *device,
+                                       ClutterInputDeviceTool *tool)
+{
+  ClutterInputDeviceClass *device_class;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+
+  device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
+
+  if (device_class->update_from_tool)
+    device_class->update_from_tool (device, tool);
+}

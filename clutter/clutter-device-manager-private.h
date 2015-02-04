@@ -153,6 +153,8 @@ struct _ClutterInputDeviceClass
   gboolean (* keycode_to_evdev) (ClutterInputDevice *device,
                                  guint               hardware_keycode,
                                  guint              *evdev_keycode);
+  void (* update_from_tool) (ClutterInputDevice     *device,
+                             ClutterInputDeviceTool *tool);
 };
 
 /* Platform-dependent interface */
@@ -253,6 +255,9 @@ ClutterInputDeviceTool * _clutter_input_device_lookup_tool      (ClutterInputDev
                                                                  guint                       serial,
                                                                  ClutterInputDeviceToolType  type);
 void            _clutter_input_device_add_tool                  (ClutterInputDevice     *device,
+                                                                 ClutterInputDeviceTool *tool);
+
+void            clutter_input_device_update_from_tool           (ClutterInputDevice     *device,
                                                                  ClutterInputDeviceTool *tool);
 
 G_END_DECLS
