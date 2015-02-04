@@ -54,6 +54,8 @@ typedef struct _ClutterEventPrivate {
   gdouble delta_x;
   gdouble delta_y;
 
+  ClutterInputDeviceTool *tool;
+
   gpointer platform_data;
 
   ClutterModifierType button_state;
@@ -1204,6 +1206,52 @@ clutter_event_get_device (const ClutterEvent *event)
     }
 
   return device;
+}
+
+/**
+ * clutter_event_set_device_tool:
+ * @event: a #ClutterEvent
+ * @tool: (nullable): a #ClutterInputDeviceTool
+ *
+ * Sets the tool in use for this event
+ *
+ * Since: 1.22
+ **/
+void
+clutter_event_set_device_tool (ClutterEvent           *event,
+                               ClutterInputDeviceTool *tool)
+{
+  g_return_if_fail (event != NULL);
+
+  if (is_event_allocated (event))
+    {
+      ClutterEventPrivate *real_event = (ClutterEventPrivate *) event;
+
+      real_event->tool = tool;
+    }
+}
+
+/**
+ * clutter_event_get_device_tool:
+ * @event: a #ClutterEvent
+ *
+ * Returns the device tool that originated this event
+ *
+ * Returns: The tool of this event
+ **/
+ClutterInputDeviceTool *
+clutter_event_get_device_tool (const ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, NULL);
+
+  if (is_event_allocated (event))
+    {
+      ClutterEventPrivate *real_event = (ClutterEventPrivate *) event;
+
+      return real_event->tool;
+    }
+
+  return NULL;
 }
 
 /**
