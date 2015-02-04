@@ -571,6 +571,13 @@ void                    clutter_event_set_source_device         (ClutterEvent   
 
 CLUTTER_AVAILABLE_IN_1_6
 ClutterInputDevice *    clutter_event_get_source_device         (const ClutterEvent     *event);
+
+CLUTTER_AVAILABLE_IN_1_22
+void                    clutter_event_set_device_tool           (ClutterEvent           *event,
+                                                                 ClutterInputDeviceTool *tool);
+CLUTTER_AVAILABLE_IN_1_22
+ClutterInputDeviceTool *clutter_event_get_device_tool           (const ClutterEvent     *event);
+
 CLUTTER_AVAILABLE_IN_1_8
 void                    clutter_event_set_source                (ClutterEvent           *event,
                                                                  ClutterActor           *actor);

@@ -1140,6 +1140,8 @@ clutter_event_get_gesture_pinch_angle_delta
 clutter_event_get_gesture_pinch_scale
 clutter_event_get_gesture_phase
 clutter_event_get_gesture_motion_delta
+clutter_event_set_device_tool
+clutter_event_get_device_tool
 
 <SUBSECTION>
 clutter_event_get
