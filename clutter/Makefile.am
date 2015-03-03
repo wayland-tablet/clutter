@@ -816,13 +816,8 @@ clutter_deprecated_HEADERS = $(deprecated_h)
 
 lib_LTLIBRARIES += libclutter-@CLUTTER_API_VERSION@.la
 
-libclutter_@CLUTTER_API_VERSION@_la_LIBADD = \
-	-lm \
-	$(CLUTTER_LIBS) \
-	$(CLUTTER_PROFILE_LIBS)
-
-libclutter_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
-	$(win32_resources)
+libclutter_@CLUTTER_API_VERSION@_la_LIBADD = $(LIBM) $(CLUTTER_LIBS) $(CLUTTER_PROFILE_LIBS)
+libclutter_@CLUTTER_API_VERSION@_la_DEPENDENCIES = $(win32_resources)
 
 libclutter_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(backend_source_c) \
