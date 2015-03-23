@@ -29,7 +29,11 @@
  *
  * #ClutterRectangle is a #ClutterActor which draws a simple filled rectangle.
  *
- * Deprecated: 1.10: Use #ClutterActor instead.
+ * #ClutterRectangle is deprecated since Clutter 1.10. If you want an actor
+ * painting a solid color, you can replace it with #ClutterActor and set the
+ * #ClutterActor:background-color property to the desired #ClutterColor. If
+ * you are drawing more complex shapes, use #ClutterCanvas to draw using the
+ * Cairo 2D API instead.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -88,55 +92,76 @@ clutter_rectangle_paint (ClutterActor *self)
                                               : "unknown");
   clutter_actor_get_allocation_geometry (self, &geom);
 
-  /* parent paint call will have translated us into position so
-   * paint from 0, 0
-   */
   if (priv->has_border)
     {
-      /* compute the composited opacity of the actor taking into
-       * account the opacity of the color set by the user
+      /* We paint the border and the content only if the rectangle
+       * is big enough to show them
        */
-      tmp_alpha = clutter_actor_get_paint_opacity (self)
-                * priv->border_color.alpha
-                / 255;
+      if ((priv->border_width * 2) < geom.width &&
+          (priv->border_width * 2) < geom.height)
+        {
+          /* compute the composited opacity of the actor taking into
+           * account the opacity of the color set by the user
+           */
+          tmp_alpha = clutter_actor_get_paint_opacity (self)
+                    * priv->border_color.alpha
+                    / 255;
 
-      /* paint the border */
-      cogl_set_source_color4ub (priv->border_color.red,
-                                priv->border_color.green,
-                                priv->border_color.blue,
-                                tmp_alpha);
+          /* paint the border */
+          cogl_set_source_color4ub (priv->border_color.red,
+                                    priv->border_color.green,
+                                    priv->border_color.blue,
+                                    tmp_alpha);
 
-      /* this sucks, but it's the only way to make a border */
-      cogl_rectangle (priv->border_width, 0,
-                      geom.width,
-                      priv->border_width);
+          /* this sucks, but it's the only way to make a border */
+          cogl_rectangle (priv->border_width, 0,
+                          geom.width,
+                          priv->border_width);
 
-      cogl_rectangle (geom.width - priv->border_width,
-                      priv->border_width,
-                      geom.width,
-                      geom.height);
+          cogl_rectangle (geom.width - priv->border_width,
+                          priv->border_width,
+                          geom.width,
+                          geom.height);
 
-      cogl_rectangle (0, geom.height - priv->border_width,
-                      geom.width - priv->border_width,
-                      geom.height);
+          cogl_rectangle (0, geom.height - priv->border_width,
+                          geom.width - priv->border_width,
+                          geom.height);
 
-      cogl_rectangle (0, 0,
-                      priv->border_width,
-                      geom.height - priv->border_width);
+          cogl_rectangle (0, 0,
+                          priv->border_width,
+                          geom.height - priv->border_width);
 
-      tmp_alpha = clutter_actor_get_paint_opacity (self)
-                * priv->color.alpha
-                / 255;
+          tmp_alpha = clutter_actor_get_paint_opacity (self)
+                    * priv->color.alpha
+                    / 255;
 
-      /* now paint the rectangle */
-      cogl_set_source_color4ub (priv->color.red,
-                                priv->color.green,
-                                priv->color.blue,
-                                tmp_alpha);
+          /* now paint the rectangle */
+          cogl_set_source_color4ub (priv->color.red,
+                                    priv->color.green,
+                                    priv->color.blue,
+                                    tmp_alpha);
 
-      cogl_rectangle (priv->border_width, priv->border_width,
-                      geom.width - priv->border_width,
-                      geom.height - priv->border_width);
+          cogl_rectangle (priv->border_width, priv->border_width,
+                          geom.width - priv->border_width,
+                          geom.height - priv->border_width);
+        }
+      else
+        {
+          /* Otherwise, we draw a rectangle with the same color
+           * as the border, since we can only fit that into the
+           * allocation.
+           */
+          tmp_alpha = clutter_actor_get_paint_opacity (self)
+                    * priv->border_color.alpha
+                    / 255;
+
+          cogl_set_source_color4ub (priv->border_color.red,
+                                    priv->border_color.green,
+                                    priv->border_color.blue,
+                                    tmp_alpha);
+
+          cogl_rectangle (0, 0, geom.width, geom.height);
+        }
     }
   else
     {
@@ -338,7 +363,9 @@ clutter_rectangle_init (ClutterRectangle *self)
  *
  * Creates a new #ClutterActor with a rectangular shape.
  *
- * Return value: a new #ClutterActor
+ * Return value: a new #ClutterRectangle
+ *
+ * Deprecated: 1.10: Use clutter_actor_new() instead
  */
 ClutterActor*
 clutter_rectangle_new (void)
@@ -353,7 +380,10 @@ clutter_rectangle_new (void)
  * Creates a new #ClutterActor with a rectangular shape
  * and of the given @color.
  *
- * Return value: a new #ClutterActor
+ * Return value: a new #ClutterRectangle
+ *
+ * Deprecated: 1.10: Use clutter_actor_new() and
+ *   clutter_actor_set_background_color() instead
  */
 ClutterActor *
 clutter_rectangle_new_with_color (const ClutterColor *color)
@@ -369,6 +399,9 @@ clutter_rectangle_new_with_color (const ClutterColor *color)
  * @color: (out caller-allocates): return location for a #ClutterColor
  *
  * Retrieves the color of @rectangle.
+ *
+ * Deprecated: 1.10: Use #ClutterActor and clutter_actor_get_background_color()
+ *   instead
  */
 void
 clutter_rectangle_get_color (ClutterRectangle *rectangle,
@@ -393,6 +426,9 @@ clutter_rectangle_get_color (ClutterRectangle *rectangle,
  * @color: a #ClutterColor
  *
  * Sets the color of @rectangle.
+ *
+ * Deprecated: 1.10: Use #ClutterActor and clutter_actor_set_background_color()
+ *   instead
  */
 void
 clutter_rectangle_set_color (ClutterRectangle   *rectangle,
@@ -436,6 +472,9 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
  * Return value: the border's width
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Use #ClutterActor and a #ClutterCanvas content
+ *   to draw the border using Cairo
  */
 guint
 clutter_rectangle_get_border_width (ClutterRectangle *rectangle)
@@ -454,6 +493,9 @@ clutter_rectangle_get_border_width (ClutterRectangle *rectangle)
  * A @width of 0 will unset the border.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Use #ClutterActor and a #ClutterCanvas content
+ *   to draw the border using Cairo
  */
 void
 clutter_rectangle_set_border_width (ClutterRectangle *rectangle,
@@ -492,6 +534,9 @@ clutter_rectangle_set_border_width (ClutterRectangle *rectangle,
  * it into @color.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Use #ClutterActor and a #ClutterCanvas to draw
+ *   the border with Cairo
  */
 void
 clutter_rectangle_get_border_color (ClutterRectangle *rectangle,
@@ -516,6 +561,9 @@ clutter_rectangle_get_border_color (ClutterRectangle *rectangle,
  * @color: the color of the border
  *
  * Sets the color of the border used by @rectangle using @color
+ *
+ * Deprecated: 1.10: Use #ClutterActor and a #ClutterCanvas to draw
+ *   the border with Cairo
  */
 void
 clutter_rectangle_set_border_color (ClutterRectangle   *rectangle,

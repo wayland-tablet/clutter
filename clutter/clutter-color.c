@@ -615,10 +615,9 @@ parse_hsla (ClutterColor *color,
  * @color: (out caller-allocates): return location for a #ClutterColor
  * @str: a string specifiying a color
  *
- * Parses a string definition of a color, filling the
- * <structfield>red</structfield>, <structfield>green</structfield>, 
- * <structfield>blue</structfield> and <structfield>alpha</structfield> 
- * channels of @color.
+ * Parses a string definition of a color, filling the #ClutterColor.red,
+ * #ClutterColor.green, #ClutterColor.blue and #ClutterColor.alpha fields 
+ * of @color.
  *
  * The @color is not allocated.
  *
@@ -952,7 +951,7 @@ clutter_color_free (ClutterColor *color)
  * Return value: (transfer full): the newly allocated color.
  *   Use clutter_color_free() when done
  *
- * Since: 0.8.4
+ * Since: 0.8
  */
 ClutterColor *
 clutter_color_new (guint8 red,
@@ -1062,7 +1061,7 @@ G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterColor, clutter_color,
  *
  * Sets @value to @color.
  *
- * Since: 0.8.4
+ * Since: 0.8
  */
 void
 clutter_value_set_color (GValue             *value,
@@ -1081,7 +1080,7 @@ clutter_value_set_color (GValue             *value,
  *
  * Return value: (transfer none): the color inside the passed #GValue
  *
- * Since: 0.8.4
+ * Since: 0.8
  */
 const ClutterColor *
 clutter_value_get_color (const GValue *value)
@@ -1176,7 +1175,7 @@ clutter_param_color_get_type (void)
  *
  * Return value: the newly created #GParamSpec
  *
- * Since: 0.8.4
+ * Since: 0.8
  */
 GParamSpec *
 clutter_param_spec_color (const gchar        *name,

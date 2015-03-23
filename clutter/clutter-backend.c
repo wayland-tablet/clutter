@@ -49,7 +49,6 @@
 #include "clutter-event-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
-#include "clutter-profile.h"
 #include "clutter-stage-manager-private.h"
 #include "clutter-stage-private.h"
 #include "clutter-stage-window.h"
@@ -497,6 +496,11 @@ _clutter_create_backend (void)
     retval = g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
   else
 #endif
+#ifdef CLUTTER_WINDOWING_GDK
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_GDK))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
+  else
+#endif
 #ifdef CLUTTER_WINDOWING_X11
   if (backend == NULL || backend == I_(CLUTTER_WINDOWING_X11))
     retval = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
@@ -512,9 +516,9 @@ _clutter_create_backend (void)
     retval = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
   else
 #endif
-#ifdef CLUTTER_WINDOWING_GDK
-  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_GDK))
-    retval = g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
+#ifdef CLUTTER_WINDOWING_MIR
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_MIR))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_MIR, NULL);
   else
 #endif
 #ifdef CLUTTER_WINDOWING_MIR

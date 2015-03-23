@@ -30,7 +30,6 @@ AM_CPPFLAGS = \
 	-I$(top_builddir)/clutter		\
 	$(CLUTTER_DEPRECATED_CFLAGS)		\
 	$(CLUTTER_DEBUG_CFLAGS)			\
-	$(CLUTTER_PROFILE_CFLAGS)		\
 	$(CLUTTER_HIDDEN_VISIBILITY_CFLAGS)	\
 	$(NULL)
 
@@ -180,6 +179,7 @@ source_c = \
 	clutter-list-model.c		\
 	clutter-main.c 		\
 	clutter-master-clock.c	\
+	clutter-master-clock-default.c	\
 	clutter-model.c		\
 	clutter-offscreen-effect.c	\
 	clutter-page-turn-effect.c	\
@@ -233,12 +233,12 @@ source_h_priv = \
 	clutter-gesture-action-private.h	\
 	clutter-id-pool.h 			\
 	clutter-master-clock.h			\
+	clutter-master-clock-default.h		\
 	clutter-model-private.h			\
 	clutter-offscreen-effect-private.h	\
 	clutter-paint-node-private.h		\
 	clutter-paint-volume-private.h		\
 	clutter-private.h 			\
-	clutter-profile.h			\
 	clutter-script-private.h		\
 	clutter-settings-private.h		\
 	clutter-stage-manager-private.h		\
@@ -251,7 +251,6 @@ source_c_priv = \
 	clutter-easing.c		\
 	clutter-event-translator.c	\
 	clutter-id-pool.c 		\
-	clutter-profile.c		\
 	$(NULL)
 
 # deprecated installed headers
@@ -502,8 +501,9 @@ endif
 gdk_source_c = \
 	gdk/clutter-backend-gdk.c 		\
 	gdk/clutter-device-manager-gdk.c 	\
-	gdk/clutter-input-device-gdk.c 	\
 	gdk/clutter-event-gdk.c 		\
+	gdk/clutter-input-device-gdk.c 	\
+	gdk/clutter-master-clock-gdk.c 	\
 	gdk/clutter-stage-gdk.c		\
 	$(NULL)
 
@@ -516,6 +516,7 @@ gdk_source_h_priv = \
 	gdk/clutter-backend-gdk.h 		\
 	gdk/clutter-device-manager-gdk.h 	\
 	gdk/clutter-input-device-gdk.h 	\
+	gdk/clutter-master-clock-gdk.h 	\
 	gdk/clutter-stage-gdk.h		\
 	$(NULL)
 
@@ -833,26 +834,15 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 DISTCLEANFILES += $(pc_files)
 
-clutter_include_HEADERS = \
-	$(source_h) \
-	clutter.h \
-	clutter-version.h
-
-nodist_clutter_include_HEADERS = \
-	clutter-config.h \
-	$(built_source_h)
+clutter_include_HEADERS = $(source_h) clutter.h clutter-version.h
+nodist_clutter_include_HEADERS = clutter-config.h $(built_source_h)
 
 clutter_deprecated_HEADERS = $(deprecated_h)
 
 lib_LTLIBRARIES += libclutter-@CLUTTER_API_VERSION@.la
 
-libclutter_@CLUTTER_API_VERSION@_la_LIBADD = \
-	-lm \
-	$(CLUTTER_LIBS) \
-	$(CLUTTER_PROFILE_LIBS)
-
-libclutter_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
-	$(win32_resources)
+libclutter_@CLUTTER_API_VERSION@_la_LIBADD = $(LIBM) $(CLUTTER_LIBS)
+libclutter_@CLUTTER_API_VERSION@_la_DEPENDENCIES = $(win32_resources)
 
 libclutter_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(backend_source_c) \

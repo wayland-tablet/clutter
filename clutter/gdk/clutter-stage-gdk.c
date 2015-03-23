@@ -185,6 +185,12 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
   gboolean use_alpha;
   gfloat   width, height;
 
+  if (backend->cogl_context == NULL)
+    {
+      g_warning ("Missing Cogl context: was Clutter correctly initialized?");
+      return FALSE;
+    }
+
   if (stage_gdk->foreign_window)
     {
       width = gdk_window_get_width (stage_gdk->window);
@@ -433,6 +439,73 @@ clutter_stage_gdk_can_clip_redraws (ClutterStageWindow *stage_window)
   return TRUE;
 }
 
+static int
+clutter_stage_gdk_get_scale_factor (ClutterStageWindow *stage_window)
+{
+  ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
+
+  if (stage_gdk->window == NULL)
+    return 1;
+
+  return gdk_window_get_scale_factor (stage_gdk->window);
+}
+
+static void
+clutter_stage_gdk_redraw (ClutterStageWindow *stage_window)
+{
+  ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
+  GdkFrameClock *clock;
+
+  if (stage_gdk->window == NULL ||
+      (clock = gdk_window_get_frame_clock (stage_gdk->window)) == NULL)
+    {
+      clutter_stage_window_parent_iface->redraw (stage_window);
+      return;
+    }
+
+  gdk_frame_clock_begin_updating (clock);
+
+  clutter_stage_window_parent_iface->redraw (stage_window);
+
+  gdk_frame_clock_end_updating (clock);
+}
+
+static void
+clutter_stage_gdk_schedule_update (ClutterStageWindow *stage_window,
+                                    gint                sync_delay)
+{
+  ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
+  GdkFrameClock *clock;
+
+  if (stage_gdk->window == NULL ||
+      (clock = gdk_window_get_frame_clock (stage_gdk->window)) == NULL)
+    {
+      clutter_stage_window_parent_iface->schedule_update (stage_window, sync_delay);
+      return;
+    }
+
+  gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_UPDATE);
+
+  clutter_stage_window_parent_iface->schedule_update (stage_window, sync_delay);
+}
+
+static gint64
+clutter_stage_gdk_get_update_time (ClutterStageWindow *stage_window)
+{
+  ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
+  GdkFrameClock *frame_clock;
+  GdkFrameTimings *frame_timings;
+
+  if (stage_gdk->window == NULL ||
+      (frame_clock = gdk_window_get_frame_clock (stage_gdk->window)) == NULL ||
+      (frame_timings = gdk_frame_clock_get_current_timings (frame_clock)) == NULL ||
+      !gdk_frame_timings_get_complete (frame_timings))
+    return -1; /* No data, indefinite */
+
+  return (gdk_frame_timings_get_presentation_time (frame_timings) +
+          gdk_frame_timings_get_refresh_interval (frame_timings));
+}
+
 static void
 clutter_stage_gdk_dispose (GObject *gobject)
 {
@@ -489,6 +562,11 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->realize = clutter_stage_gdk_realize;
   iface->unrealize = clutter_stage_gdk_unrealize;
   iface->can_clip_redraws = clutter_stage_gdk_can_clip_redraws;
+  iface->get_scale_factor = clutter_stage_gdk_get_scale_factor;
+
+  iface->redraw = clutter_stage_gdk_redraw;
+  iface->schedule_update = clutter_stage_gdk_schedule_update;
+  iface->get_update_time = clutter_stage_gdk_get_update_time;
 }
 
 /**

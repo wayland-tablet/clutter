@@ -9,8 +9,8 @@
 # - increase clutter_micro_version to the next odd number
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
-m4_define([clutter_minor_version], [21])
-m4_define([clutter_micro_version], [3])
+m4_define([clutter_minor_version], [22])
+m4_define([clutter_micro_version], [1])
 
 # • for stable releases: increase the interface age by 1 for each release;
 #   if the API changes, set to 0. interface_age and binary_age are used to
@@ -31,7 +31,7 @@ m4_define([clutter_micro_version], [3])
 #   ...
 #
 # • for development releases: keep clutter_interface_age to 0
-m4_define([clutter_interface_age], [0])
+m4_define([clutter_interface_age], [1])
 
 m4_define([clutter_binary_age], [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
 
@@ -130,23 +130,23 @@ AM_PROG_CC_C_O
 # require libtool >= 2.2
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
+LT_LIB_M
 
 # Checks for header files.
 AC_HEADER_STDC
 
 # required versions for dependencies
 m4_define([glib_req_version],           [2.39.0])
-m4_define([cogl_req_version],           [1.17.5])
+m4_define([cogl_req_version],           [1.20.0])
 m4_define([json_glib_req_version],      [0.12.0])
 m4_define([atk_req_version],            [2.5.3])
-m4_define([cairo_req_version],          [1.12.0])
+m4_define([cairo_req_version],          [1.14.0])
 m4_define([pango_req_version],          [1.30])
 m4_define([gi_req_version],             [1.39.0])
-m4_define([uprof_req_version],          [0.3])
 m4_define([gtk_doc_req_version],        [1.20])
 m4_define([xcomposite_req_version],     [0.4])
 m4_define([gdk_req_version],            [3.3.18])
-m4_define([libinput_req_version],       [0.4.0])
+m4_define([libinput_req_version],       [0.8.0])
 m4_define([libudev_req_version],        [136])
 
 AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])
@@ -156,7 +156,6 @@ AC_SUBST([ATK_REQ_VERSION],        [atk_req_version])
 AC_SUBST([CAIRO_REQ_VERSION],      [cairo_req_version])
 AC_SUBST([PANGO_REQ_VERSION],      [pango_req_version])
 AC_SUBST([GI_REQ_VERSION],         [gi_req_version])
-AC_SUBST([UPROF_REQ_VERSION],      [uprof_req_version])
 AC_SUBST([GTK_DOC_REQ_VERSION],    [gtk_doc_req_version])
 AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
 AC_SUBST([GDK_REQ_VERSION],        [gdk_req_version])
@@ -323,8 +322,6 @@ AS_IF([test "x$enable_x11" = "xyes"],
                            BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE pangoft2"
                          ],
                          [])
-
-        AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
       ])
 
 AS_IF([test "x$enable_gdk" = "xyes"],
@@ -428,8 +425,6 @@ AS_IF([test "x$enable_cex100" = "xyes"],
 AS_IF([test "x$enable_egl" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS egl"
-
-        experimental_backend="yes"
 
         SUPPORT_EGL=1
         SUPPORT_COGL=1
@@ -870,18 +865,6 @@ AS_CASE([$enable_pixbuf],
 
 AM_CONDITIONAL([PIXBUF_TESTS], [test "x$pixbuf_tests" = "xyes"])
 
-# Check for cairo_set_device_scale, as we don't want to depend hard on
-# this until there is a stable release with it
-saved_CFLAGS="$CFLAGS"
-saved_LIBS="$LIBS"
-CAIRO_CFLAGS=`$PKG_CONFIG --cflags cairo`
-CAIRO_LIBS=`$PKG_CONFIG --libs cairo`
-CFLAGS="$CFLAGS $CAIRO_CFLAGS"
-LIBS="$CAIRO_LIBS $LIBS"
-AC_CHECK_FUNCS(cairo_surface_set_device_scale)
-LIBS="$saved_LIBS"
-CFLAGS="$saved_CFLAGS"
-
 dnl === Enable debug level ====================================================
 
 m4_define([debug_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [minimum])])
@@ -940,44 +923,6 @@ AS_CASE([$enable_deprecated],
 )
 
 AC_SUBST([CLUTTER_DEPRECATED_CFLAGS])
-
-dnl === Profiling =============================================================
-
-m4_define([profile_default], [no])
-AC_ARG_ENABLE(profile,
-              AS_HELP_STRING([--enable-profile=@<:@no/yes@:>@],
-                             [Turn on profiling support. yes; All profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into clutter.  @<:@default=no@:>@]),
-              [],
-              [enable_profile=profile_default])
-
-AS_CASE([$enable_profile],
-
-        [yes],
-        [
-          AS_IF([test "x$GCC" = "xyes"],
-                [
-                  PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.3])
-                  CLUTTER_PROFILE_CFLAGS="-DCLUTTER_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
-                  CLUTTER_PROFILE_LDFLAGS="$PROFILE_DEP_LIBS"
-
-                  AS_IF([test "x$enable_debug" = "xyes"], [CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"])
-                ],
-                [
-                  AC_MSG_ERROR([--enable-profile is currently only supported if using GCC])
-                ])
-        ],
-
-        [no],
-        [
-          CLUTTER_PROFILE_CFLAGS=""
-          CLUTTER_PROFILE_LDFLAGS=""
-        ],
-
-        [*], [AC_MSG_ERROR([Invalid value for --enable-profile])]
-)
-AM_CONDITIONAL(PROFILE, test "x$enable_profile" != "xno")
-AC_SUBST(CLUTTER_PROFILE_CFLAGS)
-AC_SUBST(CLUTTER_PROFILE_LDFLAGS)
 
 dnl === Enable strict compiler flags ==========================================
 
@@ -1054,8 +999,8 @@ AS_IF([test "x$CLUTTER_BASE_PC_FILES_PRIVATE" = "x" && test "x$BACKEND_PC_FILES_
 AC_SUBST(CLUTTER_REQUIRES)
 AC_SUBST(CLUTTER_REQUIRES_PRIVATE)
 
-CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_DEPS_PRIVATE_CFLAGS $CLUTTER_PROFILE_CFLAGS $GLIB_CFLAGS"
-CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_DEPS_PRIVATE_LIBS $CLUTTER_PROFILE_LDFLAGS $GLIB_LIBS"
+CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_DEPS_PRIVATE_CFLAGS $GLIB_CFLAGS"
+CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_DEPS_PRIVATE_LIBS $GLIB_LIBS"
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
 
@@ -1283,7 +1228,6 @@ echo ""
 echo " • Compiler options:"
 echo "        Clutter debug level: ${enable_debug}"
 echo "        Compiler flags: ${CFLAGS} ${MAINTAINER_CFLAGS}"
-echo "        Profiling enabled: ${enable_profile}"
 echo "        Enable coverage tests: ${use_gcov}"
 echo "        Enable deprecated symbols: ${enable_deprecated}"
 

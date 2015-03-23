@@ -30,7 +30,7 @@
  * and it encapsulates the position, size, and transformations of a node in
  * the graph.
  *
- * ## Actor transformations
+ * ## Actor transformations ## {#clutter-actor-transformations}
  *
  * Each actor can be transformed using methods like clutter_actor_set_scale()
  * or clutter_actor_set_rotation(). The order in which the transformations are
@@ -46,7 +46,7 @@
  *  8. negative translation by the #ClutterActor:anchor-x and #ClutterActor:anchor-y point.
  *  9. negative translation by the actor's #ClutterActor:pivot-point
  *
- * ## Modifying an actor's geometry
+ * ## Modifying an actor's geometry ## {#clutter-actor-geometry}
  *
  * Each actor has a bounding box, called #ClutterActor:allocation
  * which is either set by its parent or explicitly through the
@@ -63,7 +63,7 @@
  * clutter_actor_set_x() and clutter_actor_set_y(); the coordinates are
  * relative to the origin of the actor’s parent.
  *
- * ## Managing actor children
+ * ## Managing actor children ## {#clutter-actor-children}
  *
  * Each actor can have multiple children, by calling
  * clutter_actor_add_child() to add a new child actor, and
@@ -110,7 +110,7 @@
  *
  * See [basic-actor.c](https://git.gnome.org/browse/clutter/tree/examples/basic-actor.c?h=clutter-1.18).
  *
- * ## Painting an actor
+ * ## Painting an actor ## {#clutter-actor-painting}
  *
  * There are three ways to paint an actor:
  *
@@ -179,7 +179,7 @@
  * signal. These hooks into the paint sequence are considered legacy, and
  * will be removed when the Clutter API changes.
  *
- * ## Handling events on an actor
+ * ## Handling events on an actor ## {#clutter-actor-event-handling}
  *
  * A #ClutterActor can receive and handle input device events, for
  * instance pointer events and key events, as long as its
@@ -199,7 +199,7 @@
  * through the scene graph by returning %CLUTTER_EVENT_STOP; otherwise, they can
  * continue the propagation by returning %CLUTTER_EVENT_PROPAGATE.
  *
- * ## Animation
+ * ## Animation ## {#clutter-actor-animation}
  *
  * Animation is a core concept of modern user interfaces; Clutter provides a
  * complete and powerful animation framework that automatically tweens the
@@ -366,7 +366,7 @@
  * clutter_actor_add_transition (actor, "opacityAnimation", transition);
  * ]|
  *
- * ## Implementing an actor
+ * ## Implementing an actor ## {#clutter-actor-implementing}
  *
  * Careful consideration should be given when deciding to implement
  * a #ClutterActor sub-class. It is generally recommended to implement a
@@ -391,7 +391,7 @@
  * In general, it is strongly encouraged to use delegation and composition
  * instead of direct subclassing.
  *
- * ## ClutterActor custom properties for ClutterScript
+ * ## ClutterActor custom properties for ClutterScript ## {#clutter-actor-custom-script}
  *
  * #ClutterActor defines a custom "rotation" property which allows a short-hand
  * description of the rotations to be applied to an actor.
@@ -627,7 +627,6 @@
 #include "clutter-paint-node-private.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
-#include "clutter-profile.h"
 #include "clutter-property-transition.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
@@ -3676,16 +3675,6 @@ clutter_actor_paint (ClutterActor *self)
   gboolean shader_applied = FALSE;
   ClutterStage *stage;
 
-  CLUTTER_STATIC_COUNTER (actor_paint_counter,
-                          "Actor real-paint counter",
-                          "Increments each time any actor is painted",
-                          0 /* no application private data */);
-  CLUTTER_STATIC_COUNTER (actor_pick_counter,
-                          "Actor pick-paint counter",
-                          "Increments each time any actor is painted "
-                          "for picking",
-                          0 /* no application private data */);
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
@@ -3796,16 +3785,12 @@ clutter_actor_paint (ClutterActor *self)
 
   if (pick_mode == CLUTTER_PICK_NONE)
     {
-      CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
-
       /* We check whether we need to add the flatten effect before
          each paint so that we can avoid having a mechanism for
          applications to notify when the value of the
          has_overlaps virtual changes. */
       add_or_remove_flatten_effect (self);
     }
-  else
-    CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_pick_counter);
 
   /* We save the current paint volume so that the next time the
    * actor queues a redraw we can constrain the redraw to just
@@ -9697,10 +9682,11 @@ clutter_actor_update_constraints (ClutterActor    *self,
     {
       ClutterConstraint *constraint = l->data;
       ClutterActorMeta *meta = l->data;
+      gboolean changed = FALSE;
 
       if (clutter_actor_meta_get_enabled (meta))
         {
-          gboolean changed =
+          changed |=
             clutter_constraint_update_allocation (constraint,
                                                   self,
                                                   allocation);
@@ -12315,7 +12301,7 @@ clutter_actor_remove_clip (ClutterActor *self)
  *
  * Return value: %TRUE if the actor has a clip area set.
  *
- * Since: 0.1.1
+ * Since: 0.2
  */
 gboolean
 clutter_actor_has_clip (ClutterActor *self)
@@ -13082,7 +13068,7 @@ clutter_actor_get_parent (ClutterActor *self)
  *
  * Return Value: %TRUE if the actor is visibile and will be painted.
  *
- * Since: 0.8.4
+ * Since: 0.8
  */
 gboolean
 clutter_actor_get_paint_visibility (ClutterActor *actor)
@@ -13297,7 +13283,7 @@ clutter_actor_replace_child (ClutterActor *self,
  * This function should only be called by legacy #ClutterActor<!-- -->s
  * implementing the #ClutterContainer interface.
  *
- * Since: 0.1.1
+ * Since: 0.2
  *
  * Deprecated: 1.10: Use clutter_actor_remove_child() instead.
  */
@@ -15753,20 +15739,50 @@ clutter_actor_create_pango_layout (ClutterActor *self,
   return layout;
 }
 
-/* Allows overriding the calculated paint opacity. Used by ClutterClone and
- * ClutterOffscreenEffect.
+/**
+ * clutter_actor_set_opacity_override:
+ * @self: a #ClutterActor
+ * @opacity: the override opacity value, or -1 to reset
+ *
+ * Allows overriding the calculated paint opacity (as returned by
+ * clutter_actor_get_paint_opacity()). This is used internally by
+ * ClutterClone and ClutterOffscreenEffect, and should be used by
+ * actors that need to mimick those.
+ *
+ * In almost all cases this should not used by applications.
+ *
+ * Stability: unstable
  */
 void
-_clutter_actor_set_opacity_override (ClutterActor *self,
+clutter_actor_set_opacity_override (ClutterActor *self,
                                      gint          opacity)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  /* ensure bounds */
+  if (opacity >= 0)
+    opacity = CLAMP (opacity, 0, 255);
+  else
+    opacity = -1;
+
   self->priv->opacity_override = opacity;
 }
 
+/**
+ * clutter_actor_get_opacity_override:
+ * @self: a #ClutterActor
+ *
+ * See clutter_actor_set_opacity_override()
+ *
+ * Returns: the override value for the actor's opacity, or -1 if no override
+ *   is set.
+ *
+ * Since: 1.22
+ *
+ * Stability: unstable
+ */
 gint
-_clutter_actor_get_opacity_override (ClutterActor *self)
+clutter_actor_get_opacity_override (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), -1);
 

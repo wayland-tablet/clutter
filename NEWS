@@ -1,3 +1,149 @@
+Clutter 1.22.0                                                       2015-03-23
+===============================================================================
+
+  • List of changes since Clutter 1.21.8
+
+    - Improve pointer tracking in the evdev input backend
+    Do not use the events after the queue processing, to avoid dropping events
+    due to compression.
+
+    - Fix handling of multiple stages with the GDK backend
+    A regression introduced when the GDK backend implemented its own master
+    clock using GdkFrameClock prevented applications with multiple stages to
+    be updated properly.
+
+    - Updated translations
+    Kazakh, Aragonese, Indonesian, Danish, Turkish.
+
+  • List of bugs fixed since Clutter 1.21.8
+
+    #746575 - cally-actor: Don't assume X11 backend is used when supported
+    #746328 - evdev: Keep track of the pointer coordinate ourself
+
+Many thanks to:
+
+  Muhammet Kara, Andika Triwidada, Ask H. Larsen, Baurzhan Muftakhidinov,
+  Daniel Martinez, Florian Müllner, Jonas Ådahl
+
+Clutter 1.21.8                                                       2015-03-15
+===============================================================================
+
+  • List of changes since Clutter 1.21.6
+
+    - Documentation updates
+    The messages for most of the deprecated API list the intended replacement
+    classes or approaches to be used when porting code.
+
+    - Update the MSVC build files
+
+    - Improve damage tracking on ClutterStage
+    This should improve performance, especially when paired with the
+    buffer_age extension.
+
+    - Updated translations
+    Greek, Polish, Ukrainian, Italian, Slovak, Latvian, Bosnian.
+
+  • List of bugs fixed since Clutter 1.21.6
+
+    #745512 - Improve damage tracking and use swap_buffers_with_damage
+
+Many thanks to:
+
+  Chun-wei Fan, Chris Wilson, Daniel Korostil, Dušan Kazik, Milo Casagrande,
+  Piotr Drąg, Rūdolfs Mazurs, Samir Ribic, Tom Tryfonidis.
+
+Clutter 1.21.6                                                       2015-03-03
+===============================================================================
+
+  • List of changes since Clutter 1.21.4
+
+    - Support quad-buffer stereo displays on X11/GLX
+    This allows using Clutter to draw on GLX framebuffers with the stereo
+    bit set.
+
+    - Add a Mir windowing system backend
+    This allows using Clutter applications natively on systems using the
+    Mir display server.
+
+    - Depend on Cogl ≥ 1.19 and Cairo ≥ 1.12
+    Cogl 1.19 is needed for the newly added Mir windowing system backend,
+    as well as the quad-buffer stereo display on X11. Cairo 1.12 is needed
+    for dropping the ad hoc check for the device scale parameter used with
+    ClutterStage implementations as well as the ClutterCanvas content.
+
+    - Improvements in the evdev input backend
+
+    - Use the GdkFrameClock to drive the ClutterMasterClock
+    When using the GDK backend, we want the ClutterMasterClock to be driven
+    by the GdkFrameClock, as the latter is automatically frame limited by
+    the compositor, which gives better results for client applications.
+
+    - Updated translations
+    Spanish, Hebrew, Hungarian, Czech, Basque, Russian, Slovenian, Galician,
+    Chinese (Taiwan), French, Brazilian Portuguese, Lithuanian, Serbian.
+
+  • List of bugs fixed since Clutter 1.21.4
+
+    #743355 - gdk: report an error when initialization fails
+    #743615 - evdev: Ignore non seat wide button or key events
+    #744058 - gdk: Disable cogl wayland event dispatching if requested
+    #743865 - MetaSurfaceActorWayland: unset the surface when it goes away
+    #744604 - stage: Process state update event immediately
+    #744668 - GDK: integrate the MasterClock mechanism with GdkFrameClock
+    #732706 - Allow setting up quad-buffer stereo output
+
+Many thanks to:
+
+  Lionel Landwerlin, Jonas Ådahl, Alexandre Franke, Aurimas Černius,
+  Balázs Úr, Chao-Hsiung Liao, Daniel Mustieles, Fran Dieguez,
+  Giovanni Campagna, Inaki Larranaga Murgoitio, Jasper St. Pierre,
+  Marco Trevisan (Treviño), Marek Černocký, Matej Urbančič, Owen W. Taylor,
+  Rafael Ferreira, Rui Matos, Yosef Or Boczko, Yuri Myasoedov,
+  Мирослав Николић
+
+Clutter 1.21.4                                                       2015-01-22
+===============================================================================
+
+  • List of changes since Clutter 1.21.2
+
+    - Use the GDK backend by default when possible
+    Instead of using the X11 or the Wayland backend by default, Clutter now
+    uses the GDK backend for both input and output. This improves the
+    integration with the windowing system. Backends can still be selected
+    programmatically, or via environment variables. On Windows and MacOS, we
+    still prefer the native backend, if available, because of asymmetries in
+    the GDK API.
+
+    - Use libinput 0.8
+    For the evdev input backend, the dependency for libinput has been bumped
+    to the newly released 0.8, which improves wheel and scroll events.
+
+    - Allow access to vendor and product ID for input devices
+
+    - Allow ClutterConstraint implementations to change the preferred size
+    ClutterConstraint classes can now update an actor's preferred size,
+    along with its allocation; this means that querying the preferred size
+    of actors using constraints will take constraints into consideration, and
+    improves the integration of constraints inside the layout system.
+
+    - Improve the GDK backend
+    Properly support high DPI displays, as well as Wayland.
+
+    - Updated translations
+    Czech, Basque, Spanish, Hungarian.
+
+  • List of bugs fixed since Clutter 1.21.2
+
+    #730815 - Mouse events limited to upper left rectangle
+    #740759 - Add getters for input device vendor/product IDs
+    #734587 - Position gdk backend before x11/wayland/egl ones
+    #742829 - Update to new libinput API for pointer_axis events
+
+Many thanks to:
+
+  Jonas Danielsson, Carlos Garnacho, Peter Hutterer, Marek Černocký,
+  Inaki Larranaga Murgoitio, Daniel Mustieles, Balázs Úr.
+
 Clutter 1.21.2                                                       2014-12-15
 ===============================================================================
 

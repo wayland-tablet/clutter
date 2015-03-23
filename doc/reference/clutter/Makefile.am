@@ -5,14 +5,14 @@ DOC_MAIN_SGML_FILE = $(DOC_MODULE)-docs.xml
 # gtk-doc will search all .c & .h files beneath here for inline comments
 # documenting the functions and macros.
 # e.g. DOC_SOURCE_DIR=../../../gtk
-DOC_SOURCE_DIR = ../../../clutter
+DOC_SOURCE_DIR = $(top_srcdir)/clutter $(top_builddir)/clutter
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS = --type-init-func="clutter_base_init()"
 
 # Extra options to supply to gtkdoc-scan.
 # e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED"
-SCAN_OPTIONS = --deprecated-guards="CLUTTER_DISABLE_DEPRECATED"
+SCAN_OPTIONS =
 
 # Extra options to supply to gtkdoc-mkdb.
 # e.g. MKDB_OPTIONS=--sgml-mode --output-format=xml
@@ -47,7 +47,8 @@ HFILE_GLOB = \
 	$(top_srcdir)/clutter/gdk/clutter-gdk.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland-compositor.h \
-	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h
+	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h \
+	$(top_srcdir)/clutter/mir/clutter-mir.h
 
 CFILE_GLOB = \
 	$(top_srcdir)/clutter/*.c \
@@ -58,6 +59,7 @@ CFILE_GLOB = \
 	$(top_srcdir)/clutter/cex100/*.c \
 	$(top_srcdir)/clutter/egl/*.c \
 	$(top_srcdir)/clutter/wayland/*.c \
+	$(top_srcdir)/clutter/mir/*.c \
 	$(top_srcdir)/clutter/deprecated/*.c
 
 # Header files to ignore when scanning.
@@ -86,12 +88,12 @@ IGNORE_HFILES = \
 	clutter-keysyms-compat.h	\
 	clutter-keysyms-table.h 	\
 	clutter-marshal.h 		\
+	clutter-master-clock-default.h	\
 	clutter-master-clock.h 		\
 	clutter-model-private.h 	\
 	clutter-paint-node-private.h	\
 	clutter-paint-volume-private.h	\
 	clutter-private.h 		\
-	clutter-profile.h		\
 	clutter-script-private.h 	\
 	clutter-settings-private.h	\
 	clutter-stage-manager-private.h	\
@@ -104,6 +106,7 @@ IGNORE_HFILES = \
 	egl				\
 	evdev				\
 	gdk				\
+	mir				\
 	osx 				\
 	tslib				\
 	x11 				\
@@ -120,7 +123,8 @@ EXTRA_HFILES = \
 	$(top_srcdir)/clutter/gdk/clutter-gdk.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland-compositor.h \
-	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h
+	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h \
+	$(top_srcdir)/clutter/mir/clutter-mir.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
@@ -189,3 +193,13 @@ include $(top_srcdir)/gtk-doc.make
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
 EXTRA_DIST += $(HTML_IMAGES) $(SVG_IMAGES)
+
+if ENABLE_GTK_DOC
+TESTS_ENVIRONMENT = \
+	DOC_MODULE=$(DOC_MODULE) \
+	DOC_MAIN_SGML_FILE=$(DOC_MAIN_SGML_FILE) \
+	SRCDIR=$(abs_srcdir) \
+	BUILDDIR=$(abs_builddir)
+
+TESTS = $(GTKDOC_CHECK)
+endif
