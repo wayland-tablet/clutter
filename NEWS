@@ -1,3 +1,35 @@
+Clutter 1.20.2                                                       2015-04-23
+===============================================================================
+
+  • List of changes since Clutter 1.20.0
+
+    - Various fixes cherry picked from Clutter 1.22
+    Buffer age extension handling; evdev input backend fixes.
+
+  • List of bugs fixed since Clutter 1.20.0
+
+    #743865 - MetaSurfaceActorWayland: unset the surface when it goes away
+    #745512 - Improve damage tracking and use swap_buffers_with_damage
+    #741350 - Improve touchpad detection on libinput
+    #740997 - Easing modes are not used when computing the value of a
+              KeyframeTransition
+    #711182 - Incorrect drawing behaviour with clutter content centered
+    #669743 - ObjectInfo property is_actor not correctly set when updating
+              existing actor using ClutterScriptParser
+    #729462 - DeviceManagerXi2: Update cached core pointer in getter if NULL
+    #730815 - Mouse events limited to upper left rectangle
+    #740518 - Clutter evdev devices should expose capabilities
+    #739050 - Fix some weird graphical glitches in RTL
+    #738520 - evdev: Flush event queue before removing device(s)
+    #747436 - Clutter should use the same heuristics as gtk+ to determine
+              touchpads
+
+Many thanks to:
+
+  Carlos Garnacho, Jasper St. Pierre, Chris Wilson, Jonas Danielsson,
+  Necdet Yücel, Rico Tzschichholz, Samir Ribic, Samuel Degrande,
+  Sjoerd Simons
+
 Clutter 1.20.0                                                       2014-09-22
 ===============================================================================
 
