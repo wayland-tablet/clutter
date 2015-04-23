@@ -467,6 +467,8 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       may_use_clipped_redraw = TRUE;
       clip_region = &stage_cogl->bounding_redraw_clip;
     }
+  else
+    clip_region = NULL;
 
   if (may_use_clipped_redraw &&
       G_LIKELY (!(clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
