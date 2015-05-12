@@ -1,3 +1,32 @@
+Clutter 1.22.2                                                       2015-05-12
+===============================================================================
+
+  • List of changes since Clutter 1.22.0
+
+    - Improve touchpad detection in the X11 backend
+    The X11 backend now uses the same heuristics as GDK.
+
+    - Fix handling of SwapBuffersWithDamage on EGL
+    Use the correct arguments for the Cogl API, which is mapped on the
+    corresponding EGL extension.
+
+    - Fix ClutterStage:use-alpha
+    Painting the stage with the use-alpha property is now working on all
+    backends.
+
+    - Fix detection of an ARGB visual in the GDK backend
+
+  • List of bugs fixed since Clutter 1.22.2
+
+    #749256 - clutter-backend-gdk: Only set setting on successful
+              gdk_screen_get_setting call
+    #747436 - Clutter should use the same heuristics as gtk+ to determine
+              touchpads
+
+Many thanks to:
+
+  Jasper St. Pierre, Matthieu Bouron
+
 Clutter 1.22.0                                                       2015-03-23
 ===============================================================================
 
