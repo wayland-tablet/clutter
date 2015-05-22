@@ -757,6 +757,22 @@ typedef enum { /*< flags prefix=CLUTTER_EVENT >*/
  *   event added in 1.10
  * @CLUTTER_TOUCH_CANCEL: A touch event sequence has been canceled;
  *   event added in 1.10
+ * @CLUTTER_TOUCHPAD_PINCH_BEGIN: A pinch gesture has started; event
+ *   added in 1.24
+ * @CLUTTER_TOUCHPAD_PINCH_UPDATE: A pinch gesture has been updated; event
+ *   added in 1.24
+ * @CLUTTER_TOUCHPAD_PINCH_END: A pinch gesture has finished; event
+ *   added in 1.24
+ * @CLUTTER_TOUCHPAD_PINCH_CANCEL: A pinch gesture was cancelled; event
+ *   added in 1.24
+ * @CLUTTER_TOUCHPAD_SWIPE_BEGIN: A swipe gesture has started; event
+ *   added in 1.24
+ * @CLUTTER_TOUCHPAD_SWIPE_UPDATE: A swipe gesture has been updated; event
+ *   added in 1.24
+ * @CLUTTER_TOUCHPAD_SWIPE_END: A swipe gesture has finished; event
+ *   added in 1.24
+ * @CLUTTER_TOUCHPAD_SWIPE_CANCEL: A swipe gesture was cancelled; event
+ *   added in 1.24
  * @CLUTTER_EVENT_LAST: Marks the end of the #ClutterEventType enumeration;
  *   added in 1.10
  *
@@ -782,6 +798,14 @@ typedef enum { /*< prefix=CLUTTER >*/
   CLUTTER_TOUCH_UPDATE,
   CLUTTER_TOUCH_END,
   CLUTTER_TOUCH_CANCEL,
+  CLUTTER_TOUCHPAD_PINCH_BEGIN,
+  CLUTTER_TOUCHPAD_PINCH_UPDATE,
+  CLUTTER_TOUCHPAD_PINCH_END,
+  CLUTTER_TOUCHPAD_PINCH_CANCEL,
+  CLUTTER_TOUCHPAD_SWIPE_BEGIN,
+  CLUTTER_TOUCHPAD_SWIPE_UPDATE,
+  CLUTTER_TOUCHPAD_SWIPE_END,
+  CLUTTER_TOUCHPAD_SWIPE_CANCEL,
 
   CLUTTER_EVENT_LAST            /* helper */
 } ClutterEventType;

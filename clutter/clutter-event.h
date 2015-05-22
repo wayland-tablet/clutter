@@ -115,6 +115,8 @@ typedef struct _ClutterScrollEvent      ClutterScrollEvent;
 typedef struct _ClutterStageStateEvent  ClutterStageStateEvent;
 typedef struct _ClutterCrossingEvent    ClutterCrossingEvent;
 typedef struct _ClutterTouchEvent       ClutterTouchEvent;
+typedef struct _ClutterTouchpadPinchEvent ClutterTouchpadPinchEvent;
+typedef struct _ClutterTouchpadSwipeEvent ClutterTouchpadSwipeEvent;
 
 /**
  * ClutterAnyEvent:
@@ -384,6 +386,37 @@ struct _ClutterTouchEvent
   ClutterInputDevice *device;
 };
 
+struct _ClutterTouchpadPinchEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  ClutterStage *stage;
+  ClutterActor *source;
+
+  gfloat x;
+  gfloat y;
+  gfloat dx;
+  gfloat dy;
+  gfloat angle_delta;
+  gfloat scale;
+};
+
+struct _ClutterTouchpadSwipeEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  ClutterStage *stage;
+  ClutterActor *source;
+
+  guint n_fingers;
+  gfloat x;
+  gfloat y;
+  gfloat dx;
+  gfloat dy;
+};
+
 /**
  * ClutterEvent:
  *
@@ -404,6 +437,8 @@ union _ClutterEvent
   ClutterStageStateEvent stage_state;
   ClutterCrossingEvent crossing;
   ClutterTouchEvent touch;
+  ClutterTouchpadPinchEvent touchpad_pinch;
+  ClutterTouchpadSwipeEvent touchpad_swipe;
 };
 
 /**

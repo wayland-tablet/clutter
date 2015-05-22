@@ -436,6 +436,22 @@ clutter_event_get_position (const ClutterEvent *event,
     case CLUTTER_SCROLL:
       clutter_point_init (position, event->scroll.x, event->scroll.y);
       break;
+
+    case CLUTTER_TOUCHPAD_PINCH_BEGIN:
+    case CLUTTER_TOUCHPAD_PINCH_UPDATE:
+    case CLUTTER_TOUCHPAD_PINCH_END:
+    case CLUTTER_TOUCHPAD_PINCH_CANCEL:
+      clutter_point_init (position, event->touchpad_pinch.x,
+                          event->touchpad_pinch.y);
+      break;
+
+    case CLUTTER_TOUCHPAD_SWIPE_BEGIN:
+    case CLUTTER_TOUCHPAD_SWIPE_UPDATE:
+    case CLUTTER_TOUCHPAD_SWIPE_END:
+    case CLUTTER_TOUCHPAD_SWIPE_CANCEL:
+      clutter_point_init (position, event->touchpad_swipe.x,
+                          event->touchpad_swipe.y);
+      break;
     }
 
 }
@@ -497,6 +513,22 @@ clutter_event_set_coords (ClutterEvent *event,
     case CLUTTER_SCROLL:
       event->scroll.x = x;
       event->scroll.y = y;
+      break;
+
+    case CLUTTER_TOUCHPAD_PINCH_BEGIN:
+    case CLUTTER_TOUCHPAD_PINCH_UPDATE:
+    case CLUTTER_TOUCHPAD_PINCH_END:
+    case CLUTTER_TOUCHPAD_PINCH_CANCEL:
+      event->touchpad_pinch.x = x;
+      event->touchpad_pinch.y = y;
+      break;
+
+    case CLUTTER_TOUCHPAD_SWIPE_BEGIN:
+    case CLUTTER_TOUCHPAD_SWIPE_UPDATE:
+    case CLUTTER_TOUCHPAD_SWIPE_END:
+    case CLUTTER_TOUCHPAD_SWIPE_CANCEL:
+      event->touchpad_swipe.x = x;
+      event->touchpad_swipe.y = y;
       break;
     }
 }
@@ -1097,6 +1129,17 @@ clutter_event_set_device (ClutterEvent       *event,
     case CLUTTER_KEY_RELEASE:
       event->key.device = device;
       break;
+
+    case CLUTTER_TOUCHPAD_PINCH_BEGIN:
+    case CLUTTER_TOUCHPAD_PINCH_UPDATE:
+    case CLUTTER_TOUCHPAD_PINCH_END:
+    case CLUTTER_TOUCHPAD_PINCH_CANCEL:
+    case CLUTTER_TOUCHPAD_SWIPE_BEGIN:
+    case CLUTTER_TOUCHPAD_SWIPE_UPDATE:
+    case CLUTTER_TOUCHPAD_SWIPE_END:
+    case CLUTTER_TOUCHPAD_SWIPE_CANCEL:
+      /* FIXME */
+      break;
     }
 }
 
@@ -1170,6 +1213,17 @@ clutter_event_get_device (const ClutterEvent *event)
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
       device = event->key.device;
+      break;
+
+    case CLUTTER_TOUCHPAD_PINCH_BEGIN:
+    case CLUTTER_TOUCHPAD_PINCH_UPDATE:
+    case CLUTTER_TOUCHPAD_PINCH_END:
+    case CLUTTER_TOUCHPAD_PINCH_CANCEL:
+    case CLUTTER_TOUCHPAD_SWIPE_BEGIN:
+    case CLUTTER_TOUCHPAD_SWIPE_UPDATE:
+    case CLUTTER_TOUCHPAD_SWIPE_END:
+    case CLUTTER_TOUCHPAD_SWIPE_CANCEL:
+      /* FIXME */
       break;
     }
 
@@ -1607,6 +1661,16 @@ clutter_event_get_axes (const ClutterEvent *event,
 
     case CLUTTER_MOTION:
       retval = event->motion.axes;
+      break;
+
+    case CLUTTER_TOUCHPAD_PINCH_BEGIN:
+    case CLUTTER_TOUCHPAD_PINCH_UPDATE:
+    case CLUTTER_TOUCHPAD_PINCH_END:
+    case CLUTTER_TOUCHPAD_PINCH_CANCEL:
+    case CLUTTER_TOUCHPAD_SWIPE_BEGIN:
+    case CLUTTER_TOUCHPAD_SWIPE_UPDATE:
+    case CLUTTER_TOUCHPAD_SWIPE_END:
+    case CLUTTER_TOUCHPAD_SWIPE_CANCEL:
       break;
     }
 
