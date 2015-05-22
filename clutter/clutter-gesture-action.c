@@ -93,6 +93,7 @@
 #include "clutter-enum-types.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
+#include "clutter-touchpad-gesture-private.h"
 
 #include <math.h>
 
@@ -127,6 +128,7 @@ struct _ClutterGestureActionPrivate
   float distance_x, distance_y;
 
   guint in_gesture : 1;
+  guint touchpad   : 1;
 };
 
 enum
@@ -309,6 +311,7 @@ cancel_gesture (ClutterGestureAction *action)
   ClutterActor *actor;
 
   priv->in_gesture = FALSE;
+  priv->touchpad = FALSE;
 
   if (priv->stage_capture_id != 0)
     {
@@ -342,8 +345,10 @@ begin_gesture (ClutterGestureAction *action,
   if (!priv->in_gesture)
     return FALSE;
 
-  g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
-                 &return_value);
+  if (priv->touchpad)
+    return_value = clutter_touchpad_gesture_begin (CLUTTER_TOUCHPAD_GESTURE (action));
+  else
+    g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor, &return_value);
 
   if (!return_value)
     {
@@ -364,18 +369,36 @@ stage_captured_event_cb (ClutterActor         *stage,
   gint position;
   float threshold_x, threshold_y;
   gboolean return_value;
-  GesturePoint *point;
+  GesturePoint *point = NULL;
   ClutterEventType event_type;
 
   event_type = clutter_event_type (event);
-  if (event_type != CLUTTER_TOUCH_CANCEL &&
-      event_type != CLUTTER_TOUCH_UPDATE &&
-      event_type != CLUTTER_TOUCH_END &&
-      event_type != CLUTTER_MOTION &&
-      event_type != CLUTTER_BUTTON_RELEASE)
+
+  if (event_type == CLUTTER_TOUCH_CANCEL ||
+      event_type == CLUTTER_TOUCH_UPDATE ||
+      event_type == CLUTTER_TOUCH_END ||
+      event_type == CLUTTER_MOTION ||
+      event_type == CLUTTER_BUTTON_RELEASE)
+    {
+      if (priv->touchpad)
+        return CLUTTER_EVENT_PROPAGATE;
+    }
+  else if (event_type == CLUTTER_TOUCHPAD_PINCH_UPDATE ||
+           event_type == CLUTTER_TOUCHPAD_PINCH_END ||
+           event_type == CLUTTER_TOUCHPAD_PINCH_CANCEL ||
+           event_type == CLUTTER_TOUCHPAD_SWIPE_UPDATE ||
+           event_type == CLUTTER_TOUCHPAD_SWIPE_END ||
+           event_type == CLUTTER_TOUCHPAD_SWIPE_CANCEL)
+    {
+      if (!priv->touchpad)
+        return CLUTTER_EVENT_PROPAGATE;
+      if (clutter_touchpad_gesture_handle_event (CLUTTER_TOUCHPAD_GESTURE (action), event) == CLUTTER_EVENT_STOP)
+        return CLUTTER_EVENT_PROPAGATE;
+    }
+  else
     return CLUTTER_EVENT_PROPAGATE;
 
-  if ((point = gesture_find_point (action, event, &position)) == NULL)
+  if (!priv->touchpad && (point = gesture_find_point (action, event, &position)) == NULL)
     return CLUTTER_EVENT_PROPAGATE;
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
@@ -479,11 +502,43 @@ stage_captured_event_cb (ClutterActor         *stage,
       }
       break;
 
+    case CLUTTER_TOUCHPAD_PINCH_UPDATE:
+    case CLUTTER_TOUCHPAD_SWIPE_UPDATE:
+      if (!priv->in_gesture &&
+          priv->edge == CLUTTER_GESTURE_TRIGGER_EDGE_AFTER)
+        {
+          if (clutter_touchpad_gesture_over_threshold (CLUTTER_TOUCHPAD_GESTURE (action)))
+            begin_gesture (action, actor);
+        }
+      else if (priv->in_gesture)
+        {
+          if (!clutter_touchpad_gesture_update (CLUTTER_TOUCHPAD_GESTURE (action)))
+            cancel_gesture (action);
+        }
+      break;
+
+    case CLUTTER_TOUCHPAD_PINCH_END:
+    case CLUTTER_TOUCHPAD_SWIPE_END:
+      if (priv->in_gesture)
+        {
+          priv->in_gesture = FALSE;
+          priv->touchpad = FALSE;
+          clutter_touchpad_gesture_end (CLUTTER_TOUCHPAD_GESTURE (action));
+        }
+      break;
+
+    case CLUTTER_TOUCHPAD_PINCH_CANCEL:
+    case CLUTTER_TOUCHPAD_SWIPE_CANCEL:
+      if (priv->in_gesture)
+        cancel_gesture (action);
+      break;
+
     default:
       break;
     }
 
-  if (priv->points->len == 0 && priv->stage_capture_id)
+  if (priv->stage_capture_id &&
+      (priv->points->len == 0 && !priv->touchpad))
     {
       g_signal_handler_disconnect (priv->stage, priv->stage_capture_id);
       priv->stage_capture_id = 0;
@@ -499,15 +554,31 @@ actor_captured_event_cb (ClutterActor *actor,
 {
   ClutterGestureActionPrivate *priv = action->priv;
   GesturePoint *point G_GNUC_UNUSED;
+  guint n_points;
 
   if ((clutter_event_type (event) != CLUTTER_BUTTON_PRESS) &&
-      (clutter_event_type (event) != CLUTTER_TOUCH_BEGIN))
+      (clutter_event_type (event) != CLUTTER_TOUCH_BEGIN) &&
+      (clutter_event_type (event) != CLUTTER_TOUCHPAD_PINCH_BEGIN) &&
+      (clutter_event_type (event) != CLUTTER_TOUCHPAD_SWIPE_BEGIN))
     return CLUTTER_EVENT_PROPAGATE;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (action)))
     return CLUTTER_EVENT_PROPAGATE;
 
-  point = gesture_register_point (action, event);
+  if (clutter_event_type (event) == CLUTTER_TOUCHPAD_PINCH_BEGIN ||
+      clutter_event_type (event) == CLUTTER_TOUCHPAD_SWIPE_BEGIN)
+    {
+      if (!CLUTTER_IS_TOUCHPAD_GESTURE (action) ||
+          (!priv->touchpad && priv->in_gesture))
+        return CLUTTER_EVENT_PROPAGATE;
+    }
+  else
+    {
+      if (priv->touchpad)
+        return CLUTTER_EVENT_PROPAGATE;
+
+      point = gesture_register_point (action, event);
+    }
 
   if (priv->stage == NULL)
     priv->stage = clutter_actor_get_stage (actor);
@@ -518,9 +589,27 @@ actor_captured_event_cb (ClutterActor *actor,
                               G_CALLBACK (stage_captured_event_cb),
                               action);
 
+  switch (clutter_event_type (event))
+    {
+    case CLUTTER_TOUCHPAD_PINCH_BEGIN:
+      n_points = 2;
+      break;
+    case CLUTTER_TOUCHPAD_SWIPE_BEGIN:
+      n_points = event->touchpad_swipe.n_fingers;
+      break;
+    default:
+      n_points = priv->points->len;
+      break;
+    }
+
+  if ((n_points >= priv->requested_nb_points) &&
+      CLUTTER_IS_TOUCHPAD_GESTURE (action) &&
+      clutter_touchpad_gesture_handle_event (CLUTTER_TOUCHPAD_GESTURE (action), event) == CLUTTER_EVENT_PROPAGATE)
+    priv->touchpad = TRUE;
+
   /* Start the gesture immediately if the gesture has no
    * _TRIGGER_EDGE_AFTER drag threshold. */
-  if ((priv->points->len >= priv->requested_nb_points) &&
+  if ((n_points >= priv->requested_nb_points) &&
       (priv->edge != CLUTTER_GESTURE_TRIGGER_EDGE_AFTER))
     begin_gesture (action, actor);
 
