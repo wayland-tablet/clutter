@@ -597,6 +597,92 @@ notify_touch_event (ClutterInputDevice *input_device,
 }
 
 static void
+notify_pinch_gesture_event (ClutterInputDevice *input_device,
+                            ClutterEventType    evtype,
+                            guint32             time_,
+                            gdouble             dx,
+                            gdouble             dy,
+                            gdouble             angle_delta,
+                            gdouble             scale)
+{
+  ClutterInputDeviceEvdev *device_evdev;
+  ClutterSeatEvdev *seat;
+  ClutterStage *stage;
+  ClutterEvent *event = NULL;
+  ClutterPoint pos;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (!stage)
+    return;
+
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  seat = _clutter_input_device_evdev_get_seat (device_evdev);
+
+  event = clutter_event_new (evtype);
+
+  clutter_input_device_get_coords (seat->core_pointer, NULL, &pos);
+
+  event->touchpad_pinch.time = time_;
+  event->touchpad_pinch.stage = CLUTTER_STAGE (stage);
+  event->touchpad_pinch.x = pos.x;
+  event->touchpad_pinch.y = pos.y;
+  event->touchpad_pinch.angle_delta = angle_delta;
+  event->touchpad_pinch.scale = scale;
+
+  _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
+
+  clutter_event_set_device (event, seat->core_pointer);
+  clutter_event_set_source_device (event, input_device);
+
+  queue_event (event);
+}
+
+static void
+notify_swipe_gesture_event (ClutterInputDevice *input_device,
+                            ClutterEventType    evtype,
+                            guint32             time_,
+                            guint               n_fingers,
+                            gdouble             dx,
+                            gdouble             dy)
+{
+  ClutterInputDeviceEvdev *device_evdev;
+  ClutterSeatEvdev *seat;
+  ClutterStage *stage;
+  ClutterEvent *event = NULL;
+  ClutterPoint pos;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (!stage)
+    return;
+
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  seat = _clutter_input_device_evdev_get_seat (device_evdev);
+
+  event = clutter_event_new (evtype);
+
+  event->touchpad_swipe.time = time_;
+  event->touchpad_swipe.stage = CLUTTER_STAGE (stage);
+
+  clutter_input_device_get_coords (seat->core_pointer, NULL, &pos);
+  event->touchpad_swipe.x = pos.x;
+  event->touchpad_swipe.y = pos.y;
+  event->touchpad_swipe.dx = dx;
+  event->touchpad_swipe.dy = dy;
+  event->touchpad_swipe.n_fingers = n_fingers;
+
+  _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
+
+  clutter_event_set_device (event, seat->core_pointer);
+  clutter_event_set_source_device (event, input_device);
+
+  queue_event (event);
+}
+
+static void
 dispatch_libinput (ClutterDeviceManagerEvdev *manager_evdev)
 {
   ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
@@ -1370,6 +1456,83 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
             g_hash_table_iter_remove (&iter);
           }
 
+        break;
+      }
+    case LIBINPUT_EVENT_GESTURE_PINCH_START:
+    case LIBINPUT_EVENT_GESTURE_PINCH_END:
+      {
+        struct libinput_event_gesture *gesture_event =
+          libinput_event_get_gesture_event (event);
+        ClutterEventType event_type;
+        guint32 time;
+
+        if (libinput_event_get_type (event) == LIBINPUT_EVENT_GESTURE_PINCH_START)
+          event_type = CLUTTER_TOUCHPAD_PINCH_BEGIN;
+        else
+          event_type = libinput_event_gesture_get_cancelled (gesture_event) ?
+            CLUTTER_TOUCHPAD_PINCH_CANCEL : CLUTTER_TOUCHPAD_PINCH_END;
+
+        device = libinput_device_get_user_data (libinput_device);
+        time = libinput_event_gesture_get_time (gesture_event);
+        notify_pinch_gesture_event (device, event_type, time, 0, 0, 0, 0);
+        break;
+      }
+    case LIBINPUT_EVENT_GESTURE_PINCH_UPDATE:
+      {
+        struct libinput_event_gesture *gesture_event =
+          libinput_event_get_gesture_event (event);
+        gdouble angle, scale, dx, dy;
+        guint32 time;
+
+        device = libinput_device_get_user_data (libinput_device);
+        time = libinput_event_gesture_get_time (gesture_event);
+        angle = libinput_event_gesture_get_angle (gesture_event);
+        scale = libinput_event_gesture_get_scale (gesture_event);
+        dx = libinput_event_gesture_get_dx (gesture_event);
+        dy = libinput_event_gesture_get_dx (gesture_event);
+
+        notify_pinch_gesture_event (device,
+                                    CLUTTER_TOUCHPAD_PINCH_UPDATE,
+                                    time, dx, dy, angle, scale);
+        break;
+      }
+    case LIBINPUT_EVENT_GESTURE_SWIPE_START:
+    case LIBINPUT_EVENT_GESTURE_SWIPE_END:
+      {
+        struct libinput_event_gesture *gesture_event =
+          libinput_event_get_gesture_event (event);
+        ClutterEventType event_type;
+        guint32 time, n_fingers;
+
+        device = libinput_device_get_user_data (libinput_device);
+        time = libinput_event_gesture_get_time (gesture_event);
+        n_fingers = libinput_event_gesture_get_finger_count (gesture_event);
+
+        if (libinput_event_get_type (event) == LIBINPUT_EVENT_GESTURE_SWIPE_START)
+          event_type = CLUTTER_TOUCHPAD_SWIPE_BEGIN;
+        else
+          event_type = libinput_event_gesture_get_cancelled (gesture_event) ?
+            CLUTTER_TOUCHPAD_SWIPE_CANCEL : CLUTTER_TOUCHPAD_SWIPE_END;
+
+        notify_swipe_gesture_event (device, event_type, time, n_fingers, 0, 0);
+        break;
+      }
+    case LIBINPUT_EVENT_GESTURE_SWIPE_UPDATE:
+      {
+        struct libinput_event_gesture *gesture_event =
+          libinput_event_get_gesture_event (event);
+        guint32 time, n_fingers;
+        gdouble dx, dy;
+
+        device = libinput_device_get_user_data (libinput_device);
+        time = libinput_event_gesture_get_time (gesture_event);
+        n_fingers = libinput_event_gesture_get_finger_count (gesture_event);
+        dx = libinput_event_gesture_get_dx (gesture_event);
+        dy = libinput_event_gesture_get_dy (gesture_event);
+
+        notify_swipe_gesture_event (device,
+                                    CLUTTER_TOUCHPAD_SWIPE_UPDATE,
+                                    time, n_fingers, dx, dy);
         break;
       }
     default:
