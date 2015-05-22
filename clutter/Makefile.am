@@ -206,6 +206,7 @@ source_c = \
 	clutter-test-utils.c		\
 	clutter-text.c		\
 	clutter-text-buffer.c		\
+	clutter-touchpad-gesture.c	\
 	clutter-transition-group.c	\
 	clutter-transition.c		\
 	clutter-timeline.c 		\
@@ -244,6 +245,7 @@ source_h_priv = \
 	clutter-stage-manager-private.h		\
 	clutter-stage-private.h			\
 	clutter-stage-window.h			\
+	clutter-touchpad-gesture-private.h
 	$(NULL)
 
 # private source code; these should not be introspected
