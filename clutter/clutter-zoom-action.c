@@ -57,6 +57,7 @@
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-gesture-action-private.h"
+#include "clutter-touchpad-gesture-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
@@ -94,6 +95,9 @@ struct _ClutterZoomActionPrivate
   gdouble initial_scale_y;
 
   gdouble zoom_initial_distance;
+
+  /* Touchpad state */
+  gfloat current_scale;
 };
 
 enum
@@ -116,7 +120,12 @@ enum
 
 static guint zoom_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE_WITH_PRIVATE (ClutterZoomAction, clutter_zoom_action, CLUTTER_TYPE_GESTURE_ACTION)
+static void clutter_touchpad_zoom_gesture_iface_init (ClutterTouchpadGestureIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterZoomAction, clutter_zoom_action, CLUTTER_TYPE_GESTURE_ACTION,
+                         G_ADD_PRIVATE (ClutterZoomAction)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_TOUCHPAD_GESTURE,
+                                                clutter_touchpad_zoom_gesture_iface_init))
 
 static void
 initialize_focal_point (ClutterZoomAction *action,
@@ -169,6 +178,54 @@ emit_zoom (ClutterZoomAction *action,
                  actor, &priv->focal_point, scale,
                  &retval);
   return retval;
+}
+
+static gboolean
+clutter_touchpad_zoom_gesture_handle_event (ClutterTouchpadGesture *gesture,
+                                            const ClutterEvent     *event)
+{
+  ClutterZoomActionPrivate *priv = ((ClutterZoomAction *) gesture)->priv;
+  ClutterPoint point;
+
+  switch (event->type)
+    {
+    case CLUTTER_TOUCHPAD_PINCH_BEGIN:
+      clutter_point_init (&point,
+                          event->touchpad_pinch.x,
+                          event->touchpad_pinch.y);
+      initialize_focal_point (CLUTTER_ZOOM_ACTION (gesture), &point);
+      priv->current_scale = 1;
+      return CLUTTER_EVENT_PROPAGATE;
+
+    case CLUTTER_TOUCHPAD_PINCH_UPDATE:
+      point.x = priv->focal_point.x + event->touchpad_pinch.dx;
+      point.y = priv->focal_point.y + event->touchpad_pinch.dy;
+      update_focal_point (CLUTTER_ZOOM_ACTION (gesture), &point);
+      priv->current_scale = event->touchpad_pinch.scale;
+      return CLUTTER_EVENT_PROPAGATE;
+
+    case CLUTTER_TOUCHPAD_PINCH_END:
+    case CLUTTER_TOUCHPAD_PINCH_CANCEL:
+      return CLUTTER_EVENT_PROPAGATE;
+    default:
+      return CLUTTER_EVENT_STOP;
+    }
+}
+
+static gboolean
+clutter_touchpad_zoom_gesture_update (ClutterTouchpadGesture *gesture)
+{
+  ClutterZoomActionPrivate *priv = ((ClutterZoomAction *) gesture)->priv;
+
+  emit_zoom (CLUTTER_ZOOM_ACTION (gesture), priv->current_scale);
+  return TRUE;
+}
+
+static void
+clutter_touchpad_zoom_gesture_iface_init (ClutterTouchpadGestureIface *iface)
+{
+  iface->handle_event = clutter_touchpad_zoom_gesture_handle_event;
+  iface->update = clutter_touchpad_zoom_gesture_update;
 }
 
 static void
