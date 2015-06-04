@@ -70,45 +70,12 @@ static guint swipe_signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_TYPE_WITH_PRIVATE (ClutterSwipeAction, clutter_swipe_action, CLUTTER_TYPE_GESTURE_ACTION)
 
 static gboolean
-gesture_begin (ClutterGestureAction  *action,
-               ClutterActor          *actor)
+check_direction_change (ClutterSwipeAction *action,
+                        gfloat              delta_x,
+                        gfloat              delta_y)
 {
   ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (action)->priv;
-
-  /* reset the state at the beginning of a new gesture */
-  priv->h_direction = 0;
-  priv->v_direction = 0;
-
-  g_object_get (action,
-                "threshold-trigger-distance-x", &priv->distance_x,
-                "threshold-trigger-distance-y", &priv->distance_y,
-                NULL);
-
-  return TRUE;
-}
-
-static gboolean
-gesture_progress (ClutterGestureAction *action,
-                  ClutterActor         *actor)
-{
-  ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (action)->priv;
-  gfloat press_x, press_y;
-  gfloat motion_x, motion_y;
-  gfloat delta_x, delta_y;
   ClutterSwipeDirection h_direction = 0, v_direction = 0;
-
-  clutter_gesture_action_get_press_coords (action,
-                                           0,
-                                           &press_x,
-                                           &press_y);
-
-  clutter_gesture_action_get_motion_coords (action,
-                                            0,
-                                            &motion_x,
-                                            &motion_y);
-
-  delta_x = press_x - motion_x;
-  delta_y = press_y - motion_y;
 
   if (delta_x >= priv->distance_x)
     h_direction = CLUTTER_SWIPE_DIRECTION_RIGHT;
@@ -137,14 +104,80 @@ gesture_progress (ClutterGestureAction *action,
 }
 
 static void
+finish_gesture (ClutterSwipeAction *action,
+                ClutterActor       *actor,
+                gfloat              dx,
+                gfloat              dy)
+{
+  ClutterSwipeActionPrivate *priv = action->priv;
+  ClutterSwipeDirection direction = 0;
+  gboolean can_emit_swipe;
+
+  if (dx > priv->distance_x)
+    direction |= CLUTTER_SWIPE_DIRECTION_RIGHT;
+  else if (ABS (dx) > priv->distance_x)
+    direction |= CLUTTER_SWIPE_DIRECTION_LEFT;
+
+  if (dy > priv->distance_y)
+    direction |= CLUTTER_SWIPE_DIRECTION_DOWN;
+  else if (ABS (dy) > priv->distance_y)
+    direction |= CLUTTER_SWIPE_DIRECTION_UP;
+
+  /* XXX:2.0 remove */
+  g_signal_emit (action, swipe_signals[SWIPE], 0, actor, direction,
+                 &can_emit_swipe);
+  if (can_emit_swipe)
+    g_signal_emit (action, swipe_signals[SWEPT], 0, actor, direction);
+}
+
+static gboolean
+gesture_begin (ClutterGestureAction  *action,
+               ClutterActor          *actor)
+{
+  ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (action)->priv;
+
+  /* reset the state at the beginning of a new gesture */
+  priv->h_direction = 0;
+  priv->v_direction = 0;
+
+  g_object_get (action,
+                "threshold-trigger-distance-x", &priv->distance_x,
+                "threshold-trigger-distance-y", &priv->distance_y,
+                NULL);
+
+  return TRUE;
+}
+
+static gboolean
+gesture_progress (ClutterGestureAction *action,
+                  ClutterActor         *actor)
+{
+  gfloat press_x, press_y;
+  gfloat motion_x, motion_y;
+  gfloat delta_x, delta_y;
+
+  clutter_gesture_action_get_press_coords (action,
+                                           0,
+                                           &press_x,
+                                           &press_y);
+
+  clutter_gesture_action_get_motion_coords (action,
+                                            0,
+                                            &motion_x,
+                                            &motion_y);
+
+  delta_x = press_x - motion_x;
+  delta_y = press_y - motion_y;
+
+  return check_direction_change (CLUTTER_SWIPE_ACTION (action), delta_x, delta_y);
+}
+
+static void
 gesture_end (ClutterGestureAction *action,
              ClutterActor         *actor)
 {
-  ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (action)->priv;
   gfloat press_x, press_y;
   gfloat release_x, release_y;
-  ClutterSwipeDirection direction = 0;
-  gboolean can_emit_swipe;
   const ClutterEvent *last_event;
 
   clutter_gesture_action_get_press_coords (action,
@@ -157,21 +190,10 @@ gesture_end (ClutterGestureAction *action,
   last_event = clutter_gesture_action_get_last_event (action, 0);
   clutter_event_get_coords (last_event, &release_x, &release_y);
 
-  if (release_x - press_x > priv->distance_x)
-    direction |= CLUTTER_SWIPE_DIRECTION_RIGHT;
-  else if (press_x - release_x > priv->distance_x)
-    direction |= CLUTTER_SWIPE_DIRECTION_LEFT;
-
-  if (release_y - press_y > priv->distance_y)
-    direction |= CLUTTER_SWIPE_DIRECTION_DOWN;
-  else if (press_y - release_y > priv->distance_y)
-    direction |= CLUTTER_SWIPE_DIRECTION_UP;
-
-  /* XXX:2.0 remove */
-  g_signal_emit (action, swipe_signals[SWIPE], 0, actor, direction,
-                 &can_emit_swipe);
-  if (can_emit_swipe)
-    g_signal_emit (action, swipe_signals[SWEPT], 0, actor, direction);
+  finish_gesture (CLUTTER_SWIPE_ACTION (action),
+                  actor,
+                  release_x - press_x,
+                  release_y - press_y);
 }
 
 /* XXX:2.0 remove */
