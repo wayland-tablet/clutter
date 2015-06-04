@@ -46,6 +46,7 @@
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-gesture-action-private.h"
+#include "clutter-touchpad-gesture-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
@@ -55,6 +56,7 @@ struct _ClutterSwipeActionPrivate
   ClutterSwipeDirection v_direction;
 
   float distance_x, distance_y;
+  float accum_x, accum_y;
 };
 
 enum
@@ -67,7 +69,12 @@ enum
 
 static guint swipe_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE_WITH_PRIVATE (ClutterSwipeAction, clutter_swipe_action, CLUTTER_TYPE_GESTURE_ACTION)
+static void clutter_touchpad_swipe_gesture_iface_init (ClutterTouchpadGestureIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterSwipeAction, clutter_swipe_action, CLUTTER_TYPE_GESTURE_ACTION,
+                         G_ADD_PRIVATE (ClutterSwipeAction)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_TOUCHPAD_GESTURE,
+                                                clutter_touchpad_swipe_gesture_iface_init))
 
 static gboolean
 check_direction_change (ClutterSwipeAction *action,
@@ -128,6 +135,82 @@ finish_gesture (ClutterSwipeAction *action,
                  &can_emit_swipe);
   if (can_emit_swipe)
     g_signal_emit (action, swipe_signals[SWEPT], 0, actor, direction);
+}
+
+static gboolean
+clutter_touchpad_swipe_gesture_handle_event (ClutterTouchpadGesture *gesture,
+                                             const ClutterEvent     *event)
+{
+  ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (gesture)->priv;
+
+  switch (event->type)
+    {
+    case CLUTTER_TOUCHPAD_SWIPE_BEGIN:
+      g_object_get (gesture,
+                    "threshold-trigger-distance-x", &priv->distance_x,
+                    "threshold-trigger-distance-y", &priv->distance_y,
+                    NULL);
+      priv->h_direction = 0;
+      priv->v_direction = 0;
+      priv->accum_x = 0;
+      priv->accum_y = 0;
+      return CLUTTER_EVENT_PROPAGATE;
+
+    case CLUTTER_TOUCHPAD_SWIPE_UPDATE:
+      priv->accum_x += event->touchpad_swipe.dx;
+      priv->accum_y += event->touchpad_swipe.dy;
+      return CLUTTER_EVENT_PROPAGATE;
+
+    case CLUTTER_TOUCHPAD_SWIPE_END:
+    case CLUTTER_TOUCHPAD_SWIPE_CANCEL:
+      return CLUTTER_EVENT_PROPAGATE;
+    default:
+      return CLUTTER_EVENT_STOP;
+    }
+}
+
+static gboolean
+clutter_touchpad_swipe_gesture_over_threshold (ClutterTouchpadGesture *gesture)
+{
+  ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (gesture)->priv;
+  float threshold_x, threshold_y;
+
+  clutter_gesture_action_get_threshold_trigger_distance (CLUTTER_GESTURE_ACTION (gesture),
+                                                         &threshold_x, &threshold_y);
+
+  if (ABS (priv->accum_x) < threshold_x &&
+      ABS (priv->accum_y) < threshold_y)
+    return FALSE;
+
+  return TRUE;
+}
+
+static gboolean
+clutter_touchpad_swipe_gesture_update (ClutterTouchpadGesture *gesture)
+{
+  ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (gesture)->priv;
+
+  return check_direction_change (CLUTTER_SWIPE_ACTION (gesture),
+                                 priv->accum_x, priv->accum_y);
+}
+
+static void
+clutter_touchpad_swipe_gesture_end (ClutterTouchpadGesture *gesture)
+{
+  ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (gesture)->priv;
+
+  finish_gesture (CLUTTER_SWIPE_ACTION (gesture),
+                  clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (gesture)),
+                  priv->accum_x, priv->accum_y);
+}
+
+static void
+clutter_touchpad_swipe_gesture_iface_init (ClutterTouchpadGestureIface *iface)
+{
+  iface->handle_event = clutter_touchpad_swipe_gesture_handle_event;
+  iface->over_threshold = clutter_touchpad_swipe_gesture_over_threshold;
+  iface->update = clutter_touchpad_swipe_gesture_update;
+  iface->end = clutter_touchpad_swipe_gesture_end;
 }
 
 static gboolean
