@@ -44,6 +44,7 @@
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-gesture-action-private.h"
+#include "clutter-touchpad-gesture-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
@@ -52,6 +53,8 @@ struct _ClutterRotateActionPrivate
   gfloat initial_vector[2];
   gdouble initial_vector_norm;
   gdouble initial_rotation;
+
+  gdouble accum_angle_delta;
 };
 
 enum
@@ -63,7 +66,61 @@ enum
 
 static guint rotate_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE_WITH_PRIVATE (ClutterRotateAction, clutter_rotate_action, CLUTTER_TYPE_GESTURE_ACTION)
+static void clutter_touchpad_rotate_gesture_iface_init (ClutterTouchpadGestureIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterRotateAction, clutter_rotate_action, CLUTTER_TYPE_GESTURE_ACTION,
+                         G_ADD_PRIVATE (ClutterRotateAction)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_TOUCHPAD_GESTURE,
+                                                clutter_touchpad_rotate_gesture_iface_init))
+
+static gboolean
+clutter_touchpad_rotate_gesture_handle_event (ClutterTouchpadGesture *gesture,
+                                              const ClutterEvent     *event)
+{
+  ClutterRotateActionPrivate *priv = CLUTTER_ROTATE_ACTION (gesture)->priv;
+
+  switch (event->type)
+    {
+    case CLUTTER_TOUCHPAD_PINCH_BEGIN:
+      priv->accum_angle_delta = 0;
+      return CLUTTER_EVENT_PROPAGATE;
+
+    case CLUTTER_TOUCHPAD_PINCH_UPDATE:
+      priv->accum_angle_delta += event->touchpad_pinch.angle_delta;
+      return CLUTTER_EVENT_PROPAGATE;
+
+    case CLUTTER_TOUCHPAD_PINCH_END:
+    case CLUTTER_TOUCHPAD_PINCH_CANCEL:
+      return CLUTTER_EVENT_PROPAGATE;
+    default:
+      return CLUTTER_EVENT_STOP;
+    }
+}
+
+static gboolean
+clutter_touchpad_rotate_gesture_update (ClutterTouchpadGesture *gesture)
+{
+  ClutterRotateActionPrivate *priv = CLUTTER_ROTATE_ACTION (gesture)->priv;
+  ClutterActor *actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (gesture));
+  gboolean retval;
+  gdouble angle;
+
+  /* Convert radians to degrees */
+  angle = priv->accum_angle_delta * 180.0 / G_PI;
+
+  g_signal_emit (gesture, rotate_signals[ROTATE], 0,
+                 actor, angle,
+                 &retval);
+
+  return TRUE;
+}
+
+static void
+clutter_touchpad_rotate_gesture_iface_init (ClutterTouchpadGestureIface *iface)
+{
+  iface->handle_event = clutter_touchpad_rotate_gesture_handle_event;
+  iface->update = clutter_touchpad_rotate_gesture_update;
+}
 
 static gboolean
 clutter_rotate_action_real_rotate (ClutterRotateAction *action,
