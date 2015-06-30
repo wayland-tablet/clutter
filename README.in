@@ -306,6 +306,10 @@ Release Notes for Clutter 1.22
   values of ClutterRequestMode should already be resilient to changes to this
   enumerations, like for all enumerations in Clutter.
 
+• A new function for the GDK backend has been added to the public symbols;
+  this function is needed to ensure that Clutter works when embedded inside
+  GTK on systems using the nVidia Linux proprietary binary driver.
+
 Release Notes for Clutter 1.20
 -------------------------------------------------------------------------------
 

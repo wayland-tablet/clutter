@@ -1,3 +1,22 @@
+Clutter 1.22.4                                                       2015-06-30
+===============================================================================
+
+  • List of changes since Clutter 1.22.2
+
+    - Fixes in the input handling of the X11 and GDK backends
+
+  • List of bugs fixed since Clutter 1.22.2
+
+    #750496 - Touch events not correctly propagated through gdk backend
+    #747489 - No access to the Visual used to build the CoglOnscreen
+    #749739 - prepare ClutterSwipeAction for multi-finger swipes
+    #749482 - x11: Fix touchpad detection
+    #751472 - Don't create libinput properties
+
+Many thanks to:
+
+  Carlos Garnacho, Kalev Lember, Peter Hutterer, Rui Matos
+
 Clutter 1.22.2                                                       2015-05-12
 ===============================================================================
 
