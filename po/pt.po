@@ -9,14 +9,16 @@ msgstr ""
 "Project-Id-Version: 3.10\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-09-29 03:17+0000\n"
-"PO-Revision-Date: 2013-09-23 00:10+0000\n"
-"Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
-"Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
+"POT-Creation-Date: 2015-10-07 08:59+0000\n"
+"PO-Revision-Date: 2015-10-07 10:08+0100\n"
+"Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
+"Language-Team: Português <palbuquerque73@gmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../clutter/clutter-actor.c:6203
 msgid "X coordinate"
@@ -1409,7 +1411,8 @@ msgstr "Ficheiro definido"
 msgid "Whether the :filename property is set"
 msgstr "Se a propriedade :filename está ou não definida"
 
-#: ../clutter/clutter-script.c:479 ../clutter/deprecated/clutter-texture.c:1080
+#: ../clutter/clutter-script.c:479
+#: ../clutter/deprecated/clutter-texture.c:1080
 msgid "Filename"
 msgstr "Ficheiro"
 
@@ -2578,7 +2581,8 @@ msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
 msgstr ""
-"Manter a proporção da aparência da textura ao pedir a largura ou altura preferida"
+"Manter a proporção da aparência da textura ao pedir a largura ou altura "
+"preferida"
 
 #: ../clutter/deprecated/clutter-texture.c:1117
 msgid "Load asynchronously"
@@ -2626,7 +2630,8 @@ msgstr "Texturas YUV não são suportadas"
 
 #: ../clutter/deprecated/clutter-texture.c:1765
 #, c-format
-msgid "YUV2 textures are not supported"
+#| msgid "YUV2 textures are not supported"
+msgid "YUV2 textues are not supported"
 msgstr "Texturas YUV2 não são suportadas"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:154
