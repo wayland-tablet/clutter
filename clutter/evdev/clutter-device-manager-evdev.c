@@ -585,12 +585,11 @@ notify_button (ClutterInputDevice *input_device,
       break;
 
     default:
-      /* For compatibility reasons, all additional buttons go after the old 4-7 scroll ones */
-      button_nr = button - (BTN_LEFT - 1) + 4;
+      button_nr = button - BTN_MOUSE + 1;
       break;
     }
 
-  if (button_nr < 1 || button_nr > 12)
+  if (G_UNLIKELY (button_nr < 1 || button_nr > 8))
     {
       g_warning ("Unhandled button event 0x%x", button);
       return;
