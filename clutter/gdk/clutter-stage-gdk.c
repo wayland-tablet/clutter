@@ -164,7 +164,7 @@ clutter_stage_gdk_resize (ClutterStageWindow *stage_window,
    */
   if (!stage_gdk->foreign_window)
     gdk_window_resize (stage_gdk->window, width, height);
-#if defined(GDK_WINDOWING_WAYLAND)
+#if defined(GDK_WINDOWING_WAYLAND) && defined(COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
   else if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window))
     cogl_wayland_onscreen_resize (CLUTTER_STAGE_COGL (stage_gdk)->onscreen,
                                   width, height, 0, 0);
