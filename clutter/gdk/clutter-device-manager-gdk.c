@@ -153,20 +153,15 @@ clutter_device_manager_gdk_get_core_device (ClutterDeviceManager   *manager,
   ClutterDeviceManagerGdk *manager_gdk = CLUTTER_DEVICE_MANAGER_GDK (manager);
   GdkDevice *gdk_device;
 
-  gdk_device = gdk_device_manager_get_client_pointer (manager_gdk->device_manager);
+  gdk_device = gdk_seat_get_pointer (manager_gdk->seat);
 
   g_assert (gdk_device != NULL);
-
-  if (device_type == CLUTTER_KEYBOARD_DEVICE)
-    gdk_device = gdk_device_get_associated_device (gdk_device);
-  else if (device_type != CLUTTER_POINTER_DEVICE)
-    return NULL;
 
   return _clutter_device_manager_gdk_lookup_device (manager, gdk_device);
 }
 
 static void
-gdk_device_added (GdkDeviceManager        *gdk_manager,
+gdk_device_added (GdkSeat                 *seat,
 		  GdkDevice               *device,
 		  ClutterDeviceManager    *self)
 {
@@ -177,7 +172,7 @@ gdk_device_added (GdkDeviceManager        *gdk_manager,
 }
 
 static void
-gdk_device_removed (GdkDeviceManager        *gdk_manager,
+gdk_device_removed (GdkSeat                 *seat,
 		    GdkDevice               *device,
 		    ClutterDeviceManagerGdk *self)
 {
@@ -206,26 +201,24 @@ static void
 clutter_device_manager_gdk_constructed (GObject *gobject)
 {
   ClutterDeviceManagerGdk *manager_gdk = CLUTTER_DEVICE_MANAGER_GDK (gobject);
+  ClutterDeviceManager *manager = CLUTTER_DEVICE_MANAGER (gobject);
   GList *all_devices;
+  GdkDevice *gdk_device;
 
-  g_assert (manager_gdk->device_manager != NULL);
+  g_assert (manager_gdk->seat != NULL);
 
-  all_devices = gdk_device_manager_list_devices (manager_gdk->device_manager,
-						 GDK_DEVICE_TYPE_MASTER);
+  gdk_device = gdk_seat_get_pointer (manager_gdk->seat);
+  _clutter_device_manager_gdk_lookup_device (manager, gdk_device);
+
+  gdk_device = gdk_seat_get_keyboard (manager_gdk->seat);
+  _clutter_device_manager_gdk_lookup_device (manager, gdk_device);
+
+  all_devices = gdk_seat_get_slaves (manager_gdk->seat,
+                                     GDK_SEAT_CAPABILITY_ALL);
   g_list_foreach (all_devices, gdk_device_foreach_cb, manager_gdk);
   g_list_free (all_devices);
 
-  all_devices = gdk_device_manager_list_devices (manager_gdk->device_manager,
-						 GDK_DEVICE_TYPE_SLAVE);
-  g_list_foreach (all_devices, gdk_device_foreach_cb, manager_gdk);
-  g_list_free (all_devices);
-
-  all_devices = gdk_device_manager_list_devices (manager_gdk->device_manager,
-						 GDK_DEVICE_TYPE_FLOATING);
-  g_list_foreach (all_devices, gdk_device_foreach_cb, manager_gdk);
-  g_list_free (all_devices);
-
-  g_object_connect (manager_gdk->device_manager,
+  g_object_connect (manager_gdk->seat,
 		    "object-signal::device-added", gdk_device_added, gobject,
 		    "object-signal::device-removed", gdk_device_removed, gobject,
 		    NULL);
@@ -247,8 +240,8 @@ clutter_device_manager_gdk_set_property (GObject      *gobject,
     {
     case PROP_GDK_DISPLAY:
       gdk_display = GDK_DISPLAY (g_value_get_object (value));
-      manager_gdk->device_manager = gdk_display_get_device_manager (gdk_display);
-      g_object_ref (manager_gdk->device_manager);
+      manager_gdk->seat = gdk_display_get_default_seat (gdk_display);
+      g_object_ref (manager_gdk->seat);
       break;
 
     default:

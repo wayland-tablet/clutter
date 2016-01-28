@@ -43,7 +43,7 @@ struct _ClutterDeviceManagerGdk
 {
   ClutterDeviceManager parent_instance;
 
-  GdkDeviceManager *device_manager;
+  GdkSeat          *seat;
   GSList           *device_cache;
   GHashTable       *device_by_id;
 };
