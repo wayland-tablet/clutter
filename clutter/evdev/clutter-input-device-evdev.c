@@ -95,8 +95,8 @@ clutter_input_device_evdev_update_from_tool (ClutterInputDevice     *device,
 
   if (libinput_tablet_tool_has_tilt (evdev_tool->tool))
     {
-      _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_XTILT, -1, 1, 0);
-      _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_YTILT, -1, 1, 0);
+      _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_XTILT, -90, 90, 0);
+      _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_YTILT, -90, 90, 0);
     }
 
   g_object_thaw_notify (G_OBJECT (device));
