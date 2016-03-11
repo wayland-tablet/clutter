@@ -948,6 +948,9 @@ typedef enum {
  * @CLUTTER_INPUT_AXIS_YTILT: The tile on the Y axis
  * @CLUTTER_INPUT_AXIS_WHEEL: A wheel
  * @CLUTTER_INPUT_AXIS_DISTANCE: Distance (Since 1.12)
+ * @CLUTTER_INPUT_AXIS_ROTATION: Rotation around the Z axis (Since 1.26)
+ * @CLUTTER_INPUT_AXIS_SLIDER: An adjustable "slider" (e.g. airbrush 
+ *   control) (Since 1.26)
  * @CLUTTER_INPUT_AXIS_LAST: Last value of the enumeration; this value is
  *   useful when iterating over the enumeration values (Since 1.12)
  *
@@ -965,6 +968,8 @@ typedef enum {
   CLUTTER_INPUT_AXIS_YTILT,
   CLUTTER_INPUT_AXIS_WHEEL,
   CLUTTER_INPUT_AXIS_DISTANCE,
+  CLUTTER_INPUT_AXIS_ROTATION,
+  CLUTTER_INPUT_AXIS_SLIDER,
 
   CLUTTER_INPUT_AXIS_LAST
 } ClutterInputAxis;

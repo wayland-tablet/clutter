@@ -99,6 +99,12 @@ clutter_input_device_evdev_update_from_tool (ClutterInputDevice     *device,
       _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_YTILT, -90, 90, 0);
     }
 
+  if (libinput_tablet_tool_has_rotation (evdev_tool->tool))
+    _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_ROTATION, 0, 360, 0);
+
+  if (libinput_tablet_tool_has_slider (evdev_tool->tool))
+    _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_SLIDER, -1, 1, 0);
+
   g_object_thaw_notify (G_OBJECT (device));
 }
 

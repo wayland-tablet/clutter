@@ -1601,6 +1601,18 @@ translate_tablet_axes (struct libinput_event_tablet_tool *tablet_event)
       g_array_append_val (axes, value);
     }
 
+  if (libinput_tablet_tool_has_rotation (libinput_tool))
+    {
+      value = libinput_event_tablet_tool_get_rotation (tablet_event);
+      g_array_append_val (axes, value);
+    }
+
+  if (libinput_tablet_tool_has_slider (libinput_tool))
+    {
+      value = libinput_event_tablet_tool_get_slider_position (tablet_event);
+      g_array_append_val (axes, value);
+    }
+
   if (axes->len == 0)
     {
       g_array_free (axes, TRUE);
