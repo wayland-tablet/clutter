@@ -708,6 +708,9 @@ notify_button (ClutterInputDevice *input_device,
 
     default:
       /* For compatibility reasons, all additional buttons go after the old 4-7 scroll ones */
+      /* FIXME: This doesn't do anything for tablets anymore, and also 
+       * might not work as expected for pads in the future...
+       */
       if (clutter_input_device_get_device_type (input_device) == CLUTTER_TABLET_DEVICE)
         button_nr = button - BTN_TOOL_PEN + 4;
       else
